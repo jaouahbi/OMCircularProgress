@@ -66,23 +66,25 @@ class OMStepData
     required convenience init(startAngle:Double,
         percent:Double,
         color:UIColor!,
-        image:UIImage? = nil)
+        image:UIImage? = nil,gradient: Bool = true)
     {
         self.init(startAngle:startAngle,
             endAngle: startAngle + (Circle.RadiansInCircle * percent),
             color:color,
-            image:image)
+            image:image,gradient:gradient)
     }
     
     init(startAngle:Double,
         endAngle:Double,
         color:UIColor!,
-        image:UIImage? = nil)
+        image:UIImage? = nil,
+        gradient: Bool = true)
     {
         self.startAngle = startAngle
         self.endAngle = endAngle
         self.color = color
         self.image = image
+        self.gradient = gradient;
     }
 }
 
@@ -228,7 +230,7 @@ class OMStepData
     func addProgressStepWithAngle(startAngle:Double,
         endAngle:Double,
         color:UIColor!,
-        image:UIImage? = nil) {
+        image:UIImage? = nil, gradient:Bool = true) {
             
         if let img = image?{
             maxImageSize = img.size.max(maxImageSize)
@@ -238,7 +240,8 @@ class OMStepData
         self.dataSteps.addObject(OMStepData(startAngle:startAngle,
                 endAngle:endAngle,
                 color:color,
-                image:image))
+                image:image,
+                gradient: gradient))
             
     }
     
@@ -246,7 +249,8 @@ class OMStepData
     func addProgressStepWithAngle(
         angle:Double,
         color:UIColor!,
-        image:UIImage?  = nil) {
+        image:UIImage?  = nil,
+        gradient:Bool = true) {
             
             var startAngle = self.getStartAngle()
             
@@ -255,7 +259,8 @@ class OMStepData
             addProgressStepWithAngle(startAngle,
                                      endAngle:startAngle + angle,
                                      color:color,
-                                     image:image);
+                                     image:image,
+                                     gradient: gradient);
             
     }
     
@@ -263,7 +268,8 @@ class OMStepData
     func addProgressStepWithPercent(startAngle:Double,
         percent:Double,
         color:UIColor!,
-        image:UIImage? = nil)
+        image:UIImage? = nil,
+        gradient:Bool = true)
     {
         let percent = clamp(percent, 0.0, 1.0)
         
@@ -272,13 +278,21 @@ class OMStepData
         }
         
         // Save the step
-        self.dataSteps.addObject(OMStepData(startAngle:startAngle,percent:percent,color:color,image:image))
+        self.dataSteps.addObject(OMStepData(startAngle:startAngle,
+            percent:percent,
+            color:color,
+            image:image,
+            gradient: gradient))
             
     }
     
-    func addProgressStepWithPercent(percent:Double,color:UIColor!,image:UIImage? = nil) {
+    func addProgressStepWithPercent(percent:Double,
+        color:UIColor!,
+        image:UIImage? = nil,
+        gradient:Bool = true) {
         
-        addProgressStepWithPercent(self.getStartAngle(), percent: percent, color: color, image: image);
+        addProgressStepWithPercent(self.getStartAngle(), percent: percent, color: color, image: image,
+        gradient: gradient);
         
     }
     
@@ -336,7 +350,7 @@ class OMStepData
          step.shapeLayer?.path = bezier.CGPath
          step.shapeLayer?.backgroundColor = UIColor.clearColor().CGColor
          step.shapeLayer?.fillColor = nil
-         step.shapeLayer?.strokeColor = UIColor.blackColor().CGColor
+         step.shapeLayer?.strokeColor = (step.gradient) ? UIColor.blackColor().CGColor : color.CGColor
          step.shapeLayer?.lineWidth = self.lineWidth
         
          if(roundedHead){
