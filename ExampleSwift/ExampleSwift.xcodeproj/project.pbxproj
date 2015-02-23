@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		352BE8491A9A1C8B00208D4E /* CGPointExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352BE8481A9A1C8B00208D4E /* CGPointExtension.swift */; };
 		352CB74B1A6D1FBB00863568 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352CB74A1A6D1FBB00863568 /* AppDelegate.swift */; };
 		352CB74D1A6D1FBB00863568 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352CB74C1A6D1FBB00863568 /* ViewController.swift */; };
 		352CB7501A6D1FBB00863568 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 352CB74E1A6D1FBB00863568 /* Main.storyboard */; };
@@ -15,7 +16,8 @@
 		3588CB261A82761D00C1A452 /* CGSizeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3588CB221A82761D00C1A452 /* CGSizeExtension.swift */; };
 		3588CB271A82761D00C1A452 /* OMCircularProgressStepperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3588CB231A82761D00C1A452 /* OMCircularProgressStepperView.swift */; };
 		3588CB281A82761D00C1A452 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3588CB241A82761D00C1A452 /* UIColorExtension.swift */; };
-		3588CB291A82761D00C1A452 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3588CB251A82761D00C1A452 /* UIImageExtension.swift */; };
+		358FABC91A9A212800ACD804 /* OMCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358FABC81A9A212800ACD804 /* OMCircle.swift */; };
+		358FABCB1A9A216000ACD804 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358FABCA1A9A216000ACD804 /* DoubleExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		352BE8481A9A1C8B00208D4E /* CGPointExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPointExtension.swift; sourceTree = "<group>"; };
 		352CB7451A6D1FBB00863568 /* ExampleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		352CB7491A6D1FBB00863568 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		352CB74A1A6D1FBB00863568 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -41,7 +44,8 @@
 		3588CB221A82761D00C1A452 /* CGSizeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGSizeExtension.swift; sourceTree = "<group>"; };
 		3588CB231A82761D00C1A452 /* OMCircularProgressStepperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCircularProgressStepperView.swift; sourceTree = "<group>"; };
 		3588CB241A82761D00C1A452 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
-		3588CB251A82761D00C1A452 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
+		358FABC81A9A212800ACD804 /* OMCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCircle.swift; sourceTree = "<group>"; };
+		358FABCA1A9A216000ACD804 /* DoubleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,7 +128,9 @@
 				3588CB221A82761D00C1A452 /* CGSizeExtension.swift */,
 				3588CB231A82761D00C1A452 /* OMCircularProgressStepperView.swift */,
 				3588CB241A82761D00C1A452 /* UIColorExtension.swift */,
-				3588CB251A82761D00C1A452 /* UIImageExtension.swift */,
+				352BE8481A9A1C8B00208D4E /* CGPointExtension.swift */,
+				358FABC81A9A212800ACD804 /* OMCircle.swift */,
+				358FABCA1A9A216000ACD804 /* DoubleExtension.swift */,
 			);
 			name = OMCircularProgressStepperView;
 			path = ../../OMCircularProgressStepperView;
@@ -229,12 +235,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				358FABCB1A9A216000ACD804 /* DoubleExtension.swift in Sources */,
+				358FABC91A9A212800ACD804 /* OMCircle.swift in Sources */,
 				352CB74D1A6D1FBB00863568 /* ViewController.swift in Sources */,
 				352CB74B1A6D1FBB00863568 /* AppDelegate.swift in Sources */,
+				352BE8491A9A1C8B00208D4E /* CGPointExtension.swift in Sources */,
 				3588CB281A82761D00C1A452 /* UIColorExtension.swift in Sources */,
 				3588CB271A82761D00C1A452 /* OMCircularProgressStepperView.swift in Sources */,
 				3588CB261A82761D00C1A452 /* CGSizeExtension.swift in Sources */,
-				3588CB291A82761D00C1A452 /* UIImageExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,7 +310,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -339,7 +347,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -354,6 +362,7 @@
 				INFOPLIST_FILE = ExampleSwift/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Debug;
 		};
@@ -364,6 +373,7 @@
 				INFOPLIST_FILE = ExampleSwift/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Release;
 		};

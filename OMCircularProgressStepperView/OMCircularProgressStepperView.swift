@@ -2,74 +2,62 @@
 //  OMCircularProgressView.swift
 //
 //  Created by Jorge Ouahbi on 19/1/15.
-//  Copyright (c) 2015  Jorge Ouahbi. All rights reserved.
+//  Copyright (c) 2015 Jorge Ouahbi. All rights reserved.
 //
 
+
 import UIKit
+
+
+let DEBUG_LAYERS = false
+
 
 func clamp<T: Comparable>(value:T,lower:T,upper:T) -> T{
     return min(upper, max(lower, value))
 }
 
 
-class Angular
+enum ImageAlign : Int
 {
-    class func degreesToRadians (value:Double) -> Double {
-        return value * 0.01745329252
-    }
-    class func radiansToDegrees (value:Double) -> Double {
-        return value * 57.29577951;
-    }
-}
-
-class Circle
-{
-    class var RadiansInCircle: Double { return M_PI * 2.0 }
-    
-    class func arcAngle(arcLength:Double, radius:Double) -> Double{
-        
-        return arcLength / radius;
-    }
-    
-    class func arcLength(angle:Double, radius:Double) -> Double{
-        
-        return angle * radius;
-    }
-    
-    class func arcPoint(angle:Double, radius:Double, center:CGPoint) -> CGPoint
+    case AlignCenter
+    case AlignMid
+    case AlignBorder
+    init()
     {
-        //
-        // Given a radius length r and an angle in radians and a circle's center (x,y),
-        // calculate the coordinates of a point on the circumference
-        //
-        
-        return CGPoint(x: center.x + CGFloat(radius) * cos(CGFloat(angle)), y: center.y + CGFloat(radius) * sin(CGFloat(angle)))
+        self = AlignMid
     }
 }
 
 
-class OMStepData
+class OMStepData : DebugPrintable
 {
     var startAngle:Double = 0.0
     var endAngle:Double = 0.0
     var hypotAngleHalf:Double = 0.0          // angle of arclength of image hypotenuse in radians
-    
-    var color:UIColor!;
+
     var shapeLayer:CAShapeLayer?
-    var wellLayer:CAShapeLayer?
-    var gradientLayer:CAGradientLayer?
-    var imageLayer:CALayer?
-    var image : UIImage?                     // optional image
+    var color:UIColor!;
     var gradient:Bool = true
-    var wellColor:UIColor? = UIColor.lightGrayColor()
+    var gradientLayer:CAGradientLayer?       // optional gradient layer mask
+    
+    var wellLayer:CAShapeLayer?              //
+    var wellColor:UIColor?
+    
+    var imageLayer:CALayer?                  // optional image layer
+    var image : UIImage?                     // optional image
+    var imageOnTop : Bool = false
+    var imageAlign : ImageAlign = .AlignBorder
+
     
     required convenience init(startAngle:Double,
         percent:Double,
         color:UIColor!,
-        image:UIImage? = nil,gradient: Bool = true)
+        wellColor:UIColor? = UIColor.lightGrayColor(),
+        image:UIImage? = nil,
+        gradient: Bool = true)
     {
         self.init(startAngle:startAngle,
-            endAngle: startAngle + (Circle.RadiansInCircle * percent),
+            endAngle: startAngle + (OMCircle.RadiansInCircle * percent),
             color:color,
             image:image,gradient:gradient)
     }
@@ -77,6 +65,7 @@ class OMStepData
     init(startAngle:Double,
         endAngle:Double,
         color:UIColor!,
+        wellColor:UIColor? = UIColor.lightGrayColor(),
         image:UIImage? = nil,
         gradient: Bool = true)
     {
@@ -85,111 +74,113 @@ class OMStepData
         self.color = color
         self.image = image
         self.gradient = gradient;
+        self.wellColor = wellColor
+    }
+    
+    var debugDescription : String {
+        let degreeS = round(startAngle.radiansToDegrees());
+        let degreeE = round(endAngle.radiansToDegrees());
+        
+        return "from \(degreeS) to \(degreeE) color \(color) well color \(wellColor) gradient \(gradient) with image \(image)  hypotAngle \(hypotAngleHalf)"
     }
 }
 
 @IBDesignable class OMCircularProgressStepperView: UIView {
-    
-    var roundedHead : Bool = false {
-        didSet
-        {
-            if(self.thicknessRatio >= 0.2){
-                roundedHead = false;
-            }
-            
-            if(oldValue != roundedHead){
-                setNeedsLayout();
-            }
-        }
-    }
-    var startAngle : Double = Angular.degreesToRadians(-90)
-    var animationDuration : NSTimeInterval = 1.0
     
     private(set) var dataSteps: NSMutableArray = []
     private var maxImageSize : CGSize = CGSizeZero
     private var newBeginTime: NSTimeInterval = 0;
     private var imageLayer:CALayer?                // center image layer
     
+    var roundedHeadThicknessThreshold: CGFloat = 0.2
+    var startAngle : Double = -90.degreesToRadians()
+    var animationDuration : NSTimeInterval = 1.0
     
-    var lineWidth:CGFloat
-    {
-        get { return  thicknessRatio * radius() }
+    var progress: Double = 0.0 {
+        didSet {
+            self.animateProgress()
+        }
     }
-    @IBInspectable var shadowLayer : Bool = true
-    {
-        didSet {setNeedsLayout(); }
+    
+    var roundedHead : Bool = false {
+        didSet{
+            roundedHead = ( self.thicknessRatio < self.roundedHeadThicknessThreshold );
+            setNeedsLayout();
+        }
     }
-    @IBInspectable var shadowRadius: CGFloat = 2
-    {
-        didSet { setNeedsLayout();}
+
+    var radius : CGFloat {
+        get {
+            return (bounds.size.min() * 0.5) - (maxImageSize.max() * 0.5) ;
+        }
     }
-    @IBInspectable var shadowOpacity: Float  = 1
-    {
-        didSet { setNeedsLayout(); }
-    }
-    @IBInspectable var shadowOffset : CGSize = CGSizeZero
-    {
-        didSet { setNeedsLayout();}
+    
+    var lineWidth : CGFloat {
+        get {
+            return thicknessRatio * radius
+        }
     }
     
     @IBInspectable var thicknessRatio : CGFloat = 0.1
     {
         didSet {
-            thicknessRatio = clamp(thicknessRatio, 0.0,1.0)
-            if(oldValue != thicknessRatio){
-                setNeedsLayout();
-            }
+            thicknessRatio = clamp(thicknessRatio, 0.0, 1.0)
+            setNeedsLayout();
         }
     }
+    
     
     @IBInspectable var image: UIImage?
     {
-        didSet
-        {
-            if let img = image?
-            {
+        didSet {
+            if image != nil {
                 imageLayer = CALayer()
-                
-                imageLayer?.frame = CGRect(origin:
-                    CGPoint(x:center.x -  img.size.width * 0.5,
-                    y:center.y -  img.size.height * 0.5),
-                    size: img.size)
-                
-                imageLayer?.contents = img.getGrayScale()?.CGImage
-                
-                // This layer is the index 0
-                
-                self.layer.insertSublayer(imageLayer, atIndex:0)
+                //imageLayer?.contents = image!.getGrayScale()?.CGImage
+                imageLayer?.contents = image!.CGImage
             }
-
         }
     }
-    
+
+
     required override init(frame: CGRect) {
         super.init(frame: frame)
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    private func radius() -> CGFloat {
-        return (bounds.size.min() * 0.5) - (maxImageSize.max() * 0.5) ;
-    }
     
-    func setProgress(progress:Double)
+    func animateProgress()
     {
-        CATransaction.begin()
+        //DEBUG
+        //println("begin animateProgress (progress: \(progress))")
 
-        for var i = 0; i < self.dataSteps.count  ; ++i
+        if(progress == 0.0) {
+            return;
+        }
+        
+        let numberOfSteps = self.dataSteps.count
+        
+        //DEBUG
+        //precondition(progress <= Double(numberOfSteps),"unexpected progress \(progress) max \(numberOfSteps) ")
+        
+        let claped_progress = clamp(progress, 0.0, Double(numberOfSteps))
+        
+        CATransaction.begin()
+        
+        let stepsDone   = Int(self.progress);
+        let curStep = self.progress - floor(self.progress);
+        
+        for var index = 0; index < Int(numberOfSteps) ; ++index
         {
-            let index = Double(i+1)
-            let mod = ( progress % index)
-            let current =  mod == 0 ? 1.0 : mod
-        
-            self.setProgressAtIndex(i, progress:current)
-        
-            if(current < 1.0){
+            //DEBUG
+            //println("for \(index) of \(numberOfSteps) in  \(progress) :  done:\(stepsDone) current:\(curStep)")
+            
+            if(index < stepsDone) {
+                self.setProgressAtIndex(Int(index), progress:1.0)
+            } else {
+                self.setProgressAtIndex(Int(index), progress: curStep)
                 break;
             }
         }
@@ -199,16 +190,19 @@ class OMStepData
     
     func setProgressAtIndex(index:Int, progress:Double) {
         
-        let step = self.dataSteps[index] as OMStepData
+        //DEBUG
+        //println("begin setProgressAtIndex (index : \(index) progress: \(progress))")
         
-        if let layer = step.shapeLayer? {
+        let step = self.dataSteps[index] as! OMStepData
+        
+        if let layer = step.shapeLayer {
             
             let animation = CABasicAnimation(keyPath: "strokeEnd")
             
             animation.fromValue =  0.0
             animation.toValue   =  progress
 
-            animation.duration = self.animationDuration
+            animation.duration = self.animationDuration * progress
 
             animation.removedOnCompletion = false
             animation.additive = true
@@ -232,8 +226,8 @@ class OMStepData
         color:UIColor!,
         image:UIImage? = nil, gradient:Bool = true) {
             
-        if let img = image?{
-            maxImageSize = img.size.max(maxImageSize)
+        if image != nil {
+            maxImageSize = image!.size.max(maxImageSize)
         }
             
         // Save the step
@@ -273,8 +267,8 @@ class OMStepData
     {
         let percent = clamp(percent, 0.0, 1.0)
         
-        if let img = image?{
-            maxImageSize = img.size.max(maxImageSize)
+        if (image != nil) {
+            maxImageSize = image!.size.max(maxImageSize)
         }
         
         // Save the step
@@ -303,7 +297,7 @@ class OMStepData
         
         if(self.dataSteps.count > 0){
             // the new startAngle is the last endAngle
-            startAngle  = (self.dataSteps[self.dataSteps.count - 1] as OMStepData).endAngle
+            startAngle  = (self.dataSteps[self.dataSteps.count - 1] as! OMStepData).endAngle
         }
         return startAngle;
     }
@@ -311,12 +305,18 @@ class OMStepData
 
     private func setupLayers(step:OMStepData, startAngle:Double, endAngle:Double, color:UIColor)
     {
-        if (step.gradient) {
         
+        if (step.gradient) {
+            
             // Setup the gradient layer
             
             step.gradientLayer =  CAGradientLayer()
-            step.gradientLayer?.frame = bounds
+            
+            if ( DEBUG_LAYERS ){
+                step.gradientLayer?.name = "step \(self.dataSteps.indexOfObject(step)) gradient"
+            }
+            
+            step.gradientLayer?.frame = frame
             
             step.gradientLayer?.locations = [0.0, 1.0]
             
@@ -330,15 +330,18 @@ class OMStepData
         
         step.shapeLayer = CAShapeLayer()
         
-        let halfLineWidth = (self.lineWidth * 0.5)
-        
-        let newRadius = CGFloat(radius() - halfLineWidth)
+        if ( DEBUG_LAYERS ){
+            step.shapeLayer?.name = "step \(self.dataSteps.indexOfObject(step)) shape"
+        }
+    
         
         var radiansForRoundedHead :Double = 0.0
         
         if (roundedHead) {
-            radiansForRoundedHead = Circle.arcAngle(Double(lineWidth * 0.5), radius: Double(radius()))
+            radiansForRoundedHead = OMCircle.arcAngle(Double(lineWidth * 0.5), radius: Double(radius))
         }
+        
+        let newRadius = CGFloat(radius - (self.lineWidth * 0.5))
         
         let bezier = UIBezierPath(arcCenter:center,
             radius: newRadius,
@@ -347,49 +350,47 @@ class OMStepData
             clockwise: true)
         
         
-         step.shapeLayer?.path = bezier.CGPath
-         step.shapeLayer?.backgroundColor = UIColor.clearColor().CGColor
-         step.shapeLayer?.fillColor = nil
-         step.shapeLayer?.strokeColor = (step.gradient) ? UIColor.blackColor().CGColor : color.CGColor
-         step.shapeLayer?.lineWidth = self.lineWidth
+        step.shapeLayer?.path = bezier.CGPath
+        step.shapeLayer?.backgroundColor = UIColor.clearColor().CGColor
+        step.shapeLayer?.fillColor = nil
+        step.shapeLayer?.strokeColor = (step.gradient) ? UIColor.blackColor().CGColor : color.CGColor
+        step.shapeLayer?.lineWidth = self.lineWidth
         
-         if(roundedHead){
+        if (roundedHead) {
             step.shapeLayer?.lineCap = "round"
-         }
-        
-         step.shapeLayer?.strokeStart = 0.0
-         step.shapeLayer?.strokeEnd = 0.0
-        
-        if(self.shadowLayer){
-            
-             step.shapeLayer?.shadowColor  = color.darkerColor(1.0).CGColor
-             step.shapeLayer?.shadowRadius = self.shadowRadius
-             step.shapeLayer?.shadowOpacity = self.shadowOpacity
-             step.shapeLayer?.shadowOffset = self.shadowOffset
         }
         
-        if let g = step.gradientLayer? {
+        step.shapeLayer?.strokeStart = 0.0
+        step.shapeLayer?.strokeEnd = 0.0
+    
+        
+        if step.gradientLayer != nil {
             
-           g.mask = step.shapeLayer
-          
-            if(self.layer.sublayers != nil){
-                self.layer.insertSublayer(g, above:self.imageLayer)
+            // When setting the mask to a new layer, the new layer must have a nil superlayer
+            
+            step.gradientLayer?.mask = step.shapeLayer
+            
+            if self.layer.sublayers != nil {
+                self.layer.insertSublayer(step.gradientLayer, above:self.imageLayer)
             }else{
-              self.layer.addSublayer( g)
+                self.layer.addSublayer(step.gradientLayer)
             }
         }else{
             self.layer.addSublayer(step.shapeLayer)
         }
         
-        if let wcolor = step.wellColor? {
+        if let stepWellColor = step.wellColor {
             
             step.wellLayer = CAShapeLayer()
+            if ( DEBUG_LAYERS ){
+                step.wellLayer?.name = "step \(self.dataSteps.indexOfObject(step)) well"
+            }
             
             step.wellLayer?.path = bezier.CGPath
             
             step.wellLayer?.backgroundColor = UIColor.clearColor().CGColor
             step.wellLayer?.fillColor   = nil
-            step.wellLayer?.strokeColor = wcolor.CGColor
+            step.wellLayer?.strokeColor = stepWellColor.CGColor
             step.wellLayer?.lineWidth = self.lineWidth
             
             if(roundedHead){
@@ -397,7 +398,7 @@ class OMStepData
             }
             
             if(self.layer.sublayers != nil){
-                self.layer.insertSublayer(step.wellLayer, above:self.imageLayer)
+                self.layer.insertSublayer(step.wellLayer, atIndex:0)
             }else{
                 self.layer.addSublayer(step.wellLayer)
             }
@@ -408,7 +409,7 @@ class OMStepData
     {
         for var i = 0; i < self.dataSteps.count ; ++i
         {
-            let step = (self.dataSteps[i] as OMStepData)
+            let step = (self.dataSteps[i] as! OMStepData)
             
             // Remove the gradient layer
 
@@ -416,58 +417,149 @@ class OMStepData
             
             step.wellLayer?.removeFromSuperlayer()
             
-            step.shapeLayer?.removeFromSuperlayer()
-            
             step.imageLayer?.removeFromSuperlayer()
+            
+            step.shapeLayer?.removeFromSuperlayer()
+        }
+        
+        self.imageLayer?.removeFromSuperlayer()
+    }
+    
+    func dumpLayers(level:UInt ,layer:CALayer)
+    {
+        for var index = 0; index < layer.sublayers?.count ; ++index{
+    
+            let l = layer.sublayers[index] as! CALayer
+    
+            println("[\(level)] \(l.name)")
+    
+            if(l.sublayers != nil){
+                dumpLayers(level+1, layer: l);
+            }
         }
     }
+
     
     override func layoutSubviews()
     {
-        super.layoutSubviews()
+        //DEBUG
+        //println("[\(self)] enter layoutSubviews()")
         
+        super.layoutSubviews()
+
         self.removeAllSublayersFromSuperlayer()
+        
+        if ( DEBUG_LAYERS ){
+            self.dumpLayers(0,layer:self.layer)
+        }
         
         // Recalculate the layers.
         
-        let r = Double(radius() * 2.0)  // avoid to divide by 2 each s0 element calculation
+        let r = Double(radius * 2.0)  // avoid to divide by 2 each s0 element calculation
         
         for var index = 0; index < self.dataSteps.count ; ++index
         {
-            let step = self.dataSteps[index] as OMStepData
-            
-            let halfLineWidth = (self.lineWidth * 0.5)
-            
-            let point  = Circle.arcPoint(step.startAngle,radius: Double(radius() - halfLineWidth),center:self.center);
+            let step = self.dataSteps[index] as! OMStepData
             
             var frame:CGRect = CGRectZero
             
             step.hypotAngleHalf = 0.0
             
-            if let img = step.image? {
-                let h = Double(img.size.hypot() );
+            if step.image != nil {
+                
+                let halfLineWidth = (self.lineWidth * 0.5)
+                
+                var newRadius:Double = Double(radius - halfLineWidth)
+                
+                if(step.imageAlign == .AlignMid) {
+                    
+                }else if(step.imageAlign == .AlignCenter){
+                
+                    if(self.image != nil){
+                        newRadius = Double( self.image!.size.max() )
+                    }else{
+                        newRadius = Double(maxImageSize.max())
+                    }
+                    
+                }else if(step.imageAlign == .AlignBorder){
+                    
+                    newRadius = Double( radius )
+                
+                }else{
+                    
+                    assertionFailure("Unexpected image align \(step.imageAlign)")
+                    
+                }
+                
+                let c = OMCircle(center: self.center,radius:newRadius);
+
+                
+                let stepImagePoint  = c.arcPoint( step.startAngle);
+          
+                
+                let h = Double(step.image!.size.hypot() );
+                
                 step.hypotAngleHalf = Double(h / r)
-                frame = CGRect(origin: CGPoint(x:point.x - img.size.width / 2, y:point.y - img.size.height / 2),size:img.size)
+                
+                
+                frame = CGRect(origin: CGPoint(x:stepImagePoint.x - step.image!.size.width / 2,
+                    y:stepImagePoint.y - step.image!.size.height / 2),
+                    size:step.image!.size)
             }
             
-            if(index + 1 < self.dataSteps.count){
-                let nextStep = self.dataSteps[index+1] as OMStepData
-                setupLayers(step, startAngle: step.startAngle + step.hypotAngleHalf,
-                    endAngle: step.endAngle - nextStep.hypotAngleHalf,
+            
+            if(step.imageOnTop == false){
+                if(index + 1 < self.dataSteps.count){
+                    let nextStep = self.dataSteps[index+1] as! OMStepData
+                    setupLayers(step, startAngle: step.startAngle + step.hypotAngleHalf,
+                        endAngle: step.endAngle - nextStep.hypotAngleHalf,
                     color: step.color)
-            }else{
-                let firstStep = self.dataSteps.firstObject as OMStepData
-                setupLayers(step, startAngle:step.startAngle + step.hypotAngleHalf,
-                    endAngle: step.endAngle - firstStep.hypotAngleHalf,
+                }else{
+                    let firstStep = self.dataSteps.firstObject as! OMStepData
+                    setupLayers(step, startAngle:step.startAngle + step.hypotAngleHalf,
+                        endAngle: step.endAngle - firstStep.hypotAngleHalf,
+                        color: step.color)
+                }
+            } else {
+                setupLayers(step, startAngle:step.startAngle,
+                    endAngle: step.endAngle,
                     color: step.color)
             }
             
-            if let img = step.image? {
+            if let img = step.image {
                 step.imageLayer = CALayer()!
                 step.imageLayer?.frame = frame
-                step.imageLayer?.contents = step.image?.getGrayScale()?.CGImage
-                self.layer.insertSublayer(step.imageLayer,above:self.imageLayer!)
+                //step.imageLayer?.contents = step.image?.getGrayScale()?.CGImage
+                step.imageLayer?.contents = step.image?.CGImage
+            }
+        
+        }
+        
+        // Add the center image
+        if (self.imageLayer != nil){
+            imageLayer!.frame = CGRect(origin:
+                CGPoint(x:center.x -  self.image!.size.width * 0.5,
+                    y:center.y -  self.image!.size.height * 0.5),
+                size: self.image!.size)
+            
+            if ( DEBUG_LAYERS ){
+                self.imageLayer!.name = "center image"
+            }
+            
+            self.layer.addSublayer(self.imageLayer)
+        }
+        
+        // Add all steps image
+        for var index = 0; index < self.dataSteps.count ; ++index{
+            let step = self.dataSteps[index] as! OMStepData
+            if(step.imageLayer != nil){
+                if ( DEBUG_LAYERS ){
+                    step.imageLayer!.name = "step \(index) image"
+                }
+                self.layer.addSublayer(step.imageLayer)
             }
         }
+        
+        self.animateProgress();
     }
 }

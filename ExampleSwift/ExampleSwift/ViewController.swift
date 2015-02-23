@@ -17,23 +17,24 @@ class ViewController: UIViewController {
         
         // Do any additional setup after loading the view, typically from a nib.
         
-        progressView.thicknessRatio = 0.08
+        progressView.thicknessRatio = 0.05
         progressView.roundedHead    = true
-        progressView.startAngle     = Angular.degreesToRadians(-90);
+        progressView.startAngle     = -90.degreesToRadians()
         
-        let step = Circle.RadiansInCircle / 3.0
+        let step = OMCircle.RadiansInCircle / 3
         
         let color1 = UIColor.redColor()
         let color2 = UIColor.blueColor()
         let color3 = UIColor.greenColor()
         
-        progressView.addProgressStepWithAngle(step,color:color1,image:UIImage(named: "image_1_color"))
+        progressView.addProgressStepWithAngle(step,color:color1,image:UIImage(named: "1"))
         
-        progressView.addProgressStepWithAngle(step,color:color2,image:UIImage(named: "image_2_color"))
+        progressView.addProgressStepWithAngle(step,color:color2,image:UIImage(named: "2"))
         
-        progressView.addProgressStepWithAngle(step,color:color3,image:UIImage(named: "image_3_color"))
+        progressView.addProgressStepWithAngle(step,color:color3,image:UIImage(named: "3"))
         
-        progressView.image = UIImage(named: "image_color")
+        progressView.image = UIImage(named: "center")
+
         
         var timer = NSTimer.scheduledTimerWithTimeInterval(1,
             target: self,
@@ -45,7 +46,7 @@ class ViewController: UIViewController {
     
     func timerProc()
     {
-        self.progressView.setProgress(3.0)
+        self.progressView.progress = 2.1
     }
 
     override func didReceiveMemoryWarning() {

@@ -9,6 +9,52 @@ import UIKit
 
 extension UIColor
 {
+    var red : CGFloat
+    {
+        get
+        {
+            let components = CGColorGetComponents(self.CGColor)
+            return components[0]
+        }
+    }
+    
+    var green : CGFloat
+    {
+        get
+        {
+            let components = CGColorGetComponents(self.CGColor)
+            return components[1]
+        }
+    }
+    
+    var blue : CGFloat
+    {
+        get
+        {
+            let components = CGColorGetComponents(self.CGColor)
+            return components[2]
+        }
+    }
+    
+    var alpha : CGFloat
+    {
+        get
+        {
+            return CGColorGetAlpha(self.CGColor)
+        }
+    }
+    
+    func isClearColor() -> Bool
+    {
+        return self.isEqual(UIColor.clearColor())
+    }
+    
+    func isLighterColor() -> Bool
+    {
+        let components = CGColorGetComponents(self.CGColor);
+        return (components[0]+components[1]+components[2])/3 >= 0.5
+    }
+    
     func lighterColor(percent : Double) -> UIColor!{
         return colorWithBrightnessFactor(CGFloat(1.0 + percent));
     }
@@ -26,10 +72,10 @@ extension UIColor
         var white : CGFloat = 0
         
         if (self.isEqual(UIColor.whiteColor())) {
-            return UIColor(white: 0.99, alpha: 1.0) ;
+            return UIColor(white: 0.9999, alpha: 1.0) ;
         }
         if (self.isEqual(UIColor.blackColor())) {
-            return UIColor(white: 0.01, alpha: 1.0) ;
+            return UIColor(white: 0.0001, alpha: 1.0) ;
         }
         if (self.getHue(&hue, saturation:&saturation, brightness:&brightness, alpha:&alpha)) {
             return UIColor( hue: hue,saturation:saturation, brightness: brightness * factor,alpha:alpha);
