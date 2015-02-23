@@ -46,7 +46,7 @@ class OMStepData : DebugPrintable
     var imageLayer:CALayer?                  // optional image layer
     var image : UIImage?                     // optional image
     var imageOnTop : Bool = false
-    var imageAlign : ImageAlign = .AlignBorder
+    var imageAlign : ImageAlign = .AlignMid
 
     
     required convenience init(startAngle:Double,
