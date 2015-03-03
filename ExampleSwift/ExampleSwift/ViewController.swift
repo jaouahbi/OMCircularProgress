@@ -18,14 +18,26 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         progressView.thicknessRatio = 0.05
-        progressView.roundedHead    = true
+        progressView.roundedHead    = false
+        progressView.stepSeparator  = true
         progressView.startAngle     = -90.degreesToRadians()
         
-        let step = OMCircle.RadiansInCircle / 3
+        // text
+        
+        progressView.showPercent    = true
+        
+        // font of text
+        
+        progressView.fontName = "Helvetica"
+        progressView.fontSize = 40
+        progressView.fontColor = UIColor.redColor()
+        
+        let step = (M_PI * 2.0) / 4
         
         let color1 = UIColor.redColor()
         let color2 = UIColor.blueColor()
         let color3 = UIColor.greenColor()
+        let color4 = UIColor.yellowColor()
         
         progressView.addProgressStepWithAngle(step,color:color1,image:UIImage(named: "1"))
         
@@ -33,21 +45,17 @@ class ViewController: UIViewController {
         
         progressView.addProgressStepWithAngle(step,color:color3,image:UIImage(named: "3"))
         
-        progressView.image = UIImage(named: "center")
-
+        progressView.addProgressStepWithAngle(step,color:color4,image:UIImage(named: "center"))
         
-        var timer = NSTimer.scheduledTimerWithTimeInterval(1,
-            target: self,
-            selector: Selector("timerProc"),
-            userInfo: nil,
-            repeats: false)
+        //progressView.image = UIImage(named: "center")
+        
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            
+            self.progressView.progress = 3.1
+        }
     }
 
-    
-    func timerProc()
-    {
-        self.progressView.progress = 2.1
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -7,9 +7,14 @@
 
 
 import UIKit
+import CoreText
 
 
+let NO_GRADIENT = false
 let DEBUG_LAYERS = false
+let NO_WELL = false
+
+
 
 
 func clamp<T: Comparable>(value:T,lower:T,upper:T) -> T{
@@ -27,6 +32,8 @@ enum ImageAlign : Int
         self = AlignMid
     }
 }
+
+
 
 
 class OMStepData : DebugPrintable
@@ -57,7 +64,7 @@ class OMStepData : DebugPrintable
         gradient: Bool = true)
     {
         self.init(startAngle:startAngle,
-            endAngle: startAngle + (OMCircle.RadiansInCircle * percent),
+            endAngle: startAngle + (2.0 * M_PI * percent),
             color:color,
             image:image,gradient:gradient)
     }
@@ -74,7 +81,10 @@ class OMStepData : DebugPrintable
         self.color = color
         self.image = image
         self.gradient = gradient;
-        self.wellColor = wellColor
+        
+        if( NO_WELL  == false){
+            self.wellColor = wellColor
+        }
     }
     
     var debugDescription : String {
@@ -91,20 +101,87 @@ class OMStepData : DebugPrintable
     private var maxImageSize : CGSize = CGSizeZero
     private var newBeginTime: NSTimeInterval = 0;
     private var imageLayer:CALayer?                // center image layer
+    private var numberLayer:OMNumberLayer?         // center text layer
     
+
+    var animation : Bool = false;
+    var stepSeparatorSpaceRadians: Double = 0.01
     var roundedHeadThicknessThreshold: CGFloat = 0.2
     var startAngle : Double = -90.degreesToRadians()
     var animationDuration : NSTimeInterval = 1.0
     
     var progress: Double = 0.0 {
         didSet {
+            
+            //DEBUG
+            var rads = 0.0
+            for var index = 0; index < dataSteps.count ; ++index{
+                rads +=  (dataSteps[index] as! OMStepData).endAngle -
+                         (dataSteps[index] as! OMStepData).startAngle
+            }
+            
+            assert(rads == 2 * M_PI, "Unexpected radians")
+            
             self.animateProgress()
+        }
+    }
+    var stepSeparator:Bool = true
+    {
+        didSet{
+            setNeedsLayout()
+        }
+    }
+    var showPercent:Bool = false{
+        didSet{
+            setNeedsLayout()
+        }
+    }
+    
+    // Shadow
+    
+    var shadowOpacity:Float = 0.75 {
+        didSet{
+            setNeedsLayout()
+        }
+    }
+    var shadowOffset:CGSize = CGSize(width: 0, height: 3){
+        didSet{
+            setNeedsLayout()
+        }
+    }
+    var shadowRadius:CGFloat = 3.0 {
+        didSet{
+            setNeedsLayout()
+        }
+    }
+    
+    // Font
+    var fontName : String = "Helvetica" {
+    
+        didSet{
+            setNeedsLayout()
+        }
+    }
+    
+    var fontColor : UIColor = UIColor.blackColor()
+    {
+        didSet {
+            setNeedsLayout()
+        }
+    }
+    
+    var fontSize : CGFloat = 12 {
+    
+        didSet {
+            setNeedsLayout()
         }
     }
     
     var roundedHead : Bool = false {
-        didSet{
-            roundedHead = ( self.thicknessRatio < self.roundedHeadThicknessThreshold );
+        didSet {
+            if( roundedHead ){
+                roundedHead = ( self.thicknessRatio < self.roundedHeadThicknessThreshold );
+            }
             setNeedsLayout();
         }
     }
@@ -151,6 +228,7 @@ class OMStepData : DebugPrintable
     }
     
     
+    
     func animateProgress()
     {
         //DEBUG
@@ -167,7 +245,10 @@ class OMStepData : DebugPrintable
         
         let claped_progress = clamp(progress, 0.0, Double(numberOfSteps))
         
-        CATransaction.begin()
+        if(self.animation){
+            CATransaction.begin()
+        }
+        //CATransaction.setDisableActions(true)
         
         let stepsDone   = Int(self.progress);
         let curStep = self.progress - floor(self.progress);
@@ -185,7 +266,27 @@ class OMStepData : DebugPrintable
             }
         }
         
-        CATransaction.commit()
+        
+        if let numberLayer = self.numberLayer {
+            
+            let number = progress / Double(numberOfSteps) as NSNumber
+            
+            if ( self.animation ){
+                numberLayer.animateNumber(  0.0,
+                                        toValue:progress / Double(numberOfSteps),
+                                        duration:self.animationDuration * progress,
+                                        delegate:nil)
+            }
+            else
+            {
+                numberLayer.number = number
+            }
+        }
+        
+        //CATransaction.setDisableActions(false)
+        if(self.animation){
+            CATransaction.commit()
+        }
     }
     
     func setProgressAtIndex(index:Int, progress:Double) {
@@ -197,26 +298,37 @@ class OMStepData : DebugPrintable
         
         if let layer = step.shapeLayer {
             
-            let animation = CABasicAnimation(keyPath: "strokeEnd")
-            
-            animation.fromValue =  0.0
-            animation.toValue   =  progress
-
-            animation.duration = self.animationDuration * progress
-
-            animation.removedOnCompletion = false
-            animation.additive = true
-            animation.fillMode = kCAFillModeForwards
-              
-            if (newBeginTime != 0) {
-                animation.beginTime = newBeginTime
-            }else{
-                animation.beginTime = CACurrentMediaTime()
+            if(self.animation)
+            {
+                let animation = CABasicAnimation(keyPath: "strokeEnd")
+                
+                animation.fromValue =  0.0
+                animation.toValue   =  progress
+                
+                animation.duration = self.animationDuration * progress
+                
+                animation.removedOnCompletion = false
+                animation.additive = true
+                animation.fillMode = kCAFillModeForwards
+                
+                if (newBeginTime != 0) {
+                    animation.beginTime = newBeginTime
+                }else{
+                    animation.beginTime = CACurrentMediaTime()
+                }
+                
+                newBeginTime = animation.beginTime + animation.duration
+                
+                layer.addAnimation(animation, forKey: "strokeEnd")
             }
-
-            newBeginTime = animation.beginTime + animation.duration
-
-            layer.addAnimation(animation, forKey: "strokeEnd")
+            else
+            {
+                // remove the default animation from strokeEnd
+                
+                layer.actions = ["strokeEnd" as NSString : NSNull()]
+                
+                layer.strokeEnd = CGFloat(progress)
+            }
         }
     }
     
@@ -305,6 +417,9 @@ class OMStepData : DebugPrintable
 
     private func setupLayers(step:OMStepData, startAngle:Double, endAngle:Double, color:UIColor)
     {
+        if(NO_GRADIENT){
+            step.gradient = false
+        }
         
         if (step.gradient) {
             
@@ -334,19 +449,19 @@ class OMStepData : DebugPrintable
             step.shapeLayer?.name = "step \(self.dataSteps.indexOfObject(step)) shape"
         }
     
-        
-        var radiansForRoundedHead :Double = 0.0
+        var arcAngle :Double = 0.0
         
         if (roundedHead) {
-            radiansForRoundedHead = OMCircle.arcAngle(Double(lineWidth * 0.5), radius: Double(radius))
+            
+            arcAngle = Double(lineWidth * 0.5) / Double(radius)
         }
         
         let newRadius = CGFloat(radius - (self.lineWidth * 0.5))
         
         let bezier = UIBezierPath(arcCenter:center,
             radius: newRadius,
-            startAngle:CGFloat(startAngle + radiansForRoundedHead ),
-            endAngle:CGFloat(endAngle - radiansForRoundedHead ),
+            startAngle:CGFloat(startAngle + arcAngle ),
+            endAngle:CGFloat(endAngle - arcAngle ),
             clockwise: true)
         
         
@@ -363,6 +478,13 @@ class OMStepData : DebugPrintable
         step.shapeLayer?.strokeStart = 0.0
         step.shapeLayer?.strokeEnd = 0.0
     
+        
+        // shadow
+        
+        
+        step.shapeLayer?.shadowOpacity = self.shadowOpacity
+        step.shapeLayer?.shadowOffset = self.shadowOffset
+        step.shapeLayer?.shadowRadius = self.shadowRadius
         
         if step.gradientLayer != nil {
             
@@ -422,7 +544,10 @@ class OMStepData : DebugPrintable
             step.shapeLayer?.removeFromSuperlayer()
         }
         
+        // center iamge layer
         self.imageLayer?.removeFromSuperlayer()
+        // percent layer
+        self.numberLayer?.removeFromSuperlayer()
     }
     
     func dumpLayers(level:UInt ,layer:CALayer)
@@ -438,6 +563,30 @@ class OMStepData : DebugPrintable
             }
         }
     }
+    
+
+    func addTextLayer()
+    {
+        self.numberLayer = OMNumberLayer(number: 0, formatStyle: CFNumberFormatterStyle.PercentStyle, alignmentMode: "center")
+        
+        if ( DEBUG_LAYERS ){
+            self.numberLayer?.name = "text layer"
+        }
+        
+        self.numberLayer!.setFont(self.fontName, fontSize:self.fontSize)
+        
+        self.numberLayer!.foregroundColor = self.fontColor
+        
+        let size = self.numberLayer!.frameSizeLength(1.0)
+        
+        self.numberLayer!.frame = CGRectMake(self.center.x - size.width * 0.5,
+                                             self.center.y - size.height * 0.5,
+                                             size.width,
+                                             size.height)
+        
+        
+        self.layer.addSublayer(self.numberLayer)
+    }
 
     
     override func layoutSubviews()
@@ -448,10 +597,6 @@ class OMStepData : DebugPrintable
         super.layoutSubviews()
 
         self.removeAllSublayersFromSuperlayer()
-        
-        if ( DEBUG_LAYERS ){
-            self.dumpLayers(0,layer:self.layer)
-        }
         
         // Recalculate the layers.
         
@@ -465,7 +610,7 @@ class OMStepData : DebugPrintable
             
             step.hypotAngleHalf = 0.0
             
-            if step.image != nil {
+            if step.image != nil  {
                 
                 let halfLineWidth = (self.lineWidth * 0.5)
                 
@@ -490,21 +635,29 @@ class OMStepData : DebugPrintable
                     assertionFailure("Unexpected image align \(step.imageAlign)")
                     
                 }
-                
-                let c = OMCircle(center: self.center,radius:newRadius);
 
+               //
+               // Given a radius length r and an angle in radians and a circle's center (x,y),
+               // calculate the coordinates of a point on the circumference
+               //
+
+                let a = CGFloat( step.startAngle)
+                    
+                let stepImagePoint  = CGPoint(x: center.x + CGFloat(newRadius)  * cos(a), y: center.y + CGFloat(newRadius) * sin(a))
                 
-                let stepImagePoint  = c.arcPoint( step.startAngle);
-          
-                
-                let h = Double(step.image!.size.hypot() );
-                
-                step.hypotAngleHalf = Double(h / r)
-                
+                if(self.stepSeparator == true) {
+                    step.hypotAngleHalf = Double(Double(step.image!.size.hypot() ) / r)
+                }
                 
                 frame = CGRect(origin: CGPoint(x:stepImagePoint.x - step.image!.size.width / 2,
                     y:stepImagePoint.y - step.image!.size.height / 2),
                     size:step.image!.size)
+            }
+            else
+            {
+                if(self.stepSeparator == true) {
+                    step.hypotAngleHalf = stepSeparatorSpaceRadians
+                }
             }
             
             
@@ -535,6 +688,7 @@ class OMStepData : DebugPrintable
         
         }
         
+        
         // Add the center image
         if (self.imageLayer != nil){
             imageLayer!.frame = CGRect(origin:
@@ -549,6 +703,8 @@ class OMStepData : DebugPrintable
             self.layer.addSublayer(self.imageLayer)
         }
         
+       
+        
         // Add all steps image
         for var index = 0; index < self.dataSteps.count ; ++index{
             let step = self.dataSteps[index] as! OMStepData
@@ -559,6 +715,20 @@ class OMStepData : DebugPrintable
                 self.layer.addSublayer(step.imageLayer)
             }
         }
+        
+        if(self.showPercent){
+            self.addTextLayer()
+        }
+        
+        if ( DEBUG_LAYERS ){
+            self.dumpLayers(0,layer:self.layer)
+        }
+        
+//        for object in self.layer.sublayers {
+//            let l = object as! CALayer
+//            l.borderWidth = 5
+//            l.borderColor = UIColor.blackColor().CGColor
+//        }
         
         self.animateProgress();
     }

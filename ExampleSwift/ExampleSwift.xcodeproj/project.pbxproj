@@ -13,10 +13,10 @@
 		352CB7501A6D1FBB00863568 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 352CB74E1A6D1FBB00863568 /* Main.storyboard */; };
 		352CB7521A6D1FBB00863568 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 352CB7511A6D1FBB00863568 /* Images.xcassets */; };
 		352CB7611A6D1FBB00863568 /* ExampleSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352CB7601A6D1FBB00863568 /* ExampleSwiftTests.swift */; };
+		354764AF1AA4D51E006E463E /* OMNumberLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354764AE1AA4D51E006E463E /* OMNumberLayer.swift */; };
 		3588CB261A82761D00C1A452 /* CGSizeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3588CB221A82761D00C1A452 /* CGSizeExtension.swift */; };
 		3588CB271A82761D00C1A452 /* OMCircularProgressStepperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3588CB231A82761D00C1A452 /* OMCircularProgressStepperView.swift */; };
 		3588CB281A82761D00C1A452 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3588CB241A82761D00C1A452 /* UIColorExtension.swift */; };
-		358FABC91A9A212800ACD804 /* OMCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358FABC81A9A212800ACD804 /* OMCircle.swift */; };
 		358FABCB1A9A216000ACD804 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358FABCA1A9A216000ACD804 /* DoubleExtension.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,10 +41,10 @@
 		352CB75A1A6D1FBB00863568 /* ExampleSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		352CB75F1A6D1FBB00863568 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		352CB7601A6D1FBB00863568 /* ExampleSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSwiftTests.swift; sourceTree = "<group>"; };
+		354764AE1AA4D51E006E463E /* OMNumberLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMNumberLayer.swift; sourceTree = "<group>"; };
 		3588CB221A82761D00C1A452 /* CGSizeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGSizeExtension.swift; sourceTree = "<group>"; };
 		3588CB231A82761D00C1A452 /* OMCircularProgressStepperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCircularProgressStepperView.swift; sourceTree = "<group>"; };
 		3588CB241A82761D00C1A452 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
-		358FABC81A9A212800ACD804 /* OMCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCircle.swift; sourceTree = "<group>"; };
 		358FABCA1A9A216000ACD804 /* DoubleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -125,11 +125,11 @@
 		3588CB211A82761D00C1A452 /* OMCircularProgressStepperView */ = {
 			isa = PBXGroup;
 			children = (
+				354764AE1AA4D51E006E463E /* OMNumberLayer.swift */,
 				3588CB221A82761D00C1A452 /* CGSizeExtension.swift */,
 				3588CB231A82761D00C1A452 /* OMCircularProgressStepperView.swift */,
 				3588CB241A82761D00C1A452 /* UIColorExtension.swift */,
 				352BE8481A9A1C8B00208D4E /* CGPointExtension.swift */,
-				358FABC81A9A212800ACD804 /* OMCircle.swift */,
 				358FABCA1A9A216000ACD804 /* DoubleExtension.swift */,
 			);
 			name = OMCircularProgressStepperView;
@@ -235,8 +235,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				354764AF1AA4D51E006E463E /* OMNumberLayer.swift in Sources */,
 				358FABCB1A9A216000ACD804 /* DoubleExtension.swift in Sources */,
-				358FABC91A9A212800ACD804 /* OMCircle.swift in Sources */,
 				352CB74D1A6D1FBB00863568 /* ViewController.swift in Sources */,
 				352CB74B1A6D1FBB00863568 /* AppDelegate.swift in Sources */,
 				352BE8491A9A1C8B00208D4E /* CGPointExtension.swift in Sources */,
