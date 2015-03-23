@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import QuartzCore
 
 extension UIColor
 {
@@ -63,7 +64,26 @@ extension UIColor
         return colorWithBrightnessFactor(CGFloat(1.0 - percent));
     }
     
-    private func colorWithBrightnessFactor(factor: CGFloat) -> UIColor {
+    class func rainbowColors() -> NSArray!{
+        let colors = NSMutableArray()
+        for (var hue:CGFloat = 0.0; hue < 1.0; hue += 0.05) {
+            let color = UIColor(hue: hue,saturation:CGFloat(1.0),brightness:CGFloat(1.0),alpha:CGFloat(1.0));
+            colors.addObject(color)
+        }
+        return colors
+    }
+    
+    func colorsFromColor() -> AnyObject {
+        var colors:NSMutableArray = NSMutableArray()
+        
+        for (var deg:Double = 0.0; deg <= 360.0; deg += 5.0) {
+            let f = CGFloat(1.0 * deg / 360.0)
+            colors.addObject( self.colorWithBrightnessFactor( f ).CGColor);
+        }
+        return colors;
+    }
+    
+    func colorWithBrightnessFactor(factor: CGFloat) -> UIColor {
         
         var hue : CGFloat = 0
         var saturation : CGFloat = 0

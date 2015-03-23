@@ -23,10 +23,10 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="UyW-P6-TOT" secondAttribute="bottom" id="8D6-Kc-PBj"/>
-                            <constraint firstItem="UyW-P6-TOT" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="9hV-KR-YTQ"/>
-                            <constraint firstAttribute="trailing" secondItem="UyW-P6-TOT" secondAttribute="trailing" id="OTe-Fg-4e6"/>
-                            <constraint firstItem="UyW-P6-TOT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="znu-kj-XnB"/>
+                            <constraint firstItem="UyW-P6-TOT" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="WHC-QX-dxJ"/>
+                            <constraint firstItem="UyW-P6-TOT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="XSk-VO-hao"/>
+                            <constraint firstAttribute="trailing" secondItem="UyW-P6-TOT" secondAttribute="trailing" id="afv-ht-M65"/>
+                            <constraint firstItem="UyW-P6-TOT" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="vCp-Cp-2Ps"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
