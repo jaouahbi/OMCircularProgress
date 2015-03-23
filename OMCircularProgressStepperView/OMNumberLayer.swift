@@ -34,35 +34,35 @@ class OMNumberLayer : OMTextLayer
         }
     }
     
-    private class func CFAttributedStringFromString(string:String, formatStyle:CFNumberFormatterStyle) -> CFMutableAttributedString!
-    {
-        let num = CFNumberFormatterCreateNumberFromString(kCFAllocatorDefault,
-            CFNumberFormatterCreate(nil, CFLocaleCopyCurrent(),formatStyle),
-            string as CFStringRef!,
-            nil,
-            0/*kCFNumberFormatterParseIntegersOnly*/)
-        
-        return CFAttributedStringFromNumberWithFormat(num,formatStyle: formatStyle)
-    }
-    
-
-    private class func CFAttributedStringFromNumberWithFormat(number:NSNumber, formatStyle:CFNumberFormatterStyle) -> CFMutableAttributedString!
-    {
-        let textString = CFNumberFormatterCreateStringWithNumber(nil, CFNumberFormatterCreate(nil, CFLocaleCopyCurrent(),formatStyle),number);
-        
-        // Create a mutable attributed string with a max length of 0.
-        // The max length is a hint as to how much internal storage to reserve.
-        // 0 means no hint.
-        
-        let attrString = CFAttributedStringCreateMutable(kCFAllocatorDefault, 0);
-        
-        // Copy the textString into the newly created attrString
-        
-        CFAttributedStringReplaceString (attrString, CFRangeMake(0, 0), textString);
-        
-        
-        return attrString
-    }
+//    private class func CFAttributedStringFromString(string:String, formatStyle:CFNumberFormatterStyle) -> CFMutableAttributedString!
+//    {
+//        let num = CFNumberFormatterCreateNumberFromString(kCFAllocatorDefault,
+//            CFNumberFormatterCreate(nil, CFLocaleCopyCurrent(),formatStyle),
+//            string as CFStringRef!,
+//            nil,
+//            0/*kCFNumberFormatterParseIntegersOnly*/)
+//        
+//        return CFAttributedStringFromNumberWithFormat(num,formatStyle: formatStyle)
+//    }
+//    
+//
+//    private class func CFAttributedStringFromNumberWithFormat(number:NSNumber, formatStyle:CFNumberFormatterStyle) -> CFMutableAttributedString!
+//    {
+//        let textString = CFNumberFormatterCreateStringWithNumber(nil, CFNumberFormatterCreate(nil, CFLocaleCopyCurrent(),formatStyle),number);
+//        
+//        // Create a mutable attributed string with a max length of 0.
+//        // The max length is a hint as to how much internal storage to reserve.
+//        // 0 means no hint.
+//        
+//        let attrString = CFAttributedStringCreateMutable(kCFAllocatorDefault, 0);
+//        
+//        // Copy the textString into the newly created attrString
+//        
+//        CFAttributedStringReplaceString (attrString, CFRangeMake(0, 0), textString);
+//        
+//        
+//        return attrString
+//    }
     
     
     //
@@ -73,11 +73,16 @@ class OMNumberLayer : OMTextLayer
     
     func frameSizeLengthFromNumber(number:NSNumber) -> CGSize
     {
-        let attrString = OMNumberLayer.CFAttributedStringFromNumberWithFormat(number, formatStyle: self.formatStyle)
-        
-        return frameSizeLengthFromAttributedString(attrString)
+        return frameSizeLengthFromString(self.toString(number,formatStyle: self.formatStyle))
     }
 
+    func toString(number:CFNumberRef,formatStyle:CFNumberFormatterStyle)  -> String!
+    {
+       return CFNumberFormatterCreateStringWithNumber(nil,
+            CFNumberFormatterCreate(nil, CFLocaleCopyCurrent(),formatStyle),
+            number)  as String
+    }
+    
     override init()
     {
         super.init()
@@ -148,71 +153,19 @@ class OMNumberLayer : OMTextLayer
         return super.actionForKey(event)
     }
     
-    func numberToString() -> String!
-    {
-        return CFAttributedStringGetString(OMNumberLayer.CFAttributedStringFromNumberWithFormat(self.number, formatStyle: formatStyle)) as? String
-    }
     override func drawInContext(context: CGContext!) {
         
         if let presentationLayer: AnyObject = self.presentationLayer() {
             self.number = presentationLayer.number
         }
 
-        self.string = self.numberToString()
+        self.string = self.toString(self.number,formatStyle: self.formatStyle)
         
         //DEBUG
-        println("--> drawInContext(\(self.string))")
+        //println("--> drawInContext(\(self.string))")
+        
+        // the base class do the work
         
         super.drawInContext(context)
-        
-//        CGContextSaveGState(context);
-//        
-//        // draw things like circles and lines,
-//        // everything displays correctly ...
-//        
-//        // now drawing the text
-//        //UIGraphicsPushContext(context);
-//        
-//        // Set the text matrix.
-//        CGContextSetTextMatrix(context, CGAffineTransformIdentity);
-//        
-//        // Create a path which bounds the area where you will be drawing text.
-//        // The path need not be rectangular.
-//        
-//        // Core Text Coordinate System is OSX style
-//        
-//#if os(iOS)
-//        CGContextTranslateCTM(context, 0, self.bounds.size.height);
-//        CGContextScaleCTM(context, 1.0, -1.0);
-//#endif
-//
-//        let path = CGPathCreateMutable();
-//        
-//        // Initialize a rectangular path.
-//        
-//        CGPathAddRect(path, nil, self.bounds);
-//        
-//        var theNumber: NSNumber = self.number
-//        
-//        if let player: AnyObject = self.presentationLayer() {
-//            theNumber = player.number
-//        }
-//        
-//        let attrString = OMNumberLayer.CFAttributedStringFromNumberWithFormat(theNumber, formatStyle: formatStyle)
-//        
-//        let attrStringWithAttributes = self.attributedStringWithAttributes(attrString)
-//        
-//        // Create the framesetter with the attributed string.
-//        
-//        let framesetter = CTFramesetterCreateWithAttributedString(attrString);
-//        
-//        // Create a frame.
-//        let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, nil);
-//        
-//        // Draw the specified frame in the given context.
-//        CTFrameDraw(frame, context);
-//        
-//        //UIGraphicsPopContext();
-//        CGContextRestoreGState(context);
     }
 }

@@ -19,7 +19,7 @@ class ViewController: UIViewController {
         // blab,blab...
         //OMCircularProgressStepperView.appearance()
     
-        progressView.backgroundColor = UIColor(white: 0.88, alpha: 1.0)
+        progressView.backgroundColor = UIColor(white: 0, alpha: 1.0)
         // Unused
         progressView.progressViewStyle = .Stepper
         
@@ -41,15 +41,15 @@ class ViewController: UIViewController {
         progressView.separatorRatio = 0 //0.75
         progressView.stepSeparator  = true
         
-        progressView.thicknessRatio = 0.70      // 90%
+        progressView.thicknessRatio = 0.70      // 70%
         progressView.roundedHead    = false
 
         progressView.startAngle     = -90.degreesToRadians()
         
         // Configure the text
 
-        //progressView.percentText    = true
-        progressView.stepText       = true
+        progressView.percentText    = true
+        //progressView.stepText       = true
         
         // Configure the font of text
         
@@ -78,14 +78,15 @@ class ViewController: UIViewController {
             step.text = "\(i)"
             step.textAlign = .AlignMid
             if(i%2==0){
-                step.image      = UIImage(named: "1")
+                step.image  = UIImage(named: "1")
             }
             if(i%3==0){
-                step.image      = UIImage(named: "2")
+                step.image  = UIImage(named: "2")
             }
             else{
-                step.image      = UIImage(named: "3")
+                step.image  = UIImage(named: "3")
             }
+            
             step.imageAlign = .AlignBorder
             
         }
@@ -106,7 +107,7 @@ class ViewController: UIViewController {
 //            userInfo:nil,
 //            repeats: true)
 
-        self.progressView.progress = OMCompleteProgress
+        self.progressView.progress = Double(colors.count - 2) //OMCompleteProgress
         
     }
     

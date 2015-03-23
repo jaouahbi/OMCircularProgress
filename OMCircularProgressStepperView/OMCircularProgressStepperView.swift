@@ -348,12 +348,14 @@ class OMCircularProgressStepperView: UIView {
     
     
     override func animationDidStart(anim: CAAnimation!){
-        println("--> animationDidStart:\((anim as! CABasicAnimation).keyPath) : \((anim as! CABasicAnimation).beginTime) ")
+        //DEBUG
+        //println("--> animationDidStart:\((anim as! CABasicAnimation).keyPath) : \((anim as! CABasicAnimation).beginTime) ")
     }
     
     override func animationDidStop(anim: CAAnimation!, finished flag: Bool)
     {
-        println("<-- animationDidStop:\((anim as! CABasicAnimation).keyPath)")
+        //DEBUG
+        //println("<-- animationDidStop:\((anim as! CABasicAnimation).keyPath)")
     }
     
 
@@ -466,7 +468,7 @@ class OMCircularProgressStepperView: UIView {
     
     
     // Force layout even the view has the same size
-    
+    // USEME
     private func invalidateTreeLayerAndLayout() {
         self.validLayerTree = false
         setNeedsLayout()
@@ -591,7 +593,7 @@ class OMCircularProgressStepperView: UIView {
     private func updateProgress()
     {
         //DEBUG
-        println("--> updateProgress (progress: \(progress))")
+        //println("--> updateProgress (progress: \(progress))")
         
         if(progress == 0){
             // Nothig to update
@@ -1018,7 +1020,7 @@ class OMCircularProgressStepperView: UIView {
     override func layoutSubviews()
     {
         //DEBUG
-        println("--> layoutSubviews()")
+        //println("--> layoutSubviews()")
         
         super.layoutSubviews()
         
@@ -1032,7 +1034,7 @@ class OMCircularProgressStepperView: UIView {
         }
         
         //DEBUG
-        println("<-- layoutSubviews()")
+        //println("<-- layoutSubviews()")
     }
 
     //
@@ -1159,7 +1161,10 @@ class OMCircularProgressStepperView: UIView {
                 
                 step.textLayer = OMTextLayer(string: txt)
                 
-                step.textLayer?.setFont("Helvetica",fontSize:30)
+                step.textLayer?.setFont("Helvetica",fontSize: 14)
+                
+                 step.textLayer?.foregroundColor = UIColor.whiteColor()
+                step.textLayer?.fontStrokeColor = UIColor.blackColor()
                 
                 let sizeOfText = step.textLayer?.frameSizeLengthFromString(txt)
 
