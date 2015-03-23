@@ -19,6 +19,7 @@ class ViewController: UIViewController {
         // blab,blab...
         //OMCircularProgressStepperView.appearance()
     
+        progressView.backgroundColor = UIColor(white: 0.88, alpha: 1.0)
         // Unused
         progressView.progressViewStyle = .Stepper
         
@@ -40,7 +41,7 @@ class ViewController: UIViewController {
         progressView.separatorRatio = 0 //0.75
         progressView.stepSeparator  = true
         
-        progressView.thicknessRatio = 1      // 90%
+        progressView.thicknessRatio = 0.70      // 90%
         progressView.roundedHead    = false
 
         progressView.startAngle     = -90.degreesToRadians()
@@ -76,27 +77,19 @@ class ViewController: UIViewController {
             
             step.text = "\(i)"
             step.textAlign = .AlignMid
-            
-            step.image      = UIImage(named: "1")
+            if(i%2==0){
+                step.image      = UIImage(named: "1")
+            }
+            if(i%3==0){
+                step.image      = UIImage(named: "2")
+            }
+            else{
+                step.image      = UIImage(named: "3")
+            }
             step.imageAlign = .AlignBorder
             
         }
         
-//      
-        
-        //let colors = [UIColor.redColor(),UIColor.blueColor(),UIColor.greenColor(),UIColor.yellowColor()]
-        
-//        let colors = [UIColor.redColor(),UIColor.blueColor()]
-//        let step = (M_PI * 2.0) / Double(colors.count)
-//        
-//        
-//        progressView.addProgressStepWithAngle(step,color:colors[0],image:UIImage(named: "1"))
-//        
-//        progressView.addProgressStepWithAngle(step,color:colors[1],image:UIImage(named: "2"))
-        
-//        progressView.addProgressStepWithAngle(step,color:colors[2],image:UIImage(named: "3"))
-//        
-//        progressView.addProgressStepWithAngle(step,color:colors[3],image:UIImage(named: "center"))
 //        
 //        progressView.image = UIImage(named: "center")
         
