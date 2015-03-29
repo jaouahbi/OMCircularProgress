@@ -9,7 +9,7 @@
 //      showing/hiding and update shadow copy layer options.
 //      Now render the image in context
 //      Update the layer when beginRadians is changed if the type is Circular
-//
+//      Sets OMProgressType.OMCircular as default type
 
 #if os(iOS)
     import UIKit
@@ -73,7 +73,7 @@ class OMProgressImageLayer: OMLayer
         }
     }
     
-    var type:OMProgressType  = OMProgressType.OMVertical
+    var type:OMProgressType  = OMProgressType.OMCircular
         {
         didSet {
             setNeedsDisplay()
