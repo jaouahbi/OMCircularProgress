@@ -5,6 +5,8 @@
 //  Copyright (c) 2015 Jorge Ouahbi. All rights reserved.
 //
 //  0.1 Added alpha parameter to blendImage func (29-03-2015)
+//      Added grayScaleWithAlphaImage()
+//
 
 import UIKit
 
@@ -34,6 +36,29 @@ extension UIImage
     }
 
     
+    // Transform the image in grayscale.
+    func grayScaleWithAlphaImage() -> UIImage
+    {
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale);
+        let imageRect = CGRectMake(0.0, 0.0, self.size.width, self.size.height);
+        
+        let ctx = UIGraphicsGetCurrentContext();
+        
+        // Draw a white background
+        CGContextSetRGBFillColor(ctx, 1.0, 1.0, 1.0, 1.0);
+        CGContextFillRect(ctx, imageRect);
+        
+        // Draw the luminosity on top of the white background to get grayscale
+        self.drawInRect(imageRect,blendMode:kCGBlendModeLuminosity,alpha:1.0);
+        
+        // Apply the source image's alpha
+        self.drawInRect(imageRect,blendMode:kCGBlendModeDestinationIn,alpha:1.0);
+        
+        let grayscaleImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return grayscaleImage
+    }
+    
     func blendImage(other:UIImage, alpha:CGFloat = 1.0) -> UIImage
     {
         UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale);
@@ -54,6 +79,9 @@ extension UIImage
         let width = UInt(self.size.width)
         let height = UInt(self.size.height)
         let context = CGBitmapContextCreate(nil, width, height, 8, 0, colorSpace, .allZeros);
+        
+        CGContextClearRect(context, imageRect)
+        
         CGContextDrawImage(context, imageRect, self.CGImage!);
         
         let imageRef = CGBitmapContextCreateImage(context);
@@ -61,16 +89,9 @@ extension UIImage
         return UIImage(CGImage: imageRef)!
     }
     
-   // func maskImage(path:UIBezierPath, trans: UnsafePointer<CGAffineTransform> = nil ) -> UIImage
-     func maskImage(path:UIBezierPath ) -> UIImage
+    func maskImage(path:UIBezierPath ) -> UIImage
     {
         UIGraphicsBeginImageContextWithOptions(self.size, false, 0)
-    
-        
-//        if(trans != nil) {
-//            let context = UIGraphicsGetCurrentContext();
-//            CGContextConcatCTM(context,trans.memory)
-//        }
         
         path.addClip()
         self.drawAtPoint(CGPointZero)

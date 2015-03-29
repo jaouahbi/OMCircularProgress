@@ -11,6 +11,7 @@
 //  Versión 0.1 (29-3-2015)
 //
 //  Added context flip
+//  Added
 //
 
 import UIKit
@@ -20,12 +21,17 @@ class OMLayer: CALayer {
     
     /// Radians
     
-//    var rotateAngle:Double = 0.0 //-M_PI / 2.f
-//    {
-//        didSet{
-//            setNeedsDisplay()
-//        }
-//    }
+    var angleOrientation:Double = 0.0
+    {
+        didSet {
+            
+            let affineTransform = CGAffineTransformMakeRotation(CGFloat(angleOrientation))
+            
+            setAffineTransform(affineTransform)
+            
+            setNeedsDisplay()
+        }
+    }
     
     override init()
     {
@@ -33,8 +39,7 @@ class OMLayer: CALayer {
         self.contentsScale = UIScreen.mainScreen().scale
         self.needsDisplayOnBoundsChange = true;
         
-        
-        //DEBUG
+        // DEBUG
 //        self.borderColor = UIColor.yellowColor().CGColor!
 //        self.borderWidth = 1
     }
@@ -48,23 +53,6 @@ class OMLayer: CALayer {
         super.init(coder:aDecoder)
     }
     
-//    func restoreRotatedContextIfNeed(context:CGContext!)
-//    {
-//        assert(context != nil, "nil context")
-//        if(context == nil){
-//            return
-//        }
-//        
-//        if(self.rotateAngle != 0.0) {
-//            
-//            // Restore Graphic State for context rotation
-//            
-//            CGContextRestoreGState(context);
-//            
-//            CGContextRestoreGState(context);
-//        }
-//    }
-    
     
     func flipContextIfNeed(context:CGContext!)
     {
@@ -75,47 +63,6 @@ class OMLayer: CALayer {
             CGContextScaleCTM(context, 1.0, -1.0);
         #endif
     }
-    
-//    func rotateTransfom(rect:CGRect) -> CGAffineTransform!
-//    {
-//        assert(self.rotateAngle != 0.0, "cannot rotate 0 degrees")
-//        
-//        if(self.rotateAngle == 0.0) {
-//            return CGAffineTransformIdentity;
-//        }
-//        
-//        var trans:CGAffineTransform = CGAffineTransformMakeTranslation(rect.size.width / 2.0, rect.size.height / 2.0)
-//    
-//        trans = CGAffineTransformRotate(trans, CGFloat(rotateAngle));
-//        trans = CGAffineTransformTranslate(trans,-rect.size.width / 2.0, -rect.size.height / 2.0)
-//        
-//        return trans;
-//    }
-//    
-//    /// Transform (rotate) context
-//    
-//    func rotateContextIfNeed(context:CGContext!)
-//    {
-//        assert(context != nil, "nil context")
-//        
-//        if(context == nil){
-//            return
-//        }
-//        
-//        if(self.rotateAngle != 0.0){
-//            
-//            //DEBUG
-//            //println("rotating \(self.name) \(self.rotateAngle.radiansToDegrees()) degrees")
-//            
-//            CGContextSaveGState(context); // save Graphic State for context rotation
-//        
-//            let trans = rotateTransfom(self.bounds)
-//            
-//            CGContextConcatCTM(context, trans);
-//            
-//            CGContextSaveGState(context);
-//        }
-//    }
     
     
     func animateKeyPath(keyPath : String, fromValue : Double, toValue:Double, beginTime:NSTimeInterval,duration:NSTimeInterval, delegate:AnyObject?)

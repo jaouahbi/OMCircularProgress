@@ -7,7 +7,7 @@
 //  version 0.1 (29-3-2015)
 
 //  Dynamic calculation of the maximun image size.
-//  Image and text rotate to angle orientation
+//  Image and text orientation to angle option
 
 
 #if os(iOS)
@@ -151,7 +151,7 @@ class OMAngle : NSObject, DebugPrintable, Printable
         let sizeOfAngle = round(length().radiansToDegrees())
         let degreeS     = round(start.radiansToDegrees());
         let degreeE     = round(end.radiansToDegrees());
-        return "{\(degreeS)°,\(degreeE)°}:\(sizeOfAngle)°"
+        return "[\(degreeS)° to \(degreeE)°]:\(sizeOfAngle)°"
     }
     
     override var description: String {
@@ -168,18 +168,6 @@ class OMStepData : NSObject, DebugPrintable, Printable
     var color:UIColor!
     var shapeLayer:CAShapeLayer! = CAShapeLayer()
     
-    
-    var separatorAngleHalf:Double = 0.0          // angle of arclength of image hypotenuse in radians
-    
-
-    /// Text
-    
-    var text:String?                 // optional step text
-    var textLayer:OMTextLayer?
-    var textAlign:OMAlign = .AlignMid
-    var textRotate  : Bool = true
-    
-    
     /// Gradient
     
     var gradient:Bool = true
@@ -192,31 +180,25 @@ class OMStepData : NSObject, DebugPrintable, Printable
     var wellLayer:CAShapeLayer?                 //
     var wellColor:UIColor?  = OMWellProgressDefaultColor
     
+
+    /// Text
+    
+    var text:String?                 // optional step text
+    var textLayer:OMTextLayer?
+    var textAlign:OMAlign = .AlignMid
+    var textOrientationToAngle  : Bool = true
+    
     //
     // Step image
     //
     
     var imageLayer:OMProgressImageLayer?                 // optional image layer
     var image : UIImage?                                 // optional image
-//    {
-//        
-//        
-//        willSet
-//        {
-//            if(image != nil && newValue?.size != image?.size){
-//                println("old value: \(newValue?.size)")
-//            }
-//        }
-//        
-////        didSet
-////        {
-////            println("new value: \(image?.size)")
-////        }
-//    }
-//    
-    //var imageOnTop : Bool = false
     var imageAlign : OMAlign = .AlignBorder
-    var imageRotate  : Bool = true
+    var imageOrientationToAngle  : Bool = true
+    
+    var separatorAngleHalf:Double = 0.0                 // angle of arclength of image hypotenuse in radians
+    
     
     //DEBUG
     var index:Int = 0
@@ -294,13 +276,14 @@ class OMStepData : NSObject, DebugPrintable, Printable
     override var debugDescription : String {
 
         let degreeAngle = round(separatorAngleHalf.radiansToDegrees());
-        let gradientString  = gradient ? "+gradient(\(gradientLayer!.type))" : ""
+        let gradientString  = gradient ? "gradient(\(gradientLayer!.type))" : ""
         let wellString      = (wellColor != nil) ? "+well" : ""
         let imageString     = (image != nil) ? "+image" : ""
+        let textString     = (text != nil) ? "+text" : ""
         
         let sepString =  "\(degreeAngle)°"
         
-        return "\(angle)+\(sepString) prop:(\(gradientString)\(wellString)\(imageString))"
+        return "\(angle)+\(sepString) prop:(\(gradientString)\(wellString)\(imageString)\(textString))"
     }
     
     override var description: String
@@ -1253,7 +1236,7 @@ class OMCircularProgressStepperView: UIView {
         
         /// Recalculate the progress layers.
         
-        let r = Double(radius * 2.0)  // avoid to divide by 2 each s0 element calculation
+        let radius_2 = Double(radius * 2.0)  // Avoid to divide by 2 each s0 element calculation
         
         for var index = 0; index < self.dataSteps.count ; ++index
         {
@@ -1282,16 +1265,13 @@ class OMCircularProgressStepperView: UIView {
                 
                 if (self.stepSeparator == true) {
                     // division by a number mul 2 is the same that div by 2
-                    step.separatorAngleHalf = Double(img.size.hypot()) / r
+                    step.separatorAngleHalf = Double(img.size.hypot()) / radius_2
                 }
 
+                // Create the progress image layer
+                
                 step.imageLayer = OMProgressImageLayer(image: img)
-                
-//                
-//                if (step.imageRotate) {
-//                    step.imageLayer?.rotateAngle = -(step.angle.start - self.startAngle)
-//                }
-                
+            
                 // Sets the layer frame.
                 
                 let imgPoint = self.anglePoint(step.angle.start, align: step.imageAlign)
@@ -1300,10 +1280,11 @@ class OMCircularProgressStepperView: UIView {
                 
                 step.imageLayer?.frame = CGRect(origin: origin, size:img.size)
                 
-                // Rotate the image layer
+                // Rotate the layer
                 
-                if(step.imageRotate){
-                    step.imageLayer?.setAffineTransform(CGAffineTransformMakeRotation(CGFloat(step.angle.start - self.startAngle)))
+                if(step.imageOrientationToAngle){
+                    step.imageLayer?.angleOrientation = (step.angle.start - self.startAngle)
+                    //step.imageLayer?.angleOrientation = -(step.angle.start - self.startAngle)
                 }
             }
             
@@ -1333,8 +1314,8 @@ class OMCircularProgressStepperView: UIView {
                 
                 step.textLayer?.frame = CGRect(origin: origin, size:sizeOfText!)
                 
-                if(step.textRotate){
-                    step.textLayer?.setAffineTransform(CGAffineTransformMakeRotation(CGFloat(step.angle.start - self.startAngle)))
+                if(step.textOrientationToAngle){
+                    step.textLayer?.angleOrientation = (step.angle.start - self.startAngle)
                 }
             }
         }
@@ -1408,7 +1389,6 @@ class OMCircularProgressStepperView: UIView {
         
         
         //DEBUG
-        //self.dumpAllSteps()
-        
+        self.dumpAllSteps()
     }
 }

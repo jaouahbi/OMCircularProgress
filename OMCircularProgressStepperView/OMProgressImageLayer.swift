@@ -10,6 +10,7 @@
 //      Now render the image in context
 //      Update the layer when beginRadians is changed if the type is Circular
 //      Sets OMProgressType.OMCircular as default type
+//      Fixed the alpha channel for the grayscaled image
 
 #if os(iOS)
     import UIKit
@@ -154,18 +155,6 @@ class OMProgressImageLayer: OMLayer
             newProgress = presentationLayer.progress
         }
         
-        // Core Text Coordinate System and Core Graphics are OSX style
-        
-        self.flipContextIfNeed(context)
-        
-        //self.rotateContextIfNeed(context)
-        
-//        var trans:CGAffineTransform = CGAffineTransformIdentity
-//        
-//        if(self.rotateAngle != 0.0){
-//            trans = CGAffineTransformMakeRotation(CGFloat(self.rotateAngle))
-//        }
-        
         if(newProgress > 0)
         {
             switch(self.type)
@@ -239,21 +228,20 @@ class OMProgressImageLayer: OMLayer
             }
         }
         
-
+        // Core Text Coordinate System and Core Graphics are OSX style
+        
+        self.flipContextIfNeed(context)
         
         if(newImage != nil) {
             
             let rect = CGRectMake(0, 0, newImage!.size.width, newImage!.size.height);
             
             if ( grayScale ){
-                CGContextDrawImage(context, rect, self.image?.grayScaleImage().blendImage(newImage!).CGImage)
+                CGContextDrawImage(context, rect, self.image?.grayScaleWithAlphaImage().blendImage(newImage!).CGImage)
             }else{
                 CGContextDrawImage(context, rect, newImage!.CGImage)
             }
         }
-        
-        //self.restoreRotatedContextIfNeed(context)
- 
         
         // DEBUG
         // println("progress: \(newProgress)")
