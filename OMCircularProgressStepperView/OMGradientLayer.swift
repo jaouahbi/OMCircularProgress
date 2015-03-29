@@ -30,7 +30,7 @@ class OMGradientLayer : CAGradientLayer
     //var options: CGGradientDrawingOptions = CGGradientDrawingOptions(kCGGradientDrawsAfterEndLocation)
     var options: CGGradientDrawingOptions = CGGradientDrawingOptions(kCGGradientDrawsBeforeStartLocation)
     
-    
+
     
     private(set) var gradientRadial:CGGradientRef?
     

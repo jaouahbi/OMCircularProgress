@@ -4,6 +4,10 @@
 //  Created by Jorge Ouahbi on 19/1/15.
 //  Copyright (c) 2015 Jorge Ouahbi. All rights reserved.
 //
+//  version 0.1 (29-3-2015)
+
+//  Dynamic calculation of the maximun image size.
+//  Image and text rotate to angle orientation
 
 
 #if os(iOS)
@@ -12,10 +16,6 @@
     import AppKit
 #endif
 
-
-// FIXME: 
-
-var maxImageSize: CGSize = CGSizeZero
 
 //DEBUG
 let NO_GRADIENT = false
@@ -29,6 +29,45 @@ var GLOBAL_INDEX:Int = 0
 let OMCompleteProgress:Double = Double.infinity
 let OMWellProgressDefaultColor:UIColor = UIColor(white: 0.9, alpha: 1.0)
 
+
+
+//class LayerAnimation
+//{
+//    func flipLayerX(layer:CALayer, duration:CFTimeInterval,delay:CFTimeInterval)
+//    {
+////        rotate = 0
+////        scaleX = 1
+////        scaleY = 1
+//        
+//        var perspective = CATransform3DIdentity
+//        perspective.m34 = -1.0 / layer.frame.size.width/2
+//        
+//        let animation = CABasicAnimation(keyPath: "transform")
+//        
+//        let trans = CATransform3DConcat(perspective, CATransform3DMakeRotation(CGFloat(M_PI), 0, 1, 0))
+//        
+//        animation.fromValue = NSValue(CATransform3D:CATransform3DMakeRotation(0, 0, 0, 0))
+//        animation.toValue = NSValue(CATransform3D:trans)
+//        animation.duration = duration
+//        animation.beginTime = CACurrentMediaTime() + delay
+//        animation.timingFunction = getTimingFunction(curve)
+//    }
+//    
+//    func flipLayerY(layer:CALayer, duration:CFTimeInterval, delay:CFTimeInterval)
+//    {
+//        var perspective = CATransform3DIdentity
+//        perspective.m34 = -1.0 / layer.frame.size.width/2
+//        
+//        let animation = CABasicAnimation(keyPath: "transform")
+//        let trans     = CATransform3DConcat(perspective,CATransform3DMakeRotation(CGFloat(M_PI), 1, 0, 0))
+//        
+//        animation.fromValue = NSValue(CATransform3D:CATransform3DMakeRotation(0, 0, 0, 0))
+//        animation.toValue = NSValue(CATransform3D:trans)
+//        animation.duration = duration
+//        animation.beginTime = CACurrentMediaTime() + delay
+//        animation.timingFunction = getTimingFunction(curve)
+//    }
+//}
 
 // MARK: - Types
 
@@ -88,8 +127,6 @@ enum OMAlign : Int
     }
 }
 
-
-
 class OMAngle : NSObject, DebugPrintable, Printable
 {
     var start:Double = 0.0                // start of angle in radians
@@ -140,6 +177,7 @@ class OMStepData : NSObject, DebugPrintable, Printable
     var text:String?                 // optional step text
     var textLayer:OMTextLayer?
     var textAlign:OMAlign = .AlignMid
+    var textRotate  : Bool = true
     
     
     /// Gradient
@@ -158,17 +196,27 @@ class OMStepData : NSObject, DebugPrintable, Printable
     // Step image
     //
     
-    var imageLayer:CALayer?                     // optional image layer
-    var image : UIImage?                        // optional image
-    {
-        didSet{
-            if image != nil {
-                maxImageSize = image!.size.max(maxImageSize)
-            }
-        }
-    }
+    var imageLayer:OMProgressImageLayer?                 // optional image layer
+    var image : UIImage?                                 // optional image
+//    {
+//        
+//        
+//        willSet
+//        {
+//            if(image != nil && newValue?.size != image?.size){
+//                println("old value: \(newValue?.size)")
+//            }
+//        }
+//        
+////        didSet
+////        {
+////            println("new value: \(image?.size)")
+////        }
+//    }
+//    
     //var imageOnTop : Bool = false
     var imageAlign : OMAlign = .AlignBorder
+    var imageRotate  : Bool = true
     
     //DEBUG
     var index:Int = 0
@@ -269,10 +317,11 @@ class OMStepData : NSObject, DebugPrintable, Printable
 class OMCircularProgressStepperView: UIView {
     
     private(set) var dataSteps: NSMutableArray = []
-    private var imageLayer:CALayer?                // center image layer
+    private var imageLayer:OMProgressImageLayer?           // center image layer
     private var numberLayer:OMNumberLayer?         // center number layer
     private var validLayerTree: Bool  = false
     private var layerTreeSize: CGSize = CGSizeZero
+    private var beginTime: NSTimeInterval = 0;
     private var newBeginTime: NSTimeInterval = 0;
     
     // Unused
@@ -325,7 +374,7 @@ class OMCircularProgressStepperView: UIView {
     
     var radius : CGFloat {
         get {
-            return (bounds.size.min() * 0.5) - (maxImageSize.max() * 0.5) ;
+            return (bounds.size.min() * 0.5) - (maxImageSize().max() * 0.5) ;
         }
     }
     
@@ -361,7 +410,6 @@ class OMCircularProgressStepperView: UIView {
 
     // Gradient mask
     
-    
     var gradient:Bool = true
     {
         didSet
@@ -381,6 +429,20 @@ class OMCircularProgressStepperView: UIView {
                 }
             }
         }
+    }
+    
+    func maxImageSize() -> CGSize
+    {
+        var maxSize:CGSize = CGSizeZero
+        
+        for var i = 0; i < self.dataSteps.count ; ++i
+        {
+            let step = self.dataSteps[i] as! OMStepData
+            if let img = step.image{
+                maxSize = maxSize.max(img.size)
+            }
+        }
+        return maxSize
     }
     
 //    private func checkGradient()
@@ -564,9 +626,10 @@ class OMCircularProgressStepperView: UIView {
     var image: UIImage? {
         didSet {
             if image != nil {
-                imageLayer = CALayer()
+                imageLayer = OMProgressImageLayer(image: image!)
                 //imageLayer?.contents = image!.getGrayScale()?.CGImage
-                imageLayer?.contents = image!.CGImage
+                //imageLayer?.contents = image!.CGImage
+                
             }
         }
     }
@@ -612,6 +675,8 @@ class OMCircularProgressStepperView: UIView {
         let stepsDone   = Int(self.progress);
         let curStep = self.progress - floor(self.progress);
         
+        self.beginTime = CACurrentMediaTime()
+        
         for var i = 0; i < Int(numberOfSteps) ; ++i
         {
             //DEBUG
@@ -625,29 +690,38 @@ class OMCircularProgressStepperView: UIView {
             }
         }
         
+        let duration = (self.animationDuration / Double(numberOfSteps)) * progress
+        let toValue   = min(fabs(progress / Double(numberOfSteps)),1.0)
+        
+        if let imgLayer = self.imageLayer {
+            
+            imgLayer.animateProgress( 0,
+                toValue: toValue,
+                beginTime: self.beginTime,
+                duration: duration,
+                delegate: self)
+        }
         
         if let numberLayer = self.numberLayer {
             
-            let number:NSNumber
+            let number:Double
             
             if(self.stepText){
-                number = Double(numberOfSteps) as NSNumber
+                number = Double(numberOfSteps)
             }else{
-                number = min(fabs(progress / Double(numberOfSteps)),1.0) as NSNumber
+                number = toValue
             }
             if ( self.animation ){
                 
-                let currentTime =  CACurrentMediaTime()
-                
                 numberLayer.animateNumber(  0.0,
-                    toValue:number.doubleValue,
-                    beginTime:currentTime,
-                    duration:(self.animationDuration / Double(numberOfSteps)) * progress,
+                    toValue:number,
+                    beginTime:self.beginTime,
+                    duration:duration,
                     delegate:self)
             }
             else
             {
-                numberLayer.number = number
+                numberLayer.number = toValue as NSNumber
             }
         }
         
@@ -656,52 +730,75 @@ class OMCircularProgressStepperView: UIView {
         //DEBUG
         println("<-- updateProgress (progress: \(progress))")
     }
+
+    func getProgressAtIndex(index:Int) -> Double
+    {
+        assert(index < self.dataSteps.count, "out of bounds.")
+        
+        if(index >= self.dataSteps.count) {
+            return 0
+        }
+        
+        let step = self.dataSteps[index] as! OMStepData
+        
+        return Double(step.shapeLayer.strokeEnd)
+    }
     
-    func setProgressAtIndex(index:Int, progress:Double) {
+    func setProgressAtIndex(index:Int, progress:Double)
+    {
+        assert(index < self.dataSteps.count, "out of bounds.")
         
         //DEBUG
         //println("begin setProgressAtIndex (index : \(index) progress: \(progress))")
         
         let step = self.dataSteps[index] as! OMStepData
         
-        //if let layer = step.shapeLayer {
+        
+        //            if(NO_ANIMATE_GRADIENT == false){
+        //                step.animateGradient()
+        //            }
+        
+        if(self.animation)
+        {
+            let animation = CABasicAnimation(keyPath: "strokeEnd")
             
-            //            if(NO_ANIMATE_GRADIENT == false){
-            //                step.animateGradient()
-            //            }
+            animation.fromValue =  0.0
+            animation.toValue   =  progress
             
-            if(self.animation)
-            {
-                let animation = CABasicAnimation(keyPath: "strokeEnd")
-                
-                animation.fromValue =  0.0
-                animation.toValue   =  progress
-                
-                animation.duration = (self.animationDuration / Double(self.dataSteps.count)) * progress
-                
-                animation.removedOnCompletion = false
-                animation.additive = true
-                animation.fillMode = kCAFillModeForwards
-                animation.delegate = self
-                
-                if (newBeginTime != 0) {
-                    animation.beginTime = newBeginTime
-                }else{
-                    animation.beginTime = CACurrentMediaTime()
-                }
-                
-                newBeginTime = animation.beginTime + animation.duration
-                
-                step.shapeLayer.addAnimation(animation, forKey: "strokeEnd")
+            animation.duration = (self.animationDuration / Double(self.dataSteps.count)) * progress
+            
+            animation.removedOnCompletion = false
+            animation.additive = true
+            animation.fillMode = kCAFillModeForwards
+            animation.delegate = self
+            
+            if (newBeginTime != 0) {
+                animation.beginTime = newBeginTime
+            }else{
+                animation.beginTime = self.beginTime
             }
-            else
-            {
-                // remove the default animation from strokeEnd
+            
+            newBeginTime = animation.beginTime + animation.duration
+            
+            step.shapeLayer.addAnimation(animation, forKey: "strokeEnd")
+            
+            if let imgLayer = step.imageLayer {
                 
-                step.shapeLayer.actions = ["strokeEnd" as NSString : NSNull()]
-                step.shapeLayer.strokeEnd = CGFloat(progress)
+                imgLayer.animateKeyPath("progress",
+                    fromValue: animation.fromValue.doubleValue,
+                    toValue:  animation.toValue.doubleValue,
+                    beginTime: animation.beginTime,
+                    duration: animation.duration ,
+                    delegate: self)
             }
-        //}
+        }
+        else
+        {
+            // remove the default animation from strokeEnd
+            
+            step.shapeLayer.actions = ["strokeEnd" as NSString : NSNull()]
+            step.shapeLayer.strokeEnd = CGFloat(progress)
+        }
     }
     
     
@@ -922,7 +1019,6 @@ class OMCircularProgressStepperView: UIView {
             step.wellLayer?.shadowOffset = self.shadowOffset
             step.wellLayer?.shadowRadius = self.shadowRadius
             
-            
             if(roundedHead){
                 step.wellLayer?.lineCap = "round"
             }
@@ -1095,16 +1191,60 @@ class OMCircularProgressStepperView: UIView {
         }
     }
 
+    private func addStepImageLayers()
+    {
+        for var index = 0; index < self.dataSteps.count ; ++index{
+            let step = self.dataSteps[index] as! OMStepData
+            if(step.imageLayer != nil){
+                if ( DEBUG_LAYERS ){
+                    step.imageLayer!.name = "step \(index) image"
+                }
+                self.layer.addSublayer(step.imageLayer)
+            }
+        }
+    }
     
+    private func addStepTextLayers()
+    {
+        /// Add all steps texts
+        
+        for var index = 0; index < self.dataSteps.count ; ++index{
+            let step = self.dataSteps[index] as! OMStepData
+            if(step.textLayer != nil){
+                if ( DEBUG_LAYERS ){
+                    step.textLayer!.name = "step \(index) text"
+                }
+                self.layer.addSublayer(step.textLayer)
+            }
+        }
+    }
+    
+    private func addCenterImage()
+    {
+        if (self.imageLayer != nil){
+            imageLayer!.frame = CGRect(origin:
+                CGPoint(x:center.x -  self.image!.size.width * 0.5,
+                    y:center.y -  self.image!.size.height * 0.5),
+                size: self.image!.size)
+            
+            if ( DEBUG_LAYERS ){
+                self.imageLayer!.name = "center image"
+            }
+            
+            self.layer.addSublayer(self.imageLayer)
+        }
+    }
     //
     // Create all the necesary layers
     //
     
     private func newLayerTree()
     {
+        /// First, clear all layers
+        
         self.removeAllSublayersFromSuperlayer()
         
-        /// set Up the text numerical text layer.
+        /// set Up the center numerical text layer.
         
         if (self.percentText || self.stepText) {
             self.setUpNumericalLayer()
@@ -1136,41 +1276,66 @@ class OMCircularProgressStepperView: UIView {
                 }
             }
 
+            /// Image
+            
             if let img = step.image {
                 
                 if (self.stepSeparator == true) {
                     // division by a number mul 2 is the same that div by 2
                     step.separatorAngleHalf = Double(img.size.hypot()) / r
                 }
+
+                step.imageLayer = OMProgressImageLayer(image: img)
+                
+//                
+//                if (step.imageRotate) {
+//                    step.imageLayer?.rotateAngle = -(step.angle.start - self.startAngle)
+//                }
+                
+                // Sets the layer frame.
                 
                 let imgPoint = self.anglePoint(step.angle.start, align: step.imageAlign)
                 
-                step.imageLayer = CALayer()
+                let origin = CGPoint(x:imgPoint.x - img.size.width  * 0.5, y:imgPoint.y - img.size.height * 0.5)
                 
-                let org = CGPoint(x:imgPoint.x - img.size.width  * 0.5, y:imgPoint.y - img.size.height * 0.5)
+                step.imageLayer?.frame = CGRect(origin: origin, size:img.size)
                 
-                step.imageLayer?.frame = CGRect(origin: org, size:img.size)
+                // Rotate the image layer
                 
-                //step.imageLayer?.contents = step.image?.getGrayScale()?.CGImage
-                step.imageLayer?.contents = step.image?.CGImage
+                if(step.imageRotate){
+                    step.imageLayer?.setAffineTransform(CGAffineTransformMakeRotation(CGFloat(step.angle.start - self.startAngle)))
+                }
             }
             
-            if let txt = step.text {
+            /// Text
+            
+            if let stepText = step.text {
                 
-                let textPoint = self.anglePoint(step.angle.mid() , align: step.textAlign)
                 
-                step.textLayer = OMTextLayer(string: txt)
+                step.textLayer = OMTextLayer(string: stepText)
+                
+                if ( DEBUG_LAYERS ){
+                    step.textLayer?.name = "step \(self.dataSteps.indexOfObject(step)) text"
+                }
+                
+                // TODO: make configurable
                 
                 step.textLayer?.setFont("Helvetica",fontSize: 14)
                 
-                 step.textLayer?.foregroundColor = UIColor.whiteColor()
+                step.textLayer?.foregroundColor = UIColor.whiteColor()
                 step.textLayer?.fontStrokeColor = UIColor.blackColor()
                 
-                let sizeOfText = step.textLayer?.frameSizeLengthFromString(txt)
+                let sizeOfText = step.textLayer?.frameSizeLengthFromString(stepText)
+                
+                let textPoint = self.anglePoint(step.angle.mid(), align: step.textAlign)
 
-                let org = CGPoint(x:textPoint.x - sizeOfText!.width * 0.5, y:textPoint.y - sizeOfText!.height * 0.5)
-            
-                step.textLayer?.frame = CGRect(origin: org, size:sizeOfText!)
+                let origin = CGPoint(x:textPoint.x - sizeOfText!.width * 0.5, y:textPoint.y - sizeOfText!.height * 0.5)
+                
+                step.textLayer?.frame = CGRect(origin: origin, size:sizeOfText!)
+                
+                if(step.textRotate){
+                    step.textLayer?.setAffineTransform(CGAffineTransformMakeRotation(CGFloat(step.angle.start - self.startAngle)))
+                }
             }
         }
         
@@ -1182,6 +1347,7 @@ class OMCircularProgressStepperView: UIView {
             let step = self.dataSteps[index] as! OMStepData
             
             //if(step.imageOnTop == false && self.stepSeparator == true){
+            
             if(self.stepSeparator == true){
                 
                 if(index + 1 < self.dataSteps.count ){
@@ -1212,43 +1378,18 @@ class OMCircularProgressStepperView: UIView {
         }
         
         /// Add the center image
-        if (self.imageLayer != nil){
-            imageLayer!.frame = CGRect(origin:
-                CGPoint(x:center.x -  self.image!.size.width * 0.5,
-                    y:center.y -  self.image!.size.height * 0.5),
-                size: self.image!.size)
-            
-            if ( DEBUG_LAYERS ){
-                self.imageLayer!.name = "center image"
-            }
-            
-            self.layer.addSublayer(self.imageLayer)
-        }
+       
+        self.addCenterImage()
+        
         
         /// Add all steps image
-        for var index = 0; index < self.dataSteps.count ; ++index{
-            let step = self.dataSteps[index] as! OMStepData
-            if(step.imageLayer != nil){
-                if ( DEBUG_LAYERS ){
-                    step.imageLayer!.name = "step \(index) image"
-                }
-                self.layer.addSublayer(step.imageLayer)
-            }
-        }
+   
+        self.addStepImageLayers()
         
         
         /// Add all steps texts
         
-        for var index = 0; index < self.dataSteps.count ; ++index{
-            let step = self.dataSteps[index] as! OMStepData
-            if(step.textLayer != nil){
-                if ( DEBUG_LAYERS ){
-                    step.textLayer!.name = "step \(index) text"
-                }
-                self.layer.addSublayer(step.textLayer)
-                //step.textLayer!.setNeedsDisplay();
-            }
-        }
+        self.addStepTextLayers()
         
         
         /// Add the text layer.
@@ -1259,13 +1400,6 @@ class OMCircularProgressStepperView: UIView {
         if ( DEBUG_LAYERS ){
             self.dumpLayers(0,layer:self.layer)
         }
-        
-        // DEBUG
-        //        for object in self.layer.sublayers {
-        //            let l = object as! CALayer
-        //            l.borderWidth = 5
-        //            l.borderColor = UIColor.blackColor().CGColor
-        //        }
         
         self.updateProgress();
         

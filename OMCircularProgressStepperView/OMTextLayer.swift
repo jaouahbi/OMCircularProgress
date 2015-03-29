@@ -5,6 +5,11 @@
 //  Created by Jorge Ouahbi on 23/3/15.
 //  Copyright (c) 2015 Jorge Ouahbi. All rights reserved.
 //
+//  Description:
+//  Simple derived CALayer class that uses CoreText for draw a text.
+//
+//  Versión 0.1 (29-3-2015)
+//
 
 #if os(iOS)
     import UIKit
@@ -15,8 +20,11 @@
 import CoreText
 import CoreFoundation
 
-class OMTextLayer : CALayer
+
+class OMTextLayer : OMLayer
 {
+    // MARK: properties
+    
     private(set) var paragraphStyle:CTParagraphStyle?
     private(set) var fontRef:CTFontRef = CTFontCreateWithName("Helvetica" as CFStringRef, 12.0, nil);
 
@@ -24,6 +32,12 @@ class OMTextLayer : CALayer
     var fontStrokeWidth:Float   = -3
     
     var string : String? = nil {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
+    //Needs display?
+    var foregroundColor:UIColor = UIColor.blackColor() {
         didSet{
             setNeedsDisplay()
         }
@@ -48,11 +62,36 @@ class OMTextLayer : CALayer
 //        }
 //    }
     
-    var foregroundColor:UIColor = UIColor.blackColor() {
-        didSet{
-            setNeedsDisplay()
+
+    // MARK: constructors
+    
+    override init()
+    {
+        super.init()
+    }
+    
+    convenience init(string : String, alignmentMode:String = "center")
+    {
+        self.init()
+        self.string = string
+        setAlignmentMode(alignmentMode)
+    }
+    
+    override init!(layer: AnyObject!) {
+        super.init(layer: layer)
+        if let other = layer as? OMTextLayer {
+            self.string = other.string
+            self.fontRef = other.fontRef
+            self.foregroundColor = other.foregroundColor
+            self.paragraphStyle = other.paragraphStyle
         }
     }
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder:aDecoder)
+    }
+    
+    
     
     func stringWithAttributes(string : String) -> CFAttributedStringRef
     {
@@ -138,47 +177,22 @@ class OMTextLayer : CALayer
         
         let targetSize = CGSizeMake(CGFloat.max, CGFloat.max)
         
-        return CTFramesetterSuggestFrameSizeWithConstraints(framesetter,CFRangeMake(0, stringLength), nil, targetSize, nil)
+        
+        let frameSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter,CFRangeMake(0, stringLength), nil, targetSize, nil)
+        
+//        if(self.rotateAngle != 0.0)
+//        {
+//            var newRect = CGRect(origin:CGPointZero,size: frameSize);
+//            
+//            let transfom = self.rotateTransfom(newRect)
+//            
+//            return CGRectApplyAffineTransform(newRect, transfom).size
+//        }
+        
+        return frameSize;
     }
     
     func setAlignmentMode(alignmentMode : String)
-    {
-        var alignment: CTTextAlignment = OMTextLayer.CTTextAlignmentFromString(alignmentMode)
-        let alignmentSetting = [CTParagraphStyleSetting(spec: .Alignment, valueSize: UInt(sizeofValue(alignment)), value: &alignment)]
-        self.paragraphStyle = CTParagraphStyleCreate(alignmentSetting, UInt(alignmentSetting.count))
-    }
-    
-    override init()
-    {
-        super.init()
-        self.contentsScale = UIScreen.mainScreen().scale
-        self.needsDisplayOnBoundsChange = true;
-    }
-    
-    convenience init(string : String, alignmentMode:String = "center")
-    {
-        self.init()
-
-        self.string = string
-        
-        setAlignmentMode(alignmentMode)
-    }    
-
-    override init!(layer: AnyObject!) {
-        super.init(layer: layer)
-        if let other = layer as? OMTextLayer {
-            self.string = other.string
-            self.fontRef = other.fontRef
-            self.foregroundColor = other.foregroundColor
-            self.paragraphStyle = other.paragraphStyle
-        }
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    private class func CTTextAlignmentFromString(alignmentMode:String) -> CTTextAlignment
     {
         var alignment: CTTextAlignment
         
@@ -198,8 +212,10 @@ class OMTextLayer : CALayer
             alignment = CTTextAlignment.TextAlignmentLeft
         }
         
-        return alignment
+        let alignmentSetting = [CTParagraphStyleSetting(spec: .Alignment, valueSize: UInt(sizeofValue(alignment)), value: &alignment)]
+        self.paragraphStyle = CTParagraphStyleCreate(alignmentSetting, UInt(alignmentSetting.count))
     }
+
     
     func setFont(fontName:String!, fontSize:CGFloat, matrix: UnsafePointer<CGAffineTransform> = nil) {
         
@@ -211,6 +227,9 @@ class OMTextLayer : CALayer
             self.fontRef = CTFontCreateWithName(fontName as CFStringRef, fontSize, matrix)
         }
     }
+    
+    
+    // MARK: overrides
     
     override func drawInContext(context: CGContext!) {
         
@@ -224,21 +243,22 @@ class OMTextLayer : CALayer
         
         // now drawing the text
         //UIGraphicsPushContext(context);
+
+        //self.rotateContextIfNeed(context)
         
         // Set the text matrix.
         CGContextSetTextMatrix(context, CGAffineTransformIdentity);
         
+        // Core Text Coordinate System and Core Graphics are OSX style
+        
+        self.flipContextIfNeed(context)
+
+        let path = CGPathCreateMutable();
+        
         // Create a path which bounds the area where you will be drawing text.
         // The path need not be rectangular.
         
-        // Core Text Coordinate System is OSX style
-        
-#if os(iOS)
-        CGContextTranslateCTM(context, 0, self.bounds.size.height);
-        CGContextScaleCTM(context, 1.0, -1.0);
-#endif
-
-        let path = CGPathCreateMutable();
+        let rect = CGRectApplyAffineTransform(self.bounds, CGContextGetCTM(context));
         
         // Initialize a rectangular path.
         
@@ -256,17 +276,12 @@ class OMTextLayer : CALayer
         let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, nil);
         
         // Draw the specified frame in the given context.
+        
         CTFrameDraw(frame, context);
+        
+        //self.restoreRotatedContextIfNeed(context)
         
         //UIGraphicsPopContext();
         CGContextRestoreGState(context);
-    }
-    
-    //DEBUG
-    override func display() {
-        super.display()
-        if(self.bounds.isEmpty) {
-            println("WARNING: empty layer.")
-        }
     }
 }

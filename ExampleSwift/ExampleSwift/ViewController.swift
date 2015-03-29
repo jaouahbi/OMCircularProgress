@@ -20,6 +20,7 @@ class ViewController: UIViewController {
         //OMCircularProgressStepperView.appearance()
     
         progressView.backgroundColor = UIColor(white: 0, alpha: 1.0)
+        
         // Unused
         progressView.progressViewStyle = .Stepper
         
@@ -30,7 +31,7 @@ class ViewController: UIViewController {
         
         // Configure the animation
         progressView.animation          = true;
-        progressView.animationDuration  = 1
+        progressView.animationDuration  = 10
 
         //progressView.animation          = true;
         //progressView.animationDuration  = 10.0
@@ -48,7 +49,7 @@ class ViewController: UIViewController {
         
         // Configure the text
 
-        progressView.percentText    = true
+        //progressView.percentText    = true
         //progressView.stepText       = true
         
         // Configure the font of text
@@ -74,13 +75,15 @@ class ViewController: UIViewController {
             
             // Configure the step
 
-            
             step.text = "\(i)"
             step.textAlign = .AlignMid
-            if(i%2==0){
+            
+            if(i%2==0)
+            {
                 step.image  = UIImage(named: "1")
             }
-            if(i%3==0){
+            else if(i%3==0)
+            {
                 step.image  = UIImage(named: "2")
             }
             else{
@@ -88,11 +91,11 @@ class ViewController: UIViewController {
             }
             
             step.imageAlign = .AlignBorder
-            
+            step.imageRotate = true
         }
         
 //        
-//        progressView.image = UIImage(named: "center")
+        progressView.image = UIImage(named: "center")
         
 //        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC))
 //        
@@ -107,7 +110,7 @@ class ViewController: UIViewController {
 //            userInfo:nil,
 //            repeats: true)
 
-        self.progressView.progress = Double(colors.count - 2) //OMCompleteProgress
+        self.progressView.progress = OMCompleteProgress // Double(colors.count - 2) //
         
     }
     

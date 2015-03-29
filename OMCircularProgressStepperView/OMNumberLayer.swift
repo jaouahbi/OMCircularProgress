@@ -5,6 +5,9 @@
 //  Created by Jorge Ouahbi on 27/2/15.
 //  Copyright (c) 2015 Jorge Ouahbi. All rights reserved.
 //
+//  Description:
+//  Simple derived OMTextLayer class that support animation of a number.
+//
 
 #if os(iOS)
     import UIKit
@@ -16,23 +19,71 @@ import CoreText
 import CoreFoundation
 
 
+/*
+
+NSRange decimalPart = [text rangeOfString:@"%"];
+
+if ((decimalPart.location != NSNotFound) ) 
+{
+    UIFont *decimalFont = [label.font fontWithSize:label.font.pointSize / 1.6];
+
+    [title addAttribute:NSFontAttributeName value:decimalFont range:decimalPart];
+
+    [title addAttribute:(id)kCTSuperscriptAttributeName value:@"1" range:decimalPart];
+
+}
+
+*/
+
 private struct OMNumberLayerProperties {
     static var Number = "number"
 }
 
 class OMNumberLayer : OMTextLayer
 {
+    // MARK: properties
+    
     var number: NSNumber = 0.0 {
         didSet{
             setNeedsDisplay()
         }
     }
-    var formatStyle: CFNumberFormatterStyle = CFNumberFormatterStyle.DecimalStyle
-    {
+    
+    var formatStyle: CFNumberFormatterStyle = CFNumberFormatterStyle.NoStyle {
         didSet{
             setNeedsDisplay()
         }
     }
+    
+    // MARK: constructors
+    
+    override init(){
+        super.init()
+    }
+    
+    convenience init( number : NSNumber ,
+        formatStyle: CFNumberFormatterStyle = CFNumberFormatterStyle.NoStyle,
+        alignmentMode:String = "center")
+    {
+        self.init()
+        self.number = number
+        self.formatStyle = formatStyle
+        
+        setAlignmentMode(alignmentMode)
+    }
+    
+    override init!(layer: AnyObject!) {
+        super.init(layer: layer)
+        if let other = layer as? OMNumberLayer {
+            self.formatStyle =  other.formatStyle
+            self.number = other.number
+        }
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder:aDecoder)
+    }
+    
     
 //    private class func CFAttributedStringFromString(string:String, formatStyle:CFNumberFormatterStyle) -> CFMutableAttributedString!
 //    {
@@ -78,61 +129,22 @@ class OMNumberLayer : OMTextLayer
 
     func toString(number:CFNumberRef,formatStyle:CFNumberFormatterStyle)  -> String!
     {
-       return CFNumberFormatterCreateStringWithNumber(nil,
-            CFNumberFormatterCreate(nil, CFLocaleCopyCurrent(),formatStyle),
-            number)  as String
-    }
-    
-    override init()
-    {
-        super.init()
-    }
-    
-    convenience init( number : NSNumber ,
-        formatStyle: CFNumberFormatterStyle = CFNumberFormatterStyle.DecimalStyle,
-        alignmentMode:String = "center")
-    {
-        self.init()
-        self.number = number
-        self.formatStyle = formatStyle
+        let fmt = CFNumberFormatterCreate(nil, CFLocaleCopyCurrent(),formatStyle)
         
-        setAlignmentMode(alignmentMode)
-    }    
-
-    override init!(layer: AnyObject!) {
-        super.init(layer: layer)
-        if let other = layer as? OMNumberLayer {
-            self.formatStyle =  other.formatStyle
-            self.number = other.number
-        }
+        return CFNumberFormatterCreateStringWithNumber(nil,fmt,number)  as String
     }
-    
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     
     func animateNumber(fromValue:Double,toValue:Double,beginTime:NSTimeInterval,duration:NSTimeInterval, delegate:AnyObject?)
-    {
-        let keyPath = OMNumberLayerProperties.Number
-
-        let animation = CABasicAnimation(keyPath:keyPath);
-        var currentValue: AnyObject? = self.presentationLayer()?.valueForKey(keyPath)
-        
-        if (currentValue == nil) {
-            currentValue = fromValue
-        }
-        
-        animation.fromValue = currentValue
-        animation.toValue = toValue
-        animation.delegate = delegate
-        animation.duration = duration
-        animation.beginTime = beginTime 
-        animation.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionDefault)
-        animation.setValue(self,forKey:"numberAnimation")
-        self.addAnimation(animation, forKey:keyPath)
-        self.setValue(toValue,forKey:keyPath)
+    {        
+        self.animateKeyPath(OMNumberLayerProperties.Number,
+            fromValue:fromValue,
+            toValue:toValue,
+            beginTime:beginTime,
+            duration:duration,
+            delegate:delegate)
     }
+    
+    // MARK: overrides
     
     override class func needsDisplayForKey(event: String!) -> Bool
     {
@@ -159,7 +171,7 @@ class OMNumberLayer : OMTextLayer
             self.number = presentationLayer.number
         }
 
-        self.string = self.toString(self.number,formatStyle: self.formatStyle)
+        self.string = self.toString(self.number, formatStyle: self.formatStyle)
         
         //DEBUG
         //println("--> drawInContext(\(self.string))")

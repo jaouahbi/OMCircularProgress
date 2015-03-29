@@ -10,6 +10,16 @@ import UIKit
 
 /// https://developer.apple.com/library/mac/qa/qa1673/_index.html
 
+
+/*
+// Time warp.
+CFTimeInterval currentTime = CACurrentMediaTime();
+CFTimeInterval currentTimeInSuperLayer = [self.layer convertTime:currentTime fromLayer:nil];
+A.beginTime = currentTimeInSuperLayer + 5; // Delay the appearance of A.
+CFTimeInterval currentTimeInLayer = [A convertTime:currentTimeInSuperLayer fromLayer:self.layer];
+CFTimeInterval addTime = currentTimeInLayer;
+group.beginTime = addTime + 3; // Delay the animatin group.
+*/
 extension CALayer {
     
     func pause()

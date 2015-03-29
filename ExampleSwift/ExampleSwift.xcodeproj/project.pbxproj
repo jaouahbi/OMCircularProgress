@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3505586B1AC442E300C3231F /* OMLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3505586A1AC442E300C3231F /* OMLayer.swift */; };
 		352BE8491A9A1C8B00208D4E /* CGPointExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352BE8481A9A1C8B00208D4E /* CGPointExtension.swift */; };
 		352CB74B1A6D1FBB00863568 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352CB74A1A6D1FBB00863568 /* AppDelegate.swift */; };
 		352CB74D1A6D1FBB00863568 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352CB74C1A6D1FBB00863568 /* ViewController.swift */; };
@@ -21,7 +22,10 @@
 		35A149141AA77D220003A48B /* OMGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A149131AA77D220003A48B /* OMGradientLayer.swift */; };
 		35A149161AA9DF1C0003A48B /* CGSizeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A149151AA9DF1C0003A48B /* CGSizeExtension.swift */; };
 		35A149181AA9E1E00003A48B /* CALayerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A149171AA9E1E00003A48B /* CALayerExtension.swift */; };
+		35AF2DA51AC750FF002D7E67 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AF2DA31AC750FF002D7E67 /* UIImageExtension.swift */; };
+		35AF2DA61AC750FF002D7E67 /* OMProgressImageLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AF2DA41AC750FF002D7E67 /* OMProgressImageLayer.swift */; };
 		35D69A5E1AC0276C0074CE40 /* OMTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D69A5D1AC0276C0074CE40 /* OMTextLayer.swift */; };
+		35FA7A4A1AC8895D0030E039 /* CGAffineTransformExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FA7A491AC8895D0030E039 /* CGAffineTransformExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3505586A1AC442E300C3231F /* OMLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMLayer.swift; sourceTree = "<group>"; };
 		352BE8481A9A1C8B00208D4E /* CGPointExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPointExtension.swift; sourceTree = "<group>"; };
 		352CB7451A6D1FBB00863568 /* ExampleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		352CB7491A6D1FBB00863568 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -53,7 +58,10 @@
 		35A149131AA77D220003A48B /* OMGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMGradientLayer.swift; sourceTree = "<group>"; };
 		35A149151AA9DF1C0003A48B /* CGSizeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGSizeExtension.swift; sourceTree = "<group>"; };
 		35A149171AA9E1E00003A48B /* CALayerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayerExtension.swift; sourceTree = "<group>"; };
+		35AF2DA31AC750FF002D7E67 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
+		35AF2DA41AC750FF002D7E67 /* OMProgressImageLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMProgressImageLayer.swift; sourceTree = "<group>"; };
 		35D69A5D1AC0276C0074CE40 /* OMTextLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMTextLayer.swift; sourceTree = "<group>"; };
+		35FA7A491AC8895D0030E039 /* CGAffineTransformExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGAffineTransformExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,16 +141,20 @@
 		3588CB211A82761D00C1A452 /* OMCircularProgressStepperView */ = {
 			isa = PBXGroup;
 			children = (
-				35D69A5D1AC0276C0074CE40 /* OMTextLayer.swift */,
+				35AF2DA31AC750FF002D7E67 /* UIImageExtension.swift */,
+				35AF2DA41AC750FF002D7E67 /* OMProgressImageLayer.swift */,
 				35A149151AA9DF1C0003A48B /* CGSizeExtension.swift */,
+				352BE8481A9A1C8B00208D4E /* CGPointExtension.swift */,
+				3588CB241A82761D00C1A452 /* UIColorExtension.swift */,
+				358FABCA1A9A216000ACD804 /* DoubleExtension.swift */,
+				356A01681AB0B8A500B450FD /* NSArrayExtension.swift */,
+				35A149171AA9E1E00003A48B /* CALayerExtension.swift */,
+				35A149131AA77D220003A48B /* OMGradientLayer.swift */,
+				3505586A1AC442E300C3231F /* OMLayer.swift */,
+				35D69A5D1AC0276C0074CE40 /* OMTextLayer.swift */,
 				354764AE1AA4D51E006E463E /* OMNumberLayer.swift */,
 				3588CB231A82761D00C1A452 /* OMCircularProgressStepperView.swift */,
-				3588CB241A82761D00C1A452 /* UIColorExtension.swift */,
-				352BE8481A9A1C8B00208D4E /* CGPointExtension.swift */,
-				358FABCA1A9A216000ACD804 /* DoubleExtension.swift */,
-				35A149131AA77D220003A48B /* OMGradientLayer.swift */,
-				35A149171AA9E1E00003A48B /* CALayerExtension.swift */,
-				356A01681AB0B8A500B450FD /* NSArrayExtension.swift */,
+				35FA7A491AC8895D0030E039 /* CGAffineTransformExtension.swift */,
 			);
 			name = OMCircularProgressStepperView;
 			path = ../../OMCircularProgressStepperView;
@@ -254,11 +266,15 @@
 				35A149161AA9DF1C0003A48B /* CGSizeExtension.swift in Sources */,
 				352CB74D1A6D1FBB00863568 /* ViewController.swift in Sources */,
 				352CB74B1A6D1FBB00863568 /* AppDelegate.swift in Sources */,
+				35FA7A4A1AC8895D0030E039 /* CGAffineTransformExtension.swift in Sources */,
 				352BE8491A9A1C8B00208D4E /* CGPointExtension.swift in Sources */,
 				3588CB281A82761D00C1A452 /* UIColorExtension.swift in Sources */,
+				35AF2DA61AC750FF002D7E67 /* OMProgressImageLayer.swift in Sources */,
+				35AF2DA51AC750FF002D7E67 /* UIImageExtension.swift in Sources */,
 				3588CB271A82761D00C1A452 /* OMCircularProgressStepperView.swift in Sources */,
 				35D69A5E1AC0276C0074CE40 /* OMTextLayer.swift in Sources */,
 				35A149141AA77D220003A48B /* OMGradientLayer.swift in Sources */,
+				3505586B1AC442E300C3231F /* OMLayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
