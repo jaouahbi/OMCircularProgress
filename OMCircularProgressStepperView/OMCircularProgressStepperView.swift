@@ -283,7 +283,7 @@ class OMStepData : NSObject, DebugPrintable, Printable
         
         let sepString =  "\(degreeAngle)°"
         
-        return "\(angle)+\(sepString) prop:(\(gradientString)\(wellString)\(imageString)\(textString))"
+        return "\(angle) sep: \(sepString) prop:(\(gradientString)\(wellString)\(imageString)\(textString))"
     }
     
     override var description: String
@@ -338,7 +338,12 @@ class OMCircularProgressStepperView: UIView {
             setNeedsLayout()
         }
     }
-    
+    var separatorIsTheImage:Bool = false {
+        didSet{
+            setNeedsLayout()
+        }
+    }
+
     
     var stepSeparator:Bool = true {
         didSet{
@@ -986,8 +991,6 @@ class OMCircularProgressStepperView: UIView {
                 step.wellLayer?.name = "step \(self.dataSteps.indexOfObject(step)) well"
             }
             
-            //step.wellLayer?.path = bezier.CGPath
-            
             step.wellLayer?.path = step.shapeLayer.path
             
             step.wellLayer?.backgroundColor = UIColor.clearColor().CGColor
@@ -995,12 +998,14 @@ class OMCircularProgressStepperView: UIView {
             step.wellLayer?.strokeColor = stepWellColor.CGColor
             step.wellLayer?.lineWidth = self.lineWidth
             
+            // Activate shadow only if exist space between steps.
             
-            // shadow
-            
-            step.wellLayer?.shadowOpacity = self.shadowOpacity
-            step.wellLayer?.shadowOffset = self.shadowOffset
-            step.wellLayer?.shadowRadius = self.shadowRadius
+            if(self.stepSeparator)
+            {
+                step.wellLayer?.shadowOpacity = self.shadowOpacity
+                step.wellLayer?.shadowOffset = self.shadowOffset
+                step.wellLayer?.shadowRadius = self.shadowRadius
+            }
             
             if(roundedHead){
                 step.wellLayer?.lineCap = "round"
@@ -1032,28 +1037,13 @@ class OMCircularProgressStepperView: UIView {
             
             step.shapeLayer.removeFromSuperlayer()
         }
-        
+
         // center image layer
         self.imageLayer?.removeFromSuperlayer()
         // number layer
         self.numberLayer?.removeFromSuperlayer()
     }
-    
-    // MARK: Debug
-    
-    func dumpLayers(level:UInt ,layer:CALayer)
-    {
-        for var index = 0; index < layer.sublayers?.count ; ++index{
-            
-            let l = layer.sublayers[index] as! CALayer
-            
-            println("[\(level)] \(l.name)")
-            
-            if(l.sublayers != nil){
-                dumpLayers(level+1, layer: l);
-            }
-        }
-    }
+
     
     // MARK: Text layer
     
@@ -1162,17 +1152,7 @@ class OMCircularProgressStepperView: UIView {
         return CGPoint(x: center.x + CGFloat(newRadius)  * cos(theta), y: center.y + CGFloat(newRadius) * sin(theta))
         
     }
-    
-    
-    //DEBUG
-    private func dumpAllSteps()
-    {
-        for var index = 0; index < self.dataSteps.count ; ++index
-        {
-            let step = self.dataSteps[index] as! OMStepData
-            println("\(index): \(step)")
-        }
-    }
+
 
     private func addStepImageLayers()
     {
@@ -1263,7 +1243,7 @@ class OMCircularProgressStepperView: UIView {
             
             if let img = step.image {
                 
-                if (self.stepSeparator == true) {
+                if (self.separatorIsTheImage) {
                     // division by a number mul 2 is the same that div by 2
                     step.separatorAngleHalf = Double(img.size.hypot()) / radius_2
                 }
@@ -1292,7 +1272,6 @@ class OMCircularProgressStepperView: UIView {
             
             if let stepText = step.text {
                 
-                
                 step.textLayer = OMTextLayer(string: stepText)
                 
                 if ( DEBUG_LAYERS ){
@@ -1320,6 +1299,9 @@ class OMCircularProgressStepperView: UIView {
             }
         }
         
+        ///
+    
+        // self.assertOutofRadians()
         
         /// Create the layers for each step.
         
@@ -1391,4 +1373,75 @@ class OMCircularProgressStepperView: UIView {
         //DEBUG
         self.dumpAllSteps()
     }
+    
+    
+    // MARK: Debug
+    
+    private func dumpAllSteps()
+    {
+        for var index = 0; index < self.dataSteps.count ; ++index
+        {
+            let step = self.dataSteps[index] as! OMStepData
+            println("\(index): \(step)")
+        }
+    }
+    
+
+    private func dumpLayers(level:UInt ,layer:CALayer)
+    {
+        for var index = 0; index < layer.sublayers?.count ; ++index{
+            
+            let l = layer.sublayers[index] as! CALayer
+            
+            println("[\(level)] \(l.name)")
+            
+            if(l.sublayers != nil){
+                dumpLayers(level+1, layer: l);
+            }
+        }
+    }
+    
+    
+    private func assertOutofRadians()
+    {
+        var rads:Double = 0
+        
+        for var index = 0; index < self.dataSteps.count ; ++index
+        {
+            let step = self.dataSteps[index] as! OMStepData
+            
+            //if(step.imageOnTop == false && self.stepSeparator == true){
+            
+            if(self.stepSeparator == true){
+                
+                if(index + 1 < self.dataSteps.count ){
+                    
+                    let nextStep = self.dataSteps[index+1] as! OMStepData
+                    
+                    //DEBUG
+                    //println("angle arc :\(nextStep.separatorAngleHalf + step.separatorAngleHalf)")
+                    
+                    rads += OMAngle(startAngle: step.angle.start + step.separatorAngleHalf,
+                        endAngle: step.angle.end - nextStep.separatorAngleHalf).length()
+                    
+                    rads += nextStep.separatorAngleHalf + step.separatorAngleHalf
+                }else{
+                    let firstStep = self.dataSteps.firstObject as! OMStepData
+                    
+                    //DEBUG
+                    //println("** angle arc :\(firstStep.separatorAngleHalf + step.separatorAngleHalf)")
+                    
+                    rads += OMAngle(startAngle:step.angle.start + step.separatorAngleHalf,
+                        endAngle:step.angle.end - firstStep.separatorAngleHalf).length()
+                    
+                    rads += firstStep.separatorAngleHalf + step.separatorAngleHalf
+                }
+            } else {
+                rads += OMAngle(startAngle:step.angle.start, endAngle: step.angle.end).length()
+            }
+        }
+        
+        assert(rads <= M_PI * 2.0, "out of radians")
+    }
+    
 }
