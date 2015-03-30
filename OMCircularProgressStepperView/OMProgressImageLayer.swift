@@ -20,13 +20,14 @@
 //
 //  Created by Jorge Ouahbi on 26/3/15.
 //
-//  0.1 (29-03-2015) 
+//  0.1 (29-03-2015)
 //      Added radial progress, grayscale mode and direction,
 //      showing/hiding and update shadow copy layer options.
 //      Now render the image in context
 //      Update the layer when beginRadians is changed if the type is Circular
 //      Sets OMProgressType.OMCircular as default type
 //      Fixed the alpha channel for the grayscaled image
+//      Added prepareForDrawInContext()
 
 #if os(iOS)
     import UIKit
@@ -52,7 +53,7 @@ class OMProgressImageLayer: OMLayer
     // progress showing image or hiding
     
     var progressShowing:Bool = true
-    {
+        {
         didSet {
             setNeedsDisplay()
         }
@@ -61,19 +62,19 @@ class OMProgressImageLayer: OMLayer
     // progress direction
     
     var clockwise:Bool = true
-    {
+        {
         didSet {
             setNeedsDisplay()
         }
     }
     var image:UIImage?       = nil
-    {
+        {
         didSet {
             setNeedsDisplay()
         }
     }
     var progress: Double     = 0.0
-    {
+        {
         didSet {
             setNeedsDisplay()
         }
@@ -82,7 +83,7 @@ class OMProgressImageLayer: OMLayer
     // -90 degrees
     
     var beginRadians: Double = -M_PI_2
-    {
+        {
         didSet {
             if(self.type == .OMCircular) {
                 setNeedsDisplay()
@@ -162,8 +163,9 @@ class OMProgressImageLayer: OMLayer
         return super.actionForKey(event)
     }
     
-    override func drawInContext(context: CGContext!) {
-
+    
+    private func prepareForDrawInContext() -> UIImage?
+    {
         var newImage:UIImage? = nil
         var newProgress:Double = self.progress
         
@@ -243,6 +245,16 @@ class OMProgressImageLayer: OMLayer
                 break;
             }
         }
+        
+        return newImage
+    }
+    
+    override func drawInContext(context: CGContext!) {
+        
+        
+        // Image setup
+        
+        let newImage = self.prepareForDrawInContext()
         
         // Core Text Coordinate System and Core Graphics are OSX style
         
