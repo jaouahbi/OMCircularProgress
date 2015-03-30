@@ -16,22 +16,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UyW-P6-TOT" customClass="OMCircularProgressStepperView" customModule="ExampleSwift" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UyW-P6-TOT" customClass="OMCircularProgressView" customModule="ExampleSwift" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="241"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T7T-GG-O7R" customClass="OMCircularProgressView" customModule="ExampleSwift" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="239" width="320" height="241"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="UyW-P6-TOT" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="WHC-QX-dxJ"/>
-                            <constraint firstItem="UyW-P6-TOT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="XSk-VO-hao"/>
-                            <constraint firstAttribute="trailing" secondItem="UyW-P6-TOT" secondAttribute="trailing" id="afv-ht-M65"/>
-                            <constraint firstItem="UyW-P6-TOT" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="vCp-Cp-2Ps"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="UyW-P6-TOT" secondAttribute="bottom" constant="239" id="Jc3-mf-ksx"/>
+                            <constraint firstItem="T7T-GG-O7R" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="219" id="KQB-HA-sHI"/>
+                            <constraint firstItem="T7T-GG-O7R" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="X66-cJ-ENa"/>
+                            <constraint firstItem="UyW-P6-TOT" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="eVl-VS-qKf"/>
+                            <constraint firstAttribute="trailing" secondItem="UyW-P6-TOT" secondAttribute="trailing" id="qZ0-B2-aKd"/>
+                            <constraint firstItem="T7T-GG-O7R" firstAttribute="trailing" secondItem="UyW-P6-TOT" secondAttribute="trailing" id="uJo-IR-viA"/>
+                            <constraint firstItem="UyW-P6-TOT" firstAttribute="leading" secondItem="T7T-GG-O7R" secondAttribute="leading" id="wKO-vj-jdd"/>
+                            <constraint firstItem="UyW-P6-TOT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="x9U-tz-Wra"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="progressView" destination="UyW-P6-TOT" id="PFQ-Kl-MTG"/>
+                        <outlet property="progressViewDown" destination="T7T-GG-O7R" id="Ww0-Fd-S7k"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

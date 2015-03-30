@@ -37,15 +37,15 @@ CFTimeInterval addTime = currentTimeInLayer;
 group.beginTime = addTime + 3; // Delay the animatin group.
 */
 extension CALayer {
-    
-    func pause()
+ 
+    public func pause()
     {
         let pausedTime  = self.convertTime(CACurrentMediaTime(),fromLayer:nil);
         self.speed      = 0.0;
         self.timeOffset = pausedTime;
     }
     
-    func resume()
+    public func resume()
     {
         let pausedTime = self.timeOffset;
         self.speed     = 1.0;

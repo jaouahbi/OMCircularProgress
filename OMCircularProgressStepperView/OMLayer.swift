@@ -39,11 +39,13 @@ class OMLayer: CALayer {
     {
         didSet {
             
-            let affineTransform = CGAffineTransformMakeRotation(CGFloat(angleOrientation))
+            if(angleOrientation != 0.0) {
+                
+                let affineTransform = CGAffineTransformMakeRotation(CGFloat(angleOrientation))
             
-            setAffineTransform(affineTransform)
-            
-            setNeedsDisplay()
+                setAffineTransform(affineTransform)
+                setNeedsDisplay()
+            }
         }
     }
     
@@ -79,7 +81,7 @@ class OMLayer: CALayer {
     }
     
     
-    func animateKeyPath(keyPath : String, fromValue : Double, toValue:Double, beginTime:NSTimeInterval,duration:NSTimeInterval, delegate:AnyObject?)
+    func animateKeyPath(keyPath : String, fromValue : Double, toValue:Double, beginTime:NSTimeInterval, duration:NSTimeInterval, delegate:AnyObject?)
     {
         let animation = CABasicAnimation(keyPath:keyPath);
         

@@ -18,7 +18,7 @@
 //
 //  UIImage.swift
 //
-//  Created by Jorge Ouahbi on 28/3/15.
+//  CreatedZZZZ by Jorge Ouahbi on 28/3/15.
 //
 //  0.1 Added alpha parameter to blendImage func (29-03-2015)
 //      Added grayScaleWithAlphaImage()
@@ -28,6 +28,13 @@ import UIKit
 
 extension UIImage
 {
+    convenience init!(named:String, newSize:CGSize)
+    {
+        let newImage = UIImage(named: named)?.resizedImage(newSize, interpolationQuality: kCGInterpolationDefault )
+        
+        self.init(CGImage:newImage!.CGImage,scale:newImage!.scale,orientation: newImage!.imageOrientation)
+    }
+    
     func rotatedImage(rads:CGFloat) -> UIImage
     {
         // Create the bitmap context
@@ -88,24 +95,7 @@ extension UIImage
         return newImage
     }
     
-    func grayScaleImage() -> UIImage {
-        let imageRect = CGRectMake(0, 0, self.size.width, self.size.height);
-        let colorSpace = CGColorSpaceCreateDeviceGray();
-        
-        let width = UInt(self.size.width)
-        let height = UInt(self.size.height)
-        let context = CGBitmapContextCreate(nil, width, height, 8, 0, colorSpace, .allZeros);
-        
-        CGContextClearRect(context, imageRect)
-        
-        CGContextDrawImage(context, imageRect, self.CGImage!);
-        
-        let imageRef = CGBitmapContextCreateImage(context);
-        
-        return UIImage(CGImage: imageRef)!
-    }
-    
-    func maskImage(path:UIBezierPath ) -> UIImage
+    func maskImage(path:UIBezierPath) -> UIImage
     {
         UIGraphicsBeginImageContextWithOptions(self.size, false, 0)
         

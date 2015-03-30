@@ -53,7 +53,7 @@ class OMProgressImageLayer: OMLayer
     // progress showing image or hiding
     
     var progressShowing:Bool = true
-        {
+    {
         didSet {
             setNeedsDisplay()
         }
@@ -62,7 +62,7 @@ class OMProgressImageLayer: OMLayer
     // progress direction
     
     var clockwise:Bool = true
-        {
+    {
         didSet {
             setNeedsDisplay()
         }
@@ -99,7 +99,7 @@ class OMProgressImageLayer: OMLayer
     }
     
     var grayScale:Bool = true
-        {
+    {
         didSet {
             setNeedsDisplay()
         }
@@ -164,7 +164,7 @@ class OMProgressImageLayer: OMLayer
     }
     
     
-    private func prepareForDrawInContext() -> UIImage?
+    private func imageForDrawInContext() -> UIImage?
     {
         var newImage:UIImage? = nil
         var newProgress:Double = self.progress
@@ -251,10 +251,9 @@ class OMProgressImageLayer: OMLayer
     
     override func drawInContext(context: CGContext!) {
         
-        
         // Image setup
         
-        let newImage = self.prepareForDrawInContext()
+        let newImage = self.imageForDrawInContext()
         
         // Core Text Coordinate System and Core Graphics are OSX style
         
@@ -265,6 +264,7 @@ class OMProgressImageLayer: OMLayer
             let rect = CGRectMake(0, 0, newImage!.size.width, newImage!.size.height);
             
             if ( grayScale ){
+                // original image grayscaled + original image blend
                 CGContextDrawImage(context, rect, self.image?.grayScaleWithAlphaImage().blendImage(newImage!).CGImage)
             }else{
                 CGContextDrawImage(context, rect, newImage!.CGImage)

@@ -16,20 +16,21 @@
 
 
 //
-//  OMCircularProgressStepperView.swift
+//  OMCircularProgressView.swift
 //
 //  Created by Jorge Ouahbi on 19/1/15.
 //
 //  version 0.1 (29-3-2015)
 
-//  Dynamic calculation of the maximun image size.
+//  Dynamic calculation of the maximun size of the images.
 //  Image and text orientation to angle option
+//  Change center numerical text layer to CFNumberFormatterStyle.NoStyle style by default
 //
 
 
 #if os(iOS)
     import UIKit
-    #elseif os(OSX)
+#elseif os(OSX)
     import AppKit
 #endif
 
@@ -46,45 +47,6 @@ var GLOBAL_INDEX:Int = 0
 let OMCompleteProgress:Double = Double.infinity
 let OMWellProgressDefaultColor:UIColor = UIColor(white: 0.9, alpha: 1.0)
 
-
-
-//class LayerAnimation
-//{
-//    func flipLayerX(layer:CALayer, duration:CFTimeInterval,delay:CFTimeInterval)
-//    {
-////        rotate = 0
-////        scaleX = 1
-////        scaleY = 1
-//        
-//        var perspective = CATransform3DIdentity
-//        perspective.m34 = -1.0 / layer.frame.size.width/2
-//        
-//        let animation = CABasicAnimation(keyPath: "transform")
-//        
-//        let trans = CATransform3DConcat(perspective, CATransform3DMakeRotation(CGFloat(M_PI), 0, 1, 0))
-//        
-//        animation.fromValue = NSValue(CATransform3D:CATransform3DMakeRotation(0, 0, 0, 0))
-//        animation.toValue = NSValue(CATransform3D:trans)
-//        animation.duration = duration
-//        animation.beginTime = CACurrentMediaTime() + delay
-//        animation.timingFunction = getTimingFunction(curve)
-//    }
-//    
-//    func flipLayerY(layer:CALayer, duration:CFTimeInterval, delay:CFTimeInterval)
-//    {
-//        var perspective = CATransform3DIdentity
-//        perspective.m34 = -1.0 / layer.frame.size.width/2
-//        
-//        let animation = CABasicAnimation(keyPath: "transform")
-//        let trans     = CATransform3DConcat(perspective,CATransform3DMakeRotation(CGFloat(M_PI), 1, 0, 0))
-//        
-//        animation.fromValue = NSValue(CATransform3D:CATransform3DMakeRotation(0, 0, 0, 0))
-//        animation.toValue = NSValue(CATransform3D:trans)
-//        animation.duration = duration
-//        animation.beginTime = CACurrentMediaTime() + delay
-//        animation.timingFunction = getTimingFunction(curve)
-//    }
-//}
 
 // MARK: - Types
 
@@ -154,6 +116,7 @@ class OMAngle : NSObject, DebugPrintable, Printable
         self.start = startAngle
         self.end = endAngle;
     }
+    
 
     // middle of the angle
     func mid() -> Double {
@@ -314,7 +277,7 @@ class OMStepData : NSObject, DebugPrintable, Printable
 //
 //
 
-class OMCircularProgressStepperView: UIView {
+class OMCircularProgressView: UIView {
     
     private(set) var dataSteps: NSMutableArray = []
     private var imageLayer:OMProgressImageLayer?           // center image layer
@@ -330,12 +293,12 @@ class OMCircularProgressStepperView: UIView {
     
     
     // Animation
+    
     var animation : Bool = true;
     var animationDuration : NSTimeInterval = 1.0
 
     
     // Component Behavior
-    
     
     var startAngle : Double = -90.degreesToRadians() {
         didSet{
@@ -1088,7 +1051,7 @@ class OMCircularProgressStepperView: UIView {
     
     func numberStyle() -> CFNumberFormatterStyle
     {
-        return (self.percentText) ? CFNumberFormatterStyle.PercentStyle : CFNumberFormatterStyle.DecimalStyle
+        return (self.percentText) ? CFNumberFormatterStyle.PercentStyle : CFNumberFormatterStyle.NoStyle
     }
     
     func setUpNumericalLayer()
@@ -1214,6 +1177,7 @@ class OMCircularProgressStepperView: UIView {
             self.layer.addSublayer(self.imageLayer)
         }
     }
+    
     //
     // Create all the necesary layers
     //
@@ -1260,7 +1224,7 @@ class OMCircularProgressStepperView: UIView {
             
             if let img = step.image {
                 
-                if (self.separatorIsTheImage) {
+                if ( self.separatorIsTheImage ) {
                     // division by a number mul 2 is the same that div by 2
                     step.separatorAngleHalf = Double(img.size.hypot()) / radius_2
                 }
@@ -1318,15 +1282,13 @@ class OMCircularProgressStepperView: UIView {
         
         ///
     
-        // self.assertOutofRadians()
+        // self.assertIfOverflow2PIRadians()
         
         /// Create the layers for each step.
         
         for var index = 0; index < self.dataSteps.count ; ++index
         {
             let step = self.dataSteps[index] as! OMStepData
-            
-            //if(step.imageOnTop == false && self.stepSeparator == true){
             
             if(self.stepSeparator == true){
                 
@@ -1419,7 +1381,7 @@ class OMCircularProgressStepperView: UIView {
     }
     
     
-    private func assertOutofRadians()
+    private func assertIfOverflow2PIRadians()()
     {
         var rads:Double = 0
         
@@ -1427,16 +1389,11 @@ class OMCircularProgressStepperView: UIView {
         {
             let step = self.dataSteps[index] as! OMStepData
             
-            //if(step.imageOnTop == false && self.stepSeparator == true){
-            
             if(self.stepSeparator == true){
                 
                 if(index + 1 < self.dataSteps.count ){
                     
                     let nextStep = self.dataSteps[index+1] as! OMStepData
-                    
-                    //DEBUG
-                    //println("angle arc :\(nextStep.separatorAngleHalf + step.separatorAngleHalf)")
                     
                     rads += OMAngle(startAngle: step.angle.start + step.separatorAngleHalf,
                         endAngle: step.angle.end - nextStep.separatorAngleHalf).length()
@@ -1444,9 +1401,6 @@ class OMCircularProgressStepperView: UIView {
                     rads += nextStep.separatorAngleHalf + step.separatorAngleHalf
                 }else{
                     let firstStep = self.dataSteps.firstObject as! OMStepData
-                    
-                    //DEBUG
-                    //println("** angle arc :\(firstStep.separatorAngleHalf + step.separatorAngleHalf)")
                     
                     rads += OMAngle(startAngle:step.angle.start + step.separatorAngleHalf,
                         endAngle:step.angle.end - firstStep.separatorAngleHalf).length()

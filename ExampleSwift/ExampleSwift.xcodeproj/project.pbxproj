@@ -16,7 +16,7 @@
 		352CB7611A6D1FBB00863568 /* ExampleSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352CB7601A6D1FBB00863568 /* ExampleSwiftTests.swift */; };
 		354764AF1AA4D51E006E463E /* OMNumberLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354764AE1AA4D51E006E463E /* OMNumberLayer.swift */; };
 		356A01691AB0B8A500B450FD /* NSArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A01681AB0B8A500B450FD /* NSArrayExtension.swift */; };
-		3588CB271A82761D00C1A452 /* OMCircularProgressStepperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3588CB231A82761D00C1A452 /* OMCircularProgressStepperView.swift */; };
+		3588CB271A82761D00C1A452 /* OMCircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3588CB231A82761D00C1A452 /* OMCircularProgressView.swift */; };
 		3588CB281A82761D00C1A452 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3588CB241A82761D00C1A452 /* UIColorExtension.swift */; };
 		358FABCB1A9A216000ACD804 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358FABCA1A9A216000ACD804 /* DoubleExtension.swift */; };
 		35A149141AA77D220003A48B /* OMGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A149131AA77D220003A48B /* OMGradientLayer.swift */; };
@@ -52,7 +52,7 @@
 		352CB7601A6D1FBB00863568 /* ExampleSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSwiftTests.swift; sourceTree = "<group>"; };
 		354764AE1AA4D51E006E463E /* OMNumberLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMNumberLayer.swift; sourceTree = "<group>"; };
 		356A01681AB0B8A500B450FD /* NSArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSArrayExtension.swift; sourceTree = "<group>"; };
-		3588CB231A82761D00C1A452 /* OMCircularProgressStepperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCircularProgressStepperView.swift; sourceTree = "<group>"; };
+		3588CB231A82761D00C1A452 /* OMCircularProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCircularProgressView.swift; sourceTree = "<group>"; };
 		3588CB241A82761D00C1A452 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		358FABCA1A9A216000ACD804 /* DoubleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
 		35A149131AA77D220003A48B /* OMGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMGradientLayer.swift; sourceTree = "<group>"; };
@@ -103,7 +103,7 @@
 		352CB7471A6D1FBB00863568 /* ExampleSwift */ = {
 			isa = PBXGroup;
 			children = (
-				3588CB211A82761D00C1A452 /* OMCircularProgressStepperView */,
+				3588CB211A82761D00C1A452 /* OMCircularProgressView */,
 				352CB74A1A6D1FBB00863568 /* AppDelegate.swift */,
 				352CB74C1A6D1FBB00863568 /* ViewController.swift */,
 				352CB74E1A6D1FBB00863568 /* Main.storyboard */,
@@ -138,7 +138,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		3588CB211A82761D00C1A452 /* OMCircularProgressStepperView */ = {
+		3588CB211A82761D00C1A452 /* OMCircularProgressView */ = {
 			isa = PBXGroup;
 			children = (
 				35AF2DA31AC750FF002D7E67 /* UIImageExtension.swift */,
@@ -153,10 +153,10 @@
 				3505586A1AC442E300C3231F /* OMLayer.swift */,
 				35D69A5D1AC0276C0074CE40 /* OMTextLayer.swift */,
 				354764AE1AA4D51E006E463E /* OMNumberLayer.swift */,
-				3588CB231A82761D00C1A452 /* OMCircularProgressStepperView.swift */,
+				3588CB231A82761D00C1A452 /* OMCircularProgressView.swift */,
 				35FA7A491AC8895D0030E039 /* CGAffineTransformExtension.swift */,
 			);
-			name = OMCircularProgressStepperView;
+			name = OMCircularProgressView;
 			path = ../../OMCircularProgressStepperView;
 			sourceTree = "<group>";
 		};
@@ -271,7 +271,7 @@
 				3588CB281A82761D00C1A452 /* UIColorExtension.swift in Sources */,
 				35AF2DA61AC750FF002D7E67 /* OMProgressImageLayer.swift in Sources */,
 				35AF2DA51AC750FF002D7E67 /* UIImageExtension.swift in Sources */,
-				3588CB271A82761D00C1A452 /* OMCircularProgressStepperView.swift in Sources */,
+				3588CB271A82761D00C1A452 /* OMCircularProgressView.swift in Sources */,
 				35D69A5E1AC0276C0074CE40 /* OMTextLayer.swift in Sources */,
 				35A149141AA77D220003A48B /* OMGradientLayer.swift in Sources */,
 				3505586B1AC442E300C3231F /* OMLayer.swift in Sources */,
