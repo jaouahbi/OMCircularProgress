@@ -1,4 +1,4 @@
-# OMCircularProgressStepperView
+# OMCircularProgressView
 
 Custom circular progress view with steps, images, text and much more.
 

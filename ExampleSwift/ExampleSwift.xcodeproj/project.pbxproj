@@ -7,25 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3505586B1AC442E300C3231F /* OMLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3505586A1AC442E300C3231F /* OMLayer.swift */; };
-		352BE8491A9A1C8B00208D4E /* CGPointExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352BE8481A9A1C8B00208D4E /* CGPointExtension.swift */; };
 		352CB74B1A6D1FBB00863568 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352CB74A1A6D1FBB00863568 /* AppDelegate.swift */; };
 		352CB74D1A6D1FBB00863568 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352CB74C1A6D1FBB00863568 /* ViewController.swift */; };
 		352CB7501A6D1FBB00863568 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 352CB74E1A6D1FBB00863568 /* Main.storyboard */; };
 		352CB7521A6D1FBB00863568 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 352CB7511A6D1FBB00863568 /* Images.xcassets */; };
 		352CB7611A6D1FBB00863568 /* ExampleSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352CB7601A6D1FBB00863568 /* ExampleSwiftTests.swift */; };
-		354764AF1AA4D51E006E463E /* OMNumberLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354764AE1AA4D51E006E463E /* OMNumberLayer.swift */; };
-		356A01691AB0B8A500B450FD /* NSArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A01681AB0B8A500B450FD /* NSArrayExtension.swift */; };
-		3588CB271A82761D00C1A452 /* OMCircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3588CB231A82761D00C1A452 /* OMCircularProgressView.swift */; };
-		3588CB281A82761D00C1A452 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3588CB241A82761D00C1A452 /* UIColorExtension.swift */; };
-		358FABCB1A9A216000ACD804 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358FABCA1A9A216000ACD804 /* DoubleExtension.swift */; };
-		35A149141AA77D220003A48B /* OMGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A149131AA77D220003A48B /* OMGradientLayer.swift */; };
-		35A149161AA9DF1C0003A48B /* CGSizeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A149151AA9DF1C0003A48B /* CGSizeExtension.swift */; };
-		35A149181AA9E1E00003A48B /* CALayerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A149171AA9E1E00003A48B /* CALayerExtension.swift */; };
-		35AF2DA51AC750FF002D7E67 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AF2DA31AC750FF002D7E67 /* UIImageExtension.swift */; };
-		35AF2DA61AC750FF002D7E67 /* OMProgressImageLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AF2DA41AC750FF002D7E67 /* OMProgressImageLayer.swift */; };
-		35D69A5E1AC0276C0074CE40 /* OMTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D69A5D1AC0276C0074CE40 /* OMTextLayer.swift */; };
-		35FA7A4A1AC8895D0030E039 /* CGAffineTransformExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FA7A491AC8895D0030E039 /* CGAffineTransformExtension.swift */; };
+		35984D461AC958FC002D4BB8 /* CALayerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D381AC958FC002D4BB8 /* CALayerExtension.swift */; };
+		35984D471AC958FC002D4BB8 /* CGAffineTransformExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D391AC958FC002D4BB8 /* CGAffineTransformExtension.swift */; };
+		35984D481AC958FC002D4BB8 /* CGPointExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D3A1AC958FC002D4BB8 /* CGPointExtension.swift */; };
+		35984D491AC958FC002D4BB8 /* CGSizeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D3B1AC958FC002D4BB8 /* CGSizeExtension.swift */; };
+		35984D4A1AC958FC002D4BB8 /* DoubleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D3C1AC958FC002D4BB8 /* DoubleExtension.swift */; };
+		35984D4B1AC958FC002D4BB8 /* NSArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D3D1AC958FC002D4BB8 /* NSArrayExtension.swift */; };
+		35984D4C1AC958FC002D4BB8 /* OMCircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D3E1AC958FC002D4BB8 /* OMCircularProgressView.swift */; };
+		35984D4D1AC958FC002D4BB8 /* OMGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D3F1AC958FC002D4BB8 /* OMGradientLayer.swift */; };
+		35984D4E1AC958FC002D4BB8 /* OMLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D401AC958FC002D4BB8 /* OMLayer.swift */; };
+		35984D4F1AC958FC002D4BB8 /* OMNumberLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D411AC958FC002D4BB8 /* OMNumberLayer.swift */; };
+		35984D501AC958FC002D4BB8 /* OMProgressImageLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D421AC958FC002D4BB8 /* OMProgressImageLayer.swift */; };
+		35984D511AC958FC002D4BB8 /* OMTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D431AC958FC002D4BB8 /* OMTextLayer.swift */; };
+		35984D521AC958FC002D4BB8 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D441AC958FC002D4BB8 /* UIColorExtension.swift */; };
+		35984D531AC958FC002D4BB8 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D451AC958FC002D4BB8 /* UIImageExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,8 +39,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3505586A1AC442E300C3231F /* OMLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMLayer.swift; sourceTree = "<group>"; };
-		352BE8481A9A1C8B00208D4E /* CGPointExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPointExtension.swift; sourceTree = "<group>"; };
 		352CB7451A6D1FBB00863568 /* ExampleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		352CB7491A6D1FBB00863568 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		352CB74A1A6D1FBB00863568 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -50,18 +48,20 @@
 		352CB75A1A6D1FBB00863568 /* ExampleSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		352CB75F1A6D1FBB00863568 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		352CB7601A6D1FBB00863568 /* ExampleSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSwiftTests.swift; sourceTree = "<group>"; };
-		354764AE1AA4D51E006E463E /* OMNumberLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMNumberLayer.swift; sourceTree = "<group>"; };
-		356A01681AB0B8A500B450FD /* NSArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSArrayExtension.swift; sourceTree = "<group>"; };
-		3588CB231A82761D00C1A452 /* OMCircularProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCircularProgressView.swift; sourceTree = "<group>"; };
-		3588CB241A82761D00C1A452 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
-		358FABCA1A9A216000ACD804 /* DoubleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
-		35A149131AA77D220003A48B /* OMGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMGradientLayer.swift; sourceTree = "<group>"; };
-		35A149151AA9DF1C0003A48B /* CGSizeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGSizeExtension.swift; sourceTree = "<group>"; };
-		35A149171AA9E1E00003A48B /* CALayerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayerExtension.swift; sourceTree = "<group>"; };
-		35AF2DA31AC750FF002D7E67 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
-		35AF2DA41AC750FF002D7E67 /* OMProgressImageLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMProgressImageLayer.swift; sourceTree = "<group>"; };
-		35D69A5D1AC0276C0074CE40 /* OMTextLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMTextLayer.swift; sourceTree = "<group>"; };
-		35FA7A491AC8895D0030E039 /* CGAffineTransformExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGAffineTransformExtension.swift; sourceTree = "<group>"; };
+		35984D381AC958FC002D4BB8 /* CALayerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayerExtension.swift; sourceTree = "<group>"; };
+		35984D391AC958FC002D4BB8 /* CGAffineTransformExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGAffineTransformExtension.swift; sourceTree = "<group>"; };
+		35984D3A1AC958FC002D4BB8 /* CGPointExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPointExtension.swift; sourceTree = "<group>"; };
+		35984D3B1AC958FC002D4BB8 /* CGSizeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGSizeExtension.swift; sourceTree = "<group>"; };
+		35984D3C1AC958FC002D4BB8 /* DoubleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExtension.swift; sourceTree = "<group>"; };
+		35984D3D1AC958FC002D4BB8 /* NSArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSArrayExtension.swift; sourceTree = "<group>"; };
+		35984D3E1AC958FC002D4BB8 /* OMCircularProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCircularProgressView.swift; sourceTree = "<group>"; };
+		35984D3F1AC958FC002D4BB8 /* OMGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMGradientLayer.swift; sourceTree = "<group>"; };
+		35984D401AC958FC002D4BB8 /* OMLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMLayer.swift; sourceTree = "<group>"; };
+		35984D411AC958FC002D4BB8 /* OMNumberLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMNumberLayer.swift; sourceTree = "<group>"; };
+		35984D421AC958FC002D4BB8 /* OMProgressImageLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMProgressImageLayer.swift; sourceTree = "<group>"; };
+		35984D431AC958FC002D4BB8 /* OMTextLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMTextLayer.swift; sourceTree = "<group>"; };
+		35984D441AC958FC002D4BB8 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		35984D451AC958FC002D4BB8 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,7 +103,7 @@
 		352CB7471A6D1FBB00863568 /* ExampleSwift */ = {
 			isa = PBXGroup;
 			children = (
-				3588CB211A82761D00C1A452 /* OMCircularProgressView */,
+				35984D371AC958FC002D4BB8 /* OMCircularProgressView */,
 				352CB74A1A6D1FBB00863568 /* AppDelegate.swift */,
 				352CB74C1A6D1FBB00863568 /* ViewController.swift */,
 				352CB74E1A6D1FBB00863568 /* Main.storyboard */,
@@ -138,26 +138,26 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		3588CB211A82761D00C1A452 /* OMCircularProgressView */ = {
+		35984D371AC958FC002D4BB8 /* OMCircularProgressView */ = {
 			isa = PBXGroup;
 			children = (
-				35AF2DA31AC750FF002D7E67 /* UIImageExtension.swift */,
-				35AF2DA41AC750FF002D7E67 /* OMProgressImageLayer.swift */,
-				35A149151AA9DF1C0003A48B /* CGSizeExtension.swift */,
-				352BE8481A9A1C8B00208D4E /* CGPointExtension.swift */,
-				3588CB241A82761D00C1A452 /* UIColorExtension.swift */,
-				358FABCA1A9A216000ACD804 /* DoubleExtension.swift */,
-				356A01681AB0B8A500B450FD /* NSArrayExtension.swift */,
-				35A149171AA9E1E00003A48B /* CALayerExtension.swift */,
-				35A149131AA77D220003A48B /* OMGradientLayer.swift */,
-				3505586A1AC442E300C3231F /* OMLayer.swift */,
-				35D69A5D1AC0276C0074CE40 /* OMTextLayer.swift */,
-				354764AE1AA4D51E006E463E /* OMNumberLayer.swift */,
-				3588CB231A82761D00C1A452 /* OMCircularProgressView.swift */,
-				35FA7A491AC8895D0030E039 /* CGAffineTransformExtension.swift */,
+				35984D381AC958FC002D4BB8 /* CALayerExtension.swift */,
+				35984D391AC958FC002D4BB8 /* CGAffineTransformExtension.swift */,
+				35984D3A1AC958FC002D4BB8 /* CGPointExtension.swift */,
+				35984D3B1AC958FC002D4BB8 /* CGSizeExtension.swift */,
+				35984D3C1AC958FC002D4BB8 /* DoubleExtension.swift */,
+				35984D3D1AC958FC002D4BB8 /* NSArrayExtension.swift */,
+				35984D3E1AC958FC002D4BB8 /* OMCircularProgressView.swift */,
+				35984D3F1AC958FC002D4BB8 /* OMGradientLayer.swift */,
+				35984D401AC958FC002D4BB8 /* OMLayer.swift */,
+				35984D411AC958FC002D4BB8 /* OMNumberLayer.swift */,
+				35984D421AC958FC002D4BB8 /* OMProgressImageLayer.swift */,
+				35984D431AC958FC002D4BB8 /* OMTextLayer.swift */,
+				35984D441AC958FC002D4BB8 /* UIColorExtension.swift */,
+				35984D451AC958FC002D4BB8 /* UIImageExtension.swift */,
 			);
 			name = OMCircularProgressView;
-			path = ../../OMCircularProgressStepperView;
+			path = ../../OMCircularProgressView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,22 +259,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35A149181AA9E1E00003A48B /* CALayerExtension.swift in Sources */,
-				354764AF1AA4D51E006E463E /* OMNumberLayer.swift in Sources */,
-				358FABCB1A9A216000ACD804 /* DoubleExtension.swift in Sources */,
-				356A01691AB0B8A500B450FD /* NSArrayExtension.swift in Sources */,
-				35A149161AA9DF1C0003A48B /* CGSizeExtension.swift in Sources */,
+				35984D4F1AC958FC002D4BB8 /* OMNumberLayer.swift in Sources */,
+				35984D461AC958FC002D4BB8 /* CALayerExtension.swift in Sources */,
+				35984D521AC958FC002D4BB8 /* UIColorExtension.swift in Sources */,
 				352CB74D1A6D1FBB00863568 /* ViewController.swift in Sources */,
+				35984D491AC958FC002D4BB8 /* CGSizeExtension.swift in Sources */,
+				35984D4D1AC958FC002D4BB8 /* OMGradientLayer.swift in Sources */,
+				35984D481AC958FC002D4BB8 /* CGPointExtension.swift in Sources */,
+				35984D4C1AC958FC002D4BB8 /* OMCircularProgressView.swift in Sources */,
+				35984D471AC958FC002D4BB8 /* CGAffineTransformExtension.swift in Sources */,
+				35984D511AC958FC002D4BB8 /* OMTextLayer.swift in Sources */,
+				35984D4A1AC958FC002D4BB8 /* DoubleExtension.swift in Sources */,
+				35984D501AC958FC002D4BB8 /* OMProgressImageLayer.swift in Sources */,
+				35984D4B1AC958FC002D4BB8 /* NSArrayExtension.swift in Sources */,
 				352CB74B1A6D1FBB00863568 /* AppDelegate.swift in Sources */,
-				35FA7A4A1AC8895D0030E039 /* CGAffineTransformExtension.swift in Sources */,
-				352BE8491A9A1C8B00208D4E /* CGPointExtension.swift in Sources */,
-				3588CB281A82761D00C1A452 /* UIColorExtension.swift in Sources */,
-				35AF2DA61AC750FF002D7E67 /* OMProgressImageLayer.swift in Sources */,
-				35AF2DA51AC750FF002D7E67 /* UIImageExtension.swift in Sources */,
-				3588CB271A82761D00C1A452 /* OMCircularProgressView.swift in Sources */,
-				35D69A5E1AC0276C0074CE40 /* OMTextLayer.swift in Sources */,
-				35A149141AA77D220003A48B /* OMGradientLayer.swift in Sources */,
-				3505586B1AC442E300C3231F /* OMLayer.swift in Sources */,
+				35984D4E1AC958FC002D4BB8 /* OMLayer.swift in Sources */,
+				35984D531AC958FC002D4BB8 /* UIImageExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
