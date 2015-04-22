@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7515.2" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6724" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7512"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6711"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -12,35 +12,74 @@
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="DaV-pg-yp8">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UyW-P6-TOT" customClass="OMCircularProgressView" customModule="ExampleSwift" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="241"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pNq-Oe-QTu" customClass="OMCircularProgressView" customModule="ExampleSwift" customModuleProvider="target">
+                                <rect key="frame" x="3" y="2" width="154" height="154"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T7T-GG-O7R" customClass="OMCircularProgressView" customModule="ExampleSwift" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="239" width="320" height="241"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zqg-az-Jm3" customClass="OMCircularProgressView" customModule="ExampleSwift" customModuleProvider="target">
+                                <rect key="frame" x="163" y="2" width="154" height="154"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uyf-im-w8A" customClass="OMCircularProgressView" customModule="ExampleSwift" customModuleProvider="target">
+                                <rect key="frame" x="3" y="160" width="154" height="154"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vTn-1I-JSP" customClass="OMCircularProgressView" customModule="ExampleSwift" customModuleProvider="target">
+                                <rect key="frame" x="163" y="320" width="154" height="154"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uoF-o6-Cqx" customClass="OMCircularProgressView" customModule="ExampleSwift" customModuleProvider="target">
+                                <rect key="frame" x="3" y="320" width="154" height="154"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eil-PD-c5a" customClass="OMCircularProgressView" customModule="ExampleSwift" customModuleProvider="target">
+                                <rect key="frame" x="163" y="160" width="154" height="154"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="UyW-P6-TOT" secondAttribute="bottom" constant="239" id="Jc3-mf-ksx"/>
-                            <constraint firstItem="T7T-GG-O7R" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="219" id="KQB-HA-sHI"/>
-                            <constraint firstItem="T7T-GG-O7R" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="X66-cJ-ENa"/>
-                            <constraint firstItem="UyW-P6-TOT" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="eVl-VS-qKf"/>
-                            <constraint firstAttribute="trailing" secondItem="UyW-P6-TOT" secondAttribute="trailing" id="qZ0-B2-aKd"/>
-                            <constraint firstItem="T7T-GG-O7R" firstAttribute="trailing" secondItem="UyW-P6-TOT" secondAttribute="trailing" id="uJo-IR-viA"/>
-                            <constraint firstItem="UyW-P6-TOT" firstAttribute="leading" secondItem="T7T-GG-O7R" secondAttribute="leading" id="wKO-vj-jdd"/>
-                            <constraint firstItem="UyW-P6-TOT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="x9U-tz-Wra"/>
+                            <constraint firstItem="Zqg-az-Jm3" firstAttribute="top" secondItem="DaV-pg-yp8" secondAttribute="top" constant="2" id="25G-H0-ewe"/>
+                            <constraint firstItem="uoF-o6-Cqx" firstAttribute="top" secondItem="uyf-im-w8A" secondAttribute="bottom" constant="6" id="2WF-ek-Arv"/>
+                            <constraint firstItem="Eil-PD-c5a" firstAttribute="width" secondItem="vTn-1I-JSP" secondAttribute="width" id="4gU-GJ-94j"/>
+                            <constraint firstItem="Eil-PD-c5a" firstAttribute="height" secondItem="uoF-o6-Cqx" secondAttribute="height" id="5Zb-k0-Hhj"/>
+                            <constraint firstItem="Eil-PD-c5a" firstAttribute="height" secondItem="uyf-im-w8A" secondAttribute="height" id="8mz-8g-veC"/>
+                            <constraint firstItem="Eil-PD-c5a" firstAttribute="height" secondItem="vTn-1I-JSP" secondAttribute="height" id="B7u-xC-qXU"/>
+                            <constraint firstItem="uyf-im-w8A" firstAttribute="top" secondItem="pNq-Oe-QTu" secondAttribute="bottom" constant="4" id="BRL-Nc-Am0"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="vTn-1I-JSP" secondAttribute="bottom" constant="6" id="Cez-us-eYs"/>
+                            <constraint firstItem="Zqg-az-Jm3" firstAttribute="leading" secondItem="pNq-Oe-QTu" secondAttribute="trailing" constant="6" id="DUd-qd-zfh"/>
+                            <constraint firstAttribute="trailing" secondItem="vTn-1I-JSP" secondAttribute="trailing" constant="3" id="Gae-B1-0Mg"/>
+                            <constraint firstItem="Eil-PD-c5a" firstAttribute="width" secondItem="uyf-im-w8A" secondAttribute="width" id="Ioe-6P-WCK"/>
+                            <constraint firstItem="Eil-PD-c5a" firstAttribute="leading" secondItem="uyf-im-w8A" secondAttribute="trailing" constant="6" id="Neh-yF-eBM"/>
+                            <constraint firstItem="Eil-PD-c5a" firstAttribute="height" secondItem="pNq-Oe-QTu" secondAttribute="height" id="Ntd-j4-Mrh"/>
+                            <constraint firstItem="uoF-o6-Cqx" firstAttribute="leading" secondItem="DaV-pg-yp8" secondAttribute="leading" constant="3" id="PFF-WH-KrD"/>
+                            <constraint firstItem="Eil-PD-c5a" firstAttribute="height" secondItem="Zqg-az-Jm3" secondAttribute="height" id="Snm-lC-LlD"/>
+                            <constraint firstItem="Eil-PD-c5a" firstAttribute="width" secondItem="uoF-o6-Cqx" secondAttribute="width" id="T6n-Ua-feu"/>
+                            <constraint firstItem="vTn-1I-JSP" firstAttribute="top" secondItem="Eil-PD-c5a" secondAttribute="bottom" constant="6" id="TyU-w9-klB"/>
+                            <constraint firstItem="Eil-PD-c5a" firstAttribute="top" secondItem="Zqg-az-Jm3" secondAttribute="bottom" constant="4" id="VOV-gF-FFp"/>
+                            <constraint firstItem="vTn-1I-JSP" firstAttribute="leading" secondItem="uoF-o6-Cqx" secondAttribute="trailing" constant="6" id="cON-RQ-Cai"/>
+                            <constraint firstAttribute="trailing" secondItem="Zqg-az-Jm3" secondAttribute="trailing" constant="3" id="cmO-dg-u3Z"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="uoF-o6-Cqx" secondAttribute="bottom" constant="6" id="ddA-7Z-xz3"/>
+                            <constraint firstItem="uyf-im-w8A" firstAttribute="leading" secondItem="DaV-pg-yp8" secondAttribute="leading" constant="3" id="dpd-0f-hro"/>
+                            <constraint firstAttribute="trailing" secondItem="Eil-PD-c5a" secondAttribute="trailing" constant="3" id="hB8-yG-Yoi"/>
+                            <constraint firstItem="Eil-PD-c5a" firstAttribute="width" secondItem="Zqg-az-Jm3" secondAttribute="width" id="hYg-cb-5lA"/>
+                            <constraint firstItem="pNq-Oe-QTu" firstAttribute="leading" secondItem="DaV-pg-yp8" secondAttribute="leading" constant="3" id="ib5-BP-yIz"/>
+                            <constraint firstItem="pNq-Oe-QTu" firstAttribute="top" secondItem="DaV-pg-yp8" secondAttribute="top" constant="2" id="u2d-ol-ZV6"/>
+                            <constraint firstItem="Eil-PD-c5a" firstAttribute="width" secondItem="pNq-Oe-QTu" secondAttribute="width" id="zeR-1f-xZx"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
-                        <outlet property="progressView" destination="UyW-P6-TOT" id="PFQ-Kl-MTG"/>
-                        <outlet property="progressViewDown" destination="T7T-GG-O7R" id="Ww0-Fd-S7k"/>
+                        <outlet property="progressView1" destination="pNq-Oe-QTu" id="OSE-7v-xht"/>
+                        <outlet property="progressView2" destination="Zqg-az-Jm3" id="W5m-hB-5Wg"/>
+                        <outlet property="progressView3" destination="uyf-im-w8A" id="8xp-7J-JVM"/>
+                        <outlet property="progressView4" destination="Eil-PD-c5a" id="COm-Ux-Mvl"/>
+                        <outlet property="progressView5" destination="uoF-o6-Cqx" id="HrA-5R-IGK"/>
+                        <outlet property="progressView6" destination="vTn-1I-JSP" id="dhx-nz-N20"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

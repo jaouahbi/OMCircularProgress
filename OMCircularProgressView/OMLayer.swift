@@ -24,14 +24,15 @@
 //  Simple derived CALayer class used as base class
 //
 //  Versión 0.1 (29-3-2015)
-//
 //  Added context flip
+//  Versión 0.11 (22-4-2015)
+//  Changed CGAffineTransform for CATransform3DMakeRotation
 //
 
 import UIKit
 
-
 class OMLayer: CALayer {
+
     
     /// Radians
     
@@ -39,13 +40,11 @@ class OMLayer: CALayer {
     {
         didSet {
             
-            if(angleOrientation != 0.0) {
-                
-                let affineTransform = CGAffineTransformMakeRotation(CGFloat(angleOrientation))
-            
-                setAffineTransform(affineTransform)
+            //if(angleOrientation != 0.0)
+            //{
+                self.transform = CATransform3DMakeRotation(CGFloat(angleOrientation), 0.0, 0.0, 1.0)
                 setNeedsDisplay()
-            }
+            //}
         }
     }
     
@@ -56,8 +55,12 @@ class OMLayer: CALayer {
         self.needsDisplayOnBoundsChange = true;
         
         // DEBUG
-//        self.borderColor = UIColor.yellowColor().CGColor!
-//        self.borderWidth = 1
+        //self.borderColor = UIColor.yellowColor().CGColor!
+        //self.borderWidth = 1
+        
+        
+        // Disable animating view refreshes
+        //self.actions = ["contents" as NSString : NSNull()]
     }
     
     
@@ -70,8 +73,7 @@ class OMLayer: CALayer {
     }
     
     
-    func flipContextIfNeed(context:CGContext!)
-    {
+    func flipContextIfNeed(context:CGContext!) {
         // Core Text Coordinate System and Core Graphics are OSX style
         
         #if os(iOS)
@@ -111,6 +113,9 @@ class OMLayer: CALayer {
         self.setValue(toValue,forKey:keyPath)
     }
     
+    override func drawInContext(ctx: CGContext!) {
+        super.drawInContext(ctx)
+    }
     //DEBUG
     override func display() {
         super.display()

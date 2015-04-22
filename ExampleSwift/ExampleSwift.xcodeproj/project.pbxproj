@@ -12,6 +12,9 @@
 		352CB7501A6D1FBB00863568 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 352CB74E1A6D1FBB00863568 /* Main.storyboard */; };
 		352CB7521A6D1FBB00863568 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 352CB7511A6D1FBB00863568 /* Images.xcassets */; };
 		352CB7611A6D1FBB00863568 /* ExampleSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352CB7601A6D1FBB00863568 /* ExampleSwiftTests.swift */; };
+		3530A1C41AE63893009006E3 /* CGRectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3530A1C31AE63893009006E3 /* CGRectExtension.swift */; };
+		354C2D681AC99C4800CDA352 /* UIBezierPathExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354C2D671AC99C4800CDA352 /* UIBezierPathExtension.swift */; };
+		35784A691ADBC72400F21632 /* OMNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35784A681ADBC72400F21632 /* OMNumberView.swift */; };
 		35984D461AC958FC002D4BB8 /* CALayerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D381AC958FC002D4BB8 /* CALayerExtension.swift */; };
 		35984D471AC958FC002D4BB8 /* CGAffineTransformExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D391AC958FC002D4BB8 /* CGAffineTransformExtension.swift */; };
 		35984D481AC958FC002D4BB8 /* CGPointExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D3A1AC958FC002D4BB8 /* CGPointExtension.swift */; };
@@ -48,6 +51,9 @@
 		352CB75A1A6D1FBB00863568 /* ExampleSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		352CB75F1A6D1FBB00863568 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		352CB7601A6D1FBB00863568 /* ExampleSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSwiftTests.swift; sourceTree = "<group>"; };
+		3530A1C31AE63893009006E3 /* CGRectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGRectExtension.swift; sourceTree = "<group>"; };
+		354C2D671AC99C4800CDA352 /* UIBezierPathExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBezierPathExtension.swift; sourceTree = "<group>"; };
+		35784A681ADBC72400F21632 /* OMNumberView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMNumberView.swift; sourceTree = "<group>"; };
 		35984D381AC958FC002D4BB8 /* CALayerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayerExtension.swift; sourceTree = "<group>"; };
 		35984D391AC958FC002D4BB8 /* CGAffineTransformExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGAffineTransformExtension.swift; sourceTree = "<group>"; };
 		35984D3A1AC958FC002D4BB8 /* CGPointExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPointExtension.swift; sourceTree = "<group>"; };
@@ -155,6 +161,9 @@
 				35984D431AC958FC002D4BB8 /* OMTextLayer.swift */,
 				35984D441AC958FC002D4BB8 /* UIColorExtension.swift */,
 				35984D451AC958FC002D4BB8 /* UIImageExtension.swift */,
+				354C2D671AC99C4800CDA352 /* UIBezierPathExtension.swift */,
+				35784A681ADBC72400F21632 /* OMNumberView.swift */,
+				3530A1C31AE63893009006E3 /* CGRectExtension.swift */,
 			);
 			name = OMCircularProgressView;
 			path = ../../OMCircularProgressView;
@@ -265,9 +274,12 @@
 				352CB74D1A6D1FBB00863568 /* ViewController.swift in Sources */,
 				35984D491AC958FC002D4BB8 /* CGSizeExtension.swift in Sources */,
 				35984D4D1AC958FC002D4BB8 /* OMGradientLayer.swift in Sources */,
+				3530A1C41AE63893009006E3 /* CGRectExtension.swift in Sources */,
 				35984D481AC958FC002D4BB8 /* CGPointExtension.swift in Sources */,
+				35784A691ADBC72400F21632 /* OMNumberView.swift in Sources */,
 				35984D4C1AC958FC002D4BB8 /* OMCircularProgressView.swift in Sources */,
 				35984D471AC958FC002D4BB8 /* CGAffineTransformExtension.swift in Sources */,
+				354C2D681AC99C4800CDA352 /* UIBezierPathExtension.swift in Sources */,
 				35984D511AC958FC002D4BB8 /* OMTextLayer.swift in Sources */,
 				35984D4A1AC958FC002D4BB8 /* DoubleExtension.swift in Sources */,
 				35984D501AC958FC002D4BB8 /* OMProgressImageLayer.swift in Sources */,

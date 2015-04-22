@@ -18,21 +18,54 @@
 //
 //  UIImage.swift
 //
-//  CreatedZZZZ by Jorge Ouahbi on 28/3/15.
+//  Created by Jorge Ouahbi on 28/3/15.
 //
-//  0.1 Added alpha parameter to blendImage func (29-03-2015)
-//      Added grayScaleWithAlphaImage()
+//  0.1  Added alpha parameter to blendImage func (29-03-2015)
+//  0.11 Added addOutterShadow func (22-04-2015)
+//
 //
 
 import UIKit
 
+
+extension UIImage {
+    
+    
+    func addInnerShadow()
+    {
+        //TODO:
+    }
+    
+    func addOutterShadow(blurSize: CGFloat = 6.0) -> UIImage? {
+        
+        let bitmapInfo : CGBitmapInfo = CGBitmapInfo(CGImageAlphaInfo.PremultipliedLast.rawValue)
+        
+        let shadowContext : CGContextRef = CGBitmapContextCreate( nil,
+            Int(self.size.width * scale + blurSize),
+            Int(self.size.height * scale + blurSize),
+            CGImageGetBitsPerComponent(self.CGImage),
+            0,
+            CGImageGetColorSpace(self.CGImage),
+            bitmapInfo)
+        
+        CGContextSetShadowWithColor(shadowContext,
+            CGSize(width: blurSize*0.5,height: -blurSize*0.5),
+            blurSize*0.5,
+            UIColor.darkGrayColor().CGColor)
+        
+        CGContextDrawImage(shadowContext, CGRect(x: 0, y: blurSize, width: self.size.width * scale, height: self.size.height * scale), self.CGImage)
+        
+        return UIImage(CGImage: CGBitmapContextCreateImage(shadowContext), scale:scale, orientation: imageOrientation)
+    }
+}
+
+
 extension UIImage
 {
-    convenience init!(named:String, newSize:CGSize)
+    
+    func resize( newSize:CGSize ) -> UIImage
     {
-        let newImage = UIImage(named: named)?.resizedImage(newSize, interpolationQuality: kCGInterpolationDefault )
-        
-        self.init(CGImage:newImage!.CGImage,scale:newImage!.scale,orientation: newImage!.imageOrientation)
+        return resizedImage(newSize, interpolationQuality: kCGInterpolationDefault )
     }
     
     func rotatedImage(rads:CGFloat) -> UIImage
@@ -57,7 +90,7 @@ extension UIImage
         return newImage;
         
     }
-
+    
     
     // Transform the image in grayscale.
     func grayScaleWithAlphaImage() -> UIImage
@@ -163,8 +196,8 @@ extension UIImage
         
         // Build a context that's the same dimensions as the new size
         let bitmap = CGBitmapContextCreate(nil,
-            UInt(newRect.size.width),
-            UInt(newRect.size.height),
+            Int(newRect.size.width),
+            Int(newRect.size.height),
             CGImageGetBitsPerComponent(imageRef),
             0,
             CGImageGetColorSpace(imageRef),

@@ -228,8 +228,8 @@ class OMTextLayer : OMLayer
             alignment = CTTextAlignment.TextAlignmentLeft
         }
         
-        let alignmentSetting = [CTParagraphStyleSetting(spec: .Alignment, valueSize: UInt(sizeofValue(alignment)), value: &alignment)]
-        self.paragraphStyle = CTParagraphStyleCreate(alignmentSetting, UInt(alignmentSetting.count))
+        let alignmentSetting = [CTParagraphStyleSetting(spec: .Alignment, valueSize: sizeofValue(alignment), value: &alignment)]
+        self.paragraphStyle = CTParagraphStyleCreate(alignmentSetting, alignmentSetting.count)
     }
 
     
@@ -274,11 +274,13 @@ class OMTextLayer : OMLayer
         // Create a path which bounds the area where you will be drawing text.
         // The path need not be rectangular.
         
-        let rect = CGRectApplyAffineTransform(self.bounds, CGContextGetCTM(context));
+        //let rect = CGRectApplyAffineTransform(self.frame, CGContextGetCTM(context));
         
         // Initialize a rectangular path.
         
         CGPathAddRect(path, nil, self.bounds);
+        
+        //println("OMTextLayer frame \(self.frame)")
         
         // Add the atributtes to the String
         

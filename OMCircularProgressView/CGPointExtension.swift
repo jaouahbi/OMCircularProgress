@@ -63,4 +63,12 @@ extension CGPoint
         return (self - point).length()
     }
     
+    public func center(size:CGSize) -> CGPoint {
+        return CGPoint(x:self.x - size.width  * 0.5, y:self.y - size.height * 0.5);
+    }
+    
+    public func centerRect(size:CGSize) -> CGRect{
+        
+        return CGRect(origin: self.center(size), size:size)
+    }
 }
