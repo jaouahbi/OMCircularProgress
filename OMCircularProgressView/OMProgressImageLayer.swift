@@ -53,8 +53,7 @@ class OMProgressImageLayer: OMLayer
 {
     // progress showing image or hiding
     
-    var showing:Bool = true
-    {
+    var showing:Bool = true {
         didSet {
             setNeedsDisplay()
         }
@@ -62,20 +61,17 @@ class OMProgressImageLayer: OMLayer
     
     // progress direction
     
-    var clockwise:Bool = true
-    {
+    var clockwise:Bool = true {
         didSet {
             setNeedsDisplay()
         }
     }
-    var image:UIImage?       = nil
-    {
+    var image:UIImage?  = nil {
         didSet {
             setNeedsDisplay()
         }
     }
-    var progress: Double     = 0.0
-    {
+    var progress: Double  = 0.0 {
         didSet {
             setNeedsDisplay()
         }
@@ -83,8 +79,7 @@ class OMProgressImageLayer: OMLayer
     
     // -90 degrees
     
-    var beginRadians: Double = -M_PI_2
-    {
+    var beginRadians: Double = -M_PI_2 {
         didSet {
             if(self.type == .Circular) {
                 setNeedsDisplay()
@@ -92,23 +87,19 @@ class OMProgressImageLayer: OMLayer
         }
     }
     
-    var type:OMProgressType  = .Circular
-    {
+    var type:OMProgressType  = .Circular {
         didSet {
             setNeedsDisplay()
         }
     }
     
-    var grayScale:Bool = true
-    {
+    var grayScale:Bool = true {
         didSet {
             setNeedsDisplay()
         }
     }
     
-    
-    func animateProgress(fromValue:Double,toValue:Double,beginTime:NSTimeInterval,duration:NSTimeInterval, delegate:AnyObject?)
-    {
+    func animateProgress(fromValue:Double,toValue:Double,beginTime:NSTimeInterval,duration:NSTimeInterval, delegate:AnyObject?) {
         self.animateKeyPath(OMProgressImageLayerProperties.Progress,
             fromValue:fromValue,
             toValue:toValue,
@@ -116,7 +107,6 @@ class OMProgressImageLayer: OMLayer
             duration:duration,
             delegate:delegate)
     }
-    
     
     override init(){
         super.init()
@@ -155,11 +145,7 @@ class OMProgressImageLayer: OMLayer
     override func actionForKey(event: String!) -> CAAction!
     {
         if(event == OMProgressImageLayerProperties.Progress){
-            let animation = CABasicAnimation(keyPath: event)
-            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-            animation.fromValue = self.presentationLayer().valueForKey(event);
-            
-            return animation
+            return animationActionForKey(event);
         }
         return super.actionForKey(event)
     }
@@ -167,7 +153,7 @@ class OMProgressImageLayer: OMLayer
     
     private func imageForDrawInContext() -> UIImage?
     {
-        var newImage:UIImage?  = nil // self.image
+        var newImage:UIImage?  = nil
         var newProgress:Double = self.progress
         
         if let presentationLayer: AnyObject = self.presentationLayer(){
@@ -245,12 +231,19 @@ class OMProgressImageLayer: OMLayer
                 
                 break;
             }
+        }else{
+        
+            newImage = self.image?.grayScaleWithAlphaImage()
         }
         
         return newImage
     }
     
+    // MARK: overrides
+    
     override func drawInContext(context: CGContext!) {
+        
+        super.drawInContext(context)
         
         // Image setup
         
@@ -271,8 +264,5 @@ class OMProgressImageLayer: OMLayer
                 CGContextDrawImage(context, rect, newImage!.CGImage)
             }
         }
-        
-        // DEBUG
-        // println("progress: \(newProgress)")
     }
 }

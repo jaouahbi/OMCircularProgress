@@ -21,6 +21,9 @@
 //  Description:
 //  Simple derived OMTextLayer class that support animation of a number.
 //
+//  Version: 0.0.1 : (7-5-2015) 
+//  Added the NSNumber extension.
+//
 
 
 #if os(iOS)
@@ -33,21 +36,20 @@ import CoreText
 import CoreFoundation
 
 
-/*
+//
+//  NSNumber extension.
+//
 
-NSRange decimalPart = [text rangeOfString:@"%"];
-
-if ((decimalPart.location != NSNotFound) ) 
-{
-    UIFont *decimalFont = [label.font fontWithSize:label.font.pointSize / 1.6];
-
-    [title addAttribute:NSFontAttributeName value:decimalFont range:decimalPart];
-
-    [title addAttribute:(id)kCTSuperscriptAttributeName value:@"1" range:decimalPart];
-
+extension NSNumber {
+    func format(formatStyle:CFNumberFormatterStyle) -> String! {
+        let fmt = CFNumberFormatterCreate(nil, CFLocaleCopyCurrent(),formatStyle)
+        return CFNumberFormatterCreateStringWithNumber(nil,fmt,self)  as String
+    }
 }
 
-*/
+//
+// Name of the animatable properties
+//
 
 private struct OMNumberLayerProperties {
     static var Number = "number"
@@ -98,57 +100,18 @@ class OMNumberLayer : OMTextLayer
         super.init(coder:aDecoder)
     }
     
-    
-//    private class func CFAttributedStringFromString(string:String, formatStyle:CFNumberFormatterStyle) -> CFMutableAttributedString!
-//    {
-//        let num = CFNumberFormatterCreateNumberFromString(kCFAllocatorDefault,
-//            CFNumberFormatterCreate(nil, CFLocaleCopyCurrent(),formatStyle),
-//            string as CFStringRef!,
-//            nil,
-//            0/*kCFNumberFormatterParseIntegersOnly*/)
-//        
-//        return CFAttributedStringFromNumberWithFormat(num,formatStyle: formatStyle)
-//    }
-//    
-//
-//    private class func CFAttributedStringFromNumberWithFormat(number:NSNumber, formatStyle:CFNumberFormatterStyle) -> CFMutableAttributedString!
-//    {
-//        let textString = CFNumberFormatterCreateStringWithNumber(nil, CFNumberFormatterCreate(nil, CFLocaleCopyCurrent(),formatStyle),number);
-//        
-//        // Create a mutable attributed string with a max length of 0.
-//        // The max length is a hint as to how much internal storage to reserve.
-//        // 0 means no hint.
-//        
-//        let attrString = CFAttributedStringCreateMutable(kCFAllocatorDefault, 0);
-//        
-//        // Copy the textString into the newly created attrString
-//        
-//        CFAttributedStringReplaceString (attrString, CFRangeMake(0, 0), textString);
-//        
-//        
-//        return attrString
-//    }
-    
-    
     //
     // Calculate the frame size of the NSNumber to represent.
     //
     // NOTE: the max. percent representation is 1
     //
     
-    func frameSizeLengthFromNumber(number:NSNumber) -> CGSize
-    {
-        return frameSizeLengthFromString(self.toString(number,formatStyle: self.formatStyle))
+    func frameSizeLengthFromNumber(number:NSNumber) -> CGSize {
+        return frameSizeLengthFromString(number.format(self.formatStyle))
     }
 
-    func toString(number:CFNumberRef,formatStyle:CFNumberFormatterStyle)  -> String!
-    {
-        let fmt = CFNumberFormatterCreate(nil, CFLocaleCopyCurrent(),formatStyle)
-        
-        return CFNumberFormatterCreateStringWithNumber(nil,fmt,number)  as String
-    }
     
-    func animateNumber(fromValue:Double,toValue:Double,beginTime:NSTimeInterval,duration:NSTimeInterval, delegate:AnyObject?)
+    func animateNumber(fromValue:Double,toValue:Double,beginTime:NSTimeInterval,duration:NSTimeInterval,delegate:AnyObject?)
     {        
         self.animateKeyPath(OMNumberLayerProperties.Number,
             fromValue:fromValue,
@@ -160,37 +123,31 @@ class OMNumberLayer : OMTextLayer
     
     // MARK: overrides
     
-    override class func needsDisplayForKey(event: String!) -> Bool
-    {
-        if(event == OMNumberLayerProperties.Number){
+    override class func needsDisplayForKey(event: String!) -> Bool {
+        if (event == OMNumberLayerProperties.Number) {
             return true
         }
         return super.needsDisplayForKey(event)
     }
     
-    override func actionForKey(event: String!) -> CAAction!
-    {
-        if(event == OMNumberLayerProperties.Number){
-            let animation = CABasicAnimation(keyPath: event)
-            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-            animation.fromValue = self.presentationLayer().valueForKey(event);
-            return animation
+    override func actionForKey(event: String!) -> CAAction! {
+        if (event == OMNumberLayerProperties.Number) {
+            return animationActionForKey(event);
         }
         return super.actionForKey(event)
     }
     
     override func drawInContext(context: CGContext!) {
         
+        super.drawInContext(context)
+        
         if let presentationLayer: AnyObject = self.presentationLayer() {
             self.number = presentationLayer.number
         }
 
-        self.string = self.toString(self.number, formatStyle: self.formatStyle)
+        self.string = self.number.format(self.formatStyle)
         
-        //DEBUG
-        //println("--> drawInContext(\(self.string))")
-        
-        // the base class do the work
+        // The base class do the work
         
         super.drawInContext(context)
     }

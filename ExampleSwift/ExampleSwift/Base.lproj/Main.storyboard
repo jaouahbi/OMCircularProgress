@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6724" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6724" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6711"/>
     </dependencies>
@@ -22,7 +22,31 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zqg-az-Jm3" customClass="OMCircularProgressView" customModule="ExampleSwift" customModuleProvider="target">
                                 <rect key="frame" x="163" y="2" width="154" height="154"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sjg-IQ-Z7V" customClass="OMCircularProgressView" customModule="ExampleSwift" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="154" height="154"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="61A-JK-aY8" customClass="OMCircularProgressView" customModule="ExampleSwift" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="154" height="154"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="61A-JK-aY8" secondAttribute="bottom" id="Brq-Af-d8p"/>
+                                            <constraint firstItem="61A-JK-aY8" firstAttribute="top" secondItem="Sjg-IQ-Z7V" secondAttribute="top" id="J5n-uc-Dlt"/>
+                                            <constraint firstAttribute="trailing" secondItem="61A-JK-aY8" secondAttribute="trailing" id="SKu-lW-bSh"/>
+                                            <constraint firstItem="61A-JK-aY8" firstAttribute="leading" secondItem="Sjg-IQ-Z7V" secondAttribute="leading" id="YLo-cC-8zp"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Sjg-IQ-Z7V" secondAttribute="trailing" id="NEb-j5-Z2f"/>
+                                    <constraint firstAttribute="bottom" secondItem="Sjg-IQ-Z7V" secondAttribute="bottom" id="glw-UZ-6Gg"/>
+                                    <constraint firstItem="Sjg-IQ-Z7V" firstAttribute="leading" secondItem="Zqg-az-Jm3" secondAttribute="leading" id="nmU-tg-gph"/>
+                                    <constraint firstItem="Sjg-IQ-Z7V" firstAttribute="top" secondItem="Zqg-az-Jm3" secondAttribute="top" id="ofy-2Z-kt9"/>
+                                </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uyf-im-w8A" customClass="OMCircularProgressView" customModule="ExampleSwift" customModuleProvider="target">
                                 <rect key="frame" x="3" y="160" width="154" height="154"/>
@@ -74,12 +98,14 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
-                        <outlet property="progressView1" destination="pNq-Oe-QTu" id="OSE-7v-xht"/>
-                        <outlet property="progressView2" destination="Zqg-az-Jm3" id="W5m-hB-5Wg"/>
-                        <outlet property="progressView3" destination="uyf-im-w8A" id="8xp-7J-JVM"/>
-                        <outlet property="progressView4" destination="Eil-PD-c5a" id="COm-Ux-Mvl"/>
                         <outlet property="progressView5" destination="uoF-o6-Cqx" id="HrA-5R-IGK"/>
                         <outlet property="progressView6" destination="vTn-1I-JSP" id="dhx-nz-N20"/>
+                        <outlet property="progressViewClock" destination="Zqg-az-Jm3" id="IKQ-HQ-NDs"/>
+                        <outlet property="progressViewClockMinutes" destination="Sjg-IQ-Z7V" id="wca-El-khD"/>
+                        <outlet property="progressViewClockSeconds" destination="61A-JK-aY8" id="Mkr-vJ-jIx"/>
+                        <outlet property="progressViewImagesWithDifferentsSize" destination="uyf-im-w8A" id="Uya-Im-s8p"/>
+                        <outlet property="progressViewMood" destination="pNq-Oe-QTu" id="dGZ-ZX-D1g"/>
+                        <outlet property="progressViewSimple" destination="Eil-PD-c5a" id="619-SP-zZH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
