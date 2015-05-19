@@ -571,12 +571,13 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
         
         get {
             
+            var alignExtraLength:CGFloat = 0.0
             var simpleRadius = internalRadius > 0.0 ? internalRadius : (bounds.size.min() * 0.5)
             
-            var outerImageAlign:Bool  = false
-            var borderImageAlign:Bool = false
-            var outerTextAlign:Bool  = false
-            var borderTextAlign:Bool = false
+            var outerImageAlign:Int  = 0
+            var borderImageAlign:Int = 0
+            var outerTextAlign:Int  = 0
+            var borderTextAlign:Int = 0
             
             // Max angle
             
@@ -586,20 +587,25 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
             
             for (index, step) in enumerate(dataSteps) {
                 
-                outerImageAlign  = ((step as! OMStepData).imageAlign == .AlignOuter)
-                borderImageAlign = ((step as! OMStepData).imageAlign == .AlignBorder)
-                outerTextAlign  = ((step as! OMStepData).textAlign == .AlignOuter)
-                borderTextAlign = ((step as! OMStepData).textAlign == .AlignBorder)
+                let curStep = (step as! OMStepData)
+                
+                // Image
+                outerImageAlign  += (curStep.imageAlign == .AlignOuter) ? 1 : 0
+                borderImageAlign += (curStep.imageAlign == .AlignBorder) ? 1 : 0
+                
+                // Text
+                outerTextAlign  += (curStep.textAlign == .AlignOuter) ? 1 : 0
+                borderTextAlign += (curStep.textAlign == .AlignBorder) ? 1 : 0
             }
         
 
             let maxSide = CGFloat(maxAngle) * simpleRadius
             
             if ( maxSide < self.maxImageSize().max() ) {
-                if ( outerImageAlign ) {
-                    simpleRadius -= maxSide
-                } else if ( borderImageAlign ) {
-                    simpleRadius -= maxSide * 0.5
+                if ( outerImageAlign > 0) {
+                    alignExtraLength  = maxSide
+                } else if ( borderImageAlign > 0) {
+                    alignExtraLength = maxSide * 0.5
                 }else{
                     
                     // nothing
@@ -609,20 +615,18 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
             
             let maxSideText = maxTextSize()
             
-           // if ( maxSide < self.maxImageSize().max() ) {
-                if ( outerImageAlign ) {
-                    simpleRadius -= maxSideText.max()
-                } else if ( borderImageAlign ) {
-                    simpleRadius -= (maxSideText.max() * CGFloat(0.5))
-                }else{
+            if ( outerTextAlign > 0) {
+                alignExtraLength = max( alignExtraLength, maxSideText.max())
+            } else if ( borderTextAlign > 0) {
+                alignExtraLength =  max(maxSideText.max() * CGFloat(0.5), alignExtraLength)
+            }else{
                     
-                    // nothing
-                }
-        //    }
+                // nothing
+            }
             
             //println("\(self.layer.name) radius : \(simpleRadius) border:\(border) outer:\(outer) max  image side:\(maxSide) max text size \(maxSideText)")
             
-            return simpleRadius
+            return (simpleRadius - alignExtraLength)
         }
     }
 
