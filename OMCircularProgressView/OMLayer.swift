@@ -253,6 +253,7 @@ class OMLayer: CALayer {
     // Sets the clipping path of the given graphics context to mask the content.
     
     func applyMaskToContext(ctx: CGContext!) {
+        
         if let maskPath = self.maskingPath {
             CGContextAddPath(ctx, maskPath);
             CGContextClip(ctx);
@@ -260,11 +261,13 @@ class OMLayer: CALayer {
     }
     
     override func drawInContext(ctx: CGContext!) {
-        super.drawInContext(ctx)
+        
+        // Clear the layer
+        
+        CGContextClearRect(ctx, CGContextGetClipBoundingBox(ctx));
     }
     
     //DEBUG
-    
     override func display() {
         if ( self.hidden ) {
             println("WARNING: hidden layer. \(self.name)")
@@ -272,7 +275,7 @@ class OMLayer: CALayer {
             if(self.bounds.isEmpty) {
                 println("WARNING: empty layer. \(self.name)")
             }else{
-                super.display()
+              super.display()
             }
         }
     }

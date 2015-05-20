@@ -70,15 +70,6 @@ var GLOBAL_INDEX:Int = 0
 // MARK: - Extensions
 
 
-//
-///**
-//* Subtracts two CGPoint values and returns the result as a new CGPoint.
-//*/
-//public func - (left: CGPoint, right: CGPoint) -> CGPoint {
-//    return CGPoint(x: left.x - right.x, y: left.y - right.y)
-//}
-
-
 /**
 *  GPoint Extension
 *
@@ -151,21 +142,6 @@ public extension Double {
 
 extension UIColor : GeneratorType
 {
-//    var red : CGFloat {
-//        let components = CGColorGetComponents(self.CGColor)
-//        return components[0]
-//    }
-//    
-//    var green : CGFloat {
-//        let components = CGColorGetComponents(self.CGColor)
-//        return components[1]
-//    }
-//    
-//    var blue : CGFloat {
-//        let components = CGColorGetComponents(self.CGColor)
-//        return components[2]
-//    }
-//    
     var alpha : CGFloat {
         return CGColorGetAlpha(self.CGColor)
     }
@@ -398,15 +374,13 @@ class OMStepData : NSObject, DebugPrintable, Printable
     //DEBUG
     var index:Int = 0
     
-    required convenience init(startAngle:Double,percent:Double,color:UIColor!)
-    {
+    required convenience init(startAngle:Double,percent:Double,color:UIColor!){
         self.init(startAngle:startAngle,
             endAngle: startAngle + (2.0 * M_PI * percent),
             color:color)
     }
     
-    init(startAngle:Double,endAngle:Double,color:UIColor!)
-    {
+    init(startAngle:Double,endAngle:Double,color:UIColor!){
         angle = OMAngle(startAngle:startAngle, endAngle:endAngle)
         self.color = color
         
@@ -623,8 +597,8 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
                     
                 // nothing
             }
-            
-            //println("\(self.layer.name) radius : \(simpleRadius) border:\(border) outer:\(outer) max  image side:\(maxSide) max text size \(maxSideText)")
+            //DEBUG
+            //println("\(self.layer.name) radius : \(simpleRadius) max image side:\(maxSide) max text size \(maxSideText) extra radius length \( alignExtraLength)")
             
             return (simpleRadius - alignExtraLength)
         }
@@ -658,165 +632,7 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
         }
     }
 
-    
-    
 
-//    func maxStepAngle() -> Double
-//    {
-//        var maxAngle:Double = 0.0
-//        
-//        for (index, step) in enumerate(dataSteps) {
-//            maxAngle = max((step as! OMStepData).angle.length(),maxAngle)
-//        }
-//        return maxAngle;
-//    }
-    
-    //
-    // Max size of all step images
-    //
-    // NOTE: The idea is that the images do not over bounds the view
-    //
-//    
-//    func maxImageSize() -> CGSize
-//    {
-//        var maxSize:CGSize = CGSizeZero
-//        
-//        for (index, step) in enumerate(dataSteps) {
-//            if let img = (step as! OMStepData).image  {
-//                maxSize = maxSize.max(img.size)
-//            }
-//        }
-//        return maxSize
-//    }
-//
-//    func elementOuterBorder() -> Bool {
-//        
-//        for (index, step) in enumerate(dataSteps) {
-//            
-//            let curStep = step as! OMStepData;
-//            
-//            if (curStep.imageAlign == .AlignOuter ||
-//                curStep.textAlign == .AlignOuter  ){
-//                return true
-//            }
-//        }
-//        return false
-//    }
-//    
-//    func elementInBorder() -> Bool {
-//        
-//        for (index, step) in enumerate(dataSteps) {
-//            
-//            let curStep = step as! OMStepData;
-//            
-//            if (curStep.imageAlign == .AlignBorder ||
-//                curStep.textAlign == .AlignBorder ){
-//                    return true
-//            }
-//        }
-//        return false
-//    }
-    
-    
-    // Gradient mask
-    
-//    var gradient:Bool = true
-//    {
-//        didSet
-//        {
-//            /// Reconfigure the gradient
-//            
-//            if(oldValue != gradient) {
-//                
-//                for (index, step) in enumerate(dataSteps)
-//                {
-//                    let curStep = step as! OMStepData
-//                    
-//                    curStep.gradient = gradient
-//                    
-//                    if(gradient == false){
-//                        removeGradient(curStep)
-//                    }else{
-//                        addGradient(curStep)
-//                    }
-//                }
-//            }
-//        }
-//    }
-    
-    
-    //
-    // The gradient type by default is Radial, following the shape of our component
-    //
-    
-//var gradientType:OMGradientType = .Radial
-//        {
-//        didSet
-//        {
-//            // Reconfigure the gradient
-//            
-//            if(oldValue != gradientType)
-//            {
-//                for (index, step) in enumerate(dataSteps)
-//                {
-//                    let s = step as! OMStepData
-//                    
-//                    if(s.gradient)
-//                    {
-//                        if(s.gradientLayer?.type == kCAGradientLayerAxial && gradientType == .Radial) ||
-//                            (s.gradientLayer?.type == kOMGradientLayerRadial && gradientType == .Axial)
-//                        {
-//                            if(gradientType == OMGradientType.Axial){
-//                                setUpAxialGradient(s)
-//                            }else{
-//                                setUpRadialGradient(s)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-    
-    //
-    // Set Up the default options for the radial gradient
-    //
-//    
-//    private func setUpRadialGradient(step:OMStepData)
-//    {
-//        step.maskLayer = OMRadialGradientLayer(type:kOMGradientLayerRadial)
-//        
-//        (step.maskLayer as? OMRadialGradientLayer)!.startCenter = bounds.size.center()
-//        (step.maskLayer as? OMRadialGradientLayer)!.endCenter   = bounds.size.center()
-//        
-//        (step.maskLayer as? OMRadialGradientLayer)!.startRadius = 0
-//        (step.maskLayer as? OMRadialGradientLayer)!.endRadius   = radius //- lineWidth
-//    }
-//    
-//    
-//    var gradientDirection:OMGradientDirection = .Vertical
-    
-    //
-    // Set Up the default options for the axial gradient
-    //
-    // The default startPoint is (0.5, 0.0).
-    // The default endPoint is (0.5, 1.0).
-    
-//    private func setUpAxialGradient(step:OMStepData)
-//    {
-//        step.maskLayer = CAGradientLayer()
-//        
-//        if(gradientDirection == .Vertical) {
-//            (step.maskLayer as? CAGradientLayer)!.startPoint = CGPoint(x: 0.5, y: 0.0)
-//            (step.maskLayer as? CAGradientLayer)!.endPoint  = CGPoint(x: 0.5, y: 1.0)
-//        } else if(gradientDirection == .Horizontal) {
-//            (step.maskLayer as? CAGradientLayer)!.startPoint = CGPoint(x: 0.0, y: 0.5)
-//            (step.maskLayer as? CAGradientLayer)!.endPoint  =  CGPoint(x: 1.0, y: 0.5)
-//        }
-//    }
-//    
-
-    
     // MARK: Shadow
     
     var shadowOpacity:Float = 0.85 {
@@ -1057,100 +873,6 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
         return (dataSteps[Int(index)] as! OMStepData).progress
     }
     
-//    
-//    func animateGradientColors(step:OMStepData,duration:NSTimeInterval, beginTime:NSTimeInterval)
-//    {
-//        //DEBUG
-//        //println("animating \(gradientLayer?.colors.count) colors (\(index))")
-//    
-//        // Update the colors on the model layer
-//    
-//        let fromColors:NSArray? = (step.maskLayer as! OMRadialGradientLayer).colors
-//    
-//        let toColors = [step.color.CGColor,UIColor.whiteColor().CGColor]
-//    
-//        //assert(fromColors?.count == toColors?.count, "Unexpected size of colors")
-//    
-//       // (step.gradientLayer as! OMRadialGradientLayer).colors = toColors as [AnyObject];
-//    
-//        // Create an animation to slowly move the hue gradient left to right.
-//    
-//        let animation = CABasicAnimation(keyPath:"colors")
-//    
-//        animation.fromValue =  (step.maskLayer as! OMRadialGradientLayer).colors
-//        animation.toValue   = toColors
-//        animation.duration  = duration
-//        animation.beginTime = beginTime
-//        //animation.removedOnCompletion = true
-//        animation.fillMode = kCAFillModeForwards
-//        animation.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionLinear)
-//        //animation.delegate = self
-//    
-//        // Add the animation to our layer
-//    
-//        (step.maskLayer as! OMRadialGradientLayer).addAnimation(animation, forKey: "animateGradient")
-//    }
-//
-//    
-//    //
-//    //
-//    //
-//    
-//    func animateGradientStartRadius(step:OMStepData,duration:NSTimeInterval, beginTime:NSTimeInterval)
-//    {
-//        let animationGradientStartRadius = CABasicAnimation(keyPath: "startRadius")
-//        
-//        //            animation.fromValue =  NSValue (CGPoint: CGPoint(x:0,y:0))
-//        //            animation.toValue   =  NSValue (CGPoint:bounds.size.center())
-//        
-//        
-//        animationGradientStartRadius.fromValue = (radius - borderWidth)
-//        animationGradientStartRadius.toValue   = radius
-//        
-//        animationGradientStartRadius.duration = duration
-//        
-//        animationGradientStartRadius.removedOnCompletion = false
-//        animationGradientStartRadius.additive = true
-//        animationGradientStartRadius.fillMode = kCAFillModeForwards
-//        animationGradientStartRadius.delegate = self
-//        
-//        // Current animation beginTime
-//        
-//        animationGradientStartRadius.beginTime = beginTime
-//        
-//        step.maskLayer?.addAnimation(animationGradientStartRadius, forKey: "startRadius")
-//    }
-//    
-//    //
-//    //
-//    //
-//    
-//    func animateGradientEndRadius(step:OMStepData, duration:NSTimeInterval, beginTime:NSTimeInterval)
-//    {
-//        let animationGradientStartRadius = CABasicAnimation(keyPath: "endRadius")
-//        
-//        //            animation.fromValue =  NSValue (CGPoint: CGPoint(x:0,y:0))
-//        //            animation.toValue   =  NSValue (CGPoint:bounds.size.center())
-//        
-//        
-//        animationGradientStartRadius.fromValue = radius
-//        animationGradientStartRadius.toValue   = radius - borderWidth
-//        
-//        animationGradientStartRadius.duration = duration
-//        
-//        animationGradientStartRadius.removedOnCompletion = false
-//        animationGradientStartRadius.additive = true
-//        animationGradientStartRadius.fillMode = kCAFillModeForwards
-//        animationGradientStartRadius.delegate = self
-//        
-//        // Current animation beginTime
-//        
-//        animationGradientStartRadius.beginTime = beginTime
-//        
-//        step.maskLayer?.addAnimation(animationGradientStartRadius, forKey: "endRadius")
-//    }
-//    
-    
     //
     // Set progress at index with animation if is needed
     //
@@ -1281,146 +1003,6 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
         }
         return startAngle;
     }
-    
-    //
-    // Remove the gradient mask without destroy it
-    //
-    
-//    private func removeGradient(step:OMStepData) {
-//        
-//        step.shapeLayer.strokeColor = step.color.CGColor
-//        
-//        if(step.gradientLayer?.superlayer != nil) {
-//            step.gradientLayer?.removeFromSuperlayer()
-//        }
-//        
-//        layer.addSublayer(step.shapeLayer)
-//        
-//        layer.setNeedsDisplay();
-//    }
-//    
-//    //
-//    // Add the gradient mask
-//    //
-//    
-//    private func addGradient(step:OMStepData) {
-//        
-//        step.shapeLayer.strokeColor = UIColor.blackColor().CGColor
-//        
-//        step.gradientLayer?.mask = step.shapeLayer
-//        
-//        if (step.gradientLayer?.superlayer == nil) {
-//            layer.addSublayer(step.gradientLayer)
-//        }
-//        
-//        layer.setNeedsDisplay();
-//    }
-    
-    //
-    // Set Up the gradient layer mask
-    //
-    
-//    private func setUpGradientLayer(step:OMStepData) {
-//        
-//        /// Setup the step gradient layer mask
-//        
-//        if (step.gradientLayer == nil) {
-//            
-//            if (DEBUG_GRADIENT == true) {
-//                if((step.index % 3) == 0){
-//                    step.gradientType = OMGradientType.Axial
-//                }else if((step.index % 3) == 1){
-//                    step.gradientType = OMGradientType.None
-//                }else{
-//                    step.gradientType = OMGradientType.Radial
-//                }
-//            }
-//            
-//            if (step.gradientType == OMGradientType.Axial) {
-//                  setUpAxialGradient(step)
-//            } else if(step.gradientType == OMGradientType.Radial)  {
-//                  setUpRadialGradient(step)
-//            } else{
-//                return
-//            }
-//            
-//            // Change the anchor point of the gradient layer.
-//            
-//            // step.gradientLayer?.anchorPoint = CGPointZero;
-//            
-//            if ( DEBUG_LAYERS ){
-//                step.gradientLayer?.name = "step \(dataSteps.indexOfObject(step)) gradient"
-//            }
-//            
-//            /// Set up the gradient colors
-//            
-//            ///
-//            /// NOTE : The mask property on CALayer uses the alpha component
-//            ///            of the mask layer to determine what should be visible and not
-//            
-//            
-//            var hiColor:CGColorRef
-//            var loColor:CGColorRef
-////            
-////            switch(step.gradientClr)
-////            {
-////            case .Brightness:
-////                hiColor = step.color.colorWithBrightnessFactor(1.0).CGColor
-////                loColor = step.color.colorWithBrightnessFactor(0.4).CGColor
-////                break;
-////            case .Clear:
-////                hiColor = UIColor.clearColor().CGColor
-////                loColor = step.color.CGColor
-////                break;
-////            case .Gloss:
-////                hiColor = step.color.colorWithAlpha(0.0).CGColor
-////                loColor = step.color.colorWithAlpha(1.0).CGColor
-////                
-//////                if(step.gradientType == OMGradientType.Radial){
-//////                    (step.gradientLayer as? OMRadialGradientLayer)!.options = CGGradientDrawingOptions(kCGGradientDrawsAfterEndLocation)
-//////                }
-////                
-////                break;
-////            case .White:
-////                
-////                hiColor = step.color.CGColor
-////                loColor = UIColor.whiteColor().CGColor
-////                break
-////            case .Black:
-////                
-////                hiColor = step.color.CGColor
-////                loColor = UIColor.blackColor().CGColor
-////                break;
-////                
-////            case .Next:
-//            
-//                hiColor = step.color.CGColor
-//                loColor = step.color.next()!.CGColor
-////                break;
-////            }
-//            
-//            if (step.gradientType == .Radial) {
-//                (step.gradientLayer as? OMRadialGradientLayer)!.colors = [loColor,hiColor]
-//            } else {
-//                (step.gradientLayer as? CAGradientLayer)!.colors = [loColor,hiColor]
-//            }
-//            
-//            
-//            //step.gradientLayer?.locations = [0,1]
-//            
-//        }
-//    
-//        // Update the mask frame
-//        
-//        if(step.gradientLayer?.frame != bounds){
-//            
-//            step.gradientLayer?.frame = bounds
-//            
-//            // Mark the gradient for update because has a new frame.
-//            
-//            step.gradientLayer?.setNeedsDisplay()
-//        }
-//    }
     
     //
     // Set up the basic progress layers

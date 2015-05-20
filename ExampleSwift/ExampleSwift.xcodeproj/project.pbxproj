@@ -42,7 +42,6 @@
 		352CB75A1A6D1FBB00863568 /* ExampleSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		352CB75F1A6D1FBB00863568 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		352CB7601A6D1FBB00863568 /* ExampleSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSwiftTests.swift; sourceTree = "<group>"; };
-		356A0C631B07A90500B548BC /* OMCircularProgressView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OMCircularProgressView.h; sourceTree = "<group>"; };
 		35984D3E1AC958FC002D4BB8 /* OMCircularProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCircularProgressView.swift; sourceTree = "<group>"; };
 		35984D3F1AC958FC002D4BB8 /* OMRadialGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMRadialGradientLayer.swift; sourceTree = "<group>"; };
 		35984D401AC958FC002D4BB8 /* OMLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMLayer.swift; sourceTree = "<group>"; };
@@ -138,7 +137,6 @@
 				35984D421AC958FC002D4BB8 /* OMProgressImageLayer.swift */,
 				35984D431AC958FC002D4BB8 /* OMTextLayer.swift */,
 				35984D451AC958FC002D4BB8 /* UIImageExtension.swift */,
-				356A0C631B07A90500B548BC /* OMCircularProgressView.h */,
 			);
 			name = OMCircularProgressView;
 			path = ../../OMCircularProgressView;

@@ -49,9 +49,11 @@ class OMTextLayer : OMLayer
     
     private(set) var fontRef:CTFontRef = CTFontCreateWithName("Helvetica" as CFStringRef, 12.0, nil);
     
+    //
     // containing integer, default 1: default ligatures, 0: no ligatures, 2: all ligatures
+    //
     
-    var fontLigature:NSNumber = NSNumber(int: 1)
+    //var fontLigature:NSNumber = NSNumber(int: 1)
     var fontStrokeColor:UIColor = UIColor.lightGrayColor()
     var fontStrokeWidth:Float   = -3
     
@@ -127,10 +129,7 @@ class OMTextLayer : OMLayer
             kCTForegroundColorAttributeName,
             foregroundColor.CGColor);
         
-        CFAttributedStringSetAttribute(newString,
-            range,
-            kCTFontAttributeName,
-            fontRef)
+        CFAttributedStringSetAttribute(newString,range,kCTFontAttributeName,fontRef)
         
        // paragraphStyle  = CTParagraphStyleCreate(paragraphStyleSettings, paragraphStyleSettings.count)
         
@@ -149,10 +148,10 @@ class OMTextLayer : OMLayer
                    kCTStrokeColorAttributeName,
                    fontStrokeColor.CGColor)
         
-        CFAttributedStringSetAttribute(newString,
-            range,
-            kCTLigatureAttributeName,
-            fontLigature)
+//        CFAttributedStringSetAttribute(newString,
+//            range,
+//            kCTLigatureAttributeName,
+//            fontLigature)
         
         //TODO:
         //kCTUnderlineStyleAttributeName
@@ -241,7 +240,7 @@ class OMTextLayer : OMLayer
         
         super.drawInContext(context)
         
-        if let str = string {
+        if let str = self.string {
             
             CGContextSaveGState(context);
             
@@ -277,6 +276,5 @@ class OMTextLayer : OMLayer
             
             CGContextRestoreGState(context);
         }
-        
     }
 }
