@@ -53,7 +53,7 @@ class OMTextLayer : OMLayer
     // containing integer, default 1: default ligatures, 0: no ligatures, 2: all ligatures
     //
     
-    //var fontLigature:NSNumber = NSNumber(int: 1)
+    var fontLigature:NSNumber = NSNumber(int: 1)
     var fontStrokeColor:UIColor = UIColor.lightGrayColor()
     var fontStrokeWidth:Float   = -3
     
@@ -148,10 +148,10 @@ class OMTextLayer : OMLayer
                    kCTStrokeColorAttributeName,
                    fontStrokeColor.CGColor)
         
-//        CFAttributedStringSetAttribute(newString,
-//            range,
-//            kCTLigatureAttributeName,
-//            fontLigature)
+        CFAttributedStringSetAttribute(newString,
+            range,
+            kCTLigatureAttributeName,
+            fontLigature)
         
         //TODO:
         //kCTUnderlineStyleAttributeName
