@@ -54,7 +54,7 @@
 
 let DEBUG_LAYERS =  false      // very usefull
 let DEBUG_GRADIENT = false
-let DEBUG_STEPS = false
+let DEBUG_STEPS = true
 let NO_GRADIENT = false
 let NO_WELL = false
 let NO_TEXT = false
@@ -231,8 +231,7 @@ public enum OMCircularProgressViewStyle : Int
     case DirectProgress
     case SequentialProgress
     
-    init()
-    {
+    init() {
         self = SequentialProgress
     }
 }
@@ -323,7 +322,6 @@ class OMStepData : NSObject, DebugPrintable, Printable
     
     
     var progress:Double {
-        
         set{
             shapeLayer.strokeEnd = CGFloat(progress)
         }
@@ -361,10 +359,31 @@ class OMStepData : NSObject, DebugPrintable, Printable
     // Step image
     //
     
-    var imageShadow : Bool = true
-    var image : UIImage?                                 // optional image
-    private var imageScaled:UIImage?
-    var imageLayer:OMProgressImageLayer?                 // optional image layer
+    //var imageIsSeparator : Bool = false
+    
+    var shadowImage : Bool = true
+    
+    private var imageShadow : UIImage? = nil
+    
+    var image : UIImage?
+    {
+        set {
+            if(shadowImage){
+                
+                if let img = newValue {
+                    imageShadow = img.addOutterShadowColor()
+                }
+                
+            }else{
+                imageShadow = newValue
+            }
+        }
+        get {
+            return imageShadow
+        }
+    }
+    private var imageScaled:UIImage? = nil
+    var imageLayer:OMProgressImageLayer? = nil                // optional image layer
     var imageAlign : OMAlign = .AlignBorder
     var imageOrientationToAngle  : Bool = true
     var imageAngleAlign : OMAngleAlign = .AngleStart
@@ -458,24 +477,18 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
             setNeedsLayout()
         }
     }
-    
-    var stepSeparator:Bool = true {
+
+    var separatorRatio: Double = 0.0 {
         didSet{
             setNeedsLayout()
         }
     }
     
-    var separatorRatio: Double = 0 {
-        didSet{
-            setNeedsLayout()
-        }
-    }
-    
-    var separatorFixed: Double = 1.0.degreesToRadians() {
-        didSet{
-            setNeedsLayout()
-        }
-    }
+//    var separatorFixed: Double = 1.0.degreesToRadians() {
+//        didSet{
+//            setNeedsLayout()
+//        }
+//    }
 
     var roundedHead : Bool = false {
         didSet {
@@ -509,7 +522,6 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
     
     
     func maxImageSize() -> CGSize {
-        
         var maxSize:CGSize = CGSizeZero
         
         for (index, step) in enumerate(dataSteps) {
@@ -522,7 +534,6 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
     }
     
     func maxTextSize() -> CGSize {
-        
         var maxSize:CGSize = CGSizeZero
         
         for (index, step) in enumerate(dataSteps) {
@@ -534,24 +545,31 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
         return maxSize
     }
     
+    //var borderColor : UIColor? = UIColor.blackColor()
+    
     private(set) var internalRadius : CGFloat = 0.0
     
     var radius : CGFloat {
         
         set(newRadius) {
-            
             internalRadius = newRadius
         }
         
         get {
-            
-            var alignExtraLength:CGFloat = 0.0
+        
             var simpleRadius = internalRadius > 0.0 ? internalRadius : (bounds.size.min() * 0.5)
+            
+            if( dataSteps.count == 0) {
+                // Nothing to do
+                return simpleRadius;
+            }
             
             var outerImageAlign:Int  = 0
             var borderImageAlign:Int = 0
-            var outerTextAlign:Int  = 0
-            var borderTextAlign:Int = 0
+            var outerTextAlign:Int   = 0
+            var borderTextAlign:Int  = 0
+            
+            var alignExtraLength:CGFloat = 0.0
             
             // Max angle
             
@@ -575,16 +593,23 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
 
             let maxSide = CGFloat(maxAngle) * simpleRadius
             
-            if ( maxSide < self.maxImageSize().max() ) {
+            println("max space for the image: \(maxSide) max image side: \(self.maxImageSize().max())")
+            
+            
+            let minSide = min( maxSide, self.maxImageSize().max() )
+            
+            // TODO:
+            //if ( maxSide < self.maxImageSize().max() ) {
+                
                 if ( outerImageAlign > 0) {
-                    alignExtraLength  = maxSide
+                    alignExtraLength  = minSide
                 } else if ( borderImageAlign > 0) {
-                    alignExtraLength = maxSide * 0.5
+                    alignExtraLength = minSide * 0.5
                 }else{
                     
                     // nothing
                 }
-            }
+            //}
             
             
             let maxSideText = maxTextSize()
@@ -593,10 +618,11 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
                 alignExtraLength = max( alignExtraLength, maxSideText.max())
             } else if ( borderTextAlign > 0) {
                 alignExtraLength =  max(maxSideText.max() * CGFloat(0.5), alignExtraLength)
-            }else{
+            } else {
                     
                 // nothing
             }
+            
             //DEBUG
             //println("\(self.layer.name) radius : \(simpleRadius) max image side:\(maxSide) max text size \(maxSideText) extra radius length \( alignExtraLength)")
             
@@ -714,6 +740,7 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
     var image: UIImage? {
         didSet {
             if image != nil {
+            
                 if(imageLayer != nil){
                     imageLayer?.image = image
                 }else{
@@ -1040,7 +1067,7 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
     {
         let arcAngle : Double
         
-        // can be caused by separatorRatio = 1.0
+        // This assert can be caused when separator Ratio is 1.0
         
         assert( startAngle != endAngle,
             "The start angle and the end angle cannot be the same. angle: \(startAngle.radiansToDegrees())")
@@ -1084,7 +1111,7 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
             // When setting the mask to a new layer, the new layer must have a nil superlayer
             
             step.maskLayer?.mask = step.shapeLayer
-            
+        
             layer.addSublayer(step.maskLayer)
             
         } else {
@@ -1129,7 +1156,7 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
                 step.wellLayer?.shadowOffset  = shadowOffset
                 step.wellLayer?.shadowRadius  = shadowRadius
                 step.wellLayer?.shadowColor   = shadowColor.CGColor
-                step.wellLayer?.shadowPath    = ( stepSeparator ) ?  nil : step.shapeLayer.path
+                step.wellLayer?.shadowPath    = ( separatorRatio > 0.0 ) ?  nil : step.shapeLayer.path
             //}
             
             // Same as shape layer
@@ -1352,22 +1379,13 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
             // Do not use separator.
             
             curStep.separatorAngleHalf = 0.0
-            
-            if ( stepSeparator ) {
+        
+            // The separator is a ratio of step angle length
                 
-                // The separator is a ratio of step angle length
-                
-                if ( separatorRatio > 0.0 ) {
-                    let radiansPerStep = (M_PI * 2) / Double(dataSteps.count)
-                    curStep.separatorAngleHalf = (separatorRatio * radiansPerStep) * 0.5
-                } else {
-                    
-                    // The separator is fixed
-                    
-                    curStep.separatorAngleHalf = separatorFixed
-                }
+            if ( separatorRatio > 0.0 ) {
+                let radiansPerStep = (M_PI * 2) / Double(dataSteps.count)
+                curStep.separatorAngleHalf = (separatorRatio * radiansPerStep) * 0.5
             }
-            
             
             /// Image
             
@@ -1381,9 +1399,9 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
                 
                 var maxSide:CGFloat = CGFloat(angleLength * Double(outerRadius))
                 
-                assert(maxSide > 0.0, "overflow side.")
+                //assert(maxSide > 0.0, "overflow side.")
                 
-                if ( maxSide < curSize ) {
+                if ( maxSide > 0.0 && maxSide < curSize ) {
                     curStep.imageScaled  = img.scaledToFitToSize(CGSize(width: Int(maxSide),height: Int(maxSide)))
                 } else {
                     curStep.imageScaled = nil;
@@ -1396,21 +1414,23 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
                 
                 // If separatorRatio has a valid value. Use it.
                 
-                if ( stepSeparator && ( separatorRatio == 0.0 ) ) {
-                    
-                    let halfLength = curStep.angle.length() * 0.5
-                    
-                    // division by a number mul 2 is the same that div by 2
-                    
-                    let halfAngle  = Double(img.size.hypot()) / radius_2
-                    
-                    // avoid overflow the angle by the separator
-                    
-                    if ( halfAngle < halfLength ){
-                        
-                        curStep.separatorAngleHalf = halfAngle
-                    }
-                }
+//                if ( curStep.imageIsSeparator ) {
+//                    
+//                    let halfLength = curStep.angle.length() * 0.5
+//                    
+//                    // division by a number mul 2 is the same that div by 2
+//                    
+//                    let halfAngle  = Double(img.size.hypot()) / radius_2
+//                    
+//                    // avoid overflow the angle by the separator
+//                    
+//                    let x = halfLength - halfAngle
+//                    
+//                    if (x > 0.0){
+//                        
+//                        curStep.separatorAngleHalf = halfAngle
+//                    }
+//                }
                 
                 // Create the progress image layer
                 
@@ -1529,7 +1549,7 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
         {
             let curStep = step as! OMStepData
             
-            if ( stepSeparator ) {
+            if ( separatorRatio > 0.0 /* || curStep.imageIsSeparator*/) {
                 
                 if(index + 1 < dataSteps.count ){
                     
@@ -1622,39 +1642,39 @@ class OMCircularProgressView: UIView, DebugPrintable, Printable {
     
     // MARK: Consistency functions
     
-    private func assertIfOverflow2PIRadians()()
-    {
-        var rads:Double = 0
-        
-        for var index = 0; index < dataSteps.count ; ++index
-        {
-            let step = dataSteps[index] as! OMStepData
-            
-            if ( stepSeparator ) {
-                
-                if(index + 1 < dataSteps.count ) {
-                    
-                    let nextStep = dataSteps[index+1] as! OMStepData
-                    
-                    rads += OMAngle(startAngle: step.angle.start + step.separatorAngleHalf,
-                        endAngle: step.angle.end - nextStep.separatorAngleHalf).length()
-                    
-                    rads += nextStep.separatorAngleHalf + step.separatorAngleHalf
-                }else{
-                    let firstStep = dataSteps.firstObject as! OMStepData
-                    
-                    rads += OMAngle(startAngle:step.angle.start + step.separatorAngleHalf,
-                        endAngle:step.angle.end - firstStep.separatorAngleHalf).length()
-                    
-                    rads += firstStep.separatorAngleHalf + step.separatorAngleHalf
-                }
-            } else {
-                rads += OMAngle(startAngle:step.angle.start, endAngle: step.angle.end).length()
-            }
-        }
-        
-        assert(rads <= M_PI * 2.0, "out of radians")
-    }
+//    private func assertIfOverflow2PIRadians()()
+//    {
+//        var rads:Double = 0
+//        
+//        for var index = 0; index < dataSteps.count ; ++index
+//        {
+//            let step = dataSteps[index] as! OMStepData
+//            
+//            if ( stepSeparator ) {
+//                
+//                if(index + 1 < dataSteps.count ) {
+//                    
+//                    let nextStep = dataSteps[index+1] as! OMStepData
+//                    
+//                    rads += OMAngle(startAngle: step.angle.start + step.separatorAngleHalf,
+//                        endAngle: step.angle.end - nextStep.separatorAngleHalf).length()
+//                    
+//                    rads += nextStep.separatorAngleHalf + step.separatorAngleHalf
+//                }else{
+//                    let firstStep = dataSteps.firstObject as! OMStepData
+//                    
+//                    rads += OMAngle(startAngle:step.angle.start + step.separatorAngleHalf,
+//                        endAngle:step.angle.end - firstStep.separatorAngleHalf).length()
+//                    
+//                    rads += firstStep.separatorAngleHalf + step.separatorAngleHalf
+//                }
+//            } else {
+//                rads += OMAngle(startAngle:step.angle.start, endAngle: step.angle.end).length()
+//            }
+//        }
+//        
+//        assert(rads <= M_PI * 2.0, "out of radians")
+//    }
     
     
     private func isAngleInCircleRange(angle:Double) -> Bool{
