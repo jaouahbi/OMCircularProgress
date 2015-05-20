@@ -6,12 +6,12 @@ Custom circular progress view with steps, images, text and much more.
 
 ## Features
 
-- [x] Feature 1
-- [x] Feature 2
-- [x] Feature 3
-- [x] Feature 4
-- [x] Feature 5
-- [x] Feature 6
+- [x] Steps (Direct/Sequential)
+- [x] Text for each step
+- [x] Image for each step
+- [x] Mask layer for each step
+- [x] CoreText layers
+- [x] Progress images
 
 ## Requirements
 
@@ -20,10 +20,11 @@ Custom circular progress view with steps, images, text and much more.
 
 ## Communication
 
+Open a issue.
 
 ## Installation
 
-> To use OMCircularProgressView with a project , you must include all Swift files located inside the `Source` directory directly in your project.
+> To use OMCircularProgressView with a project , you must include all Swift files located inside the `OMCircularProgressView` directory directly in your project.
 
 * * *
 
