@@ -99,10 +99,10 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="progressView5" destination="uoF-o6-Cqx" id="HrA-5R-IGK"/>
-                        <outlet property="progressView6" destination="vTn-1I-JSP" id="dhx-nz-N20"/>
                         <outlet property="progressViewClock" destination="Zqg-az-Jm3" id="IKQ-HQ-NDs"/>
                         <outlet property="progressViewClockMinutes" destination="Sjg-IQ-Z7V" id="wca-El-khD"/>
                         <outlet property="progressViewClockSeconds" destination="61A-JK-aY8" id="Mkr-vJ-jIx"/>
+                        <outlet property="progressViewFlower" destination="vTn-1I-JSP" id="G8R-rs-Af0"/>
                         <outlet property="progressViewImagesWithDifferentsSize" destination="uyf-im-w8A" id="Uya-Im-s8p"/>
                         <outlet property="progressViewMood" destination="pNq-Oe-QTu" id="dGZ-ZX-D1g"/>
                         <outlet property="progressViewSimple" destination="Eil-PD-c5a" id="619-SP-zZH"/>

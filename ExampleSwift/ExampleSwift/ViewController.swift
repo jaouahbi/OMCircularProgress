@@ -88,7 +88,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var progressViewSimple: OMCircularProgressView!
     
     @IBOutlet weak var progressView5: OMCircularProgressView!
-    @IBOutlet weak var progressView6: OMCircularProgressView!
+    @IBOutlet weak var progressViewFlower: OMCircularProgressView!
     
     var calendar:NSCalendar = NSCalendar(identifier:NSCalendarIdentifierGregorian)!;
     
@@ -104,7 +104,7 @@ class ViewController: UIViewController {
         self.progressViewImagesWithDifferentsSize.layer.name = "3"
         self.progressViewSimple.layer.name = "4"
         self.progressView5.layer.name = "5"
-        self.progressView6.layer.name = "6"
+        self.progressViewFlower.layer.name = "6"
         
         
         self.progressViewMood.layer.borderWidth = 1;
@@ -112,8 +112,7 @@ class ViewController: UIViewController {
         self.progressViewImagesWithDifferentsSize.layer.borderWidth = 1;
         self.progressViewSimple.layer.borderWidth = 1;
         self.progressView5.layer.borderWidth = 1;
-        self.progressView6.layer.borderWidth = 1;
-        
+        self.progressViewFlower.layer.borderWidth = 1;
         
         self.view.layoutIfNeeded()
         
@@ -126,11 +125,10 @@ class ViewController: UIViewController {
         //
         // Setup the progressView examples
         //
-        //
        
         self.setupMood(self.progressViewMood);
        
-     // clock
+        // clock
     
         self.setupClock(self.progressViewClock)
         self.setupClockMinute(self.progressViewClockMinutes)
@@ -140,7 +138,7 @@ class ViewController: UIViewController {
         self.setupWithImagesWithDifferentsSize(self.progressViewImagesWithDifferentsSize);
         self.setupColorsFullWithGradientMaskAndDirectProgress(self.progressViewSimple);
         self.setupWithGradientMask(self.progressView5);
-        self.setup6(self.progressView6);
+        self.setupFlower(self.progressViewFlower);
        
         
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC) * 1)
@@ -154,7 +152,7 @@ class ViewController: UIViewController {
             self.progressViewImagesWithDifferentsSize.progress = OMCompleteProgress
             self.progressViewMood.progress = OMCompleteProgress
             self.progressView5.progress = OMCompleteProgress
-            self.progressView6.progress = OMCompleteProgress
+            self.progressViewFlower.progress = OMCompleteProgress
         }
         
         NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("timerProc"), userInfo: nil, repeats: true)
@@ -278,12 +276,12 @@ class ViewController: UIViewController {
     }
     
     
-    func setup6(theProgressView:OMCircularProgressView)
+    func setupFlower(theProgressView:OMCircularProgressView)
     {
         theProgressView.progressViewStyle = .SequentialProgress
         
         // Configure the animation
-        theProgressView.animation          = true;
+        
         theProgressView.animationDuration  = 10
         
         /// Configure the separation ratio
@@ -420,29 +418,27 @@ class ViewController: UIViewController {
         theProgressView.image = UIImage(named: "center")
         
     }
+
+    //
+    // Clock
+    //
     
     func setupClock(theProgressView:OMCircularProgressView)
     {
-        //
-        // Clock
-        //
-
-        
         theProgressView.progressViewStyle = .SequentialProgress
     
         theProgressView.animation = false
     
         // Ratio
         
-        theProgressView.separatorRatio = 0.1
+        theProgressView.separatorRatio = 0.0
         
         theProgressView.thicknessRatio = 0.33     // 33.3 %
         theProgressView.roundedHead    = false
         
         theProgressView.startAngle     = -90.degreesToRadians()
         
-        //
-        //
+        /// Unicode roman numbers.
         
         let romanNumbers : [String] = ["Ⅰ",
             "Ⅱ",
@@ -456,8 +452,6 @@ class ViewController: UIViewController {
             "Ⅹ",
             "Ⅺ",
             "Ⅻ"]
-        
-        //let clockColors  = UIColor.rainbowColors(romanNumbers.count)
         
         let color = UIColor.redColor()
         
@@ -488,43 +482,39 @@ class ViewController: UIViewController {
             step.textAngleAlign         = .AngleEnd
             
             
-            let gradientLayer  = OMRadialGradientLayer(type:kOMGradientLayerRadial)
+            let gradientLayer           = OMRadialGradientLayer(type:kOMGradientLayerRadial)
             
-            gradientLayer.colors  = [color.CGColor,color.next()!.CGColor]
+            gradientLayer.colors        = [color.CGColor,color.next()!.CGColor]
             
-            gradientLayer.startCenter = theProgressView.bounds.size.center()
-            gradientLayer.endCenter   = theProgressView.bounds.size.center()
+            gradientLayer.startCenter   = theProgressView.bounds.size.center()
+            gradientLayer.endCenter     = theProgressView.bounds.size.center()
             
-            gradientLayer.startRadius = theProgressView.innerRadius
-            gradientLayer.endRadius   = theProgressView.outerRadius
-            gradientLayer.bounds      = theProgressView.bounds
+            gradientLayer.startRadius   = theProgressView.innerRadius
+            gradientLayer.endRadius     = theProgressView.outerRadius
+            gradientLayer.bounds        = theProgressView.bounds
             
-            step.maskLayer = gradientLayer
+            // Set the mask
+            
+            step.maskLayer              = gradientLayer
             
         }
     }
 
     func setupClockSeconds(theProgressView:OMCircularProgressView)
     {
-        //
-        // Clock
-        //
-        
         theProgressView.progressViewStyle = .SequentialProgress
         
         // Configure the animation
         
         theProgressView.animation = false
-        //theProgressView.animationDuration  = 6
         
-        /// Configure the separator
+        // Configure the separator ratio
         
-        // Ratio
         theProgressView.separatorRatio = 0.1
         
-        theProgressView.thicknessRatio = 1.0     // 100%
+        // Border
         
-        theProgressView.startAngle     = -90.degreesToRadians()
+        theProgressView.thicknessRatio = 1.0     // 100%
         
         let minutesPerHour  = 60
         let quartersPerHour = 4
@@ -545,24 +535,21 @@ class ViewController: UIViewController {
             step.wellColor = nil;
             
             // Configure the quarter
-            
-//            if((i % quarter) == 0) {
-//                
-//                step.text                   = "\(i)"
-//                step.fontName               = "HelveticaNeue"
-//                step.fontSize               = 8
-//                step.fontColor              = UIColor.blackColor()
-//                step.fontBackgroundColor    = UIColor.clearColor()
-//                step.fontStrokeColor        = UIColor.whiteColor()
-//                
-//                
-//                step.textAlign              = .AlignBorder
-//                step.textOrientationToAngle = false
-//                step.textAngleAlign         = .AngleStart
-//            }
-            
-            
-            
+          
+            if((i % quarter) == 0) {
+                
+                step.text                   = "\(i)"
+                step.fontName               = "helveticaneue-light"
+                step.fontSize               = 12
+                step.fontColor              = UIColor.blackColor()
+                step.fontBackgroundColor    = UIColor.clearColor()
+                step.fontStrokeColor        = UIColor.whiteColor()
+                
+                
+                step.textAlign              = .AlignMid
+                step.textOrientationToAngle = false
+                step.textAngleAlign         = .AngleStart
+            }
             
             
             let gradientLayer  = OMRadialGradientLayer(type:kOMGradientLayerRadial)
@@ -585,39 +572,23 @@ class ViewController: UIViewController {
     func setupClockMinute(theProgressView:OMCircularProgressView)
     {
         
-        //
-        // Clock
-        //
-        
-        
         // Unused
         
         theProgressView.progressViewStyle = .SequentialProgress
         
-        
         // Configure the animation
-        
-        //theProgressView.animationDuration  = 6
+
         theProgressView.animation = false
         
         /// Configure the separator ratio
         
-        theProgressView.separatorRatio = 0.1
+        theProgressView.separatorRatio = 0.1 // 10%
         
-        theProgressView.thicknessRatio = 0.5 // 100%
+        theProgressView.thicknessRatio = 0.5 // 50%
         
         theProgressView.startAngle     = -90.degreesToRadians()
         
-        
-        //
-        //
-        
         let minutesPerHour  = 60
-        let quartersPerHour = 4
-        let quarter         = 60 / quartersPerHour
-        
-        //let clockColors  = UIColor.rainbowColors(minutesPerHour)
-        
         
         let color = UIColor.orangeColor()
         
@@ -631,24 +602,6 @@ class ViewController: UIViewController {
             
             step.wellColor = nil;
             
-            // Configure the quarter
-            
-//            if((i % quarter) == 0) {
-//                
-//                step.text                   = "\(i)"
-//                step.fontName               = "HelveticaNeue"
-//                step.fontSize               = 8
-//                step.fontColor              = UIColor.blackColor()
-//                step.fontBackgroundColor    = UIColor.clearColor()
-//                step.fontStrokeColor        = UIColor.whiteColor()
-//                
-//                
-//                step.textAlign              = .AlignBorder
-//                step.textOrientationToAngle = false
-//                step.textAngleAlign         = .AngleStart
-//            }
-            
-            
             let gradientLayer  = OMRadialGradientLayer(type:kOMGradientLayerRadial)
             
             gradientLayer.colors  = [color.CGColor,color.next()!.CGColor]
@@ -661,13 +614,7 @@ class ViewController: UIViewController {
             gradientLayer.bounds      = theProgressView.bounds
             
             step.maskLayer = gradientLayer
-            
         }
-        
-//        var minutes = calendar.components(.CalendarUnitMinute, fromDate:NSDate()).minute
-//
-//       theProgressView.progress = Double(minutes)
-        
     }
 
     
@@ -681,6 +628,20 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        // Update the clock
+        
+        let r = self.progressViewClock.radius / 3
+        
+        self.progressViewClockMinutes.radius = r * 2
+        
+        self.progressViewClockSeconds.radius = r
+        
     }
 }
 
