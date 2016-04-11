@@ -41,11 +41,11 @@ import CoreText
 import CoreFoundation
 
 
-class OMTextLayer : OMLayer
+@objc class OMTextLayer : OMLayer
 {
     // MARK: properties
     
-    //private(set) var paragraphStyle:CTParagraphStyle?
+    // private(set) var paragraphStyle:CTParagraphStyle?
     
     private(set) var fontRef:CTFontRef = CTFontCreateWithName("Helvetica" as CFStringRef, 12.0, nil);
     
@@ -53,6 +53,7 @@ class OMTextLayer : OMLayer
     // containing integer, default 1: default ligatures, 0: no ligatures, 2: all ligatures
     //
     
+    var textPath:UIBezierPath?
     var fontLigature:NSNumber = NSNumber(int: 1)
     var fontStrokeColor:UIColor = UIColor.lightGrayColor()
     var fontStrokeWidth:Float   = -3
@@ -82,9 +83,10 @@ class OMTextLayer : OMLayer
         self.init()
         self.string = string
         setAlignmentMode(alignmentMode)
+        setLineBreakMode(.ByCharWrapping)
     }
     
-    override init!(layer: AnyObject!) {
+    override init(layer: AnyObject) {
         
         super.init(layer: layer)
         if let other = layer as? OMTextLayer {
@@ -96,7 +98,7 @@ class OMTextLayer : OMLayer
         }
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         
         super.init(coder:aDecoder)
     }
@@ -160,14 +162,15 @@ class OMTextLayer : OMLayer
         
         return newString
     }
+
     
     //
     // Calculate the frame size of a String
     //
     
-    func frameSizeLengthFromString(string : String) -> CGSize {
+    func frameSize() -> CGSize {
         
-        return frameSizeLengthFromAttributedString(NSAttributedString(string : string))
+        return frameSizeLengthFromAttributedString(NSAttributedString(string : self.string!))
     }
     
     func frameSizeLengthFromAttributedString(attrString : NSAttributedString) -> CGSize {
@@ -204,17 +207,17 @@ class OMTextLayer : OMLayer
         switch (alignmentMode)
         {
             case "center":
-                alignment = CTTextAlignment.TextAlignmentCenter
+                alignment = CTTextAlignment.Center
             case "left":
-                alignment = CTTextAlignment.TextAlignmentLeft
+                alignment = CTTextAlignment.Left
             case "right":
-                alignment = CTTextAlignment.TextAlignmentRight
+                alignment = CTTextAlignment.Right
             case "justified":
-                alignment = CTTextAlignment.TextAlignmentJustified
+                alignment = CTTextAlignment.Justified
             case "natural":
-                alignment = CTTextAlignment.TextAlignmentNatural
+                alignment = CTTextAlignment.Natural
             default:
-                alignment = CTTextAlignment.TextAlignmentLeft
+                alignment = CTTextAlignment.Left
         }
         
         let alignmentSetting = CTParagraphStyleSetting(spec: .Alignment, valueSize: sizeofValue(alignment), value: &alignment)
@@ -236,11 +239,11 @@ class OMTextLayer : OMLayer
     
     // MARK: overrides
     
-    override func drawInContext(context: CGContext!) {
+    override func drawInContext(context: CGContext) {
         
         super.drawInContext(context)
-        
-        if let str = self.string {
+    
+        if let string = self.string {
             
             CGContextSaveGState(context);
             
@@ -253,26 +256,35 @@ class OMTextLayer : OMLayer
             
             // Add the atributtes to the String
             
-            let attrStringWithAttributes = stringWithAttributes(str)
+            let attrStringWithAttributes = stringWithAttributes(string)
             
-            // Create a path which bounds the area where you will be drawing text.
-            // The path need not be rectangular.
+            // Draw the string following a arc
             
-            let path = CGPathCreateMutable();
-            
-            CGPathAddRect(path, nil, bounds);
-            
-            // Create the framesetter with the attributed string.
-            
-            let framesetter = CTFramesetterCreateWithAttributedString(attrStringWithAttributes);
-            
-            // Create a frame.
-            
-            let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, nil);
-            
-            // Draw the specified frame in the given context.
-            
-            CTFrameDraw(frame, context);
+            if ((self.textPath) != nil) {
+                
+                NSAttributedString(attributedString: attrStringWithAttributes).drawOnBezierPath(context,path: self.textPath);
+            }
+            else
+            {
+                // Create a path which bounds the area where you will be drawing text.
+                // The path need not be rectangular.
+                
+                let path = CGPathCreateMutable();
+                
+                CGPathAddRect(path, nil, bounds);
+                
+                // Create the framesetter with the attributed string.
+                
+                let framesetter = CTFramesetterCreateWithAttributedString(attrStringWithAttributes);
+                
+                // Create a frame.
+                
+                let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, nil);
+                
+                // Draw the specified frame in the given context.
+                
+                CTFrameDraw(frame, context);
+            }
             
             CGContextRestoreGState(context);
         }

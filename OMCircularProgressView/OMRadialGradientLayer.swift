@@ -26,7 +26,7 @@
 //      Added the oval type
 //      Fixed error condition. When the locations count was less than the colors count.
 //
-
+//
 import UIKit
 
 
@@ -43,16 +43,86 @@ private struct OMRadialGradientLayerProperties {
 let kOMGradientLayerRadial: String = "radial"
 let kOMGradientLayerOval: String =  "oval"
 
-class OMRadialGradientLayer : OMLayer, Printable, DebugPrintable
+@objc class OMRadialGradientLayer : OMLayer, CustomDebugStringConvertible
 {
     private(set) var gradient:CGGradientRef?
     
-    var startCenter: CGPoint = CGPoint(x:0,y:0)
-    var endCenter: CGPoint = CGPoint(x:0,y:0)
-    var startRadius: CGFloat = 0
-    var endRadius: CGFloat = 0
+    var startCenterRatio: CGPoint = CGPoint(x:0,y:0)
+    var endCenterRatio: CGPoint = CGPoint(x:0,y:0)
     
-    var options: CGGradientDrawingOptions = CGGradientDrawingOptions(kCGGradientDrawsBeforeStartLocation)|CGGradientDrawingOptions(kCGGradientDrawsAfterEndLocation)
+    var startRadiusRatio : Double = 0
+    var endRadiusRatio   : Double = 0
+    
+    
+    var startCenter: CGPoint = CGPoint(x:0,y:0)
+    {
+        didSet
+        {
+            startCenterRatio.x = startCenter.x / bounds.size.width;
+            startCenterRatio.y = startCenter.y / bounds.size.height;
+        }
+    }
+    
+    var endCenter: CGPoint = CGPoint(x:0,y:0)
+    {
+        didSet
+        {
+            endCenterRatio.x = endCenter.x / bounds.size.width;
+            endCenterRatio.y = endCenter.y / bounds.size.height;
+        }
+    }
+    var startRadius: CGFloat = 0
+    {
+        didSet
+        {
+            startRadiusRatio = Double(startRadius / bounds.size.min());
+        }
+    }
+    var endRadius: CGFloat = 0
+    {
+        didSet
+        {
+            endRadiusRatio = Double(endRadius / bounds.size.min());
+        }
+    }
+
+    var extendsPastStart: Bool  {
+        set(newValue) {
+            let isSet = (self.options.rawValue & CGGradientDrawingOptions.DrawsBeforeStartLocation.rawValue ) != 0 ;
+            if (newValue !=  isSet)
+            {
+                self.options  = CGGradientDrawingOptions(rawValue:self.options.rawValue | CGGradientDrawingOptions.DrawsBeforeStartLocation.rawValue);
+            
+                self.setNeedsDisplay();
+            }
+        }
+        get
+        {
+            return (self.options.rawValue & CGGradientDrawingOptions.DrawsBeforeStartLocation.rawValue) != 0;
+        }
+    }
+    
+    
+    var extendsPastEnd:Bool
+    {
+        set(newValue)
+        {
+            let isSet = (self.options.rawValue & CGGradientDrawingOptions.DrawsAfterEndLocation.rawValue ) != 0 ;
+            
+            if (newValue !=  isSet) {
+                self.options  = CGGradientDrawingOptions(rawValue:self.options.rawValue | CGGradientDrawingOptions.DrawsAfterEndLocation.rawValue);
+                
+                self.setNeedsDisplay();
+            }
+        }
+        get
+            {
+                return (self.options.rawValue & CGGradientDrawingOptions.DrawsAfterEndLocation.rawValue) != 0;
+        }
+    }
+    
+    var options: CGGradientDrawingOptions = CGGradientDrawingOptions(rawValue:
+        CGGradientDrawingOptions.DrawsBeforeStartLocation.rawValue|CGGradientDrawingOptions.DrawsAfterEndLocation.rawValue)
     
     
    /* The array of CGColorRef objects defining the color of each gradient
@@ -77,13 +147,14 @@ class OMRadialGradientLayer : OMLayer, Printable, DebugPrintable
         didSet {
             self.gradient = OMRadialGradientLayer.newGradient(self.colors as? [CGColorRef],locations: self.locations as? [CGFloat])
         }
+        
     }
     
     /* The kind of gradient that will be drawn. Default value is `radial' */
     
     var type : String! = kOMGradientLayerRadial
     
-    override init!(layer: AnyObject!) {
+    override init(layer: AnyObject) {
         super.init(layer: layer)
         if let other = layer as? OMRadialGradientLayer {
             
@@ -103,7 +174,7 @@ class OMRadialGradientLayer : OMLayer, Printable, DebugPrintable
         }
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder:aDecoder)
     }
 
@@ -120,7 +191,7 @@ class OMRadialGradientLayer : OMLayer, Printable, DebugPrintable
         self.allowsEdgeAntialiasing = true
     }
     
-    override class func needsDisplayForKey(event: String!) -> Bool
+    override class func needsDisplayForKey(event: String) -> Bool
     {
         if(event == OMRadialGradientLayerProperties.startCenter ||
             event == OMRadialGradientLayerProperties.startRadius ||
@@ -136,7 +207,7 @@ class OMRadialGradientLayer : OMLayer, Printable, DebugPrintable
     }
     
     
-    override func actionForKey(event: String!) -> CAAction!
+    override func actionForKey(event: String) -> CAAction?
     {
         if(event == OMRadialGradientLayerProperties.startCenter ||
             event == OMRadialGradientLayerProperties.startRadius ||
@@ -159,6 +230,38 @@ class OMRadialGradientLayer : OMLayer, Printable, DebugPrintable
         CGColorGetNumberOfComponents(color)
     }
     
+    
+//    override var bounds:CGRect
+//    {
+//        set(newValue) {
+//            if(!bounds.isEmpty)
+//            {
+//            let x = super.bounds.size.height / newValue.size.height
+//            let y = super.bounds.size.width / newValue.size.width
+//            
+//            
+//            let newBounds = CGRect(x: 0, y: 0, width: newValue.size.width * y, height: newValue.size.height * x)
+//            super.bounds = newBounds
+//            
+//            println("-> \(bounds)")
+//            }
+//            else
+//            {
+//                super.bounds = newValue
+//            }
+//            
+////            let invrad = 1.0 / Double(self.bounds.size.min())
+////            radius_start  = Double(startRadius) * invrad
+////            radius_end  = Double(endRadius) * invrad
+////            println("-> \(radius_start)")
+////            println("-> \(radius_end)")
+////            
+////            startCenter   = newValue.size.center()
+////            endCenter     = newValue.size.center()
+//        }
+//        
+//        get { return super.bounds }
+//    }
     
     private func updateGradientWithColors()
     {
@@ -284,7 +387,42 @@ class OMRadialGradientLayer : OMLayer, Printable, DebugPrintable
     }
     
     
-    override func drawInContext(ctx: CGContext!) {
+    // Returns an appropriate starting point for the demonstration of a linear gradient
+    func demoLGStart(bounds:CGRect) -> CGPoint
+    {
+        return CGPointMake(bounds.origin.x, bounds.origin.y + bounds.size.height * 0.25);
+    }
+    
+    // Returns an appropriate ending point for the demonstration of a linear gradient
+    func demoLGEnd(bounds:CGRect) -> CGPoint
+    {
+        return CGPointMake(bounds.origin.x, bounds.origin.y + bounds.size.height * 0.75);
+    }
+    
+    
+    // Returns the center point for for the demonstration of the radial gradient
+    func demoRGCenter(bounds:CGRect) -> CGPoint
+    {
+        return CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+    }
+    
+    
+    // Returns an appropriate inner radius for the demonstration of the radial gradient
+    func RGInnerRadius(bounds:CGRect) -> CGFloat
+    {
+        let r = bounds.size.width < bounds.size.height ? bounds.size.width : bounds.size.height;
+        return r * 0.125;
+    }
+    
+    // Returns an appropriate outer radius for the demonstration of the radial gradient
+    func RGOuterRadius(bounds:CGRect) -> CGFloat
+    {
+        let r = bounds.size.width < bounds.size.height ? bounds.size.width : bounds.size.height;
+        return r * 0.5;
+    }
+    
+    
+    override func drawInContext(ctx: CGContext) {
     
         super.drawInContext(ctx)
         
@@ -304,18 +442,27 @@ class OMRadialGradientLayer : OMLayer, Printable, DebugPrintable
         }
         
         
-        if(self.type == kOMGradientLayerRadial){
+        if (self.type == kOMGradientLayerRadial) {
             
             //
             // Draw the radial gradient
             //
           
+            let startX = bounds.size.width  * startCenterRatio.x;
+            let startY = bounds.size.height * startCenterRatio.y;
+            
+            let endX = bounds.size.width  * endCenterRatio.x;
+            let endY = bounds.size.height * endCenterRatio.y;
+            
+            let minRadius = startRadius * CGFloat(startRadiusRatio);
+            let maxRadius = endRadius * CGFloat(endRadiusRatio);
+            
             CGContextDrawRadialGradient(ctx,
                 gradient,
-                startCenter,
-                startRadius,
-                endCenter,
-                endRadius,
+                CGPoint(x: startX,y: startY),
+                minRadius ,
+                CGPoint(x: endX,y: endY),
+                maxRadius ,
                 options);
             
         }
@@ -323,7 +470,7 @@ class OMRadialGradientLayer : OMLayer, Printable, DebugPrintable
         {
             // Scaling transformation and keeping track of the inverse
             
-            let scaleT = CGAffineTransformMakeScale(2, 1.0);
+            let scaleT    = CGAffineTransformMakeScale(2, 1.0);
             let invScaleT = CGAffineTransformInvert(scaleT);
             
             // Extract the Sx and Sy elements from the inverse matrix
@@ -351,19 +498,19 @@ class OMRadialGradientLayer : OMLayer, Printable, DebugPrintable
         }
     }
     
-    override var debugDescription: String
-    {
+    override var debugDescription: String {
         get {
             return self.description
         }
     }
     
-    override var description:String
-    {
+    override var description:String {
+        
         get {
-            if(self.type == kOMGradientLayerRadial || self.type == kOMGradientLayerOval) {
+            
+            if (self.type == kOMGradientLayerRadial || self.type == kOMGradientLayerOval) {
                 
-                var str:String = "\(self.type)"
+                var str:String =  super.description + "type: \(self.type)"
                 
                 if (locations != nil) {
                     str += "\(locations)"
@@ -373,17 +520,18 @@ class OMRadialGradientLayer : OMLayer, Printable, DebugPrintable
                     str += "\(colors)"
                 }
                 
-                str += super.description +  " center from : \(startCenter) to \(endCenter) , radius from : \(startRadius) to \(endRadius)"
-                
-                if  (( self.options & CGGradientDrawingOptions(kCGGradientDrawsAfterEndLocation) ) != 0 )  {
+                str += " center from : \(startCenter) to \(endCenter) , radius from : \(startRadius) to \(endRadius)"
+
+                if  (self.extendsPastEnd)  {
                     str += " (Draws after end location)"
-                } else {
+                }
+                if  (self.extendsPastStart)  {
                     str += " (Draws before start location)"
                 }
                 
                 return str
                 
-            }else{
+            } else {
                 return super.description
             }
         }

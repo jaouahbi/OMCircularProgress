@@ -36,16 +36,7 @@ import CoreText
 import CoreFoundation
 
 
-//
-//  NSNumber extension.
-//
 
-extension NSNumber {
-    func format(formatStyle:CFNumberFormatterStyle) -> String! {
-        let fmt = CFNumberFormatterCreate(nil, CFLocaleCopyCurrent(),formatStyle)
-        return CFNumberFormatterCreateStringWithNumber(nil,fmt,self)  as String
-    }
-}
 
 //
 // Name of the animatable properties
@@ -55,7 +46,11 @@ private struct OMNumberLayerProperties {
     static var Number = "number"
 }
 
-class OMNumberLayer : OMTextLayer
+//
+// CALayer object
+//
+
+@objc class OMNumberLayer : OMTextLayer
 {
     // MARK: properties
     
@@ -88,7 +83,7 @@ class OMNumberLayer : OMTextLayer
         setAlignmentMode(alignmentMode)
     }
     
-    override init!(layer: AnyObject!) {
+    override init(layer: AnyObject) {
         super.init(layer: layer)
         if let other = layer as? OMNumberLayer {
             self.formatStyle =  other.formatStyle
@@ -96,23 +91,24 @@ class OMNumberLayer : OMTextLayer
         }
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder:aDecoder)
     }
     
-    //
-    // Calculate the frame size of the NSNumber to represent.
-    //
-    // NOTE: the max. percent representation is 1
-    //
+    /**
+    Calculate the frame size of the NSNumber to represent.
     
+    :note: the max. percent representation is 1
+    
+    - parameter number: the number
+    
+    - returns: return the frame size needed for represent the string
+    */
     func frameSizeLengthFromNumber(number:NSNumber) -> CGSize {
-        return frameSizeLengthFromString(number.format(self.formatStyle))
+        return frameSizeLengthFromAttributedString(NSAttributedString(string : number.format(self.formatStyle)))
     }
-
     
-    func animateNumber(fromValue:Double,toValue:Double,beginTime:NSTimeInterval,duration:NSTimeInterval,delegate:AnyObject?)
-    {        
+    func animateNumber(fromValue:Double,toValue:Double,beginTime:NSTimeInterval,duration:NSTimeInterval,delegate:AnyObject?) {
         self.animateKeyPath(OMNumberLayerProperties.Number,
             fromValue:fromValue,
             toValue:toValue,
@@ -123,23 +119,21 @@ class OMNumberLayer : OMTextLayer
     
     // MARK: overrides
     
-    override class func needsDisplayForKey(event: String!) -> Bool {
+    override class func needsDisplayForKey(event: String) -> Bool {
         if (event == OMNumberLayerProperties.Number) {
             return true
         }
         return super.needsDisplayForKey(event)
     }
     
-    override func actionForKey(event: String!) -> CAAction! {
+    override func actionForKey(event: String) -> CAAction? {
         if (event == OMNumberLayerProperties.Number) {
             return animationActionForKey(event);
         }
         return super.actionForKey(event)
     }
     
-    override func drawInContext(context: CGContext!) {
-        
-        super.drawInContext(context)
+    override func drawInContext(context: CGContext) {
         
         if let presentationLayer: AnyObject = self.presentationLayer() {
             self.number = presentationLayer.number

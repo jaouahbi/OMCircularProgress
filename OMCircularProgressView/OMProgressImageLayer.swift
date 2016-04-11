@@ -44,12 +44,15 @@ public enum OMProgressType : Int
     case Radial
 }
 
-private struct OMProgressImageLayerProperties
-{
+//
+// Name of the animatable properties
+//
+
+private struct OMProgressImageLayerProperties {
     static var Progress = "progress"
 }
 
-class OMProgressImageLayer: OMLayer
+@objc class OMProgressImageLayer : OMLayer
 {
     // progress showing image or hiding
     
@@ -117,7 +120,7 @@ class OMProgressImageLayer: OMLayer
         self.image = image
     }
     
-    override init!(layer: AnyObject!) {
+    override init(layer: AnyObject) {
         super.init(layer: layer)
         if let other = layer as? OMProgressImageLayer {
             self.progress        = other.progress
@@ -130,11 +133,11 @@ class OMProgressImageLayer: OMLayer
         }
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder:aDecoder)
     }
     
-    override class func needsDisplayForKey(event: String!) -> Bool
+    override class func needsDisplayForKey(event: String) -> Bool
     {
         if(event == OMProgressImageLayerProperties.Progress){
             return true
@@ -142,7 +145,7 @@ class OMProgressImageLayer: OMLayer
         return super.needsDisplayForKey(event)
     }
     
-    override func actionForKey(event: String!) -> CAAction!
+    override func actionForKey(event: String) -> CAAction?
     {
         if(event == OMProgressImageLayerProperties.Progress){
             return animationActionForKey(event);
@@ -241,7 +244,7 @@ class OMProgressImageLayer: OMLayer
     
     // MARK: overrides
     
-    override func drawInContext(context: CGContext!) {
+    override func drawInContext(context: CGContext) {
         
         super.drawInContext(context)
         

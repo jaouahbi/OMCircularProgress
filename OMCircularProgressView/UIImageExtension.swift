@@ -135,7 +135,7 @@ extension UIImage
         UIGraphicsBeginImageContextWithOptions(CGSizeMake(1, 256), true, 0.0);
         
         let gradientContext = UIGraphicsGetCurrentContext();
-        var colors:[CGFloat] = [0.0, 1.0, 1.0, 1.0];
+        let colors:[CGFloat] = [0.0, 1.0, 1.0, 1.0];
         let colorSpace = CGColorSpaceCreateDeviceGray();
         let gradient = CGGradientCreateWithColorComponents(colorSpace, colors, nil, 2);
         let gradientStartPoint = CGPointMake(0, 0);
@@ -144,13 +144,13 @@ extension UIImage
         CGContextDrawLinearGradient(gradientContext, gradient,
             gradientStartPoint,
             gradientEndPoint,
-            CGGradientDrawingOptions(kCGGradientDrawsAfterEndLocation));
+            CGGradientDrawingOptions.DrawsAfterEndLocation);
         
         let sharedMask = CGBitmapContextCreateImage(gradientContext);
         
         UIGraphicsEndImageContext();
         
-        return sharedMask;
+        return sharedMask!;
     }
     
     func reflectedImageWithScale(scale:CGFloat) -> UIImage
@@ -190,7 +190,7 @@ extension UIImage
         UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.size.width, self.size.height + reflectionOffset * 2.0), false, 0.0);
         
         //draw reflection
-        reflection.drawAtPoint(CGPointMake(0.0, reflectionOffset + self.size.height + gap),blendMode:kCGBlendModeNormal,alpha:alpha);
+        reflection.drawAtPoint(CGPointMake(0.0, reflectionOffset + self.size.height + gap),blendMode:CGBlendMode.Normal,alpha:alpha);
         
         //draw image
         self.drawAtPoint(CGPointMake(0.0, reflectionOffset));
@@ -240,6 +240,7 @@ extension UIImage {
     func addOutterShadowColor(color:UIColor = UIColor.darkGrayColor(),blurSize: CGFloat = 6.0) -> UIImage? {
 
         let offset = CGSize(width: blurSize*0.5,height: -blurSize*0.5)
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedLast.rawValue).rawValue
         
         let shadowContext : CGContextRef = CGBitmapContextCreate( nil,
             Int(self.size.width * scale + blurSize),
@@ -247,7 +248,7 @@ extension UIImage {
             CGImageGetBitsPerComponent(self.CGImage),
             0,
             CGImageGetColorSpace(self.CGImage),
-            CGBitmapInfo(CGImageAlphaInfo.PremultipliedLast.rawValue))
+            bitmapInfo)!
         
         CGContextSetShadowWithColor(shadowContext,
             offset,
@@ -257,7 +258,7 @@ extension UIImage {
         CGContextDrawImage(shadowContext,
             CGRect(x: 0, y: 0, width: self.size.width * scale , height: self.size.height * scale), self.CGImage)
         
-        return UIImage(CGImage: CGBitmapContextCreateImage(shadowContext), scale:scale, orientation: imageOrientation)
+        return UIImage(CGImage: CGBitmapContextCreateImage(shadowContext)!, scale:scale, orientation: imageOrientation)
     }
 }
 
@@ -302,10 +303,10 @@ extension UIImage
         CGContextFillRect(ctx, imageRect);
         
         // Draw the luminosity on top of the white background to get grayscale
-        self.drawInRect(imageRect,blendMode:kCGBlendModeLuminosity,alpha:1.0);
+        self.drawInRect(imageRect,blendMode:CGBlendMode.Luminosity,alpha:1.0);
         
         // Apply the source image's alpha
-        self.drawInRect(imageRect,blendMode:kCGBlendModeDestinationIn,alpha:1.0);
+        self.drawInRect(imageRect,blendMode:CGBlendMode.DestinationIn,alpha:1.0);
         
         let grayscaleImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
@@ -317,7 +318,7 @@ extension UIImage
         UIGraphicsBeginImageContextWithOptions(self.size, false, 0.0);
         
         self.drawAtPoint(CGPointZero)
-        other.drawAtPoint(CGPointZero, blendMode:kCGBlendModeNormal, alpha:alpha)
+        other.drawAtPoint(CGPointZero, blendMode:CGBlendMode.Normal, alpha:alpha)
         
         let newImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();

@@ -83,10 +83,76 @@ for i in 5...10 {
 }
 
 */
-class OMLayer: CALayer {
 
+//@objc class CALayerWithHitTest : CALayer
+//{
+//    override func containsPoint(p:CGPoint) -> Bool
+//    {
+//        let boundsContains = CGRectContainsPoint(self.bounds, p); // must be BOUNDS because Apple pre-converts the point to local co-ords before running the test
+//        
+//        if( boundsContains )
+//        {
+//            var atLeastOneChildContainsPoint:Bool = false;
+//            
+//            for (index, subLayer) in enumerate(self.sublayers)
+//            {
+//                let curLayer = subLayer as! CALayerWithHitTest
+//                
+//                // must pre-convert the point to local co-ords before running the test because Apple defines "containsPoint" in that fashion
+//                
+//                let pointInSubLayer = self.convertPoint(p,toLayer:curLayer)
+//                
+//                if( subLayer.containsPoint(pointInSubLayer)) {
+//                    atLeastOneChildContainsPoint = true;
+//                    break;
+//                }
+//            }
+//            
+//            return atLeastOneChildContainsPoint;
+//        }
+//        
+//        return false;
+//    }
+//}
+
+
+
+
+
+
+/*
+
+/** Shadow properties. **/
+var shadowColor: CGColor!
+
+/* The opacity of the shadow. Defaults to 0. Specifying a value outside the
+* [0,1] range will give undefined results. Animatable. */
+
+var shadowOpacity: Float
+
+/* The shadow offset. Defaults to (0, -3). Animatable. */
+
+var shadowOffset: CGSize
+
+/* The blur radius used to create the shadow. Defaults to 3. Animatable. */
+
+var shadowRadius: CGFloat
+
+/* When non-null this path defines the outline used to construct the
+* layer's shadow instead of using the layer's composited alpha
+* channel. The path is rendered using the non-zero winding rule.
+* Specifying the path explicitly using this property will usually
+* improve rendering performance, as will sharing the same path
+* reference across multiple layers. Defaults to null. Animatable. */
+
+var shadowPath: CGPath!
+
+*/
+
+@objc class OMLayer : CALayer
+{
     
-//layer?.layoutManager = CAConstraintLayoutManager.layoutManager()    
+//layer?.layoutManager = CAConstraintLayoutManager.layoutManager()
 //    documentLayer.addConstraint(CAConstraint(attribute: CAConstraintAttribute.Width, relativeTo: "superlayer", attribute: CAConstraintAttribute.Width, scale: 0.5, offset: 0.0))
 //    documentLayer.addConstraint(CAConstraint(attribute: CAConstraintAttribute.Height, relativeTo: "superlayer", attribute: CAConstraintAttribute.Height, scale: 0.5, offset: 0.0))
 //    documentLayer.addConstraint(CAConstraint(attribute: CAConstraintAttribute.MidX, relativeTo: "superlayer", attribute: CAConstraintAttribute.MidX, scale: 1.0, offset: 0.0))
@@ -105,8 +171,8 @@ class OMLayer: CALayer {
         }
     }
     
-    override init()
-    {
+    override init() {
+        
         super.init()
         
         self.contentsScale = UIScreen.mainScreen().scale
@@ -119,85 +185,29 @@ class OMLayer: CALayer {
         self.allowsGroupOpacity  = false
         
         // DEBUG
-        //self.borderColor = UIColor.blueColor().CGColor!
+        //self.borderColor = UIColor.yellowColor().CGColor
         //self.borderWidth = 0.5
         
         // Disable animating view refreshes
-        //self.actions = ["contents" as! NSString : NSNull()]
+        
+        self.actions = [
+            "position"      :    NSNull(),
+            "bounds"        :    NSNull(),
+            "contents"      :    NSNull(),
+            "shadowColor"   :    NSNull(),
+            "shadowOpacity" :    NSNull(),
+            "shadowOffset"  :    NSNull() ,
+            "shadowRadius"  :    NSNull()]
     }
     
     
-    override init!(layer: AnyObject!) {
+    override init(layer: AnyObject) {
         super.init(layer: layer)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder:aDecoder)
     }
-    
-    func setPlainShadow() {
-        shadowColor = UIColor.blackColor().CGColor
-        shadowOffset = CGSize(width: 0, height: 10)
-        shadowOpacity = 0.4
-        shadowRadius = 5
-    }
-    
-    func setHoverShadow() {
-        let size = self.bounds.size
-        let width = size.width
-        let height = size.height
-        
-        var ovalRect = CGRect(x: 5, y: height + 5, width: width - 10, height: 15)
-        var path = UIBezierPath(roundedRect: ovalRect, cornerRadius: 10)
-        
-
-        shadowPath = path.CGPath
-        shadowColor = UIColor.blackColor().CGColor
-        shadowOpacity = 0.2
-        shadowRadius = 5
-        shadowOffset = CGSize(width: 0, height: 0)
-    }
-    
-    func setCurvedShadow() {
-        let size = bounds.size
-        let width = size.width
-        let height = size.height
-        let depth = CGFloat(11.0)
-        let lessDepth = 0.8 * depth
-        let curvyness = CGFloat(5)
-        let radius = CGFloat(1)
-        
-        var path = UIBezierPath()
-        
-        // top left
-        path.moveToPoint(CGPoint(x: radius, y: height))
-        
-        // top right
-        path.addLineToPoint(CGPoint(x: width - 2*radius, y: height))
-        
-        // bottom right + a little extra
-        path.addLineToPoint(CGPoint(x: width - 2*radius, y: height + depth))
-        
-        // path to bottom left via curve
-        path.addCurveToPoint(CGPoint(x: radius, y: height + depth),
-            controlPoint1: CGPoint(x: width - curvyness, y: height + lessDepth - curvyness),
-            controlPoint2: CGPoint(x: curvyness, y: height + lessDepth - curvyness))
-        
-        shadowPath = path.CGPath
-        shadowColor = UIColor.blackColor().CGColor
-        shadowOpacity = 0.3
-        shadowRadius = radius
-        shadowOffset = CGSize(width: 0, height: -3)
-    }
-    
-//    override var bounds : CGRect
-//    {
-//        didSet
-//        {
-//            super.bounds = bounds
-//            setCurvedShadow()
-//        }
-//    }
     
     
     func flipContextIfNeed(context:CGContext!) {
@@ -214,7 +224,7 @@ class OMLayer: CALayer {
     {
         let animation = CABasicAnimation(keyPath: event)
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-        animation.fromValue = self.presentationLayer().valueForKey(event);
+        animation.fromValue = self.presentationLayer()!.valueForKey(event);
         return animation
     }
     
@@ -245,8 +255,6 @@ class OMLayer: CALayer {
         
         self.addAnimation(animation, forKey:keyPath)
         
-        ///
-        
         self.setValue(toValue,forKey:keyPath)
     }
     
@@ -260,22 +268,24 @@ class OMLayer: CALayer {
         }
     }
     
-    override func drawInContext(ctx: CGContext!) {
+    override func drawInContext(ctx: CGContext) {
         
         // Clear the layer
         
         CGContextClearRect(ctx, CGContextGetClipBoundingBox(ctx));
+        
+        //applyMaskToContext(ctx)
     }
     
     //DEBUG
     override func display() {
         if ( self.hidden ) {
-            println("WARNING: hidden layer. \(self.name)")
+            print("[!] WARNING: hidden layer. \(self.name)")
         } else {
             if(self.bounds.isEmpty) {
-                println("WARNING: empty layer. \(self.name)")
+                print("[!]WARNING: empty layer. \(self.name)")
             }else{
-              super.display()
+                super.display()
             }
         }
     }
