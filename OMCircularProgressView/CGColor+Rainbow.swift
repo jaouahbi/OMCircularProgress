@@ -1,3 +1,4 @@
+
 //
 //    Copyright 2015 - Jorge Ouahbi
 //
@@ -15,21 +16,20 @@
 //
 
 //
-//  UIColor+Rainbow.swift
+//  CGColor+Rainbow.swift
 //
-//  Created by Jorge Ouahbi on 13/4/16.
-//  Copyright © 2016 Jorge Ouahbi. All rights reserved.
+//  Created by Jorge Ouahbi on 25/11/15.
+//  Copyright © 2015 Jorge Ouahbi. All rights reserved.
 //
 
-import UIKit
+import CoreGraphics
 
-extension UIColor
+extension CGColor
 {
-    class func rainbow(numberOfSteps:Int,hue:Double = 0.0) -> Array<UIColor>!{
+    class func rainbow(numberOfSteps:Int, hue:Double = 0.0) ->  Array<CGColorRef>!{
+        var colors:Array<CGColorRef> = []
         
-        var colors:Array<UIColor> = []
-        
-        let iNumberOfSteps =  1.0 / Double(numberOfSteps)
+        let iNumberOfSteps = 1.0 / Double(numberOfSteps)
         
         for (var hue:Double = hue; hue < 1.0; hue += iNumberOfSteps)
         {
@@ -42,10 +42,10 @@ extension UIColor
                                 brightness:CGFloat(1.0),
                                 alpha:CGFloat(1.0));
             
-            colors.append(color)
+            colors.append(color.CGColor)
         }
         
-        // assert(colors.count == numberOfSteps, "Unexpected number of rainbow colors \(colors.count). Expecting \(numberOfSteps)")
+        //assert(colors.count == numberOfSteps, "Unexpected number of rainbow colors \(colors.count). Expecting \(numberOfSteps)")
         
         return colors
     }

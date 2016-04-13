@@ -137,7 +137,7 @@ class ViewController: UIViewController {
         
         theProgressView.thicknessRatio    = 1.0      // 100%
 
-        let colors : [UIColor] = UIColor.rainbowColors(4) as [UIColor]
+        let colors : [UIColor] = UIColor.rainbow(4,hue: 0) as [UIColor]
         
         let stepAngle = (M_PI * 2.0) / Double(colors.count)
         
@@ -197,7 +197,7 @@ class ViewController: UIViewController {
         
         // Colors, angles and other steps configurations.
         
-        let colors : [UIColor] = UIColor.rainbowColors(2, hue: 0) as [UIColor]
+        let colors : [UIColor] = UIColor.rainbow(2, hue: 0) as [UIColor]
         
         let stepAngle = (M_PI * 2.0) / Double(colors.count)
         
@@ -238,7 +238,7 @@ class ViewController: UIViewController {
         
         theProgressView.thicknessRatio  = 0.7      // 70%
     
-        let colors : [UIColor] = UIColor.rainbowColors(25, hue: 0) as [UIColor]
+        let colors : [UIColor] = UIColor.rainbow(25, hue: 0) as [UIColor]
         
         let stepAngle = (M_PI * 2.0) / Double(colors.count)
         
@@ -261,7 +261,7 @@ class ViewController: UIViewController {
         
      //   theProgressView.separatorRatio     = 0.1
         
-        let colors : [UIColor] = UIColor.rainbowColors(16, hue: 0)
+        let colors : [UIColor] = UIColor.rainbow(16, hue: 0)
         
         let stepAngle = (M_PI * 2.0) / Double(colors.count)
         

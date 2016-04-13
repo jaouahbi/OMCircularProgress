@@ -16,7 +16,7 @@
 //
 
 //
-//  UIColorExtension.swift
+//  UIColor+Rainbow.swift
 //
 //  Created by Jorge Ouahbi on 25/11/15.
 //  Copyright © 2015 Jorge Ouahbi. All rights reserved.
