@@ -24,59 +24,6 @@
 import UIKit
 
 
-
-extension UIColor
-{
-    class func rainbowColors(numberOfSteps:Int) -> NSArray!{
-        
-        let colors = NSMutableArray()
-        
-        let iNumberOfSteps =  1.0 / Double(numberOfSteps)
-        
-        for (var hue:Double = 0.0; hue < 1.0; hue += iNumberOfSteps)
-        {
-            if(colors.count == numberOfSteps){
-                break
-            }
-            
-            let color = UIColor(hue: CGFloat(hue),
-                saturation:CGFloat(1.0),
-                brightness:CGFloat(1.0),
-                alpha:CGFloat(1.0));
-            
-            colors.addObject(color)
-        }
-        
-       // assert(colors.count == numberOfSteps, "Unexpected number of rainbow colors \(colors.count). Expecting \(numberOfSteps)")
-        
-        return colors
-    }
-    
-    class func rainbowCGColors(numberOfSteps:Int) -> NSArray!{
-        let colors = NSMutableArray()
-        
-        let iNumberOfSteps = 1.0 / Double(numberOfSteps)
-        
-        for (var hue:Double = 0.0; hue < 1.0; hue += iNumberOfSteps)
-        {
-            if(colors.count == numberOfSteps){
-                break
-            }
-            
-            let color = UIColor(hue: CGFloat(hue),
-                                saturation:CGFloat(1.0),
-                                brightness:CGFloat(1.0),
-                                alpha:CGFloat(1.0));
-            
-            colors.addObject(color.CGColor)
-        }
-        
-        //assert(colors.count == numberOfSteps, "Unexpected number of rainbow colors \(colors.count). Expecting \(numberOfSteps)")
-        
-        return colors
-    }
-}
-
 class ViewController: UIViewController {
     
     @IBOutlet weak var progressViewMood: OMCircularProgress!
@@ -145,17 +92,17 @@ class ViewController: UIViewController {
         
         dispatch_after(time, dispatch_get_main_queue()) {
             
-            for(var i:Int = 0;i < self.progressViewSimple.numberOfSteps; i++) {
+            for i:Int in 0 ..< self.progressViewSimple.numberOfSteps {
                 self.progressViewSimple.setProgressAtIndex(i, progressAtIndex: [0.2,0.7,0.6,0.9][Int(i)])
             }
             
-            self.progressViewImagesWithDifferentsSize.progress = OMCompleteProgress
-            self.progressViewMood.progress = OMCompleteProgress
-            self.progressViewGradientMask.progress = OMCompleteProgress
-            self.progressViewFlower.progress = OMCompleteProgress
+            self.progressViewImagesWithDifferentsSize.progress  = OMCompleteProgress
+            self.progressViewMood.progress                      = OMCompleteProgress
+            self.progressViewGradientMask.progress              = OMCompleteProgress
+            self.progressViewFlower.progress                    = OMCompleteProgress
         }
         
-        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("timerProc"), userInfo: nil, repeats: true)
+        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(ViewController.timerProc), userInfo: nil, repeats: true)
     }
     
     
@@ -190,11 +137,11 @@ class ViewController: UIViewController {
         
         theProgressView.thicknessRatio    = 1.0      // 100%
 
-        let colors : [UIColor] = UIColor.rainbowColors(4) as! [UIColor]
+        let colors : [UIColor] = UIColor.rainbowColors(4) as [UIColor]
         
         let stepAngle = (M_PI * 2.0) / Double(colors.count)
         
-        for(var i = 0;i < colors.count ;i++) {
+        for i in 0 ..< colors.count  {
             
             /// Create the step.
             
@@ -204,7 +151,7 @@ class ViewController: UIViewController {
             
             let gradientLayer  = OMRadialGradientLayer(type:kOMGradientLayerRadial)
             let curColor = colors[i] as UIColor
-              gradientLayer.bounds      = theProgressView.bounds
+            gradientLayer.frame      = theProgressView.bounds
             gradientLayer.colors  = [curColor.CGColor,curColor.next()!.CGColor]
             
             gradientLayer.startCenter = theProgressView.bounds.size.center()
@@ -250,17 +197,18 @@ class ViewController: UIViewController {
         
         // Colors, angles and other steps configurations.
         
-        let colors : [UIColor] = UIColor.rainbowColors(2) as! [UIColor]
+        let colors : [UIColor] = UIColor.rainbowColors(2, hue: 0) as [UIColor]
         
         let stepAngle = (M_PI * 2.0) / Double(colors.count)
         
-        for(var i = 0;i < colors.count ;i++) {
+        for i in 0 ..< colors.count  {
             
             // Create the step.
             
             let step = theProgressView.newStep( stepAngle, color:colors[i] as UIColor)
             
-            let gradientLayer = CAGradientLayer()
+            let gradientLayer   = CAGradientLayer()
+            gradientLayer.frame = theProgressView.bounds
  
             let curColor = colors[i] as UIColor
         
@@ -290,11 +238,11 @@ class ViewController: UIViewController {
         
         theProgressView.thicknessRatio  = 0.7      // 70%
     
-        let colors : [UIColor] = UIColor.rainbowColors(25) as! [UIColor]
+        let colors : [UIColor] = UIColor.rainbowColors(25, hue: 0) as [UIColor]
         
         let stepAngle = (M_PI * 2.0) / Double(colors.count)
         
-        for(var i = 0;i < colors.count ;i++) {
+        for i in 0 ..< colors.count  {
             
             // Create the step.
             
@@ -313,11 +261,11 @@ class ViewController: UIViewController {
         
      //   theProgressView.separatorRatio     = 0.1
         
-        let colors : [UIColor] = UIColor.rainbowColors(16) as! [UIColor]
+        let colors : [UIColor] = UIColor.rainbowColors(16, hue: 0)
         
         let stepAngle = (M_PI * 2.0) / Double(colors.count)
         
-        for(var i = 0;i < colors.count ;i++) {
+        for i in 0 ..< colors.count  {
             
             let step = theProgressView.newStep( stepAngle, color:colors[i] as UIColor)!
         
@@ -368,7 +316,7 @@ class ViewController: UIViewController {
         
         let stepAngle = (M_PI * 2.0) / Double(strings.count)
         
-        for(var i = 0;i < strings.count ;i++) {
+        for i in 0 ..< strings.count {
             
             /// Create the step.
             
@@ -393,22 +341,18 @@ class ViewController: UIViewController {
             theStep.imageAlign              = .AlignBorder
             theStep.imageOrientationToAngle = true
 
+            // configure the gradient
+            let gradientLayer       = CAGradientLayer()
+            let curColor            = colors[i] as UIColor
             
-            // Configure the gradient
+            gradientLayer.frame     = theProgressView.bounds
+            gradientLayer.colors    = [curColor.next()!.CGColor,curColor.CGColor]
             
-            let gradientLayer  = CAGradientLayer()
-            let curColor = colors[i] as UIColor
-            
-            
-            gradientLayer.bounds     = theProgressView.bounds
-
-            gradientLayer.colors  = [curColor.next()!.CGColor,curColor.CGColor]
-            
-            // Simple vertical axial gradient
-            
+            // vertical axial gradient
             gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
-            gradientLayer.endPoint   =  CGPoint(x: 0.5, y: 1.0)
+            gradientLayer.endPoint   = CGPoint(x: 0.5, y: 1.0)
             
+            // mask it
             theStep.maskLayer        = gradientLayer
             
         }
@@ -457,7 +401,7 @@ class ViewController: UIViewController {
         
         let clockAngle = (M_PI * 2.0) / Double(romanNumbers.count)
         
-        for(var i = 0;i < romanNumbers.count ;i++) {
+        for i in 0 ..< romanNumbers.count  {
             
             // Create the step.
             
@@ -483,7 +427,7 @@ class ViewController: UIViewController {
             
             
             let gradientLayer           = OMRadialGradientLayer(type:kOMGradientLayerRadial)
-            gradientLayer.bounds        = theProgressView.bounds
+            gradientLayer.frame        = theProgressView.bounds
             
             gradientLayer.colors        = [color.CGColor,color.next()!.CGColor]
             
@@ -493,9 +437,7 @@ class ViewController: UIViewController {
             gradientLayer.startRadius   = theProgressView.innerRadius
             gradientLayer.endRadius     = theProgressView.outerRadius
 
-            
-            // Set the mask
-            
+            // set the mask
             step.maskLayer              = gradientLayer
             
         }
@@ -527,7 +469,7 @@ class ViewController: UIViewController {
         
         let clockAngle = (M_PI * 2.0) / Double(minutesPerHour)
         
-        for(var i = 0;i < minutesPerHour  ;i++) {
+        for i in 0 ..< minutesPerHour   {
             
             // Create the step.
             
@@ -554,7 +496,7 @@ class ViewController: UIViewController {
             
             
             let gradientLayer         = OMRadialGradientLayer(type:kOMGradientLayerRadial)
-            gradientLayer.bounds      = theProgressView.bounds
+            gradientLayer.frame       = theProgressView.bounds
             gradientLayer.colors      = [color.CGColor,color.next()!.CGColor]
             
             gradientLayer.startCenter = theProgressView.bounds.size.center()
@@ -563,7 +505,7 @@ class ViewController: UIViewController {
             gradientLayer.startRadius = theProgressView.innerRadius
             gradientLayer.endRadius   = theProgressView.outerRadius
    
-            
+
             step.maskLayer = gradientLayer
             
         }
@@ -595,7 +537,7 @@ class ViewController: UIViewController {
         
         let clockAngle = (M_PI * 2.0) / Double(minutesPerHour)
         
-        for(var i = 0;i < minutesPerHour  ;i++) {
+        for _ in 0 ..< minutesPerHour   {
             
             // Create the step.
             
@@ -604,7 +546,7 @@ class ViewController: UIViewController {
             step.wellColor = nil;
             
             let gradientLayer           = OMRadialGradientLayer(type:kOMGradientLayerRadial)
-            gradientLayer.bounds        = theProgressView.bounds
+            gradientLayer.frame         = theProgressView.bounds
             gradientLayer.colors        = [color.CGColor,color.next()!.CGColor]
             
             gradientLayer.startCenter = theProgressView.bounds.size.center()

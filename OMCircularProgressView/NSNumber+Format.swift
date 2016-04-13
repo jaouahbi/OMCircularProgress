@@ -13,19 +13,23 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 //
+//
 
+//  NSNumber+Format.swift
 //
-//  CATransform3DExtension.swift
-//
-//  Created by Jorge Ouahbi on 25/11/15.
+//  Created by Jorge Ouaubi on 26/11/15.
 //  Copyright © 2015 Jorge Ouahbi. All rights reserved.
 //
 
 import UIKit
 
+//
+//  NSNumber extension.
+//
 
-public extension CATransform3D {
-    func affine() -> CGAffineTransform {
-        return CATransform3DGetAffineTransform(self)
+extension NSNumber {
+    func format(formatStyle:CFNumberFormatterStyle,locale:CFLocale = CFLocaleCopyCurrent()) -> String! {
+        let fmt = CFNumberFormatterCreate( kCFAllocatorDefault , locale,formatStyle)
+        return CFNumberFormatterCreateStringWithNumber(nil,fmt,self)  as String
     }
 }

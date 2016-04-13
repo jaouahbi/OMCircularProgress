@@ -29,7 +29,7 @@ let DEBUG_NO_WELL = false
 let DEBUG_NO_TEXT = false
 let DEBUG_NO_IMAGES = false
 let DEBUG_ANIMATIONS = false
-let DEBUG_VERBOSE = true
+let DEBUG_VERBOSE = false
 let DEBUG_MASK = false
 let DEBUG_ANGLES = true
 
@@ -91,7 +91,7 @@ enum OMAlign : Int
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-@IBDesignable class OMCircularProgress: UIControl, CustomDebugStringConvertible {
+@IBDesignable class OMCircularProgress: UIControl{
     
     /// MARK: Contructors
     

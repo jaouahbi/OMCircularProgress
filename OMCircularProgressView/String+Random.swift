@@ -1,3 +1,4 @@
+
 //
 //    Copyright 2015 - Jorge Ouahbi
 //
@@ -14,18 +15,30 @@
 //   limitations under the License.
 //
 
+
 //
-//  CATransform3DExtension.swift
+//  String+Random.swift
 //
-//  Created by Jorge Ouahbi on 25/11/15.
+//  Created by Jorge Ouahbi on 21/11/15.
 //  Copyright © 2015 Jorge Ouahbi. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-
-public extension CATransform3D {
-    func affine() -> CGAffineTransform {
-        return CATransform3DGetAffineTransform(self)
+extension String
+{
+    static func random(len : Int) -> String? {
+        
+        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        
+        let randomString : NSMutableString = NSMutableString(capacity: len)
+        
+        for  _ in 0 ..< len {
+            let length = UInt32 (letters.length)
+            let rand = arc4random_uniform(length)
+            randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
+        }
+        
+        return randomString as String
     }
 }
