@@ -30,7 +30,7 @@ Open a issue.
 
 ## Credits
 
-OMCircularProgressView is owned and maintained by the [Jorge Ouahbi](http://twitter.com/JorgeOuahbi).
+OMCircularProgressView is owned and maintained by the [Jorge Ouahbi](https://twitter.com/j0rge0m).
 
 ## License
 
