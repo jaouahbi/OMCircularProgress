@@ -1,6 +1,6 @@
 # OMCircularProgressView
 
-Custom circular progress view with steps, images, text and much more.
+Custom circular progress UIControl with steps, images, text and individual animations.
 
 [![Build Status](https://travis-ci.org/jaouahbi/OMCircularProgressView.svg?branch=master)](https://travis-ci.org/jaouahbi/OMCircularProgressView)
 
@@ -36,5 +36,6 @@ OMCircularProgressView is owned and maintained by the [Jorge Ouahbi](https://twi
 
 OMCircularProgressView is released under the APACHE 2.0 license. See LICENSE for details.
 
-![](https://github.com/jaouahbi/OMCircularProgressStepperView/blob/master/ScreenShot/ScreenShot.png)
+![](https://github.com/jaouahbi/OMCircularProgressStepperView/blob/master/ScreenShot/ScreenShot_1.png)
+![](https://github.com/jaouahbi/OMCircularProgressStepperView/blob/master/ScreenShot/ScreenShot_2.png)
 
