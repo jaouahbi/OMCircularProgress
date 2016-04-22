@@ -54,12 +54,12 @@ import UIKit
         }
     }
     
-    var maskLayer:CALayer?                                               // optional layer mask
+    var maskLayer:CALayer?                         // optional layer mask
     
     /// Well layer.
     
-    var wellLayer:OMShapeLayerWithHitTest?                               //
-    var wellColor:UIColor?  = OMWellProgressDefaultColor                 //
+    var wellLayer:OMShapeLayerWithHitTest?         //
+    var wellColor:UIColor?  = nil                  // without well color
     
     
     /// Text

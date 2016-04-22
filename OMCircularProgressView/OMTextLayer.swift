@@ -53,7 +53,6 @@ import CoreFoundation
     // containing integer, default 1: default ligatures, 0: no ligatures, 2: all ligatures
     //
     
-    var textPath:UIBezierPath?
     var fontLigature:NSNumber = NSNumber(int: 1)
     var fontStrokeColor:UIColor = UIColor.lightGrayColor()
     var fontStrokeWidth:Float   = -3
@@ -258,33 +257,25 @@ import CoreFoundation
             
             let attrStringWithAttributes = stringWithAttributes(string)
             
-            // Draw the string following a arc
+            // Create a path which bounds the area where you will be drawing text.
+            // The path need not be rectangular.
             
-            if ((self.textPath) != nil) {
-                
-                NSAttributedString(attributedString: attrStringWithAttributes).drawOnBezierPath(context,path: self.textPath);
-            }
-            else
-            {
-                // Create a path which bounds the area where you will be drawing text.
-                // The path need not be rectangular.
-                
-                let path = CGPathCreateMutable();
-                
-                CGPathAddRect(path, nil, bounds);
-                
-                // Create the framesetter with the attributed string.
-                
-                let framesetter = CTFramesetterCreateWithAttributedString(attrStringWithAttributes);
-                
-                // Create a frame.
-                
-                let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, nil);
-                
-                // Draw the specified frame in the given context.
-                
-                CTFrameDraw(frame, context);
-            }
+            let path = CGPathCreateMutable();
+            
+            CGPathAddRect(path, nil, bounds);
+            
+            // Create the framesetter with the attributed string.
+            
+            let framesetter = CTFramesetterCreateWithAttributedString(attrStringWithAttributes);
+            
+            // Create a frame.
+            
+            let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, nil);
+            
+            // Draw the specified frame in the given context.
+            
+            CTFrameDraw(frame, context);
+            
             
             CGContextRestoreGState(context);
         }

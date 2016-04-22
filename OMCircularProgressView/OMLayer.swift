@@ -28,7 +28,7 @@ import UIKit
 
 @objc class OMLayer : CALayer
 {
-    var maskingPath : CGPathRef?
+    //var maskingPath : CGPathRef?
     
     /// Radians
     
@@ -54,17 +54,6 @@ import UIKit
         // DEBUG
         //self.borderColor = UIColor.redColor().CGColor
         //self.borderWidth = 5
-        
-        // Disable animating view refreshes
-        
-        self.actions = [
-            "position"      :    NSNull(),
-            "bounds"        :    NSNull(),
-            "contents"      :    NSNull(),
-            "shadowColor"   :    NSNull(),
-            "shadowOpacity" :    NSNull(),
-            "shadowOffset"  :    NSNull() ,
-            "shadowRadius"  :    NSNull()]
     }
     
     
@@ -76,6 +65,17 @@ import UIKit
         super.init(coder:aDecoder)
     }
     
+    func disableAimatingRefreshes() {
+        // Disable animating view refreshes
+        self.actions = [
+            "position"      :    NSNull(),
+            "bounds"        :    NSNull(),
+            "contents"      :    NSNull(),
+            "shadowColor"   :    NSNull(),
+            "shadowOpacity" :    NSNull(),
+            "shadowOffset"  :    NSNull() ,
+            "shadowRadius"  :    NSNull()]
+    }
     
     func flipContextIfNeed(context:CGContext!) {
         // Core Text Coordinate System and Core Graphics are OSX style
@@ -88,13 +88,13 @@ import UIKit
     
     // Sets the clipping path of the given graphics context to mask the content.
     
-    func applyMaskToContext(ctx: CGContext!) {
-        
-        if let maskPath = self.maskingPath {
-            CGContextAddPath(ctx, maskPath);
-            CGContextClip(ctx);
-        }
-    }
+//    func applyMaskToContext(ctx: CGContext!) {
+//        
+//        if let maskPath = self.maskingPath {
+//            CGContextAddPath(ctx, maskPath);
+//            CGContextClip(ctx);
+//        }
+//    }
     
     override func drawInContext(ctx: CGContext) {
         

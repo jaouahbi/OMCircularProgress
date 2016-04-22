@@ -23,7 +23,7 @@
 //  Copyright © 2015 Jorge Ouahbi. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 
 extension OMCircularProgress

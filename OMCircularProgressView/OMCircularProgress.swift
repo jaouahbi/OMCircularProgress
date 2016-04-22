@@ -23,7 +23,7 @@
 
 //DEBUG
 
-let DEBUG_LAYERS = true     // very usefull
+let DEBUG_LAYERS = false     // very usefull
 let DEBUG_STEPS = false
 let DEBUG_NO_WELL = false
 let DEBUG_NO_TEXT = false
@@ -31,7 +31,7 @@ let DEBUG_NO_IMAGES = false
 let DEBUG_ANIMATIONS = false
 let DEBUG_VERBOSE = false
 let DEBUG_MASK = false
-let DEBUG_ANGLES = true
+let DEBUG_ANGLES = false
 
 // Some constants
 
@@ -91,7 +91,7 @@ enum OMAlign : Int
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-@IBDesignable class OMCircularProgress: UIControl{
+@IBDesignable class OMCircularProgress : UIControl {
     
     /// MARK: Contructors
     
@@ -1231,14 +1231,14 @@ enum OMAlign : Int
     }
     
     
-    private func doFollowArc(step:OMStepData) {
-        
-        step.textLayer?.frame    =  bounds
-        step.textLayer?.textPath =  UIBezierPath().circlePath(bounds.size.center(),
-            radius : step.textRadius,
-            startAngle : step.angle.start,
-            angle : step.angle.length())
-    }
+//    private func doFollowArc(step:OMStepData) {
+//        
+//        step.textLayer?.frame    =  bounds
+//        step.textLayer?.textPath =  UIBezierPath().circlePath(bounds.size.center(),
+//            radius : step.textRadius,
+//            startAngle : step.angle.start,
+//            angle : step.angle.length())
+//    }
     
     private func setUpText(step:OMStepData) {
         
@@ -1247,12 +1247,12 @@ enum OMAlign : Int
         //step.textLayer?.transform = CATransform3DIdentity
         
         
-        if (step.textRadius != 0)  {
-            
-            doFollowArc(step)
-            
-        } else {
-            
+//        if (step.textRadius != 0)  {
+//            
+//            doFollowArc(step)
+//            
+//        } else {
+        
             step.textLayer?.angleOrientation = 0.0
             doFollowAngle(step)
             
@@ -1275,7 +1275,7 @@ enum OMAlign : Int
 //            }
 //
 //            step.textLayer?.frame = anglePoint(angle, align: step.textAlign, size: size).centerRect(size)
-        }
+//        }
         
         if DEBUG_VERBOSE {
             

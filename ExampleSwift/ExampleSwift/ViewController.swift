@@ -149,10 +149,10 @@ class ViewController: UIViewController {
             
             theStep!.wellColor = nil
             
-            let gradientLayer  = OMRadialGradientLayer(type:kOMGradientLayerRadial)
+            let gradientLayer  = OMRadialGradientLayer(type:kOMRadialGradientLayerRadial)
             let curColor = colors[i] as UIColor
             gradientLayer.frame      = theProgressView.bounds
-            gradientLayer.colors  = [curColor.CGColor,curColor.next()!.CGColor]
+            gradientLayer.colors     = [curColor.CGColor,curColor.next()!.CGColor]
             
             gradientLayer.startCenter = theProgressView.bounds.size.center()
             gradientLayer.endCenter   = theProgressView.bounds.size.center()
@@ -206,6 +206,8 @@ class ViewController: UIViewController {
             // Create the step.
             
             let step = theProgressView.newStep( stepAngle, color:colors[i] as UIColor)
+            
+            step?.wellColor = nil
             
             let gradientLayer   = CAGradientLayer()
             gradientLayer.frame = theProgressView.bounds
@@ -426,7 +428,7 @@ class ViewController: UIViewController {
             step.textAngleAlign         = .AngleEnd
             
             
-            let gradientLayer           = OMRadialGradientLayer(type:kOMGradientLayerRadial)
+            let gradientLayer           = OMRadialGradientLayer(type:kOMRadialGradientLayerRadial)
             gradientLayer.frame        = theProgressView.bounds
             
             gradientLayer.colors        = [color.CGColor,color.next()!.CGColor]
@@ -482,7 +484,7 @@ class ViewController: UIViewController {
             if((i % quarter) == 0) {
                 
                 step.text                   = "\(i)"
-                step.fontName               = "helveticaneue-light"
+                step.fontName               = "HelveticaNeue-Light"
                 step.fontSize               = 12
                 step.fontColor              = UIColor.blackColor()
                 step.fontBackgroundColor    = UIColor.clearColor()
@@ -495,7 +497,7 @@ class ViewController: UIViewController {
             }
             
             
-            let gradientLayer         = OMRadialGradientLayer(type:kOMGradientLayerRadial)
+            let gradientLayer         = OMRadialGradientLayer(type:kOMRadialGradientLayerRadial)
             gradientLayer.frame       = theProgressView.bounds
             gradientLayer.colors      = [color.CGColor,color.next()!.CGColor]
             
@@ -545,7 +547,7 @@ class ViewController: UIViewController {
             
             step.wellColor = nil;
             
-            let gradientLayer           = OMRadialGradientLayer(type:kOMGradientLayerRadial)
+            let gradientLayer           = OMRadialGradientLayer(type:kOMRadialGradientLayerRadial)
             gradientLayer.frame         = theProgressView.bounds
             gradientLayer.colors        = [color.CGColor,color.next()!.CGColor]
             
@@ -555,7 +557,6 @@ class ViewController: UIViewController {
             gradientLayer.startRadius = theProgressView.innerRadius
             gradientLayer.endRadius   = theProgressView.outerRadius
  
-            
             step.maskLayer = gradientLayer
         }
     }

@@ -22,7 +22,7 @@
 //  Copyright © 2015 Jorge Ouahbi. All rights reserved.
 //
 
-import CoreGraphics
+import UIKit
 
 extension CGColor
 {

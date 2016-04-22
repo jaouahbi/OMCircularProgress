@@ -36,8 +36,6 @@ import CoreText
 import CoreFoundation
 
 
-
-
 //
 // Name of the animatable properties
 //
@@ -135,11 +133,21 @@ private struct OMNumberLayerProperties {
     
     override func drawInContext(context: CGContext) {
         
-        if let presentationLayer: AnyObject = self.presentationLayer() {
-            self.number = presentationLayer.number
+        var theNumber:NSNumber? = self.number
+        
+        let presentation = self.presentationLayer()
+        
+        if presentation != nil {
+            theNumber = presentation!.number
+        }
+        
+        if(theNumber == nil){
+            return
         }
 
-        self.string = self.number.format(self.formatStyle)
+        let model = self.modelLayer() as! OMNumberLayer
+        
+        model.string = self.number.format(self.formatStyle)
         
         // The base class do the work
         
