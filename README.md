@@ -15,8 +15,8 @@ Custom circular progress UIControl with steps, images, text and individual anima
 
 ## Requirements
 
-- iOS 7.0+
-- Xcode 6.3
+- iOS 8.0+
+- Xcode 7.3
 
 ## Communication
 
