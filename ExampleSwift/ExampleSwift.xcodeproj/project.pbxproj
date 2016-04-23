@@ -34,7 +34,7 @@
 		353FAB2F1CBB1EA300D6964F /* OMShapeLayerWithHitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB151CBB1EA300D6964F /* OMShapeLayerWithHitTest.swift */; };
 		353FAB301CBB1EA300D6964F /* OMStepData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB161CBB1EA300D6964F /* OMStepData.swift */; };
 		353FAB311CBB1EA300D6964F /* String+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB171CBB1EA300D6964F /* String+Random.swift */; };
-		353FAB321CBB1EA300D6964F /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB181CBB1EA300D6964F /* UIColorExtension.swift */; };
+		353FAB321CBB1EA300D6964F /* UIColor+Generator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB181CBB1EA300D6964F /* UIColor+Generator.swift */; };
 		357347151CBE4CB4000FAB2B /* UIColor+Rainbow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357347141CBE4CB4000FAB2B /* UIColor+Rainbow.swift */; };
 		357347191CBE5E81000FAB2B /* CGColor+Rainbow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357347181CBE5E81000FAB2B /* CGColor+Rainbow.swift */; };
 		35984D4E1AC958FC002D4BB8 /* OMLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35984D401AC958FC002D4BB8 /* OMLayer.swift */; };
@@ -88,7 +88,7 @@
 		353FAB151CBB1EA300D6964F /* OMShapeLayerWithHitTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMShapeLayerWithHitTest.swift; sourceTree = "<group>"; };
 		353FAB161CBB1EA300D6964F /* OMStepData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMStepData.swift; sourceTree = "<group>"; };
 		353FAB171CBB1EA300D6964F /* String+Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Random.swift"; sourceTree = "<group>"; };
-		353FAB181CBB1EA300D6964F /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		353FAB181CBB1EA300D6964F /* UIColor+Generator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Generator.swift"; sourceTree = "<group>"; };
 		357347141CBE4CB4000FAB2B /* UIColor+Rainbow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Rainbow.swift"; sourceTree = "<group>"; };
 		357347181CBE5E81000FAB2B /* CGColor+Rainbow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGColor+Rainbow.swift"; sourceTree = "<group>"; };
 		35984D401AC958FC002D4BB8 /* OMLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMLayer.swift; sourceTree = "<group>"; };
@@ -211,7 +211,7 @@
 				353FAB151CBB1EA300D6964F /* OMShapeLayerWithHitTest.swift */,
 				353FAB161CBB1EA300D6964F /* OMStepData.swift */,
 				353FAB171CBB1EA300D6964F /* String+Random.swift */,
-				353FAB181CBB1EA300D6964F /* UIColorExtension.swift */,
+				353FAB181CBB1EA300D6964F /* UIColor+Generator.swift */,
 				35984D401AC958FC002D4BB8 /* OMLayer.swift */,
 				35984D411AC958FC002D4BB8 /* OMNumberLayer.swift */,
 				35984D421AC958FC002D4BB8 /* OMProgressImageLayer.swift */,
@@ -345,7 +345,7 @@
 				353FAB1F1CBB1EA300D6964F /* NSNumber+Format.swift in Sources */,
 				35984D501AC958FC002D4BB8 /* OMProgressImageLayer.swift in Sources */,
 				353FAB2C1CBB1EA300D6964F /* OMCircularProgressProtocol.swift in Sources */,
-				353FAB321CBB1EA300D6964F /* UIColorExtension.swift in Sources */,
+				353FAB321CBB1EA300D6964F /* UIColor+Generator.swift in Sources */,
 				357347191CBE5E81000FAB2B /* CGColor+Rainbow.swift in Sources */,
 				353FAB291CBB1EA300D6964F /* OMCircularProgressDebug.swift in Sources */,
 				353FAB301CBB1EA300D6964F /* OMStepData.swift in Sources */,
