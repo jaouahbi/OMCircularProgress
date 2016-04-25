@@ -334,7 +334,7 @@ enum OMAlign : Int
     
     // MARK: Shadow
 
-    @IBInspectable var shadowText : Bool = true{
+    @IBInspectable var shadowText : Bool = true {
         didSet{
             setNeedsLayout()
         }
@@ -342,14 +342,14 @@ enum OMAlign : Int
     
     /// Sets shadow to the well layer
     
-    @IBInspectable var shadowWell : Bool = true{
+    @IBInspectable var shadowWell : Bool = true {
         didSet{
             setNeedsLayout()
         }
     }
     
     //
-    @IBInspectable var shadowBorder : Bool = true{
+    @IBInspectable var shadowBorder : Bool = false {
         didSet{
             setNeedsLayout()
         }
@@ -1213,11 +1213,11 @@ enum OMAlign : Int
         
         let angle:Double = step.angle.align(step.textAngleAlign)
         
-        print("[*] angle \(round(angle.radiansToDegrees())) aling:\(step.textAngleAlign)")
+        //print("[*] angle \(round(angle.radiansToDegrees())) aling:\(step.textAngleAlign)")
         
         let positionInAngle = anglePoint(angle, align: step.textAlign, size: sizeOfText!)
         
-        print("[*] position in angle \(positionInAngle)")
+        //print("[*] position in angle \(positionInAngle)")
         
         step.textLayer?.frame = positionInAngle.centerRect(sizeOfText!)
         
@@ -1329,8 +1329,6 @@ enum OMAlign : Int
         
         if percentText || stepText {
             setUpNumericalLayer()
-        }else{
-            print("No main text");
         }
         
         //print("[!] -----------------------------------------------------")

@@ -101,6 +101,23 @@ extension UIColor : GeneratorType
             alpha: alpha)
     }
     
+    
+    public func prev() -> UIColor?
+    {
+        let increment = 360.0 / 7
+        
+        let hue = (Double(self.hue) * 360.0)
+        
+        // make it circular
+        
+        let degrees =  (hue - increment) % 360.0
+        
+        return UIColor(hue: CGFloat(1.0 * degrees / 360.0),
+                       saturation: saturation,
+                       brightness: brightness,
+                       alpha: alpha)
+    }
+    
     class public func random() -> UIColor?
     {
         let frndr = CGFloat(drand48())

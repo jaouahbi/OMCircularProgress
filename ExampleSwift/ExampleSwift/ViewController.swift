@@ -137,7 +137,7 @@ class ViewController: UIViewController {
         
         theProgressView.thicknessRatio    = 1.0      // 100%
 
-        let colors : [UIColor] = UIColor.rainbow(4,hue: 0) as [UIColor]
+        let colors : [UIColor] = [UIColor.blueColor(),UIColor.blueColor(),UIColor.blueColor(),UIColor.blueColor()]
         
         let stepAngle = (M_PI * 2.0) / Double(colors.count)
         
@@ -150,15 +150,16 @@ class ViewController: UIViewController {
             theStep!.wellColor = nil
             
             let gradientLayer  = OMRadialGradientLayer(type:kOMRadialGradientLayerRadial)
-            let curColor = colors[i] as UIColor
+    
             gradientLayer.frame      = theProgressView.bounds
-            gradientLayer.colors     = [curColor.CGColor,curColor.next()!.CGColor]
+            gradientLayer.colors     = [colors[i].prev()!.CGColor,colors[i].CGColor,colors[i].colorWithAlphaComponent(0.43).CGColor,colors[i].colorWithAlphaComponent(0.05).CGColor]
+            gradientLayer.locations     = [0.0,0.95,1.0]
             
             gradientLayer.startCenter = theProgressView.bounds.size.center()
             gradientLayer.endCenter   = theProgressView.bounds.size.center()
             
-            gradientLayer.startRadius = theProgressView.innerRadius
-            gradientLayer.endRadius   = theProgressView.outerRadius
+            gradientLayer.startRadius = theProgressView.outerRadius
+            gradientLayer.endRadius   = theProgressView.innerRadius
           
             
             theStep!.maskLayer = gradientLayer
@@ -399,7 +400,7 @@ class ViewController: UIViewController {
             "Ⅺ",
             "Ⅻ"]
         
-        let color = UIColor.redColor()
+        let color = UIColor(red: 0.7,green: 0.7,blue: 0.7,alpha: 1.0)
         
         let clockAngle = (M_PI * 2.0) / Double(romanNumbers.count)
         
@@ -425,16 +426,16 @@ class ViewController: UIViewController {
             
             step.textAlign              = .AlignMid
             step.textOrientationToAngle = true
-            step.textAngleAlign         = .AngleEnd
+          step.textAngleAlign         = .AngleEnd
+          
             
-            
-            let gradientLayer           = OMRadialGradientLayer(type:kOMRadialGradientLayerRadial)
+            let gradientLayer           = OMShadingGradientLayer(type:.Radial)
             gradientLayer.frame        = theProgressView.bounds
             
-            gradientLayer.colors        = [color.CGColor,color.next()!.CGColor]
+            gradientLayer.colors        = [color.colorWithAlphaComponent(0.05).CGColor,color.colorWithAlphaComponent(0.8).CGColor]
             
-            gradientLayer.startCenter   = theProgressView.bounds.size.center()
-            gradientLayer.endCenter     = theProgressView.bounds.size.center()
+            gradientLayer.startPoint   = theProgressView.bounds.size.center()
+            gradientLayer.endPoint     = theProgressView.bounds.size.center()
             
             gradientLayer.startRadius   = theProgressView.innerRadius
             gradientLayer.endRadius     = theProgressView.outerRadius
@@ -451,23 +452,14 @@ class ViewController: UIViewController {
         
         // Configure the animation
         
-        theProgressView.animation = false
-        
-        // Configure the separator ratio
-        
-      //  theProgressView.separatorRatio = 0.1
-        
-        // Border
-        
+        theProgressView.animation      = false
         theProgressView.thicknessRatio = 1.0     // 100%
         
         let minutesPerHour  = 60
         let quartersPerHour = 4
         let quarter = 60 / quartersPerHour
         
-        let color = UIColor.blueColor()
-        
-        //let clockColors  = UIColor.rainbowColors(minutesPerHour)
+        let color = UIColor(red: 0,green: 0,blue: 0,alpha: 1.0)
         
         let clockAngle = (M_PI * 2.0) / Double(minutesPerHour)
         
@@ -475,7 +467,7 @@ class ViewController: UIViewController {
             
             // Create the step.
             
-            let step = theProgressView.newStep( clockAngle, color:color)!
+            let step = theProgressView.newStep (clockAngle, color:color)!
             
             step.wellColor = nil;
             
@@ -494,22 +486,35 @@ class ViewController: UIViewController {
                 step.textAlign              = .AlignMid
                 step.textOrientationToAngle = false
                 step.textAngleAlign         = .AngleStart
+                
             }
             
+             let gradientLayer         = OMShadingGradientLayer(type:.Radial)
+             gradientLayer.frame       = theProgressView.bounds
             
-            let gradientLayer         = OMRadialGradientLayer(type:kOMRadialGradientLayerRadial)
-            gradientLayer.frame       = theProgressView.bounds
-            gradientLayer.colors      = [color.CGColor,color.next()!.CGColor]
             
-            gradientLayer.startCenter = theProgressView.bounds.size.center()
-            gradientLayer.endCenter   = theProgressView.bounds.size.center()
+             let point = CGPoint(x: CGRectGetMidX(gradientLayer.bounds
+                ), y: CGRectGetMidY(gradientLayer.bounds));
             
-            gradientLayer.startRadius = theProgressView.innerRadius
-            gradientLayer.endRadius   = theProgressView.outerRadius
-   
-
-            step.maskLayer = gradientLayer
+            gradientLayer.startPoint = point
+            gradientLayer.endPoint = point
+            gradientLayer.extendsPastEnd  = true
+            gradientLayer.extendsPastStart = true
+                
+            gradientLayer.startRadius = 0;
+            if(CGRectGetHeight(gradientLayer.bounds)>CGRectGetWidth(gradientLayer.bounds))
+            {
+                gradientLayer.endRadius = CGRectGetHeight(gradientLayer.bounds)/2;
+            }
+            else
+            {
+                gradientLayer.endRadius = CGRectGetWidth(gradientLayer.bounds)/2;
+            }
             
+            gradientLayer.colors      = [UIColor(red: 1,green: 1,blue: 1,alpha: 0.05).CGColor,
+                                        color.colorWithAlphaComponent(0.9).CGColor]
+//            
+           step.maskLayer  = gradientLayer
         }
     }
 
@@ -535,7 +540,9 @@ class ViewController: UIViewController {
         
         let minutesPerHour  = 60
         
-        let color = UIColor.orangeColor()
+        
+        let color = UIColor(red: 0.7,green: 0.1,blue: 1,alpha: 1.0)
+        
         
         let clockAngle = (M_PI * 2.0) / Double(minutesPerHour)
         
@@ -544,21 +551,38 @@ class ViewController: UIViewController {
             // Create the step.
             
             let step = theProgressView.newStep( clockAngle, color:color)!
-            
+          
             step.wellColor = nil;
             
-            let gradientLayer           = OMRadialGradientLayer(type:kOMRadialGradientLayerRadial)
-            gradientLayer.frame         = theProgressView.bounds
-            gradientLayer.colors        = [color.CGColor,color.next()!.CGColor]
+            let gradientLayer         = OMShadingGradientLayer(type:.Radial)
+            gradientLayer.frame       = theProgressView.bounds
             
-            gradientLayer.startCenter = theProgressView.bounds.size.center()
-            gradientLayer.endCenter   = theProgressView.bounds.size.center()
             
-            gradientLayer.startRadius = theProgressView.innerRadius
-            gradientLayer.endRadius   = theProgressView.outerRadius
- 
-            step.maskLayer = gradientLayer
-        }
+            let point = CGPoint(x: CGRectGetMidX(gradientLayer.bounds
+                ), y: CGRectGetMidY(gradientLayer.bounds));
+            
+            gradientLayer.startPoint = point
+            gradientLayer.endPoint = point
+            gradientLayer.extendsPastEnd  = true
+            gradientLayer.extendsPastStart = true
+            
+            
+            if(CGRectGetHeight(gradientLayer.bounds)<CGRectGetWidth(gradientLayer.bounds))
+            {
+                gradientLayer.endRadius = CGRectGetHeight(gradientLayer.bounds)/2;
+            }
+            else
+            {
+                gradientLayer.endRadius = CGRectGetWidth(gradientLayer.bounds)/2;
+            }
+            
+            gradientLayer.startRadius = 0;
+            
+            gradientLayer.colors      = [
+                                         color.colorWithAlphaComponent(0.01).CGColor,color.CGColor]
+            //
+            step.maskLayer  = gradientLayer
+      }
     }
 
     
