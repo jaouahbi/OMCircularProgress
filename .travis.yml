@@ -1,6 +1,6 @@
 
-language: objective-c
-osx_image: xcode63
+language: swift
+osx_image: xcode73
 branches:
   only:
     - master
