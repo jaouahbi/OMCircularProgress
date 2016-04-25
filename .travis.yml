@@ -6,10 +6,7 @@ branches:
     - master
 env:
 - LC_CTYPE=en_US.UTF-8 LANG=en_US.UTF-8
-before_install:
-- gem install xcpretty -N
 script:
 - set -o pipefail
-- xcodebuild -project "ExampleSwift/ExampleSwift.xcodeproj" -scheme "ExampleSwift" -sdk iphonesimulator
-  -destination "platform=iOS Simulator,name=iPhone 6" ONLY_ACTIVE_ARCH=YES build | xcpretty -c
+- xcodebuild -project "ExampleSwift/ExampleSwift.xcodeproj" -scheme "ExampleSwift" -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 6" ONLY_ACTIVE_ARCH=YES build
 - pod lib lint --quick
