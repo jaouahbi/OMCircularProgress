@@ -1,6 +1,6 @@
 # OMCircularProgressView
 
-Custom circular progress UIControl with steps, images, text and individual animations.
+Custom circular progress UIControl with steps, images, text and individual animations in Swift
 
 [![Build Status](https://travis-ci.org/jaouahbi/OMCircularProgressView.svg?branch=master)](https://travis-ci.org/jaouahbi/OMCircularProgressView)
 
@@ -25,6 +25,10 @@ Open a issue.
 ## Installation
 
 > To use OMCircularProgressView with a project , you must include all Swift files located inside the `OMCircularProgressView` directory directly in your project.
+
+## CocoaPods Installation
+
+> Add pod 'OMCircularProgressView' to your Podfile
 
 * * *
 
