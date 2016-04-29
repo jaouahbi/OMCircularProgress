@@ -1,4 +1,5 @@
 
+
 language: swift
 osx_image: xcode7.3
 branches:
@@ -8,5 +9,9 @@ env:
 - LC_CTYPE=en_US.UTF-8 LANG=en_US.UTF-8
 script:
 - set -o pipefail
-- xcodebuild -project "ExampleSwift/ExampleSwift.xcodeproj" -sdk iphonesimulator9.3 -destination "platform=iOS Simulator,name=iPhone 6" ONLY_ACTIVE_ARCH=YES build
+before_script: 
+- gem install xcpretty
+
+script:
+- xcodebuild -project ExampleSwift/ExampleSwift.xcodeproj -scheme ExampleSwift -sdk iphonesimulator test | xcpretty -c
 - pod lib lint --quick
