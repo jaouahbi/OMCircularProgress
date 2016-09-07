@@ -19,7 +19,7 @@
 //
 //  OMCircularProgressSteps.swift
 //
-//  Created by Jorge Ouhahi on 26/11/15.
+//  Created by Jorge Ouahbi on 26/11/15.
 //  Copyright © 2015 Jorge Ouahbi. All rights reserved.
 //
 
@@ -38,154 +38,6 @@ extension OMCircularProgress
         return self.dataSteps.indexOfObject(step)
     }
     
-    /**
-     Create a new progress step.
-     Each progress step is represented by the object OMStepData
-     
-     - parameter startAngle: step start angle
-     - parameter endAngle:   step end angle
-     - parameter color:      step color
-     
-     - returns: return a OMStepData object.
-     */
-    
-    func addStep(startAngle:Double, endAngle:Double, color:UIColor!) -> OMStepData?
-    {
-        assert(isAngleInCircleRange(endAngle), "Invalid angle:\(endAngle). range in radians : -(2*PI)/+(2*PI)")
-        assert(isAngleInCircleRange(startAngle), "Invalid angle:\(startAngle). range in radians : -(2*PI)/+(2*PI)")
-        
-        let step = OMStepData(startAngle:startAngle,endAngle:endAngle,color:color)
-        
-        let numberOfRad = numberOfRadians() + step.angle.length()
-        
-        let diference = numberOfRad - (2 * M_PI)
-        if diference > Double(FLT_EPSILON) {
-            //
-            print("Out of radians: can't create the step. overflow by \((2 * M_PI) - numberOfRad) radians")
-            return nil
-        }
-        
-        dataSteps.addObject(step)
-        
-        return step
-    }
-    
-    /**
-     Append a new step progress.
-     
-     - parameter color:     step color
-     - returns: return a OMStepData object.
-     
-     - notes: only for test
-     */
-    func appendStep(color:UIColor!) -> OMStepData? {
-        
-        let percentConsumed = 1.0 - percentDone()
-        return newStepWithPercent( percentConsumed - (percentConsumed / 2), color: color)
-    }
-    
-    
-    /**
-     Remove all layers from the superlayer.
-     */
-    private func removeAllSublayersFromSuperlayer()
-    {
-        for (_, layer) in self.layer.sublayers!.enumerate() {
-            layer.removeAllAnimations()
-            layer.removeFromSuperlayer()
-        }
-        
-//        for (_, step) in dataSteps.enumerate() {
-//            let curStep = step as! OMStepData
-//            
-//            // Remove the layer mask
-//            
-//            curStep.maskLayer?.removeFromSuperlayer()
-//            
-//            curStep.wellLayer?.removeFromSuperlayer()
-//            
-//            curStep.imageLayer?.removeFromSuperlayer()
-//            
-//            curStep.textLayer?.removeFromSuperlayer()
-//            
-//            curStep.shapeLayer.removeFromSuperlayer()
-//        }
-//        
-//        // Remove the center image layer
-//        
-//        imageLayer?.removeFromSuperlayer()
-//        
-//        // Remove the number layer
-//        
-//        numberLayer?.removeFromSuperlayer()
-    }
-    
-    
-    func removeAllSteps() {
-        self.dataSteps.removeAllObjects()
-        removeAllSublayersFromSuperlayer()
-        layoutSubviews()
-    }
-    
-    /**
-     Create a new step progress.
-     
-     - parameter angle:   step end angle
-     - parameter color:      step color
-     
-     - returns: return a OMStepData object.
-     */
-    func addStep(angle:Double, color:UIColor!) -> OMStepData? {
-        
-        let startAngle = getStartAngle()
-        
-        return addStep( startAngle, endAngle:startAngle + angle, color:color );
-    }
-    
-    /**
-     Create a new step progress.
-     
-     - parameter startAngle: step start angle
-     - parameter percent:    step end angle expresed as percent of complete circle.
-     - parameter color:      step color
-     
-     - returns: return a OMStepData object.
-     */
-    func  newStepWithPercent(startAngle:Double, percent:Double, color:UIColor!) -> OMStepData?
-    {
-        var tempPercent = percent
-        
-        tempPercent.clamp(toLowerValue: 0.0,upperValue: 1.0)
-        
-        assert(isAngleInCircleRange(startAngle), "Invalid angle:\(startAngle). range in radians : -(2*PI)/+(2*PI)")
-        
-        let step = OMStepData(startAngle:startAngle,percent:tempPercent,color:color)
-        
-        let numberOfRad = numberOfRadians() + step.angle.length()
-        
-        if (numberOfRad > 2 * M_PI) {
-            // can't create the step
-            return nil
-        }
-        
-        dataSteps.addObject(step)
-        
-        return step
-    }
-    /**
-     Create a new step progress.
-     
-     - parameter percent:   step angle expresed as percent of complete circle.
-     - parameter color:     step color
-     
-     - returns: return a OMStepData object.
-     */
-    func newStepWithPercent(percent:Double, color:UIColor!) -> OMStepData? {
-        
-        return newStepWithPercent(getStartAngle(),percent: percent, color: color);
-    }
-
-    
     /// Get the last step data added to the list of steps
     
     var lastStepData : OMStepData? {
@@ -194,7 +46,7 @@ extension OMCircularProgress
             if numberOfSteps > 0 {
                 return dataSteps.lastObject as? OMStepData
             }
-            if(DEBUG_VERBOSE){
+            if DEBUG_VERBOSE {
                 print("[!] Found 0 steps.")
             }
             return nil;
@@ -205,14 +57,18 @@ extension OMCircularProgress
     
     subscript(stepIndex: Int) -> OMStepData? {
         get {
-            assert(stepIndex <= numberOfSteps, "out of bounds. \(stepIndex) max: \(numberOfSteps)")
-            if(stepIndex > numberOfSteps) {
+            assert(stepIndex < numberOfSteps, "out of bounds. \(stepIndex) max: \(numberOfSteps)")
+            if stepIndex >= numberOfSteps {
                 return nil
             }
+            
             return dataSteps[stepIndex] as? OMStepData
         }
         set(newStep) {
-            dataSteps[Int(stepIndex)] = newStep!
+            assert(stepIndex < numberOfSteps, "out of bounds. \(stepIndex) max: \(numberOfSteps)")
+            if stepIndex < numberOfSteps {
+                dataSteps[Int(stepIndex)] = newStep!
+            }
         }
     }
     
@@ -293,5 +149,115 @@ extension OMCircularProgress
             }
         }
         return maxHeight
+    }
+    
+    /**
+     Create a new progress step.
+     Each progress step is represented by the object OMStepData
+     
+     - parameter startAngle: step start angle
+     - parameter endAngle:   step end angle
+     - parameter color:      step color
+     
+     - returns: return a OMStepData object.
+     */
+    
+    func addStep(startAngle:Double, endAngle:Double, color:UIColor!) -> OMStepData?
+    {
+        assert(isAngleInCircleRange(endAngle), "Invalid angle:\(endAngle). range in radians : -(2*PI)/+(2*PI)")
+        assert(isAngleInCircleRange(startAngle), "Invalid angle:\(startAngle). range in radians : -(2*PI)/+(2*PI)")
+        
+        let step = OMStepData(startAngle:startAngle,endAngle:endAngle,color:color)
+        
+        let numberOfRad = numberOfRadians() + step.angle.length()
+        
+        let diference = numberOfRad - (2 * M_PI)
+        if diference > Double(FLT_EPSILON) {
+            //
+            print("Out of radians: can't create the step. overflow by \((2 * M_PI) - numberOfRad) radians")
+            return nil
+        }
+        
+        dataSteps.addObject(step)
+        
+        return step
+    }
+    
+    /**
+     Append a new step progress.
+     
+     - parameter color:     step color
+     - returns: return a OMStepData object.
+     
+     - notes: only for test
+     */
+    func appendStep(color:UIColor!) -> OMStepData? {
+        let percentConsumed = 1.0 - percentDone()
+        return addStepWithPercent( percentConsumed - (percentConsumed / 2), color: color)
+    }
+    
+    /**
+     Remove all steps.
+     */
+    
+    func removeAllSteps() {
+        self.dataSteps.removeAllObjects()
+        removeAllSublayersFromSuperlayer()
+        layoutSubviews()
+    }
+    
+    /**
+     Create a new step progress.
+     
+     - parameter angle:   step end angle
+     - parameter color:      step color
+     
+     - returns: return a OMStepData object.
+     */
+    func addStep(angle:Double, color:UIColor!) -> OMStepData? {
+        let startAngle = getStartAngle()
+        return addStep( startAngle, endAngle:startAngle + angle, color:color );
+    }
+    
+    /**
+     Create a new step progress.
+     
+     - parameter startAngle: step start angle
+     - parameter percent:    step end angle expresed as percent of complete circle.
+     - parameter color:      step color
+     
+     - returns: return a OMStepData object.
+     */
+    func  addStepWithPercent(startAngle:Double, percent:Double, color:UIColor!) -> OMStepData?
+    {
+        var tempPercent = percent
+        
+        tempPercent.clamp(toLowerValue: 0.0,upperValue: 1.0)
+        
+        assert(isAngleInCircleRange(startAngle), "Invalid angle:\(startAngle). range in radians : -(2*PI)/+(2*PI)")
+        
+        let step = OMStepData(startAngle:startAngle,percent:tempPercent,color:color)
+        
+        let numberOfRad = numberOfRadians() + step.angle.length()
+        
+        if (numberOfRad > 2 * M_PI) {
+            // can't create the step
+            return nil
+        }
+        
+        dataSteps.addObject(step)
+        
+        return step
+    }
+    /**
+     Create a new step progress.
+     
+     - parameter percent:   step angle expresed as percent of complete circle.
+     - parameter color:     step color
+     
+     - returns: return a OMStepData object.
+     */
+    func addStepWithPercent(percent:Double, color:UIColor!) -> OMStepData? {
+        return addStepWithPercent(getStartAngle(),percent: percent, color: color);
     }
 }

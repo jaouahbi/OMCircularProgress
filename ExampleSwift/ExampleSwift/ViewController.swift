@@ -23,6 +23,10 @@
 
 import UIKit
 
+public enum GradientFadePoints {
+    case Head
+    case Tail
+}
 
 class ViewController: UIViewController {
     
@@ -226,22 +230,24 @@ class ViewController: UIViewController {
             
             step?.wellColor = nil
             
-            let gradientLayer   = OMCGGradientLayer(type:.Axial)
-            gradientLayer.frame = theProgressView.bounds
-            
-            let color = colors[i]
-            
-            gradientLayer.colors  = [color.next()!,color]
-            
-            // Simple vertical axial gradient
-            
-            gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
-            gradientLayer.endPoint  =  CGPoint(x: 0.5, y: 1.0)
-            
-            gradientLayer.extendsPastEnd  = true
-            gradientLayer.extendsBeforeStart = true
-            
-            step!.maskLayer = gradientLayer
+//            let gradientLayer   = OMCGGradientLayer(type:.Axial)
+//            gradientLayer.frame = theProgressView.bounds
+//            
+//            let color = colors[i]
+//            
+//            gradientLayer.colors  = [color.next()!,color]
+//            
+//            let points = calcLinearGradientFadePoints(gradientLayer.frame, fadeOptions: .Tail)
+//            
+//            // Simple vertical axial gradient
+//            
+//            gradientLayer.startPoint = points.0
+//            gradientLayer.endPoint  =  points.1
+//            
+//            gradientLayer.extendsPastEnd  = true
+//            gradientLayer.extendsBeforeStart = true
+//            
+//            step!.maskLayer = gradientLayer
         }
     }
     
@@ -294,7 +300,7 @@ class ViewController: UIViewController {
             // Configure the step
             
             step.text                   = "\(i)"
-            step.textAlign              = .AlignCenter
+            step.textAlign              = .Center
             step.textOrientationToAngle = true
             
             step.fontName               = "HelveticaNeue-Light"
@@ -315,11 +321,28 @@ class ViewController: UIViewController {
                 //
             }
             
-            step.imageAlign              = .AlignMid
+            step.imageAlign              = .Middle
             step.imageOrientationToAngle = true
         }
         
         theProgressView.image = UIImage(named: "center")
+    }
+    
+
+    // Create gradient points based on direction.
+    
+    func calcLinearGradientFadePoints(rect:CGRect, fadeOptions:GradientFadePoints) -> (CGPoint,CGPoint) {
+        let fadeWidth = min(rect.size.height * 2, floor(rect.size.width / 4))
+        let minX = CGRectGetMinX(rect)
+        let maxX = CGRectGetMaxX(rect)
+        switch fadeOptions {
+        case .Tail:
+                let startX = maxX - fadeWidth;
+                return (CGPoint(x: startX, y: CGRectGetMidY(rect)) / rect.size ,CGPoint(x: maxX, y: CGRectGetMidY(rect)) / rect.size)
+        case .Head:
+                let startX = minX + fadeWidth;
+                return ( CGPoint(x: startX, y: CGRectGetMidY(rect)) / rect.size ,CGPoint(x: minX, y: CGRectGetMidY(rect)) / rect.size)
+        }
     }
     
     func setupMood(theProgressView:OMCircularProgress)
@@ -349,7 +372,7 @@ class ViewController: UIViewController {
             // step text
             
             theStep.text                   = strings[i]
-            theStep.textAlign              = .AlignMid
+            theStep.textAlign              = .Middle
             theStep.textOrientationToAngle = true
             
             theStep.fontName               = "HelveticaNeue"
@@ -360,25 +383,27 @@ class ViewController: UIViewController {
             
             // step image
             theStep.image                   = UIImage(named: String("\(i)"))
-            theStep.imageAlign              = .AlignBorder
+            theStep.imageAlign              = .Border
             theStep.imageOrientationToAngle = true
             
-            // configure the gradient
-            let gradientLayer       = OMCGGradientLayer(type:.Axial)
-            let colors              = colors[i]
-            
-            gradientLayer.frame     = theProgressView.bounds
-            gradientLayer.colors    = [colors.next()!,colors]
-            
-            // vertical axial gradient
-            gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
-            gradientLayer.endPoint   = CGPoint(x: 0.5, y: 1.0)
-            
-            gradientLayer.extendsPastEnd  = true
-            gradientLayer.extendsBeforeStart = true
-            
-            // mask it
-            theStep.maskLayer        = gradientLayer
+//            // configure the gradient
+//            let gradientLayer       = OMCGGradientLayer(type:.Axial)
+//            let colors              = colors[i]
+//            
+//            gradientLayer.frame     = theProgressView.bounds
+//            gradientLayer.colors    = [colors.next()!,colors]
+//            
+//            let points = calcLinearGradientFadePoints(gradientLayer.frame, fadeOptions: .Head)
+//            
+//            // vertical axial gradient
+//            gradientLayer.startPoint = points.0
+//            gradientLayer.endPoint   = points.1
+//            
+//            gradientLayer.extendsPastEnd  = true
+//            gradientLayer.extendsBeforeStart = true
+//            
+//            // mask it
+//            theStep.maskLayer        = gradientLayer
             
         }
         
@@ -392,11 +417,31 @@ class ViewController: UIViewController {
     // Clock
     //
     
-    func setupClock(theProgressView:OMCircularProgress)
-    {
-        theProgressView.backgroundColor = UIColor.blackColor()
-        theProgressView.progressStyle = .SequentialProgress
+    
+    func setupClock(theProgressView:OMCircularProgress) {
         
+        let fillLayer = CAShapeLayer()
+        fillLayer.fillColor = UIColor.whiteColor().CGColor
+        fillLayer.opacity = 1.0
+        
+        let rd : CGFloat = theProgressView.outerRadius * 2
+        
+        let pathRect    = theProgressView.bounds
+        let circleRect  = CGRect(x: 0, y: 0, width: rd, height: rd).centeredInRect(pathRect)
+        
+        let path = UIBezierPath(roundedRect: pathRect, cornerRadius: 0.0)
+        let circlePath = UIBezierPath(roundedRect: circleRect, cornerRadius: rd)
+        path.appendPath(circlePath)
+        path.usesEvenOddFillRule = true
+        
+        fillLayer.path = path.CGPath
+        fillLayer.fillRule = kCAFillRuleEvenOdd
+        
+        // mask the OMCircularProgress with a circle.
+        theProgressView.layer.addSublayer(fillLayer)
+        theProgressView.backgroundColor = UIColor.blackColor()
+        
+        theProgressView.progressStyle = .SequentialProgress
         theProgressView.animation = false
         
         // Ratio
@@ -447,9 +492,9 @@ class ViewController: UIViewController {
             step.fontStrokeColor        = UIColor.grayColor()
             
             
-            step.textAlign              = .AlignMid
+            step.textAlign              = .Middle
             step.textOrientationToAngle = true
-            step.textAngleAlign         = .AngleEnd
+            step.textAngleAlign         = .End
             
             
             let gradientLayer           = OMShadingGradientLayer(type:.Radial)
@@ -483,7 +528,7 @@ class ViewController: UIViewController {
         
         let minutesPerHour  = 60
         let quartersPerHour = 4
-        let quarter = 60 / quartersPerHour
+        let quarter         = 60 / quartersPerHour
         
         let color = UIColor(red: 0,green: 0,blue: 0,alpha: 1.0)
         
@@ -508,10 +553,9 @@ class ViewController: UIViewController {
                 step.fontBackgroundColor    = UIColor.clearColor()
                 step.fontStrokeColor        = UIColor.grayColor()
                 
-                
-                step.textAlign              = .AlignMid
+            
                 step.textOrientationToAngle = false
-                step.textAngleAlign         = .AngleStart
+                step.textAngleAlign         = .Start
                 
             }
             

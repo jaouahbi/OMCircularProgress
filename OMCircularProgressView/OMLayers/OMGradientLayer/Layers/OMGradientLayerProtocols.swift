@@ -25,10 +25,6 @@
 
 import UIKit
 
-let kOMDefaultStartPoint = CGPoint(x: 0.0, y: 0.5) //CGPoint(x: 0.5,y: 0.0)
-let kOMDefaultEndPoint   = CGPoint(x: 1.0, y: 0.5) //CGPoint(x: 0.5,y: 1.0)
-let kOMDefaultStrokeLineWidth:CGFloat  = 1.0
-
 
 public enum OMGradientType : Int {
     case Axial

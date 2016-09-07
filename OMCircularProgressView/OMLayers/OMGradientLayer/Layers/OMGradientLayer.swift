@@ -74,12 +74,12 @@ public class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     }
     
     
-    public var startPoint: CGPoint  = kOMDefaultStartPoint {
+    public var startPoint: CGPoint  = CGPoint(x: 0.0, y: 0.5) {
         didSet {
             self.setNeedsDisplay();
         }
     }
-    public var endPoint: CGPoint = kOMDefaultEndPoint {
+    public var endPoint: CGPoint = CGPoint(x: 1.0, y: 0.5) {
         didSet{
             self.setNeedsDisplay();
         }
@@ -110,7 +110,7 @@ public class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     }
     
     // MARK: OMMaskeableLayerProtocol
-    public var lineWidth : CGFloat = kOMDefaultStrokeLineWidth  {
+    public var lineWidth : CGFloat = 1.0  {
         didSet {
             self.setNeedsDisplay()
         }
@@ -120,13 +120,12 @@ public class OMGradientLayer : CALayer, OMGradientLayerProtocol {
             self.setNeedsDisplay()
         }
     }
-    public var path : CGPath?{
+    public var path : CGPath? {
         didSet {
             self.setNeedsDisplay()
         }
     }
 
-    
     // MARK: - Object constructors
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder:aDecoder)

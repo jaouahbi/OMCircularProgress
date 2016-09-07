@@ -76,12 +76,12 @@ Image and text alignment
 
 enum OMAlign : Int
 {
-    case AlignCenter
-    case AlignMid
-    case AlignBorder
-    case AlignOuter
+    case Center
+    case Middle
+    case Border
+    case Outer
     init() {
-        self = AlignMid
+        self = Middle
     }
 }
 
@@ -252,12 +252,12 @@ enum OMAlign : Int
             let curStep = (step as! OMStepData)
             
             // Image
-            outerImageAlign  += (curStep.imageAlign == .AlignOuter) ? 1 : 0
-            borderImageAlign += (curStep.imageAlign == .AlignBorder) ? 1 : 0
+            outerImageAlign  += (curStep.imageAlign == .Outer) ? 1 : 0
+            borderImageAlign += (curStep.imageAlign == .Border) ? 1 : 0
             
             // Text
-            outerTextAlign  += (curStep.textAlign == .AlignOuter) ? 1 : 0
-            borderTextAlign += (curStep.textAlign == .AlignBorder) ? 1 : 0
+            outerTextAlign  += (curStep.textAlign == .Outer) ? 1 : 0
+            borderTextAlign += (curStep.textAlign == .Border) ? 1 : 0
         }
         
         let maxSide = CGFloat(maxAngle) * simpleRadius
@@ -789,10 +789,10 @@ enum OMAlign : Int
     
     func addBorderLayer(step:OMStepData) {
         
-        let layerBorder:OMShapeLayerWithHitTest
+        let layerBorder:CAShapeLayer
         
         if ((step.shapeLayerBorder == nil)) {
-            layerBorder = OMShapeLayerWithHitTest()
+            layerBorder = CAShapeLayer()
         } else {
             layerBorder = step.shapeLayerBorder!
         }
@@ -938,7 +938,7 @@ enum OMAlign : Int
                 
                 // Create the well layer
                 
-                step.wellLayer = OMShapeLayerWithHitTest()
+                step.wellLayer = CAShapeLayer()
                 
                 if  DEBUG_LAYERS  {
                     step.wellLayer?.name = "step \(stepIndex(step)) well"
@@ -1005,15 +1005,15 @@ enum OMAlign : Int
         var newRadius:Double = Double(midRadius)
         
         switch(align){
-            case .AlignMid:
+            case .Middle:
                 break
-            case .AlignCenter:
+            case .Center:
                 newRadius = Double( innerRadius )
                 break
-            case .AlignBorder:
+            case .Border:
                 newRadius = Double( outerRadius )
                 break
-            case .AlignOuter:
+            case .Outer:
                 newRadius = Double( outerRadius + (size.height * 0.5) )
                 break
         }
@@ -1028,6 +1028,7 @@ enum OMAlign : Int
         //
         // cartesian angle to polar.
         //
+        
         return CGPoint(x: bounds.size.center().x + CGFloat(newRadius) * cos(theta), y: bounds.size.center().y + CGFloat(newRadius) * sin(theta))
         
     }
@@ -1038,7 +1039,7 @@ enum OMAlign : Int
     
     private func addStepImageLayers() {
         
-        for (index, step) in dataSteps.enumerate(){
+        for (index, step) in dataSteps.enumerate() {
             let curStep = step as! OMStepData
             
             if(curStep.imageLayer != nil){
@@ -1070,7 +1071,7 @@ enum OMAlign : Int
     */
     private func addCenterImageLayer()
     {
-        if let imgLayer = imageLayer, image = image{
+        if let imgLayer = imageLayer, image = image {
             
             imgLayer.frame = bounds.size.center().centerRect(image.size)
             
@@ -1130,7 +1131,7 @@ enum OMAlign : Int
     {
         // Do not use separator.
         
-        curStep.separatorAngleHalf = 0.0
+        //curStep.separatorAngleHalf = 0.0
         
         //
         // The separator is a ratio of step angle length
@@ -1283,6 +1284,42 @@ enum OMAlign : Int
             print("[.] transform: \(step.textLayer!.transform.affine())")
         }
     }
+    
+    /**
+     Remove all layers from the superlayer.
+     */
+    func removeAllSublayersFromSuperlayer()
+    {
+        for (_, layer) in self.layer.sublayers!.enumerate() {
+            layer.removeAllAnimations()
+            layer.removeFromSuperlayer()
+        }
+        
+        //        for (_, step) in dataSteps.enumerate() {
+        //            let curStep = step as! OMStepData
+        //
+        //            // Remove the layer mask
+        //
+        //            curStep.maskLayer?.removeFromSuperlayer()
+        //
+        //            curStep.wellLayer?.removeFromSuperlayer()
+        //
+        //            curStep.imageLayer?.removeFromSuperlayer()
+        //
+        //            curStep.textLayer?.removeFromSuperlayer()
+        //
+        //            curStep.shapeLayer.removeFromSuperlayer()
+        //        }
+        //
+        //        // Remove the center image layer
+        //
+        //        imageLayer?.removeFromSuperlayer()
+        //        
+        //        // Remove the number layer
+        //        
+        //        numberLayer?.removeFromSuperlayer()
+    }
+    
     /**
         SetUp the textLayer
     

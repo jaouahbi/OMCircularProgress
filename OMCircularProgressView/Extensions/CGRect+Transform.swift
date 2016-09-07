@@ -29,4 +29,12 @@ extension CGRect{
     mutating func apply(t:CGAffineTransform) {
         self = CGRectApplyAffineTransform(self, t)
     }
+    
+    
+    func  centeredInRect(mainRect:CGRect) -> CGRect{
+        let dx = mainRect.midX - self.midX
+        let dy = mainRect.midY - self.midY
+        return CGRectOffset(self, dx, dy);
+    }
+    
 }

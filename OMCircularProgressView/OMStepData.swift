@@ -26,49 +26,34 @@
 import UIKit
 
 
-
 /**
 *  Object that represent each step element data.
 *
 */
 
-@objc class OMStepData : NSObject
+public class OMStepData : CustomDebugStringConvertible
 {
     /// Basic
     
     var angle:OMAngle! // step angle
     var color:UIColor!                                                    // step color
-    var shapeLayer:OMShapeLayerWithHitTest! = OMShapeLayerWithHitTest()   // progress shape
-    var shapeLayerBorder:OMShapeLayerWithHitTest? = nil
-    
-    
-    var progress:Double {                                                 // set/get step progress
-        set{
-            shapeLayer.strokeEnd = CGFloat(newValue)
-            if let shapeLayerBorder = shapeLayerBorder {
-                shapeLayerBorder.strokeEnd = shapeLayer.strokeEnd
-            }
-        }
-        get{
-            return Double(shapeLayer.strokeEnd)
-        }
-    }
+    var shapeLayer:CAShapeLayer! = CAShapeLayer()   // progress shape
+    var shapeLayerBorder:CAShapeLayer? = nil
     
     var maskLayer:CALayer?                         // optional layer mask
     
     /// Well layer.
     
-    var wellLayer:OMShapeLayerWithHitTest?         //
+    var wellLayer:CAShapeLayer?         //
     var wellColor:UIColor?  = nil                  // without well color
-    
     
     /// Text
     
     var text:String?                                // optional step text
     var textLayer:OMTextLayer?                      // layer for the text
-    var textAlign:OMAlign = .AlignMid               // text align
+    var textAlign:OMAlign = .Middle               // text align
     var textOrientationToAngle  : Bool = true       // is text oriented to the step angle
-    var textAngleAlign : OMAngleAlign = .AngleMid
+    var textAngleAlign : OMAngleAlign = .Middle
     var textRadius : CGFloat = 0.0                  // text radius
     
     
@@ -81,19 +66,19 @@ import UIKit
     var fontStrokeWidth : Float = 0
     var fontStrokeColor : UIColor = UIColor.clearColor()
     
-    //
-    // Step image
-    //
-    
-    // var imageIsSeparator : Bool = true
-    
-    // var shadowImage : Bool = false
-    
-    // private var imageShadow : UIImage? = nil
-    
-    /// Optional step image
+    /// Optional Step image
     
     var image : UIImage?
+    var imageScaled:UIImage? = nil                           //
+    var imageLayer : OMProgressImageLayer? = nil              // optional image layer
+    var imageAlign : OMAlign = .Border
+    var imageOrientationToAngle  : Bool = true
+    var imageAngleAlign : OMAngleAlign = .Start
+    // var imageIsSeparator : Bool = true
+    // var shadowImage : Bool = false
+    // private var imageShadow : UIImage? = nil
+    
+    
     //{
     //set {
     //if (shadowImage) {
@@ -112,13 +97,9 @@ import UIKit
     var borderColor:UIColor = UIColor.lightGrayColor()      //
     var borderRatio:Double  = 0.2
     
-    var imageScaled:UIImage? = nil                          //
+ 
     
-    var imageLayer:OMProgressImageLayer? = nil              // optional image layer
-    var imageAlign : OMAlign = .AlignBorder
-    var imageOrientationToAngle  : Bool = true
-    var imageAngleAlign : OMAngleAlign = .AngleStart
-    var separatorAngleHalf:Double = 0.0                 // angle of arclength of image hypotenuse in radians
+    //var separatorAngleHalf:Double = 0.0                 // angle of arclength of image hypotenuse in radians
     
     /**
     OMStepData convenience constructor.
@@ -128,7 +109,7 @@ import UIKit
     - parameter color:      color step
     
     */
-    required convenience init(startAngle:Double,percent:Double,color:UIColor!){
+    required convenience public init(startAngle:Double,percent:Double,color:UIColor!){
         self.init(startAngle:startAngle,
             endAngle: startAngle + (2.0 * M_PI * percent),
             color:color)
@@ -142,7 +123,7 @@ import UIKit
     - parameter color:      color step
     
     */
-    init(startAngle:Double,endAngle:Double,color:UIColor!){
+    init(startAngle:Double,endAngle:Double,color:UIColor!) {
         
         self.angle = OMAngle(startAngle:startAngle, endAngle:endAngle)
         
@@ -153,10 +134,23 @@ import UIKit
         }
     }
     
-    /// DebugPrintable  protocol
-    override var debugDescription : String {
+    var progress:Double {                                                 // set/get step progress
+        set{
+            shapeLayer.strokeEnd = CGFloat(newValue)
+            if let shapeLayerBorder = shapeLayerBorder {
+                shapeLayerBorder.strokeEnd = shapeLayer.strokeEnd
+            }
+        }
+        get{
+            return Double(shapeLayer.strokeEnd)
+        }
+    }
+    
+    
+    /// CustomDebugStringConvertible  protocol
+    public var debugDescription: String {
         
-        let angleStr = round(separatorAngleHalf.radiansToDegrees());
+        let angleStr = ""//round(separatorAngleHalf.radiansToDegrees());
         let maskStr  = ( self.maskLayer != nil ) ? "mask" :""
         
         let wellStr  = (wellColor != nil) ? "+well" : ""
@@ -166,8 +160,4 @@ import UIKit
         return "\(angle) separator:\(angleStr)° properties:(\(maskStr)\(wellStr)\(imgStr)\(txtStr))"
     }
     
-    /// Printable protocol
-    override var description: String {
-        return debugDescription;
-    }
 }

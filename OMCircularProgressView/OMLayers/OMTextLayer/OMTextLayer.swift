@@ -40,10 +40,7 @@
 import CoreText
 import CoreFoundation
 
-
-
-public enum OMVerticalAlignment
-{
+public enum OMVerticalAlignment {
     case Top
     case Middle
     case Bottom

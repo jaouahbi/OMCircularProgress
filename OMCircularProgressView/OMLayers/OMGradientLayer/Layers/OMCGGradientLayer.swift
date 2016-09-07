@@ -130,8 +130,10 @@ public class OMCGGradientLayer : OMGradientLayer {
                 CGContextSaveGState(ctx)
                 addPathAndClipIfNeeded(ctx)
                 if (self.isRadial) {
-                    // The location 0 of `gradient' corresponds to a circle centered at
-                    //`startCenter' with radius `startRadius'
+                    // The starting circle has radius `startRadius' and is centered at
+                    // `start', specified in the shading's target coordinate space. The ending
+                    // circle has radius `endRadius' and is centered at `end', specified in the
+                    // shading's target coordinate space.
                     let startCenter = startPoint * self.bounds.size
                     let endCenter   = endPoint   * self.bounds.size
                     CGContextDrawRadialGradient(ctx,
