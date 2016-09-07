@@ -709,12 +709,10 @@ enum OMAlign : Int
         - returns: return the start angle
     */
     func getStartAngle() -> Double {
-        
         var startAngle = self.startAngle;
-        
-        if(dataSteps.count > 0) {
+        if (dataSteps.count > 0) {
             // The new startAngle is the last endAngle
-            startAngle  = (dataSteps[dataSteps.count - 1] as! OMStepData).angle.end
+            startAngle  = (dataSteps.lastObject  as! OMStepData).angle.end
         }
         return startAngle;
     }
@@ -1197,7 +1195,7 @@ enum OMAlign : Int
     private func setUpTextLayerFont(curStep:OMStepData) {
         
         if (!curStep.fontName.isEmpty) {
-            curStep.textLayer?.setFont( curStep.fontName, fontSize: curStep.fontSize)
+            curStep.textLayer?.font = UIFont( name: curStep.fontName, size: curStep.fontSize)
         }
         
         curStep.textLayer?.foregroundColor = curStep.fontColor

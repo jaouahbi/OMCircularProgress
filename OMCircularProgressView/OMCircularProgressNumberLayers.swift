@@ -38,7 +38,7 @@ extension OMCircularProgress
             numberLayer.fontStrokeColor = fontStrokeColor
             numberLayer.backgroundColor = fontBackgroundColor.CGColor;
             numberLayer.formatStyle = numberStyle()
-            numberLayer.setFont(fontName, fontSize:fontSize)
+            numberLayer.font = UIFont( name: fontName, size: fontSize)
             numberLayer.foregroundColor = fontColor
             
             // The percent is represented from 0.0 to 1.0

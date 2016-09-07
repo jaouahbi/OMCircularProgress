@@ -87,7 +87,7 @@ extension UIColor : GeneratorType
 
     public func next() -> UIColor?
     {
-        let increment = 360.0 / 7
+        let increment = 360.0 / 14
 
         let hue = (Double(self.hue) * 360.0)
 
@@ -104,7 +104,7 @@ extension UIColor : GeneratorType
     
     public func prev() -> UIColor?
     {
-        let increment = 360.0 / 7
+        let increment = 360.0 / 14
         
         let hue = (Double(self.hue) * 360.0)
         

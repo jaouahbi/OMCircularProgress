@@ -1,0 +1,161 @@
+//
+//    Copyright 2015 - Jorge Ouahbi
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+//
+
+
+import UIKit
+
+public class OMShadingGradientLayer : OMGradientLayer {
+    
+    convenience public init(type:OMGradientType) {
+        self.init()
+        self.gradientType  = type;
+    }
+    
+    // MARK: - Object Overrides
+    override public  init() {
+        super.init()
+    }
+    
+    public var slopeFunction: EasingFunctionsTuple  = kEasingFunctionLinear {
+        didSet {
+            self.setNeedsDisplay();
+        }
+    }
+    
+    public var function: GradientFunction = .Linear {
+        didSet {
+            self.setNeedsDisplay();
+        }
+    }
+    
+    override public  init(layer: AnyObject) {
+        super.init(layer: layer)
+        if let other = layer as? OMShadingGradientLayer {
+            self.slopeFunction = other.slopeFunction;
+        }
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override public func drawInContext(ctx: CGContext) {
+        super.drawInContext(ctx)
+        
+        var locations   :[CGFloat]? = self.locations
+        var colors      :[UIColor]  = self.colors
+        var startPoint  : CGPoint   = self.startPoint
+        var endPoint    : CGPoint   = self.endPoint
+        var startRadius : CGFloat   = self.startRadius
+        var endRadius   : CGFloat   = self.endRadius
+        
+        if let player = self.presentationLayer() as? OMShadingGradientLayer {
+            #if DEBUG_VERBOSE
+                print("drawing presentationLayer\n\(player)")
+            #endif
+            
+            colors       = player.colors
+            locations    = player.locations
+            startPoint   = player.startPoint
+            endPoint     = player.endPoint
+            startRadius  = player.startRadius
+            endRadius    = player.endRadius
+            
+        } else {
+            #if DEBUG_VERBOSE
+                print("drawing modelLayer\n\(self)")
+            #endif
+        }
+        
+        if (canDrawGradient()) {
+            var shading:OMShadingGradient
+            if (startRadius == endRadius && self.isRadial) {
+                // nothing to do
+                #if VERBOSE
+                    print("Start radius and end radius are equal. \(startRadius) \(endRadius)")
+                #endif
+                return
+            }
+            CGContextSaveGState(ctx)
+            
+            // The starting point of the axis, in the shading's target coordinate space.
+            var start:CGPoint = startPoint * self.bounds.size
+            // The ending point of the axis, in the shading's target coordinate space.
+            var end:CGPoint  = endPoint   * self.bounds.size
+            // The context must be clipped before scale the matrix.
+            addPathAndClipIfNeeded(ctx)
+            
+            if (self.isAxial) {
+                if(self.stroke) {
+                    if(self.path != nil) {
+                        // if we are using the stroke, we offset the from and to points
+                        // by half the stroke width away from the center of the stroke.
+                        // Otherwise we tend to end up with fills that only cover half of the
+                        // because users set the start and end points based on the center
+                        // of the stroke.
+                        let hw = self.lineWidth * 0.5;
+                        start  = end.projectLine(start,length: hw)
+                        end    = start.projectLine(end,length: -hw)
+                    }
+                }
+                
+                CGContextScaleCTM(ctx,
+                                  self.bounds.size.width,
+                                  self.bounds.size.height );
+                
+                start  = start / self.bounds.size
+                end    = end   / self.bounds.size
+            }
+            else
+            {
+                // The starting circle has radius `startRadius' and is centered at
+                // `start', specified in the shading's target coordinate space. The ending
+                // circle has radius `endRadius' and is centered at `end', specified in the
+                // shading's target coordinate space.
+                
+            }
+            
+            shading = OMShadingGradient(colors: colors,
+                                        locations: locations,
+                                        startPoint: start ,
+                                        startRadius: startRadius,
+                                        endPoint:end ,
+                                        endRadius: endRadius,
+                                        extendStart: self.extendsBeforeStart,
+                                        extendEnd: self.extendsPastEnd,
+                                        functionType: self.function,
+                                        gradientType: self.gradientType,
+                                        slopeFunction: self.slopeFunction)
+            CGContextDrawShading(ctx, shading.CGShading);
+            CGContextRestoreGState(ctx);
+        }
+    }
+    
+    override public var description:String {
+        get {
+            var currentDescription:String = super.description
+            if  (self.function == .Linear)  {
+                currentDescription += "\nlinear interpolation"
+            } else if(self.function == .Exponential) {
+                currentDescription += "\nexponential interpolation"
+            } else if(self.function == .Cosine) {
+                currentDescription += "\ncosine interpolation"
+            }
+            currentDescription += " \(self.slopeFunction.1)"
+            return currentDescription
+        }
+    }
+}

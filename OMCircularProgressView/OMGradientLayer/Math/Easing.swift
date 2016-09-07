@@ -1,5 +1,23 @@
+
 //
-//  easing.swift
+//    Copyright 2015 - Jorge Ouahbi
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+//
+
+
+//
+//  Easing.swift
 //
 //  Created by Jorge Ouahbi on 21/4/16.
 //  Copyright © 2016 Jorge Ouahbi. All rights reserved.
@@ -7,6 +25,43 @@
 
 import Foundation
 
+public typealias EasingFunctionsTuple = (function: (Double) -> Double, name: String)
+
+public let kEasingFunctionLinear = kEasingFunctions[0]
+
+public var kEasingFunctions : Array<EasingFunctionsTuple> = [
+        (Linear,"Linear"),
+        (QuadraticEaseIn,"QuadraticEaseIn"),
+        (QuadraticEaseOut,"QuadraticEaseOut"),
+        (QuadraticEaseInOut,"QuadraticEaseInOut"),
+        (CubicEaseIn,"CubicEaseIn"),
+        (CubicEaseOut,"CubicEaseOut"),
+        (CubicEaseInOut,"CubicEaseInOut"),
+        (QuarticEaseIn,"QuarticEaseIn"),
+        (QuarticEaseOut,"QuarticEaseOut"),
+        (QuarticEaseInOut,"QuarticEaseInOut"),
+        (QuinticEaseIn,"QuinticEaseIn"),
+        (QuinticEaseOut,"QuinticEaseOut"),
+        (QuinticEaseInOut,"QuinticEaseInOut"),
+        (SineEaseIn,"SineEaseIn"),
+        (SineEaseOut,"SineEaseOut"),
+        (SineEaseInOut,"SineEaseInOut"),
+        (CircularEaseIn,"CircularEaseIn"),
+        (CircularEaseOut,"CircularEaseOut"),
+        (CircularEaseInOut,"CircularEaseInOut"),
+        (ExponentialEaseIn,"ExponentialEaseIn"),
+        (ExponentialEaseOut,"ExponentialEaseOut"),
+        (ExponentialEaseInOut,"ExponentialEaseInOut"),
+        (ElasticEaseIn,"ElasticEaseIn"),
+        (ElasticEaseOut,"ElasticEaseOut"),
+        (ElasticEaseInOut,"ElasticEaseInOut"),
+        (BackEaseIn,"BackEaseIn"),
+        (BackEaseOut,"BackEaseOut"),
+        (BackEaseInOut,"BackEaseInOut"),
+        (BounceEaseIn,"BounceEaseIn"),
+        (BounceEaseOut,"BounceEaseOut"),
+        (BounceEaseInOut,"BounceEaseInOut")
+        ]
 //
 //  easing.c
 //
@@ -20,7 +75,7 @@ import Foundation
 //
 
 // Modeled after the line y = x
-func LinearInterpolation(p: Double) -> Double
+func Linear(p: Double) -> Double
 {
     return p;
 }
@@ -308,8 +363,3 @@ func BounceEaseInOut(p: Double) -> Double
     }
 }
 
-func SineEaseInOutLinearAverage(x: Double) -> Double
-{
-    let easeInOutSine = ((cos(M_PI * x) - 1) / -2)
-    return (easeInOutSine + x) / 2
-}

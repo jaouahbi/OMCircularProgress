@@ -41,23 +41,70 @@ import CoreText
 import CoreFoundation
 
 
+
+public enum OMVerticalAlignment
+{
+    case Top
+    case Middle
+    case Bottom
+}
+
+
 @objc class OMTextLayer : OMLayer
 {
     // MARK: properties
     
-    // private(set) var paragraphStyle:CTParagraphStyle?
-    
     private(set) var fontRef:CTFontRef = CTFontCreateWithName("Helvetica" as CFStringRef, 12.0, nil);
     
+    var underlineColor : UIColor?
+    {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
+    
+    var underlineStyle : CTUnderlineStyle = .None
+    {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
+    
     //
-    // containing integer, default 1: default ligatures, 0: no ligatures, 2: all ligatures
+    //  see 1: default ligatures, 0: no ligatures, 2: all ligatures
+    //
+
+    var verticalAlignment : OMVerticalAlignment = .Middle
+    {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
+    
+    //
+    //  default 1: default ligatures, 0: no ligatures, 2: all ligatures
     //
     
-    var fontLigature:NSNumber = NSNumber(int: 1)
+    var fontLigature:NSNumber   = NSNumber(int: 1)
+    {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
+
     var fontStrokeColor:UIColor = UIColor.lightGrayColor()
+    {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
+
     var fontStrokeWidth:Float   = -3
-    
-    var paragraphStyleSettings:[CTParagraphStyleSetting] = [CTParagraphStyleSetting]()
+        {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
     
     var string : String? = nil {
         didSet{
@@ -71,43 +118,83 @@ import CoreFoundation
         }
     }
     
+    var lineBreakMode:CTLineBreakMode = .ByCharWrapping {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
+    
+    var alignment: CTTextAlignment = CTTextAlignment.Center {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
+    
+    var font: UIFont? = nil {
+        didSet{
+            if let font = font {
+                setFont(font, matrix: nil)
+            }
+            setNeedsDisplay()
+        }
+    }
+    
+    
     // MARK: constructors
     
     override init() {
         super.init()
+        
     }
     
     convenience init(string : String, alignmentMode:String = "center") {
-        
         self.init()
-        self.string = string
         setAlignmentMode(alignmentMode)
-        setLineBreakMode(.ByCharWrapping)
+        self.string = string
+    }
+    
+    
+    convenience init(string : String, font:UIFont ,alignmentMode:String = "center") {
+        self.init()
+        setAlignmentMode(alignmentMode)
+        self.string = string
+        setFont(font, matrix: nil)
     }
     
     override init(layer: AnyObject) {
-        
         super.init(layer: layer)
         if let other = layer as? OMTextLayer {
-            
             self.string = other.string
             self.fontRef = other.fontRef
             self.foregroundColor = other.foregroundColor
-            self.paragraphStyleSettings = other.paragraphStyleSettings
+            self.lineBreakMode = other.lineBreakMode
+            self.alignment = other.alignment
+            self.underlineColor = other.underlineColor
+            self.underlineStyle = other.underlineStyle
+            self.verticalAlignment = other.verticalAlignment
         }
     }
     
     required init?(coder aDecoder: NSCoder) {
-        
         super.init(coder:aDecoder)
     }
+    
+    // MARK: private helpers
+    
+    //
+    // Add attributes to the String
+    //
     
     func stringWithAttributes(string : String) -> CFAttributedStringRef {
         
         return attributedStringWithAttributes(NSAttributedString(string : string))
     }
     
-    func attributedStringWithAttributes(attrString : CFAttributedStringRef) -> CFAttributedStringRef{
+    //
+    // Add the attributes to the CFAttributedString
+    //
+    
+    func attributedStringWithAttributes(attrString : CFAttributedStringRef) -> CFAttributedStringRef {
         
         let stringLength = CFAttributedStringGetLength(attrString)
         
@@ -115,7 +202,7 @@ import CoreFoundation
         
         //
         // Create a mutable attributed string with a max length of 0.
-        // The max length is a hint as to how much internal storage to reserve. 
+        // The max length is a hint as to how much internal storage to reserve.
         // 0 means no hint.
         //
         
@@ -124,44 +211,58 @@ import CoreFoundation
         // Copy the textString into the newly created attrString
         
         CFAttributedStringReplaceString (newString, CFRangeMake(0,0), CFAttributedStringGetString(attrString));
-
+        
         CFAttributedStringSetAttribute(newString,
-            range,
-            kCTForegroundColorAttributeName,
-            foregroundColor.CGColor);
+                                       range,
+                                       kCTForegroundColorAttributeName,
+                                       foregroundColor.CGColor);
         
         CFAttributedStringSetAttribute(newString,range,kCTFontAttributeName,fontRef)
         
-       // paragraphStyle  = CTParagraphStyleCreate(paragraphStyleSettings, paragraphStyleSettings.count)
+
+        // TODO: add more CTParagraphStyleSetting
+        // CTParagraph
+        
+        let setting = [CTParagraphStyleSetting(spec: .Alignment, valueSize: sizeofValue(alignment), value: &alignment),
+                       CTParagraphStyleSetting(spec: .LineBreakMode, valueSize: sizeofValue(lineBreakMode), value: &lineBreakMode)]
+      
+        CFAttributedStringSetAttribute(newString,
+                                       range,
+                                       kCTParagraphStyleAttributeName,
+                                       CTParagraphStyleCreate(setting, setting.count))
         
         CFAttributedStringSetAttribute(newString,
-            range,
-            kCTParagraphStyleAttributeName,
-            CTParagraphStyleCreate(paragraphStyleSettings, paragraphStyleSettings.count))
+                                       range,
+                                       kCTStrokeWidthAttributeName,
+                                       NSNumber(float: fontStrokeWidth))
         
         CFAttributedStringSetAttribute(newString,
-                   range,
-                   kCTStrokeWidthAttributeName,
-                   NSNumber(float: fontStrokeWidth))
+                                       range,
+                                       kCTStrokeColorAttributeName,
+                                       fontStrokeColor.CGColor)
         
         CFAttributedStringSetAttribute(newString,
-                  range,
-                   kCTStrokeColorAttributeName,
-                   fontStrokeColor.CGColor)
+                                       range,
+                                       kCTLigatureAttributeName,
+                                       fontLigature)
         
         CFAttributedStringSetAttribute(newString,
-            range,
-            kCTLigatureAttributeName,
-            fontLigature)
+                                       range,
+                                       kCTUnderlineStyleAttributeName,
+                                       NSNumber(int:underlineStyle.rawValue));
         
-        //TODO:
-        //kCTUnderlineStyleAttributeName
-        //kCTUnderlineColorAttributeName
-        //kCTSuperscriptAttributeName
+        if let underlineColor = underlineColor {
+            CFAttributedStringSetAttribute(newString,
+                                           range,
+                                           kCTUnderlineColorAttributeName,
+                                           underlineColor.CGColor);
+        }
+
+        // TODO: Add more attributes
         
         return newString
     }
-
+    
     
     //
     // Calculate the frame size of a String
@@ -189,51 +290,38 @@ import CoreFoundation
         return frameSize;
     }
     
-    func setLineBreakMode(lineBreakModeInput : CTLineBreakMode)
-    {
-        var lineBreakMode = lineBreakModeInput
-        
-        let lineBreakSetting = CTParagraphStyleSetting(spec: .LineBreakMode, valueSize: sizeofValue(lineBreakMode), value:
-            &lineBreakMode)
-        
-        paragraphStyleSettings.insert(lineBreakSetting,atIndex: 1);
-    }
-    
     func setAlignmentMode(alignmentMode : String)
     {
-        var alignment: CTTextAlignment
-        
         switch (alignmentMode)
         {
-            case "center":
-                alignment = CTTextAlignment.Center
-            case "left":
-                alignment = CTTextAlignment.Left
-            case "right":
-                alignment = CTTextAlignment.Right
-            case "justified":
-                alignment = CTTextAlignment.Justified
-            case "natural":
-                alignment = CTTextAlignment.Natural
-            default:
-                alignment = CTTextAlignment.Left
+        case "center":
+            alignment = CTTextAlignment.Center
+        case "left":
+            alignment = CTTextAlignment.Left
+        case "right":
+            alignment = CTTextAlignment.Right
+        case "justified":
+            alignment = CTTextAlignment.Justified
+        case "natural":
+            alignment = CTTextAlignment.Natural
+        default:
+            alignment = CTTextAlignment.Left
         }
-        
-        let alignmentSetting = CTParagraphStyleSetting(spec: .Alignment, valueSize: sizeofValue(alignment), value: &alignment)
-        
-        paragraphStyleSettings.insert(alignmentSetting,atIndex: 0)
     }
 
-    
-    func setFont(fontName:String!, fontSize:CGFloat, matrix: UnsafePointer<CGAffineTransform> = nil) {
+    private func setFont(fontName:String!, fontSize:CGFloat, matrix: UnsafePointer<CGAffineTransform> = nil) {
         
         assert(fontSize > 0,"Invalid font size (fontSize ≤ 0)")
         assert(fontName.isEmpty == false ,"Invalid font name (empty)")
         
-        if(fontSize > 0 && fontName != nil){
-        
+        if(fontSize > 0 && fontName != nil) {
             fontRef = CTFontCreateWithName(fontName as CFStringRef, fontSize, matrix)
         }
+    }
+    
+
+    private func setFont(font:UIFont, matrix: UnsafePointer<CGAffineTransform> = nil) {
+        setFont(font.fontName, fontSize: font.pointSize, matrix: matrix)
     }
     
     // MARK: overrides
@@ -241,7 +329,7 @@ import CoreFoundation
     override func drawInContext(context: CGContext) {
         
         super.drawInContext(context)
-    
+        
         if let string = self.string {
             
             CGContextSaveGState(context);
@@ -262,8 +350,25 @@ import CoreFoundation
             
             let path = CGPathCreateMutable();
             
-            CGPathAddRect(path, nil, bounds);
-            
+            if ( self.verticalAlignment == .Top) {
+                CGPathAddRect(path, nil, bounds); // Draw normally (top)
+            } else if (self.verticalAlignment == .Middle) {
+                let boundingBox = CTFontGetBoundingBox(fontRef);
+                
+                //Get the position on the y axis (middle)
+                var midHeight = bounds.size.height * 0.5;
+                midHeight -= boundingBox.size.height  * 0.5;
+                
+                CGPathAddRect(path, nil, CGRectMake(0, midHeight, bounds.size.width, boundingBox.size.height));
+            } else if (self.verticalAlignment == .Bottom) {
+                let boundingBox = CTFontGetBoundingBox(fontRef);
+                
+                CGPathAddRect(path, nil, CGRectMake(0, 0, bounds.size.width, boundingBox.size.height));
+            } else {
+                assertionFailure();
+                CGPathAddRect(path, nil, bounds); // Draw normally (top)
+            }
+        
             // Create the framesetter with the attributed string.
             
             let framesetter = CTFramesetterCreateWithAttributedString(attrStringWithAttributes);

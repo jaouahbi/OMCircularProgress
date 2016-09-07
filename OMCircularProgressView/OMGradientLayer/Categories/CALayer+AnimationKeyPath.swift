@@ -1,5 +1,5 @@
 //
-//    Copyright 2016 - Jorge Ouahbi
+//    Copyright 2015 - Jorge Ouahbi
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -16,28 +16,31 @@
 
 
 //
-//  CALayer+Animation.swift
+//  CALayer+AnimationKeyPath.swift
 //
-//  Created by Jorge Ouahbi on 12/4/16.
+//  Created by Jorge Ouahbi on 26/3/15.
+//  Copyright © 2015 Jorge Ouahbi. All rights reserved.
 //
-//  Description:
-//
-
 
 import UIKit
 
-extension CALayer
-{
-    func animationActionForKey(event:String!) -> CABasicAnimation!
-    {
+public extension CALayer {
+
+    // MARK: - CALayer Animation Helpers
+    
+    public func animationActionForKey(event:String!) -> CABasicAnimation! {
         let animation = CABasicAnimation(keyPath: event)
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
         animation.fromValue = self.presentationLayer()!.valueForKey(event);
         return animation
     }
     
-    
-    func animateKeyPath(keyPath : String, fromValue : AnyObject?, toValue:AnyObject?, beginTime:NSTimeInterval, duration:NSTimeInterval, delegate:AnyObject?)
+    public func animateKeyPath(keyPath : String,
+                        fromValue : AnyObject?,
+                        toValue:AnyObject?,
+                        beginTime:NSTimeInterval,
+                        duration:NSTimeInterval,
+                        delegate:AnyObject?)
     {
         let animation = CABasicAnimation(keyPath:keyPath);
         
@@ -60,10 +63,7 @@ extension CALayer
         
         animation.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionLinear)
         animation.setValue(self,forKey:keyPath)
-        
         self.addAnimation(animation, forKey:keyPath)
-        
         self.setValue(toValue,forKey:keyPath)
     }
-    
- }
+}

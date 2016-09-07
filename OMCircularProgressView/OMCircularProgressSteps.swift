@@ -49,7 +49,7 @@ extension OMCircularProgress
      - returns: return a OMStepData object.
      */
     
-    func newStep(startAngle:Double, endAngle:Double, color:UIColor!) -> OMStepData?
+    func addStep(startAngle:Double, endAngle:Double, color:UIColor!) -> OMStepData?
     {
         assert(isAngleInCircleRange(endAngle), "Invalid angle:\(endAngle). range in radians : -(2*PI)/+(2*PI)")
         assert(isAngleInCircleRange(startAngle), "Invalid angle:\(startAngle). range in radians : -(2*PI)/+(2*PI)")
@@ -135,11 +135,11 @@ extension OMCircularProgress
      
      - returns: return a OMStepData object.
      */
-    func newStep(angle:Double, color:UIColor!) -> OMStepData? {
+    func addStep(angle:Double, color:UIColor!) -> OMStepData? {
         
         let startAngle = getStartAngle()
         
-        return newStep( startAngle, endAngle:startAngle + angle, color:color );
+        return addStep( startAngle, endAngle:startAngle + angle, color:color );
     }
     
     /**
