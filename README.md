@@ -29,13 +29,13 @@ Open a issue.
 
 ## CocoaPods Installation
 
-> Add pod 'OMCircularProgressView' to your Podfile
+> No, sorry
 
 * * *
 
 ## Credits
 
-OMCircularProgressView is owned and maintained by the [Jorge Ouahbi](https://twitter.com/JorgeOuahbi).
+OMCircularProgressView is owned and maintained by the [Jorge Ouahbi](https://github.com/jaouahbi).
 
 ## License
 
