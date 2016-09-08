@@ -21,7 +21,7 @@
 //  Created by Jorge Ouahbi on 23/3/15.
 //
 //  Description:
-//  Simple derived CALayer class that uses CoreText for draw a text.
+//  CALayer derived class that uses CoreText for draw a text.
 //
 //  Versión 0.1  (29-3-2015)
 //      Creation.
@@ -29,6 +29,10 @@
 //      Replaced paragraphStyle by a array of CTParagraphStyleSetting.
 //  Versión 0.11 (15-5-2015)
 //      Added font ligature
+//  Versión 0.12 (1-9-2016)
+//      Added font underline
+//  Versión 0.12 (6-9-2016)
+//      Updated to swift 3.0
 
 
 #if os(iOS)
@@ -37,21 +41,21 @@
     import AppKit
 #endif
 
+import CoreGraphics
 import CoreText
 import CoreFoundation
 
 public enum OMVerticalAlignment {
-    case Top
-    case Middle
-    case Bottom
+    case top
+    case middle
+    case bottom
 }
 
-
-@objc class OMTextLayer : OMLayer
+@objc class OMTextLayer : CALayer
 {
     // MARK: properties
     
-    private(set) var fontRef:CTFontRef = CTFontCreateWithName("Helvetica" as CFStringRef, 12.0, nil);
+    fileprivate(set) var fontRef:CTFont = CTFontCreateWithName("Helvetica" as CFString, 12.0, nil);
     
     var underlineColor : UIColor?
     {
@@ -60,7 +64,7 @@ public enum OMVerticalAlignment {
         }
     }
     
-    var underlineStyle : CTUnderlineStyle = .None
+    var underlineStyle : CTUnderlineStyle = CTUnderlineStyle()
     {
         didSet{
             setNeedsDisplay()
@@ -71,7 +75,7 @@ public enum OMVerticalAlignment {
     //  see 1: default ligatures, 0: no ligatures, 2: all ligatures
     //
 
-    var verticalAlignment : OMVerticalAlignment = .Middle
+    var verticalAlignment : OMVerticalAlignment = .middle
     {
         didSet{
             setNeedsDisplay()
@@ -82,14 +86,14 @@ public enum OMVerticalAlignment {
     //  default 1: default ligatures, 0: no ligatures, 2: all ligatures
     //
     
-    var fontLigature:NSNumber   = NSNumber(int: 1)
+    var fontLigature:NSNumber   = NSNumber(value: 1 as Int32)
     {
         didSet{
             setNeedsDisplay()
         }
     }
 
-    var fontStrokeColor:UIColor = UIColor.lightGrayColor()
+    var fontStrokeColor:UIColor = UIColor.lightGray
     {
         didSet{
             setNeedsDisplay()
@@ -109,19 +113,19 @@ public enum OMVerticalAlignment {
         }
     }
     
-    var foregroundColor:UIColor = UIColor.blackColor() {
+    var foregroundColor:UIColor = UIColor.black {
         didSet{
             setNeedsDisplay()
         }
     }
     
-    var lineBreakMode:CTLineBreakMode = .ByCharWrapping {
+    var lineBreakMode:CTLineBreakMode = .byCharWrapping {
         didSet{
             setNeedsDisplay()
         }
     }
     
-    var alignment: CTTextAlignment = CTTextAlignment.Center {
+    var alignment: CTTextAlignment = CTTextAlignment.center {
         didSet{
             setNeedsDisplay()
         }
@@ -142,6 +146,15 @@ public enum OMVerticalAlignment {
     override init() {
         super.init()
         
+        self.contentsScale = UIScreen.main.scale
+        self.needsDisplayOnBoundsChange = true;
+        
+        // https://github.com/danielamitay/iOS-App-Performance-Cheatsheet/blob/master/QuartzCore.md
+        
+        //self.shouldRasterize = true
+        self.drawsAsynchronously = true
+        self.allowsGroupOpacity  = false
+        
     }
     
     convenience init(string : String, alignmentMode:String = "center") {
@@ -158,7 +171,7 @@ public enum OMVerticalAlignment {
         setFont(font, matrix: nil)
     }
     
-    override init(layer: AnyObject) {
+    override init(layer: Any) {
         super.init(layer: layer)
         if let other = layer as? OMTextLayer {
             self.string = other.string
@@ -182,7 +195,7 @@ public enum OMVerticalAlignment {
     // Add attributes to the String
     //
     
-    func stringWithAttributes(string : String) -> CFAttributedStringRef {
+    func stringWithAttributes(_ string : String) -> CFAttributedString {
         
         return attributedStringWithAttributes(NSAttributedString(string : string))
     }
@@ -191,7 +204,7 @@ public enum OMVerticalAlignment {
     // Add the attributes to the CFAttributedString
     //
     
-    func attributedStringWithAttributes(attrString : CFAttributedStringRef) -> CFAttributedStringRef {
+    func attributedStringWithAttributes(_ attrString : CFAttributedString) -> CFAttributedString {
         
         let stringLength = CFAttributedStringGetLength(attrString)
         
@@ -212,7 +225,7 @@ public enum OMVerticalAlignment {
         CFAttributedStringSetAttribute(newString,
                                        range,
                                        kCTForegroundColorAttributeName,
-                                       foregroundColor.CGColor);
+                                       foregroundColor.cgColor);
         
         CFAttributedStringSetAttribute(newString,range,kCTFontAttributeName,fontRef)
         
@@ -220,8 +233,8 @@ public enum OMVerticalAlignment {
         // TODO: add more CTParagraphStyleSetting
         // CTParagraph
         
-        let setting = [CTParagraphStyleSetting(spec: .Alignment, valueSize: sizeofValue(alignment), value: &alignment),
-                       CTParagraphStyleSetting(spec: .LineBreakMode, valueSize: sizeofValue(lineBreakMode), value: &lineBreakMode)]
+        let setting = [CTParagraphStyleSetting(spec: .alignment, valueSize: MemoryLayout.size(ofValue: alignment), value: &alignment),
+                       CTParagraphStyleSetting(spec: .lineBreakMode, valueSize: MemoryLayout.size(ofValue: lineBreakMode), value: &lineBreakMode)]
       
         CFAttributedStringSetAttribute(newString,
                                        range,
@@ -231,12 +244,12 @@ public enum OMVerticalAlignment {
         CFAttributedStringSetAttribute(newString,
                                        range,
                                        kCTStrokeWidthAttributeName,
-                                       NSNumber(float: fontStrokeWidth))
+                                       NSNumber(value: fontStrokeWidth as Float))
         
         CFAttributedStringSetAttribute(newString,
                                        range,
                                        kCTStrokeColorAttributeName,
-                                       fontStrokeColor.CGColor)
+                                       fontStrokeColor.cgColor)
         
         CFAttributedStringSetAttribute(newString,
                                        range,
@@ -246,18 +259,18 @@ public enum OMVerticalAlignment {
         CFAttributedStringSetAttribute(newString,
                                        range,
                                        kCTUnderlineStyleAttributeName,
-                                       NSNumber(int:underlineStyle.rawValue));
+                                       NSNumber(value: underlineStyle.rawValue as Int32));
         
         if let underlineColor = underlineColor {
             CFAttributedStringSetAttribute(newString,
                                            range,
                                            kCTUnderlineColorAttributeName,
-                                           underlineColor.CGColor);
+                                           underlineColor.cgColor);
         }
 
         // TODO: Add more attributes
         
-        return newString
+        return newString!
     }
     
     
@@ -270,7 +283,7 @@ public enum OMVerticalAlignment {
         return frameSizeLengthFromAttributedString(NSAttributedString(string : self.string!))
     }
     
-    func frameSizeLengthFromAttributedString(attrString : NSAttributedString) -> CGSize {
+    func frameSizeLengthFromAttributedString(_ attrString : NSAttributedString) -> CGSize {
         
         let attrStringWithAttributes = attributedStringWithAttributes(attrString)
         
@@ -280,106 +293,104 @@ public enum OMVerticalAlignment {
         
         let framesetter = CTFramesetterCreateWithAttributedString(attrStringWithAttributes);
         
-        let targetSize = CGSizeMake(CGFloat.max, CGFloat.max)
+        let targetSize = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
         
         let frameSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter,CFRangeMake(0, stringLength), nil, targetSize, nil)
         
         return frameSize;
     }
     
-    func setAlignmentMode(alignmentMode : String)
+    func setAlignmentMode(_ alignmentMode : String)
     {
         switch (alignmentMode)
         {
         case "center":
-            alignment = CTTextAlignment.Center
+            alignment = CTTextAlignment.center
         case "left":
-            alignment = CTTextAlignment.Left
+            alignment = CTTextAlignment.left
         case "right":
-            alignment = CTTextAlignment.Right
+            alignment = CTTextAlignment.right
         case "justified":
-            alignment = CTTextAlignment.Justified
+            alignment = CTTextAlignment.justified
         case "natural":
-            alignment = CTTextAlignment.Natural
+            alignment = CTTextAlignment.natural
         default:
-            alignment = CTTextAlignment.Left
+            alignment = CTTextAlignment.left
         }
     }
 
-    private func setFont(fontName:String!, fontSize:CGFloat, matrix: UnsafePointer<CGAffineTransform> = nil) {
+    fileprivate func setFont(_ fontName:String!, fontSize:CGFloat, matrix: UnsafePointer<CGAffineTransform>? = nil) {
         
         assert(fontSize > 0,"Invalid font size (fontSize ≤ 0)")
         assert(fontName.isEmpty == false ,"Invalid font name (empty)")
         
         if(fontSize > 0 && fontName != nil) {
-            fontRef = CTFontCreateWithName(fontName as CFStringRef, fontSize, matrix)
+            fontRef = CTFontCreateWithName(fontName as CFString, fontSize, matrix)
         }
     }
     
 
-    private func setFont(font:UIFont, matrix: UnsafePointer<CGAffineTransform> = nil) {
+    fileprivate func setFont(_ font:UIFont, matrix: UnsafePointer<CGAffineTransform>? = nil) {
         setFont(font.fontName, fontSize: font.pointSize, matrix: matrix)
     }
     
     // MARK: overrides
     
-    override func drawInContext(context: CGContext) {
+    override func draw(in context: CGContext) {
         
-        super.drawInContext(context)
+        super.draw(in: context)
         
         if let string = self.string {
             
-            CGContextSaveGState(context);
+            context.saveGState();
             
             // Set the text matrix.
-            CGContextSetTextMatrix(context, CGAffineTransformIdentity);
+            context.textMatrix = CGAffineTransform.identity;
             
             // Core Text Coordinate System and Core Graphics are OSX style
-            
-            self.flipContextIfNeed(context)
+            #if os(iOS)
+                context.translateBy(x: 0, y: self.bounds.size.height);
+                context.scaleBy(x: 1.0, y: -1.0);
+            #endif
             
             // Add the atributtes to the String
-            
             let attrStringWithAttributes = stringWithAttributes(string)
             
             // Create a path which bounds the area where you will be drawing text.
             // The path need not be rectangular.
+            var rect:CGRect = bounds
+            let path = CGMutablePath();
             
-            let path = CGPathCreateMutable();
-            
-            if ( self.verticalAlignment == .Top) {
-                CGPathAddRect(path, nil, bounds); // Draw normally (top)
-            } else if (self.verticalAlignment == .Middle) {
+            // Calculate the rect
+            if (self.verticalAlignment == .top) {
+                // Draw normally (top)
+            } else if (self.verticalAlignment == .middle) {
                 let boundingBox = CTFontGetBoundingBox(fontRef);
-                
                 //Get the position on the y axis (middle)
                 var midHeight = bounds.size.height * 0.5;
                 midHeight -= boundingBox.size.height  * 0.5;
-                
-                CGPathAddRect(path, nil, CGRectMake(0, midHeight, bounds.size.width, boundingBox.size.height));
-            } else if (self.verticalAlignment == .Bottom) {
+                rect  = CGRect(x:0, y:midHeight, width:bounds.size.width, height:boundingBox.size.height)
+            } else if (self.verticalAlignment == .bottom) {
                 let boundingBox = CTFontGetBoundingBox(fontRef);
-                
-                CGPathAddRect(path, nil, CGRectMake(0, 0, bounds.size.width, boundingBox.size.height));
+                rect  = CGRect(x:0, y:0, width:bounds.size.width, height:boundingBox.size.height)
             } else {
                 assertionFailure();
-                CGPathAddRect(path, nil, bounds); // Draw normally (top)
+                // Draw normally (top)
             }
-        
-            // Create the framesetter with the attributed string.
+
+            // add the rect for the frame
+            path.addRect(rect);
             
+            // Create the framesetter with the attributed string.
             let framesetter = CTFramesetterCreateWithAttributedString(attrStringWithAttributes);
             
             // Create a frame.
-            
             let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, nil);
             
             // Draw the specified frame in the given context.
-            
             CTFrameDraw(frame, context);
             
-            
-            CGContextRestoreGState(context);
+            context.restoreGState();
         }
     }
 }

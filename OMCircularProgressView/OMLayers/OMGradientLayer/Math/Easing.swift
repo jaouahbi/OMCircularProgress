@@ -75,19 +75,19 @@ public var kEasingFunctions : Array<EasingFunctionsTuple> = [
 //
 
 // Modeled after the line y = x
-func Linear(p: Double) -> Double
+func Linear(_ p: Double) -> Double
 {
     return p;
 }
 
 // Modeled after the parabola y = x^2
-func QuadraticEaseIn(p: Double) -> Double
+func QuadraticEaseIn(_ p: Double) -> Double
 {
     return p * p;
 }
 
 // Modeled after the parabola y = -x^2 + 2x
-func QuadraticEaseOut(p: Double) -> Double
+func QuadraticEaseOut(_ p: Double) -> Double
 {
     return -(p * (p - 2));
 }
@@ -95,7 +95,7 @@ func QuadraticEaseOut(p: Double) -> Double
 // Modeled after the piecewise quadratic
 // y = (1/2)((2x)^2)             ; [0, 0.5)
 // y = -(1/2)((2x-1)*(2x-3) - 1) ; [0.5, 1]
-func QuadraticEaseInOut(p: Double) -> Double
+func QuadraticEaseInOut(_ p: Double) -> Double
 {
     if(p < 0.5)
     {
@@ -108,13 +108,13 @@ func QuadraticEaseInOut(p: Double) -> Double
 }
 
 // Modeled after the cubic y = x^3
-func CubicEaseIn(p: Double) -> Double
+func CubicEaseIn(_ p: Double) -> Double
 {
     return p * p * p;
 }
 
 // Modeled after the cubic y = (x - 1)^3 + 1
-func CubicEaseOut(p: Double) -> Double
+func CubicEaseOut(_ p: Double) -> Double
 {
     let f = (p - 1);
     return f * f * f + 1;
@@ -123,7 +123,7 @@ func CubicEaseOut(p: Double) -> Double
 // Modeled after the piecewise cubic
 // y = (1/2)((2x)^3)       ; [0, 0.5)
 // y = (1/2)((2x-2)^3 + 2) ; [0.5, 1]
-func CubicEaseInOut(p: Double) -> Double
+func CubicEaseInOut(_ p: Double) -> Double
 {
     if(p < 0.5)
     {
@@ -137,13 +137,13 @@ func CubicEaseInOut(p: Double) -> Double
 }
 
 // Modeled after the quartic x^4
-func QuarticEaseIn(p: Double) -> Double
+func QuarticEaseIn(_ p: Double) -> Double
 {
     return p * p * p * p;
 }
 
 // Modeled after the quartic y = 1 - (x - 1)^4
-func QuarticEaseOut(p: Double) -> Double
+func QuarticEaseOut(_ p: Double) -> Double
 {
     let f = (p - 1);
     return f * f * f * (1 - p) + 1;
@@ -152,7 +152,7 @@ func QuarticEaseOut(p: Double) -> Double
 // Modeled after the piecewise quartic
 // y = (1/2)((2x)^4)        ; [0, 0.5)
 // y = -(1/2)((2x-2)^4 - 2) ; [0.5, 1]
-func QuarticEaseInOut(p: Double) -> Double
+func QuarticEaseInOut(_ p: Double) -> Double
 {
     if(p < 0.5)
     {
@@ -166,13 +166,13 @@ func QuarticEaseInOut(p: Double) -> Double
 }
 
 // Modeled after the quintic y = x^5
-func QuinticEaseIn(p: Double) -> Double
+func QuinticEaseIn(_ p: Double) -> Double
 {
     return p * p * p * p * p;
 }
 
 // Modeled after the quintic y = (x - 1)^5 + 1
-func QuinticEaseOut(p: Double) -> Double
+func QuinticEaseOut(_ p: Double) -> Double
 {
     let f = (p - 1);
     return f * f * f * f * f + 1;
@@ -181,7 +181,7 @@ func QuinticEaseOut(p: Double) -> Double
 // Modeled after the piecewise quintic
 // y = (1/2)((2x)^5)       ; [0, 0.5)
 // y = (1/2)((2x-2)^5 + 2) ; [0.5, 1]
-func QuinticEaseInOut(p: Double) -> Double
+func QuinticEaseInOut(_ p: Double) -> Double
 {
     if(p < 0.5)
     {
@@ -195,31 +195,31 @@ func QuinticEaseInOut(p: Double) -> Double
 }
 
 // Modeled after quarter-cycle of sine wave
-func SineEaseIn(p: Double) -> Double
+func SineEaseIn(_ p: Double) -> Double
 {
     return sin((p - 1) * Double(M_PI_2)) + 1;
 }
 
 // Modeled after quarter-cycle of sine wave (different phase)
-func SineEaseOut(p: Double) -> Double
+func SineEaseOut(_ p: Double) -> Double
 {
     return sin(p * Double(M_PI_2));
 }
 
 // Modeled after half sine wave
-func SineEaseInOut(p: Double) -> Double
+func SineEaseInOut(_ p: Double) -> Double
 {
     return 0.5 * (1 - cos(p * Double(M_PI)));
 }
 
 // Modeled after shifted quadrant IV of unit circle
-func CircularEaseIn(p: Double) -> Double
+func CircularEaseIn(_ p: Double) -> Double
 {
     return 1 - sqrt(1 - (p * p));
 }
 
 // Modeled after shifted quadrant II of unit circle
-func CircularEaseOut(p: Double) -> Double
+func CircularEaseOut(_ p: Double) -> Double
 {
     return sqrt((2 - p) * p);
 }
@@ -227,7 +227,7 @@ func CircularEaseOut(p: Double) -> Double
 // Modeled after the piecewise circular function
 // y = (1/2)(1 - sqrt(1 - 4x^2))           ; [0, 0.5)
 // y = (1/2)(sqrt(-(2x - 3)*(2x - 1)) + 1) ; [0.5, 1]
-func CircularEaseInOut(p: Double) -> Double
+func CircularEaseInOut(_ p: Double) -> Double
 {
     if(p < 0.5)
     {
@@ -240,13 +240,13 @@ func CircularEaseInOut(p: Double) -> Double
 }
 
 // Modeled after the exponential function y = 2^(10(x - 1))
-func ExponentialEaseIn(p: Double) -> Double
+func ExponentialEaseIn(_ p: Double) -> Double
 {
     return (p == 0.0) ? p : pow(2, 10 * (p - 1));
 }
 
 // Modeled after the exponential function y = -2^(-10x) + 1
-func ExponentialEaseOut(p: Double) -> Double
+func ExponentialEaseOut(_ p: Double) -> Double
 {
     return (p == 1.0) ? p : 1 - pow(2, -10 * p);
 }
@@ -254,7 +254,7 @@ func ExponentialEaseOut(p: Double) -> Double
 // Modeled after the piecewise exponential
 // y = (1/2)2^(10(2x - 1))         ; [0,0.5)
 // y = -(1/2)*2^(-10(2x - 1))) + 1 ; [0.5,1]
-func ExponentialEaseInOut(p: Double) -> Double
+func ExponentialEaseInOut(_ p: Double) -> Double
 {
     if(p == 0.0 || p == 1.0) {return p;}
     
@@ -269,13 +269,13 @@ func ExponentialEaseInOut(p: Double) -> Double
 }
 
 // Modeled after the damped sine wave y = sin(13pi/2*x)*pow(2, 10 * (x - 1))
-func ElasticEaseIn(p: Double) -> Double
+func ElasticEaseIn(_ p: Double) -> Double
 {
     return sin(13 * Double(M_PI_2) * p) * pow(2, 10 * (p - 1));
 }
 
 // Modeled after the damped sine wave y = sin(-13pi/2*(x + 1))*pow(2, -10x) + 1
-func ElasticEaseOut(p: Double) -> Double
+func ElasticEaseOut(_ p: Double) -> Double
 {
     return sin(-13 * Double(M_PI_2) * (p + 1)) * pow(2, -10 * p) + 1;
 }
@@ -283,7 +283,7 @@ func ElasticEaseOut(p: Double) -> Double
 // Modeled after the piecewise exponentially-damped sine wave:
 // y = (1/2)*sin(13pi/2*(2*x))*pow(2, 10 * ((2*x) - 1))      ; [0,0.5)
 // y = (1/2)*(sin(-13pi/2*((2x-1)+1))*pow(2,-10(2*x-1)) + 2) ; [0.5, 1]
-func ElasticEaseInOut(p: Double) -> Double
+func ElasticEaseInOut(_ p: Double) -> Double
 {
     if(p < 0.5)
     {
@@ -296,13 +296,13 @@ func ElasticEaseInOut(p: Double) -> Double
 }
 
 // Modeled after the overshooting cubic y = x^3-x*sin(x*pi)
-func BackEaseIn(p: Double) -> Double
+func BackEaseIn(_ p: Double) -> Double
 {
     return p * p * p - p * sin(p * Double(M_PI));
 }
 
 // Modeled after overshooting cubic y = 1-((1-x)^3-(1-x)*sin((1-x)*pi))
-func BackEaseOut(p: Double) -> Double
+func BackEaseOut(_ p: Double) -> Double
 {
     let f = (1 - p);
     return 1 - (f * f * f - f * sin(f * Double(M_PI)));
@@ -311,7 +311,7 @@ func BackEaseOut(p: Double) -> Double
 // Modeled after the piecewise overshooting cubic function:
 // y = (1/2)*((2x)^3-(2x)*sin(2*x*pi))           ; [0, 0.5)
 // y = (1/2)*(1-((1-x)^3-(1-x)*sin((1-x)*pi))+1) ; [0.5, 1]
-func BackEaseInOut(p: Double) -> Double
+func BackEaseInOut(_ p: Double) -> Double
 {
     if(p < 0.5)
     {
@@ -326,12 +326,12 @@ func BackEaseInOut(p: Double) -> Double
     }
 }
 
-func BounceEaseIn(p: Double) -> Double
+func BounceEaseIn(_ p: Double) -> Double
 {
     return 1 - BounceEaseOut(1 - p);
 }
 
-func BounceEaseOut(p: Double) -> Double
+func BounceEaseOut(_ p: Double) -> Double
 {
     if(p < 4/11.0)
     {
@@ -351,7 +351,7 @@ func BounceEaseOut(p: Double) -> Double
     }
 }
 
-func BounceEaseInOut(p: Double) -> Double
+func BounceEaseInOut(_ p: Double) -> Double
 {
     if(p < 0.5)
     {

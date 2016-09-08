@@ -9,7 +9,7 @@ import UIKit
 
 
 extension CGFloat {
-    func format(short:Bool)->String {
+    func format(_ short:Bool)->String {
         if(short){
             return String(format: "%.1f", self)
         }else{

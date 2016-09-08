@@ -25,11 +25,11 @@
 import UIKit
 
 
-public class OMGradientLayer : CALayer, OMGradientLayerProtocol {
+open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     
     // MARK: - OMColorsAndLocationsProtocol
 
-    public var colors: [UIColor] = [] {
+    open var colors: [UIColor] = [] {
         didSet {
             // if only exist one color, duplicate it.
             if (colors.count == 1) {
@@ -39,58 +39,58 @@ public class OMGradientLayer : CALayer, OMGradientLayerProtocol {
             
             // map monochrome colors to rgba colors
             colors = colors.map({
-                return ($0.colorSpace?.model == .Monochrome) ?
-                    UIColor(red: $0.components[0],
-                        green : $0.components[0],
-                        blue  : $0.components[0],
-                        alpha : $0.components[1]) : $0
+                return ($0.colorSpace?.model == .monochrome) ?
+                    UIColor(red: ($0.components?[0])!,
+                        green : ($0.components?[0])!,
+                        blue  : ($0.components?[0])!,
+                        alpha : ($0.components?[1])!) : $0
             })
             
             self.setNeedsDisplay()
         }
     }
-    public var locations : [CGFloat]? = nil {
+    open var locations : [CGFloat]? = nil {
         didSet {
             if locations != nil{
-                locations!.sortInPlace { $0 < $1 }
+                locations!.sort { $0 < $1 }
             }
             self.setNeedsDisplay()
         }
     }
     
-    public var isAxial : Bool {
-        return (gradientType == .Axial)
+    open var isAxial : Bool {
+        return (gradientType == .axial)
     }
-    public var isRadial : Bool {
-        return (gradientType == .Radial)
+    open var isRadial : Bool {
+        return (gradientType == .radial)
     }
     
     // MARK: - OMAxialGradientLayerProtocol
     
-    public var gradientType :OMGradientType = .Axial {
+    open var gradientType :OMGradientType = .axial {
         didSet {
             self.setNeedsDisplay();
         }
     }
     
     
-    public var startPoint: CGPoint  = CGPoint(x: 0.0, y: 0.5) {
+    open var startPoint: CGPoint  = CGPoint(x: 0.0, y: 0.5) {
         didSet {
             self.setNeedsDisplay();
         }
     }
-    public var endPoint: CGPoint = CGPoint(x: 1.0, y: 0.5) {
+    open var endPoint: CGPoint = CGPoint(x: 1.0, y: 0.5) {
         didSet{
             self.setNeedsDisplay();
         }
     }
 
-    public var extendsBeforeStart : Bool = false {
+    open var extendsBeforeStart : Bool = false {
         didSet {
             self.setNeedsDisplay()
         }
     }
-    public var extendsPastEnd : Bool = false {
+    open var extendsPastEnd : Bool = false {
         didSet {
             self.setNeedsDisplay()
         }
@@ -98,33 +98,65 @@ public class OMGradientLayer : CALayer, OMGradientLayerProtocol {
 
     // MARK: - OMRadialGradientLayerProtocol
     
-    public var startRadius: CGFloat = 0 {
+    open var startRadius: CGFloat = 0 {
         didSet {
             self.setNeedsDisplay();
         }
     }
-    public var endRadius: CGFloat = 0 {
+    open var endRadius: CGFloat = 0 {
         didSet {
             self.setNeedsDisplay();
         }
     }
     
     // MARK: OMMaskeableLayerProtocol
-    public var lineWidth : CGFloat = 1.0  {
+    open var lineWidth : CGFloat = 1.0  {
         didSet {
             self.setNeedsDisplay()
         }
     }
-    public var stroke : Bool = false {
+    open var stroke : Bool = false {
         didSet {
             self.setNeedsDisplay()
         }
     }
-    public var path : CGPath? {
+    open var path : CGPath? {
         didSet {
             self.setNeedsDisplay()
         }
     }
+    
+    //  Here's a method that creates a view that allows 360 degree rotation of its two-colour
+    //  gradient based upon input from a slider (or anything). The incoming slider value 
+    //  ("x" variable below) is between 0.0 and 1.0.
+    //
+    //  At 0.0 the gradient is horizontal (with colour A on top, and colour B below), rotating 
+    //  through 360 degrees to value 1.0 (identical to value 0.0 - or a full rotation).
+    //
+    //  E.g. when x = 0.25, colour A is left and colour B is right. At 0.5, colour A is below 
+    //  and colour B is above, 0.75 colour A is right and colour B is left. It rotates anti-clockwise
+    //  from right to left.
+    //
+    //  It takes four arguments: frame, colourA, colourB and the input value (0-1).
+    //
+    //  from: http://stackoverflow.com/a/29168654/6387073
+    
+    func gradientPointsToAngle(_ x:Double) -> (CGPoint,CGPoint)
+    {
+        //x is between 0 and 1, eg. from a slider, representing 0 - 360 degrees
+        //colour A starts on top, with colour B below
+        //rotations move anti-clockwise
+        
+        //create coordinates
+        let a = pow(sin((2*M_PI*((x+0.75)/2))),2);
+        let b = pow(sin((2*M_PI*((x+0.0)/2))),2);
+        let c = pow(sin((2*M_PI*((x+0.25)/2))),2);
+        let d = pow(sin((2*M_PI*((x+0.5)/2))),2);
+        
+        //set the gradient direction
+        return (CGPoint(x: a, y: b),CGPoint(x: c, y: d))
+    }
+    
 
     // MARK: - Object constructors
     required public init?(coder aDecoder: NSCoder) {
@@ -140,12 +172,12 @@ public class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     override public  init() {
         super.init()
         self.allowsEdgeAntialiasing     = true
-        self.contentsScale              = UIScreen.mainScreen().scale
+        self.contentsScale              = UIScreen.main.scale
         self.needsDisplayOnBoundsChange = true;
         self.drawsAsynchronously        = true;
     }
     
-    override public  init(layer: AnyObject) {
+    override public  init(layer: Any) {
         super.init(layer: layer)
         if let other = layer as? OMGradientLayer {
             // common
@@ -166,7 +198,7 @@ public class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     }
     
     // MARK: - Functions
-    override public class func needsDisplayForKey(event: String) -> Bool {
+    override open class func needsDisplay(forKey event: String) -> Bool {
         if (event == OMGradientLayerProperties.startPoint  ||
             event == OMGradientLayerProperties.locations   ||
             event == OMGradientLayerProperties.colors      ||
@@ -176,10 +208,10 @@ public class OMGradientLayer : CALayer, OMGradientLayerProtocol {
             return true
         }
         
-        return super.needsDisplayForKey(event)
+        return super.needsDisplay(forKey: event)
     }
     
-    override public func actionForKey(event: String) -> CAAction? {
+    override open func action(forKey event: String) -> CAAction? {
         if (event == OMGradientLayerProperties.startPoint ||
             event == OMGradientLayerProperties.locations   ||
             event == OMGradientLayerProperties.colors      ||
@@ -188,49 +220,48 @@ public class OMGradientLayer : CALayer, OMGradientLayerProtocol {
             event == OMGradientLayerProperties.endRadius) {
             return animationActionForKey(event);
         }
-        return super.actionForKey(event)
+        return super.action(forKey: event)
     }
     
-    override public func drawInContext(ctx: CGContext) {
+    override open func draw(in ctx: CGContext) {
 //        super.drawInContext(ctx) do nothing
-        let clipBoundingBox = CGContextGetClipBoundingBox(ctx)
-        CGContextClearRect(ctx,clipBoundingBox);
-        CGContextClipToRect(ctx,clipBoundingBox)
+        let clipBoundingBox = ctx.boundingBoxOfClipPath
+        ctx.clear(clipBoundingBox);
+        ctx.clip(to: clipBoundingBox)
     }
     
     
-    func addPathAndClipIfNeeded(ctx:CGContext) {
+    func addPathAndClipIfNeeded(_ ctx:CGContext) {
         if (self.path != nil) {
-            CGContextAddPath(ctx,self.path);
+            ctx.addPath(self.path!);
             if (self.stroke) {
-                CGContextSetLineWidth(ctx, self.lineWidth);
-                CGContextReplacePathWithStrokedPath(ctx);
+                ctx.setLineWidth(self.lineWidth);
+                ctx.replacePathWithStrokedPath();
             }
-            CGContextClip(ctx);
+            ctx.clip();
         }
     }
     
-    func canDrawGradient() -> Bool {
+    func isDrawable() -> Bool {
         if (colors.count == 0) {
             // nothing to do
-            #if VERBOSE
-                print("Unable to do the shading without colors.")
-            #endif
+            SpeedLog.print("Unable to do the shading without colors.")
             return false
         }
-        
         if (startPoint.isZero && endPoint.isZero) {
             // nothing to do
-            #if (VERBOSE)
-                print("Start point and end point are {x:0, y:0}.")
-            #endif
+            SpeedLog.print("Start point and end point are {x:0, y:0}.")
             return false
         }
-        
+        if (startRadius == endRadius && self.isRadial) {
+            // nothing to do
+            SpeedLog.print("Start radius and end radius are equal. \(startRadius) \(endRadius)")
+            return false
+        }
         return true;
     }
     
-    override public var description:String {
+    override open var description:String {
         get {
             var currentDescription:String = "type: \((self.isAxial ? "Axial" : "Radial"))\n"
             if let locations = locations {

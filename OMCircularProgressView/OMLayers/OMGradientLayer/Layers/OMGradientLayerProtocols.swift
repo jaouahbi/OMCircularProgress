@@ -27,8 +27,8 @@ import UIKit
 
 
 public enum OMGradientType : Int {
-    case Axial
-    case Radial
+    case axial
+    case radial
 }
 
 // Animatable Properties

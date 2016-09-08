@@ -28,23 +28,23 @@ public extension CALayer {
 
     // MARK: - CALayer Animation Helpers
     
-    public func animationActionForKey(event:String!) -> CABasicAnimation! {
+    public func animationActionForKey(_ event:String!) -> CABasicAnimation! {
         let animation = CABasicAnimation(keyPath: event)
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-        animation.fromValue = self.presentationLayer()!.valueForKey(event);
+        animation.fromValue = self.presentation()!.value(forKey: event);
         return animation
     }
     
-    public func animateKeyPath(keyPath : String,
+    public func animateKeyPath(_ keyPath : String,
                         fromValue : AnyObject?,
                         toValue:AnyObject?,
-                        beginTime:NSTimeInterval,
-                        duration:NSTimeInterval,
+                        beginTime:TimeInterval,
+                        duration:TimeInterval,
                         delegate:AnyObject?)
     {
         let animation = CABasicAnimation(keyPath:keyPath);
         
-        var currentValue: AnyObject? = self.presentationLayer()?.valueForKey(keyPath)
+        var currentValue: AnyObject? = self.presentation()?.value(forKey: keyPath) as AnyObject?
         
         if (currentValue == nil) {
             currentValue = fromValue
@@ -52,7 +52,7 @@ public extension CALayer {
         
         animation.fromValue = currentValue
         animation.toValue   = toValue
-        animation.delegate  = delegate
+        animation.delegate  = delegate as! CAAnimationDelegate?
         
         if(duration > 0.0){
             animation.duration = duration
@@ -63,7 +63,7 @@ public extension CALayer {
         
         animation.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionLinear)
         animation.setValue(self,forKey:keyPath)
-        self.addAnimation(animation, forKey:keyPath)
+        self.add(animation, forKey:keyPath)
         self.setValue(toValue,forKey:keyPath)
     }
 }

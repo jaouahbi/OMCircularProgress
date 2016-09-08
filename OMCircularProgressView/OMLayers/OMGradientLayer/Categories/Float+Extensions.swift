@@ -9,7 +9,7 @@ import UIKit
 
 
 extension Float {
-    func format(short:Bool)->String {
+    func format(_ short:Bool)->String {
         return CGFloat(self).format(short)
     }
 }

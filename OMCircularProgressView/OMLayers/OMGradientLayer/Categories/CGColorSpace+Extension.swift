@@ -28,14 +28,14 @@ import UIKit
 extension CGColorSpaceModel {
     var name : String {
         switch self {
-            case .Unknown:return "Unknown"
-            case .Monochrome:return "Monochrome"
-            case .RGB:return "RGB"
-            case .CMYK:return "CMYK"
-            case .Lab:return "Lab"
-            case .DeviceN:return "DeviceN"
-            case .Indexed:return "Indexed"
-            case .Pattern:return "Pattern"
+            case .unknown:return "Unknown"
+            case .monochrome:return "Monochrome"
+            case .rgb:return "RGB"
+            case .cmyk:return "CMYK"
+            case .lab:return "Lab"
+            case .deviceN:return "DeviceN"
+            case .indexed:return "Indexed"
+            case .pattern:return "Pattern"
         }
     }
 }
@@ -45,60 +45,60 @@ extension CGColorSpaceModel {
 extension CGColorSpace {
     
     /// CGColorSpace for the generic CMYK color space.
-    public static let GenericCMYK = CGColorSpaceCreateWithName(kCGColorSpaceGenericCMYK)
+    public static let GenericCMYK = CGColorSpace(name: CGColorSpace.genericCMYK)
     
     /// CGColorSpace for the Adobe RGB (1998) color space.
-    public static let AdobeRGB1998 = CGColorSpaceCreateWithName(kCGColorSpaceAdobeRGB1998)
+    public static let AdobeRGB1998 = CGColorSpace(name: CGColorSpace.adobeRGB1998)
     
     /// CGColorSpace for the SRGB color space.
-    public static let SRGB = CGColorSpaceCreateWithName(kCGColorSpaceSRGB)
+    public static let SRGB = CGColorSpace(name: CGColorSpace.sRGB)
     
     /// CGColorSpace for the generic gray color space with a gamma value of 2.2.
-    public static let GenericGrayGamma2_2 = CGColorSpaceCreateWithName(kCGColorSpaceGenericGrayGamma2_2)
+    public static let GenericGrayGamma2_2 = CGColorSpace(name: CGColorSpace.genericGrayGamma2_2)
     
     /// CGColorSpace for the generic gray color space.
-    public static let GenericGray = CGColorSpaceCreateWithName(kCGColorSpaceGenericGray)
-    
-    /// CGColorSpace for the generic RGB color space.
-    public static let GenericRGB = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB)
+    //public static let GenericGray = CGColorSpace(name: CGColorSpace.genericGray)
     
     /// CGColorSpace for the generic linear RGB color space.
-    public static let GenericRGBLinear = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGBLinear)
+    public static let GenericRGBLinear = CGColorSpace(name: CGColorSpace.genericRGBLinear)
+    
+    /// CGColorSpace for the generic RGB color space.
+    public static let GenericRGB = GenericRGBLinear
     
     /// CGColorSpace for the generic XYZ color space.
-    public static let GenericXYZ = CGColorSpaceCreateWithName(kCGColorSpaceGenericXYZ)
+    public static let GenericXYZ = CGColorSpace(name: CGColorSpace.genericXYZ)
     
     /// CGColorSpace for the linear ACESCG color space.
-    public static let ACESCGLinear = CGColorSpaceCreateWithName(kCGColorSpaceACESCGLinear)
+    public static let ACESCGLinear = CGColorSpace(name: CGColorSpace.acescgLinear)
     
     /// CGColorSpace for the ITUR_709 color space.
-    public static let ITUR_709 = CGColorSpaceCreateWithName(kCGColorSpaceITUR_709)
+    public static let ITUR_709 = CGColorSpace(name: CGColorSpace.itur_709)
     
     /// CGColorSpace for the ITUR_2020 color space.
-    public static let ITUR_2020 = CGColorSpaceCreateWithName(kCGColorSpaceITUR_2020)
+    public static let ITUR_2020 = CGColorSpace(name: CGColorSpace.itur_2020)
     
     /// CGColorSpace for the ROMMRGB color space.
-    public static let ROMMRGB = CGColorSpaceCreateWithName(kCGColorSpaceROMMRGB)
+    public static let ROMMRGB = CGColorSpace(name: CGColorSpace.rommrgb)
 }
 
 
 extension CGColorSpace {
     var numberOfComponents:size_t {
-        return CGColorSpaceGetNumberOfComponents(self)
+        return self.numberOfComponents
     }
-    var model:CGColorSpaceModel {
-        return CGColorSpaceGetModel(self)
-    }
+//    var model:CGColorSpaceModel {
+//        return model
+//    }
     var isRGB : Bool {
-        return model == .RGB
+        return model == .rgb
     }
     var isCMYK : Bool {
-        return model == .CMYK
+        return model == .cmyk
     }
     var isLab : Bool {
-        return model == .Lab
+        return model == .lab
     }
     var isMonochrome : Bool {
-        return model == .Monochrome
+        return model == .monochrome
     }
 }

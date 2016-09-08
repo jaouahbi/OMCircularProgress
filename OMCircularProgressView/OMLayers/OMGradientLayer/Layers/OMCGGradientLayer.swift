@@ -17,7 +17,7 @@
 
 import UIKit
 
-public class OMCGGradientLayer : OMGradientLayer {
+open class OMCGGradientLayer : OMGradientLayer {
     
     convenience public init(type:OMGradientType) {
         self.init()
@@ -30,49 +30,49 @@ public class OMCGGradientLayer : OMGradientLayer {
     }
     
     //Defaults to 0. Animatable.
-    public  var options: CGGradientDrawingOptions = CGGradientDrawingOptions(rawValue:0) {
+    open  var options: CGGradientDrawingOptions = CGGradientDrawingOptions(rawValue:0) {
         didSet {
             self.setNeedsDisplay()
         }
     }
     // MARK: - Object Helpers
-    override public var extendsBeforeStart : Bool  {
+    override open var extendsBeforeStart : Bool  {
         set(newValue) {
-            let isBitSet = (self.options.rawValue & CGGradientDrawingOptions.DrawsBeforeStartLocation.rawValue ) != 0
+            let isBitSet = (self.options.rawValue & CGGradientDrawingOptions.drawsBeforeStartLocation.rawValue ) != 0
             if (newValue != isBitSet) {
                 if newValue {
                     // add bits to mask
-                    let newOptions = (self.options.rawValue | CGGradientDrawingOptions.DrawsBeforeStartLocation.rawValue)
+                    let newOptions = (self.options.rawValue | CGGradientDrawingOptions.drawsBeforeStartLocation.rawValue)
                     self.options   = CGGradientDrawingOptions(rawValue:newOptions);
                 } else {
                     // remove bits from mask
-                    let newOptions  = (self.options.rawValue & ~CGGradientDrawingOptions.DrawsBeforeStartLocation.rawValue)
+                    let newOptions  = (self.options.rawValue & ~CGGradientDrawingOptions.drawsBeforeStartLocation.rawValue)
                     self.options    = CGGradientDrawingOptions(rawValue:newOptions);
                 }
                 self.setNeedsDisplay();
             }
         }
         get {
-            return (self.options.rawValue & CGGradientDrawingOptions.DrawsBeforeStartLocation.rawValue) != 0
+            return (self.options.rawValue & CGGradientDrawingOptions.drawsBeforeStartLocation.rawValue) != 0
         }
     }
     
-    override public var extendsPastEnd:Bool {
+    override open var extendsPastEnd:Bool {
         set(newValue) {
-            let isBitSet = (self.options.rawValue & CGGradientDrawingOptions.DrawsAfterEndLocation.rawValue ) != 0
+            let isBitSet = (self.options.rawValue & CGGradientDrawingOptions.drawsAfterEndLocation.rawValue ) != 0
             if (newValue != isBitSet) {
                 if newValue {
-                    let newOptions = (self.options.rawValue | CGGradientDrawingOptions.DrawsAfterEndLocation.rawValue)
+                    let newOptions = (self.options.rawValue | CGGradientDrawingOptions.drawsAfterEndLocation.rawValue)
                     self.options   = CGGradientDrawingOptions(rawValue:newOptions);
                 } else {
-                    let newOptions = (self.options.rawValue & ~CGGradientDrawingOptions.DrawsAfterEndLocation.rawValue)
+                    let newOptions = (self.options.rawValue & ~CGGradientDrawingOptions.drawsAfterEndLocation.rawValue)
                     self.options   = CGGradientDrawingOptions(rawValue:newOptions);
                 }
                 setNeedsDisplay();
             }
         }
         get {
-            return (self.options.rawValue & CGGradientDrawingOptions.DrawsAfterEndLocation.rawValue) != 0
+            return (self.options.rawValue & CGGradientDrawingOptions.drawsAfterEndLocation.rawValue) != 0
         }
     }
     
@@ -80,17 +80,17 @@ public class OMCGGradientLayer : OMGradientLayer {
         super.init(coder:aDecoder)
     }
     
-    override init(layer: AnyObject) {
-        super.init(layer: layer)
+    override init(layer: Any) {
+        super.init(layer: layer as AnyObject)
         if let other = layer as? OMCGGradientLayer {
             self.gradientType        = other.gradientType
             self.options     = other.options
         }
     }
     
-    override public func drawInContext(ctx: CGContext) {
+    override open func draw(in ctx: CGContext) {
         
-        super.drawInContext(ctx)
+        super.draw(in: ctx)
         
         var locations   :[CGFloat]? = self.locations
         var colors      :[UIColor]  = self.colors
@@ -99,10 +99,10 @@ public class OMCGGradientLayer : OMGradientLayer {
         var startRadius : CGFloat   = self.startRadius
         var endRadius   : CGFloat   = self.endRadius
         
-        if let player = presentationLayer() as? OMCGGradientLayer {
-            #if DEBUG_VERBOSE
-                print("drawing presentationLayer\n\(player)")
-            #endif
+        let player = self.presentation()
+        
+        if let player = player {
+            SpeedLog.print("drawing presentationLayer\n\(player)")
             
             colors       = player.colors
             locations    = player.locations
@@ -112,22 +112,15 @@ public class OMCGGradientLayer : OMGradientLayer {
             endRadius    = player.endRadius
             
         } else {
-            #if DEBUG_VERBOSE
-                print("drawing modelLayer\n\(self)")
-            #endif
+            SpeedLog.print("drawing modelLayer\n\(self)")
         }
     
-        if (canDrawGradient()) {
-            if (startRadius == endRadius && self.isRadial) {
-                // nothing to do
-                #if VERBOSE
-                    print("Start radius and end radius are equal. \(startRadius) \(endRadius)")
-                #endif
-                return
-            }
-
-            if let gradient = OMGradient(colors: colors, locations: locations).CGGradient {
-                CGContextSaveGState(ctx)
+        if (isDrawable()) {
+            
+            var gradient = OMGradient(colors: colors, locations: locations)
+            
+            if let gradient = gradient.gradient {
+                ctx.saveGState()
                 addPathAndClipIfNeeded(ctx)
                 if (self.isRadial) {
                     // The starting circle has radius `startRadius' and is centered at
@@ -136,26 +129,23 @@ public class OMCGGradientLayer : OMGradientLayer {
                     // shading's target coordinate space.
                     let startCenter = startPoint * self.bounds.size
                     let endCenter   = endPoint   * self.bounds.size
-                    CGContextDrawRadialGradient(ctx,
-                                                gradient,
-                                                startCenter,
-                                                startRadius ,
-                                                endCenter,
-                                                endRadius ,
-                                                self.options );
+                    ctx.drawRadialGradient(gradient,
+                                                startCenter: startCenter,
+                                                startRadius: startRadius ,
+                                                endCenter: endCenter,
+                                                endRadius: endRadius ,
+                                                options: self.options );
                 } else {
-                    CGContextScaleCTM(ctx,
-                                      self.bounds.size.width,
-                                      self.bounds.size.height );
+                    ctx.scaleBy(x: self.bounds.size.width,
+                                      y: self.bounds.size.height );
                     
-                    CGContextDrawLinearGradient(ctx,
-                                                gradient,
-                                                startPoint,
-                                                endPoint,
-                                                self.options);
+                    ctx.drawLinearGradient(gradient,
+                                                start: startPoint,
+                                                end: endPoint,
+                                                options: self.options);
                 }
                 // restore the context
-                CGContextRestoreGState(ctx);
+                ctx.restoreGState();
             }
         }
     }    

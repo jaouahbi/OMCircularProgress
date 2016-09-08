@@ -24,8 +24,28 @@
 //
 
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
 
-public class OMGradient {
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
+
+struct OMGradient {
     
     var locations : [CGFloat]? = nil
     var colors    : [UIColor]  = []
@@ -35,8 +55,8 @@ public class OMGradient {
         self.locations  = locations
     }
     
-    lazy var CGGradient : CGGradientRef! = {
-        var colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()!
+    lazy var gradient : CGGradient? = {
+        var colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()
         var numberOfComponents:Int   = 4 // RGBA
         var components:Array<CGFloat>?
         let numberOfLocations:Int
@@ -52,14 +72,11 @@ public class OMGradient {
                 numberOfLocations = self.colors.count
             }
             
-            #if (DEBUG_VERBOSE)
-                print("\(numberOfLocations) locations")
-            #endif
-            #if (DEBUG_VERBOSE)
-                if self.locations != nil {
-                print(" \(self.locations!)")
-                }
-            #endif
+            SpeedLog.print("\(numberOfLocations) locations")
+            
+            if self.locations != nil {
+                SpeedLog.print(" \(self.locations!)")
+            }
             
             if (numberOfLocations > 0) {
                 // Analize one color
@@ -72,7 +89,7 @@ public class OMGradient {
                 }
                 
                 if (numberOfComponents > 0) {
-                    components = [CGFloat](count: numberOfLocations * numberOfComponents, repeatedValue: 0.0)
+                    components = [CGFloat](repeating: 0.0, count: numberOfLocations * numberOfComponents)
                     for locationIndex in 0 ..< numberOfLocations {
                         let color = self.colors[locationIndex]
                         // sanity check
@@ -82,28 +99,26 @@ public class OMGradient {
                         let colorComponents = color.components;
                         
                         for componentIndex in 0 ..< numberOfComponents {
-                            components?[numberOfComponents * locationIndex + componentIndex] = colorComponents[componentIndex]
+                            components?[numberOfComponents * locationIndex + componentIndex] = (colorComponents?[componentIndex])!
                         }
                     }
                     
                     // If locations is NULL, the first color in colors is assigned to location 0, the last color incolors is assigned
                     // to location 1, and intervening colors are assigned locations that are at equal intervals in between.
-                    var gradient:CGGradientRef?
+                    var gradient:CGGradient?
                     if (useLocations) {
                         assert(self.locations != nil && self.locations!.count > 0)
-                        gradient = CGGradientCreateWithColorComponents(colorSpace,
-                                                                       UnsafePointer<CGFloat>(components!),
-                                                                       UnsafePointer<CGFloat>(self.locations!),
-                                                                       numberOfLocations);
+                        return  CGGradient(colorSpace: colorSpace,
+                                         colorComponents: UnsafePointer<CGFloat>(components!),
+                                               locations: UnsafePointer<CGFloat>(self.locations!),
+                                                   count: numberOfLocations);
                     } else {
                         assert(!(self.locations != nil && self.locations!.count > 0))
-                        gradient = CGGradientCreateWithColorComponents(colorSpace,
-                                                                       UnsafePointer<CGFloat>(components!),
-                                                                       nil,
-                                                                       numberOfLocations);
+                        return  CGGradient(colorSpace: colorSpace,
+                                         colorComponents: UnsafePointer<CGFloat>(components!),
+                                               locations: nil,
+                                                   count: numberOfLocations);
                     }
-                    
-                    return gradient;
                 }
             }
         }

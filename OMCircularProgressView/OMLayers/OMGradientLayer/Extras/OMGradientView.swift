@@ -29,16 +29,16 @@ import UIKit
 
 // MARK: - Gradient View
 
-public class OMGradientView<T:AnyObject> : UIView {
+open class OMGradientView<T:AnyObject> : UIView {
     
     // MARK: - Properties
     
     /// The view’s conical gradient layer used for rendering. (read-only)
-    public var gradientLayer: T {
+    open var gradientLayer: T {
         return layer as! T
     }
     
-    override public class func layerClass() -> AnyClass {
+    override open class var layerClass : AnyClass {
         return T.self as AnyClass
     }
     
@@ -57,8 +57,8 @@ public class OMGradientView<T:AnyObject> : UIView {
 //        super.drawLayer(layer, inContext: ctx)
 //    }
     
-    private func setup() {
-        let scale =  UIScreen.mainScreen().scale
+    fileprivate func setup() {
+        let scale =  UIScreen.main.scale
         layer.contentsScale = scale
         layer.needsDisplayOnBoundsChange = true
         layer.drawsAsynchronously = true
@@ -71,7 +71,7 @@ public class OMGradientView<T:AnyObject> : UIView {
         
         // layer.delegate = self
     
-        self.backgroundColor       = UIColor.whiteColor();
+        self.backgroundColor       = UIColor.white;
     }
 }
 

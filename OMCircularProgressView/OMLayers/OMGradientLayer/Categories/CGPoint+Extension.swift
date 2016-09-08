@@ -26,7 +26,7 @@ import UIKit
 
 
 public func ==(lhs: CGPoint, rhs: CGPoint) -> Bool {
-    return CGPointEqualToPoint(lhs, rhs)
+    return lhs.equalTo(rhs)
 }
 
 public func *(lhs: CGPoint, rhs: CGSize) -> CGPoint {
@@ -44,25 +44,25 @@ public func /(lhs: CGPoint, rhs: CGSize) -> CGPoint {
 extension CGPoint : Hashable  {
 
     public var hashValue: Int {
-        return self.x.hashValue << sizeof(CGFloat) ^ self.y.hashValue
+        return self.x.hashValue << MemoryLayout<CGFloat>.size ^ self.y.hashValue
 
     }
     var isZero : Bool {
-        return self == CGPointZero
+        return self == CGPoint.zero
     }
     
-    func distance(point:CGPoint) -> CGFloat {
+    func distance(_ point:CGPoint) -> CGFloat {
         let diff = CGPoint(x: self.x - point.x, y: self.y - point.y);
         return CGFloat(sqrtf(Float(diff.x*diff.x + diff.y*diff.y)));
     }
     
-    func projectLine( point:CGPoint, length:CGFloat) -> CGPoint  {
+    func projectLine( _ point:CGPoint, length:CGFloat) -> CGPoint  {
         var newPoint = CGPoint(x: point.x, y: point.y)
         let x = (point.x - self.x);
         let y = (point.y - self.y);
-        if (fpclassify(x) == Int(FP_ZERO)) {
+        if (x == 0 || x == -0) {
             newPoint.y += length;
-        } else if (fpclassify(y) == Int(FP_ZERO)) {
+        } else if (y == 0 || y == -0) {
             newPoint.x += length;
         } else {
             #if CGFLOAT_IS_DOUBLE

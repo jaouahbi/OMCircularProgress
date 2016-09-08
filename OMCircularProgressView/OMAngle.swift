@@ -30,25 +30,24 @@ import UIKit
  */
 
 let π     = M_PI
-let π_x_2 = M_PI * 2
 let π_2   = M_PI_2
 let π_4   = M_PI_4
 
 /**
  * Angle alignment
  *
- * AngleStart: Align to start of the angle
- * AngleMid:   Align to middle of the angle
- * AngleEnd:   Align to the end of the angle
+ * start : Align to start of the angle
+ * middle: Align to middle of the angle
+ * end   : Align to the end of the angle
  */
 
 public enum OMAngleAlign: Int
 {
-    case Start
-    case Middle
-    case End
+    case start
+    case middle
+    case end
     init() {
-        self = Middle
+        self = .middle
     }
 }
 
@@ -56,7 +55,7 @@ public enum OMAngleAlign: Int
  * Object that encapsulate a angle
  */
 
-public class OMAngle : CustomDebugStringConvertible
+open class OMAngle : CustomDebugStringConvertible
 {
     var start:Double = 0.0                // start of angle in radians
     var end:Double   = 0.0                // end of angle in radians
@@ -80,14 +79,14 @@ public class OMAngle : CustomDebugStringConvertible
      *
      * returns: return the angle arc length
      */
-    func arc(radius:CGFloat) -> Double {
+    func arc(_ radius:CGFloat) -> Double {
         return length() / Double(radius)
     }
     
     /**
      * Add radians to the angle
      */
-    func add(len:Double){
+    func add(_ len:Double){
         end += len;
     }
     
@@ -113,6 +112,16 @@ public class OMAngle : CustomDebugStringConvertible
     }
     
     /**
+     * Get the normalized angle
+     *
+     * returns: return angle length in radians
+     */
+    
+    func norm() -> Double {
+        return start / 𝜏
+    }
+    
+    /**
      * Check if the angle is valid
      *
      * returns: return if the angle is valid
@@ -131,7 +140,7 @@ public class OMAngle : CustomDebugStringConvertible
      */
     
     func angleInCircle() -> Bool {
-        return (self.end > π_x_2 || self.start < -π_x_2) == false
+        return (self.end > 𝜏 || self.start < -𝜏) == false
     }
     
     /**
@@ -143,16 +152,16 @@ public class OMAngle : CustomDebugStringConvertible
      * returns: angle anligned to .OMAngleAlign
      */
     
-    func align(align:OMAngleAlign) -> Double {
+    func align(_ align:OMAngleAlign) -> Double {
         var resultAngle: Double = self.mid()
         switch(align) {
-        case .Middle:
+        case .middle:
             resultAngle = self.mid()
             break;
-        case .Start:
+        case .start:
             resultAngle = self.start
             break;
-        case .End:
+        case .end:
             resultAngle = self.end
             break;
         }
@@ -161,7 +170,7 @@ public class OMAngle : CustomDebugStringConvertible
 
     // MARK: DebugPrintable protocol
     
-    public var debugDescription: String {
+    open var debugDescription: String {
         let sizeOfAngle = round(length().radiansToDegrees())
         let degreeS     = round(start.radiansToDegrees());
         let degreeE     = round(end.radiansToDegrees());

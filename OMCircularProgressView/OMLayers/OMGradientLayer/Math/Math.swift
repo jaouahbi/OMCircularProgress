@@ -27,42 +27,42 @@ import UIKit
 //let π  = M_PI
 //let π2 = M_PI * 2.0
 
-public func clamp<T: Comparable>(value: T, lower: T, upper: T) -> T {
+public func clamp<T: Comparable>(_ value: T, lower: T, upper: T) -> T {
     return min(max(value, lower), upper)
 }
 
-public func between<T: Comparable>(value: T, lower: T, upper: T , include: Bool = true) -> Bool {
+public func between<T: Comparable>(_ value: T, lower: T, upper: T , include: Bool = true) -> Bool {
     let left = min(lower, upper)
     let right = max(lower, upper)
     return include ? (value >= left && value <= right) : (value > left && value < right)
 }
 
-public func degreesToRadians(degrees:CGFloat) -> CGFloat {
+public func degreesToRadians(_ degrees:CGFloat) -> CGFloat {
     return degrees * 0.017453292519943295
 }
 
-public func radiansToDegrees(radians:CGFloat) -> CGFloat{
+public func radiansToDegrees(_ radians:CGFloat) -> CGFloat{
     return radians * 57.29577951
 }
 
-public func degreesToRadians(degrees:Double) -> Double {
+public func degreesToRadians(_ degrees:Double) -> Double {
     return degrees * 0.017453292519943295
 }
 
-public func radiansToDegrees(radians:Double) -> Double{
+public func radiansToDegrees(_ radians:Double) -> Double{
     return radians * 57.29577951
 }
 
-public func minRadius(size: CGSize) -> CGFloat {
+public func minRadius(_ size: CGSize) -> CGFloat {
     return min(size.height,size.width) * 0.5;
 }
 
-public func maxRadius(size: CGSize) -> CGFloat {
+public func maxRadius(_ size: CGSize) -> CGFloat {
     let longerSide = max(size.width, size.height)
     return longerSide * CGFloat(M_SQRT2) * 0.5
 }
 // monotonically increasing function
-public func monotonic(numberOfElements:Int) -> [CGFloat] {
+public func monotonic(_ numberOfElements:Int) -> [CGFloat] {
     var monotonicFunction:[CGFloat] = []
     let numberOfLocations:CGFloat = CGFloat(numberOfElements - 1)
     for locationIndex in 0 ..< numberOfElements  {

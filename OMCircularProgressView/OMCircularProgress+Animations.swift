@@ -26,19 +26,17 @@
 import UIKit
 
 
-extension OMCircularProgress
+extension OMCircularProgress : CAAnimationDelegate
 {
     /// MARK: CAAnimation delegate
     
-    override func animationDidStart(anim: CAAnimation){
-        if DEBUG_ANIMATIONS {
-            print("[.] animationDidStart:\((anim as! CABasicAnimation).keyPath) : \((anim as! CABasicAnimation).beginTime) ")
-        }
+    func animationDidStart(_ anim: CAAnimation){
+        SpeedLog.print("START:\((anim as! CABasicAnimation).keyPath) : \((anim as! CABasicAnimation).beginTime) ")
     }
     
-    override func animationDidStop(anim: CAAnimation, finished flag: Bool){
-        if DEBUG_ANIMATIONS {
-            print("[.] animationDidStop:\((anim as! CABasicAnimation).keyPath)")
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool){
+        if flag {
+            SpeedLog.print("END:\((anim as! CABasicAnimation).keyPath)")
         }
     }
     
@@ -46,10 +44,11 @@ extension OMCircularProgress
     // Animate the shapeLayer and the image for the step
     //
     
-    func stepAnimation(step:OMStepData, progress:Double) {
+    func stepAnimation(_ step:OMStepData, progress:Double) {
+        
+        assert(progress >= 0);
         
         // Remove all animations
-        
         step.shapeLayer.removeAllAnimations()
         
         let animation = CABasicAnimation(keyPath: "strokeEnd")
@@ -59,12 +58,12 @@ extension OMCircularProgress
         
         animation.duration = (animationDuration / Double(numberOfSteps)) * progress
         
-        animation.removedOnCompletion = false
-        animation.additive = true
+        animation.isRemovedOnCompletion = false
+        animation.isAdditive = true
         animation.fillMode = kCAFillModeForwards
         animation.delegate = self
         
-        if (progressStyle == .SequentialProgress) {
+        if (progressStyle == .sequentialProgress) {
             
             // Current animation beginTime
             
@@ -83,10 +82,10 @@ extension OMCircularProgress
         // Add animation to the stroke of the shape layer.
         //
         
-        step.shapeLayer.addAnimation(animation, forKey: "strokeEnd")
+        step.shapeLayer.add(animation, forKey: "strokeEnd")
         
         if let shapeLayerBorder = step.shapeLayerBorder {
-            shapeLayerBorder.addAnimation(animation, forKey: "strokeEnd")
+            shapeLayerBorder.add(animation, forKey: "strokeEnd")
         }
         
         if let imgLayer = step.imageLayer {

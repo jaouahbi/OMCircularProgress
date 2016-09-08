@@ -29,26 +29,25 @@ extension OMCircularProgress
     // MARK: Debug functions
     
     /**
-    Debug print all steps
-    */
-    func dumpAllSteps()
-    {
-        for (index, step) in dataSteps.enumerate() {
-            print("\(index): \(step as! OMStepData)")
+     * Debug print all steps
+     */
+    func dumpAllSteps() {
+        for (index, step) in dataSteps.enumerated() {
+            SpeedLog.print("\(index): \(step as! OMStepData)")
         }
     }
     
     /**
-     Debug print all layers
-     
-     - parameter level: recursion level
-     - parameter layer: layer to debug print
+     * Debug print all layers
+     *
+     * parameter level: recursion level
+     * parameter layer: layer to debug print
      */
-    func dumpLayers(level:UInt, layer:CALayer) {
+    
+    func dumpLayers(_ level:UInt, layer:CALayer) {
         if (layer.sublayers != nil) {
-            for (_, curLayer) in layer.sublayers!.enumerate() {
-                print("[\(level):\(layer)] \(curLayer.name) \(curLayer)")
-                
+            for (_, curLayer) in layer.sublayers!.enumerated() {
+                SpeedLog.print("[\(level):\(layer)] \(curLayer.name) \(curLayer)")
                 if(curLayer.sublayers != nil){
                     dumpLayers(level+1, layer: curLayer)
                 }
@@ -65,7 +64,7 @@ extension OMCircularProgress
     
     - returns: return if the angle is in range
     */
-    func isAngleInCircleRange(angle:Double) -> Bool{
+    func isAngleInCircleRange(_ angle:Double) -> Bool{
         return (angle > (M_PI * 2) || angle < -(M_PI * 2)) == false
     }
     
@@ -91,7 +90,7 @@ extension OMCircularProgress
     /// debug description
     
     override var debugDescription: String
-        {
+    {
             let str : String = "Radius : \(radius) Inner Radius: \(innerRadius) Outer Radius: \(outerRadius) Mid Radius: \(midRadius) Border : \(borderWidth)"
             
             return str;

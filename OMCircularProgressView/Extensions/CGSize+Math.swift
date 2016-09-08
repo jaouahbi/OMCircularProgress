@@ -36,7 +36,7 @@ extension CGSize
         return Swift.max(height,width);
     }
     
-    func max(other : CGSize) -> CGSize {
+    func max(_ other : CGSize) -> CGSize {
         return self.max() >= other.max()  ? self : other;
     }
     

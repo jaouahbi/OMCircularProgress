@@ -23,23 +23,23 @@
 //
 
 import UIKit
-
+import CoreGraphics
 
 extension CAShapeLayer
 {
-    override public func containsPoint(p:CGPoint) -> Bool {
+    override open func contains(_ p:CGPoint) -> Bool {
         let eoFill:Bool = (self.fillRule == "even-odd")
         
         if((self.path != nil)){
-            return CGPathContainsPoint(self.path, nil, p, eoFill)
+            return self.path!.contains(p, using: eoFill ? .evenOdd : .winding)
         }
         return false
     }
     
     func pathBoundingBox() -> CGRect {
         if((self.path != nil)){
-            return CGPathGetBoundingBox(self.path)
+            return self.path!.boundingBox
         }
-        return CGRectZero
+        return CGRect.zero
     }
 }

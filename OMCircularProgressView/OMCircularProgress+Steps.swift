@@ -28,42 +28,46 @@ import UIKit
 
 extension OMCircularProgress
 {
-    /// Get the number of steps
-    
+    /**
+     * Get the number of steps
+     */
     var numberOfSteps : Int {
         return self.dataSteps.count;
     }
-    /// step to index
-    func stepIndex(step:OMStepData) -> Int {
-        return self.dataSteps.indexOfObject(step)
+
+    /**
+     * Step to index in the steps array
+     */
+    func stepIndex(_ step:OMStepData) -> Int {
+        return self.dataSteps.index(of: step)
     }
     
-    /// Get the last step data added to the list of steps
-    
-    var lastStepData : OMStepData? {
-        
+    /**
+     *  Get the last step data added to the list of steps
+     */
+    var last : OMStepData? {
         get {
             if numberOfSteps > 0 {
                 return dataSteps.lastObject as? OMStepData
             }
-            if DEBUG_VERBOSE {
-                print("[!] Found 0 steps.")
-            }
+            SpeedLog.print("Found 0 steps.")
             return nil;
         }
     }
     
-    // Get the step data by index from the list of steps
+    /**
+     *  Get/Set the step data, subscripted by index from the list of steps
+     */
     
     subscript(stepIndex: Int) -> OMStepData? {
         get {
             assert(stepIndex < numberOfSteps, "out of bounds. \(stepIndex) max: \(numberOfSteps)")
-            if stepIndex >= numberOfSteps {
-                return nil
+            if stepIndex < numberOfSteps {
+                return dataSteps[stepIndex] as? OMStepData
             }
-            
-            return dataSteps[stepIndex] as? OMStepData
+            return nil
         }
+
         set(newStep) {
             assert(stepIndex < numberOfSteps, "out of bounds. \(stepIndex) max: \(numberOfSteps)")
             if stepIndex < numberOfSteps {
@@ -73,26 +77,27 @@ extension OMCircularProgress
     }
     
     /**
-     Find the OMStepData that cantains the layer
-     
-     - parameter layer: layer to find
-     - returns: the OMStepData owns the layer.
+     * Find the OMStepData that cantains the layer
+     *
+     * parameter layer: layer to find
+     *
+     * returns: the OMStepData owns the layer.
      */
     
-    func stepByLayer(layer:CALayer!) -> OMStepData? {
-        for (_, step) in dataSteps.enumerate() {
-            let step = (step as! OMStepData)
-            if(layer == step.shapeLayer) {
-                return step
-            }
-            if let wellLayer = step.wellLayer {
-                if(layer == wellLayer) {
-                    return step
-                }
-            }
-        }
-        return nil;
-    }
+//    func stepByLayer(layer:CALayer!) -> OMStepData? {
+//        for (_, step) in dataSteps.enumerate() {
+//            let step = (step as! OMStepData)
+//            if(layer == step.shapeLayer) {
+//                return step
+//            }
+//            if let wellLayer = step.wellLayer {
+//                if(layer == wellLayer) {
+//                    return step
+//                }
+//            }
+//        }
+//        return nil;
+//    }
     
     /**
      Find the step angle with max length.
@@ -102,7 +107,7 @@ extension OMCircularProgress
     
     func maxAngleLength() -> Double{
         var maxAngle:Double = 0
-        for (_, step) in dataSteps.enumerate() {
+        for (_, step) in dataSteps.enumerated() {
             maxAngle = max((step as! OMStepData).angle.length(),maxAngle)
         }
         return maxAngle
@@ -115,7 +120,7 @@ extension OMCircularProgress
      */
     func minAngleLength() -> Double{
         var minAngle:Double = M_PI * 2
-        for (_, step) in dataSteps.enumerate() {
+        for (_, step) in dataSteps.enumerated() {
             minAngle = min((step as! OMStepData).angle.length(),minAngle)
         }
         return minAngle
@@ -128,8 +133,8 @@ extension OMCircularProgress
      */
     
     func maxImageSize() -> CGSize {
-        var maxSize:CGSize = CGSizeZero
-        for (_, step) in dataSteps.enumerate() {
+        var maxSize:CGSize = CGSize.zero
+        for (_, step) in dataSteps.enumerated() {
             if let img = (step as! OMStepData).image{
                 maxSize = img.size.max(maxSize)
             }
@@ -143,7 +148,7 @@ extension OMCircularProgress
      */
     func maxTextHeight() -> CGFloat {
         var maxHeight:CGFloat = 0
-        for (_, step) in dataSteps.enumerate() {
+        for (_, step) in dataSteps.enumerated() {
             if let txt = (step as! OMStepData).textLayer{
                 maxHeight = max(txt.bounds.size.height,maxHeight)
             }
@@ -162,47 +167,42 @@ extension OMCircularProgress
      - returns: return a OMStepData object.
      */
     
-    func addStep(startAngle:Double, endAngle:Double, color:UIColor!) -> OMStepData?
-    {
+    func addStep(_ startAngle:Double, endAngle:Double, color:UIColor!) -> OMStepData? {
         assert(isAngleInCircleRange(endAngle), "Invalid angle:\(endAngle). range in radians : -(2*PI)/+(2*PI)")
         assert(isAngleInCircleRange(startAngle), "Invalid angle:\(startAngle). range in radians : -(2*PI)/+(2*PI)")
-        
+        // Create the step
         let step = OMStepData(startAngle:startAngle,endAngle:endAngle,color:color)
-        
         let numberOfRad = numberOfRadians() + step.angle.length()
-        
-        let diference = numberOfRad - (2 * M_PI)
+        let diference   = numberOfRad - 𝜏
         if diference > Double(FLT_EPSILON) {
-            //
-            print("Out of radians: can't create the step. overflow by \((2 * M_PI) - numberOfRad) radians")
+            SpeedLog.print("Out of radians: can't create the step. overflow by \(𝜏 - numberOfRad) radians")
             return nil
         }
-        
-        dataSteps.addObject(step)
-        
+        // Save the step
+        dataSteps.add(step)
         return step
     }
     
     /**
-     Append a new step progress.
-     
-     - parameter color:     step color
-     - returns: return a OMStepData object.
-     
-     - notes: only for test
+     * Append a new step progress.
+     *
+     * parameter color: step color
+     * returns: return a OMStepData object.
+     *
+     *  notes: only for test
      */
-    func appendStep(color:UIColor!) -> OMStepData? {
+    func appendStep(_ color:UIColor!) -> OMStepData? {
         let percentConsumed = 1.0 - percentDone()
         return addStepWithPercent( percentConsumed - (percentConsumed / 2), color: color)
     }
     
     /**
-     Remove all steps.
+     * Remove all steps.
      */
     
     func removeAllSteps() {
         self.dataSteps.removeAllObjects()
-        removeAllSublayersFromSuperlayer()
+        removeSublayers()
         layoutSubviews()
     }
     
@@ -214,7 +214,7 @@ extension OMCircularProgress
      
      - returns: return a OMStepData object.
      */
-    func addStep(angle:Double, color:UIColor!) -> OMStepData? {
+    func addStep(_ angle:Double, color:UIColor!) -> OMStepData? {
         let startAngle = getStartAngle()
         return addStep( startAngle, endAngle:startAngle + angle, color:color );
     }
@@ -228,7 +228,7 @@ extension OMCircularProgress
      
      - returns: return a OMStepData object.
      */
-    func  addStepWithPercent(startAngle:Double, percent:Double, color:UIColor!) -> OMStepData?
+    func  addStepWithPercent(_ startAngle:Double, percent:Double, color:UIColor!) -> OMStepData?
     {
         var tempPercent = percent
         
@@ -245,7 +245,7 @@ extension OMCircularProgress
             return nil
         }
         
-        dataSteps.addObject(step)
+        dataSteps.add(step)
         
         return step
     }
@@ -257,7 +257,7 @@ extension OMCircularProgress
      
      - returns: return a OMStepData object.
      */
-    func addStepWithPercent(percent:Double, color:UIColor!) -> OMStepData? {
+    func addStepWithPercent(_ percent:Double, color:UIColor!) -> OMStepData? {
         return addStepWithPercent(getStartAngle(),percent: percent, color: color);
     }
 }

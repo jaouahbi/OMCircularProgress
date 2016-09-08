@@ -34,15 +34,15 @@ typealias GradientSlopeFunction = (Double) -> Double
 typealias GradientInterpolationFunction = (UIColor,UIColor,CGFloat) -> UIColor
 
 public enum GradientFunction {
-    case Linear
-    case Exponential
-    case Cosine
+    case linear
+    case exponential
+    case cosine
 }
 
-func ShadingFunctionCreate(colors : [UIColor],
+func ShadingFunctionCreate(_ colors : [UIColor],
                             locations : [CGFloat],
-                            slopeFunction: GradientSlopeFunction,
-                              interpolationFunction: GradientInterpolationFunction) -> (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void
+                            slopeFunction: @escaping GradientSlopeFunction,
+                              interpolationFunction: @escaping GradientInterpolationFunction) -> (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void
 {
     return { inData, outData in
         let alpha = CGFloat(slopeFunction(Double(inData[0])))
@@ -82,23 +82,19 @@ func ShadingFunctionCreate(colors : [UIColor],
         
         if (alpha <= stop1Position) {
             // if we are less than our lowest position, return our first color
-#if DEBUG_VERBOSE
-            print("alpha:\(String(format:"%.1f",alpha)) <= position \(String(format:"%.1f",stop1Position)) color \(stop1Color.shortDescription)")
-#endif
-            outData[0] = stop1Color.components[0]
-            outData[1] = stop1Color.components[1]
-            outData[2] = stop1Color.components[2]
-            outData[3] = stop1Color.components[3]
+            SpeedLog.print("alpha:\(String(format:"%.1f",alpha)) <= position \(String(format:"%.1f",stop1Position)) color \(stop1Color.shortDescription)")
+            outData[0] = (stop1Color.components?[0])!
+            outData[1] = (stop1Color.components?[1])!
+            outData[2] = (stop1Color.components?[2])!
+            outData[3] = (stop1Color.components?[3])!
             
         } else if (alpha >= stop2Position) {
             // likewise if we are greater than our highest position, return the last color
-#if DEBUG_VERBOSE
-            print("alpha:\(String(format:"%.1f",alpha)) >= position \(String(format:"%.1f",stop2Position)) color \(stop1Color.shortDescription)")
-#endif
-            outData[0] = stop2Color.components[0]
-            outData[1] = stop2Color.components[1]
-            outData[2] = stop2Color.components[2]
-            outData[3] = stop2Color.components[3]
+            SpeedLog.print("alpha:\(String(format:"%.1f",alpha)) >= position \(String(format:"%.1f",stop2Position)) color \(stop1Color.shortDescription)")
+            outData[0] = (stop2Color.components?[0])!
+            outData[1] = (stop2Color.components?[1])!
+            outData[2] = (stop2Color.components?[2])!
+            outData[3] = (stop2Color.components?[3])!
             
         } else {
             
@@ -106,12 +102,10 @@ func ShadingFunctionCreate(colors : [UIColor],
             let newPosition = (alpha - stop1Position) / (stop2Position - stop1Position);
             
             let newColor : UIColor = interpolationFunction(stop1Color, stop2Color, newPosition)
-#if DEBUG_VERBOSE
-            print("alpha:\(String(format:"%.1f",alpha)) position \(String(format:"%.1f",newPosition)) color \(newColor.shortDescription)")
-#endif
+            SpeedLog.print("alpha:\(String(format:"%.1f",alpha)) position \(String(format:"%.1f",newPosition)) color \(newColor.shortDescription)")
             
             for componentIndex in 0 ..< 3 {
-                outData[componentIndex] = newColor.components[componentIndex]
+                outData[componentIndex] = (newColor.components?[componentIndex])!
             }
             
             // The alpha component is always 1, the shading is always opaque.
@@ -120,16 +114,19 @@ func ShadingFunctionCreate(colors : [UIColor],
     }
 }
 
-func ShadingCallback(infoPointer: UnsafeMutablePointer<Void>, inData: UnsafePointer<CGFloat>, outData: UnsafeMutablePointer<CGFloat>) -> Void {
+
+func ShadingCallback(_ infoPointer:UnsafeMutableRawPointer?, inData: UnsafePointer<CGFloat>, outData: UnsafeMutablePointer<CGFloat>) -> Swift.Void {
     
-    var info = UnsafeMutablePointer<OMShadingGradient>(infoPointer).memory
+    let rawPointer = UnsafeMutableRawPointer(infoPointer)
     
-    info.shadingFunction(inData, outData)
+    var info = rawPointer?.load(as: OMShadingGradient.self)
+    
+    info?.shadingFunction(inData, outData)
 }
 
 
 public struct OMShadingGradient {
-    private var monotonicLocations:[CGFloat] = []
+    fileprivate var monotonicLocations:[CGFloat] = []
     let colors : [UIColor]
     let locations : [CGFloat]?
     let startPoint : CGPoint
@@ -138,7 +135,7 @@ public struct OMShadingGradient {
     let endRadius : CGFloat
     let extendsPastStart:Bool
     let extendsPastEnd:Bool
-    let colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()!
+    let colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()
     let slopeFunction: EasingFunctionsTuple
     let functionType : GradientFunction
     let gradientType : OMGradientType
@@ -149,7 +146,7 @@ public struct OMShadingGradient {
           endPoint: CGPoint,
           extendStart: Bool = false,
           extendEnd: Bool = false,
-          functionType: GradientFunction = .Linear,
+          functionType: GradientFunction = .linear,
           slopeFunction: EasingFunctionsTuple =  kEasingFunctionLinear) {
         
         self.init(colors:colors,
@@ -160,7 +157,7 @@ public struct OMShadingGradient {
                   endRadius: 0,
                   extendStart: extendStart,
                   extendEnd: extendEnd,
-                  gradientType: .Axial,
+                  gradientType: .axial,
                   functionType: functionType,
                   slopeFunction: slopeFunction)
     }
@@ -173,7 +170,7 @@ public struct OMShadingGradient {
           endRadius: CGFloat,
           extendStart: Bool = false,
           extendEnd: Bool = false,
-          functionType: GradientFunction = .Linear,
+          functionType: GradientFunction = .linear,
           slopeFunction: EasingFunctionsTuple =  kEasingFunctionLinear) {
         
         self.init(colors:colors,
@@ -184,7 +181,7 @@ public struct OMShadingGradient {
                   endRadius: endRadius,
                   extendStart: extendStart,
                   extendEnd: extendEnd,
-                  gradientType: .Radial,
+                  gradientType: .radial,
                   functionType: functionType,
                   slopeFunction: slopeFunction)
     }
@@ -197,8 +194,8 @@ public struct OMShadingGradient {
          endRadius: CGFloat,
          extendStart: Bool,
          extendEnd: Bool,
-         gradientType : OMGradientType  = .Axial,
-         functionType : GradientFunction = .Linear,
+         gradientType : OMGradientType  = .axial,
+         functionType : GradientFunction = .linear,
          slopeFunction: EasingFunctionsTuple  =  kEasingFunctionLinear)
     {
         self.locations   = locations
@@ -225,10 +222,10 @@ public struct OMShadingGradient {
                 assert(lastColor.colorSpace?.model == color.colorSpace?.model,
                        "unexpected color model \(color.colorSpace?.model.name) != \(lastColor.colorSpace?.model.name)")
                 // and correct model
-                assert(color.colorSpace?.model == .RGB,"unexpected color space model \(color.colorSpace?.model.name)")
-                if(color.colorSpace?.model != .RGB) {
+                assert(color.colorSpace?.model == .rgb,"unexpected color space model \(color.colorSpace?.model.name)")
+                if(color.colorSpace?.model != .rgb) {
                     //TODO: handle different color spaces
-                    print("Unsupported color space. model: \(color.colorSpace?.model.name)")
+                    SpeedLog.print("Unsupported color space. model: \(color.colorSpace?.model.name)")
                 }
             }
         }
@@ -252,24 +249,20 @@ public struct OMShadingGradient {
             monotonicLocations = monotonic(colors.count)
         }
         
-#if (DEBUG_VERBOSE)
-        print("\(monotonicLocations.count) monotonic locations")
-#endif
-#if (DEBUG_VERBOSE)
-        print(" \(monotonicLocations)")
-#endif
+        SpeedLog.print("\(monotonicLocations.count) monotonic locations")
+        SpeedLog.print(" \(monotonicLocations)")
     }
     
     lazy var shadingFunction : (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void = {
         var interpolationFunction:GradientInterpolationFunction =  UIColor.lerp
         switch(self.functionType){
-        case .Linear :
+        case .linear :
             interpolationFunction =  UIColor.lerp
             break
-        case .Exponential :
+        case .exponential :
             interpolationFunction =  UIColor.eerp
             break
-        case .Cosine :
+        case .cosine :
             interpolationFunction =  UIColor.coserp
             break
         }
@@ -279,39 +272,36 @@ public struct OMShadingGradient {
                                      interpolationFunction: interpolationFunction )
     }()
     
-    lazy var CGFunction : CGFunctionRef? = {
+    lazy var handleFunction : CGFunction! = {
         var callbacks = CGFunctionCallbacks(version: 0, evaluate: ShadingCallback, releaseInfo: nil)
-        return CGFunctionCreate(&self,  // info
-            1,                          // domainDimension
-            [0, 1],                     // domain
-            4,                          // rangeDimension
-            [0, 1, 0, 1, 0, 1, 0, 1],   // range
-            &callbacks)                 // callbacks
+        return CGFunction(info: &self,  // info
+            domainDimension: 1,                          // domainDimension
+            domain: [0, 1],                     // domain
+            rangeDimension: 4,                          // rangeDimension
+            range: [0, 1, 0, 1, 0, 1, 0, 1],   // range
+            callbacks: &callbacks)                 // callbacks
     }()
     
-    lazy var CGShading : CGShadingRef! = {
+    lazy var shadingHandle : CGShading! = {
 
-        var shading: CGShadingRef?
         var callbacks = CGFunctionCallbacks(version: 0, evaluate: ShadingCallback, releaseInfo: nil)
-        if(self.gradientType == .Axial) {
-            shading = CGShadingCreateAxial(self.colorSpace,
-                                        self.startPoint,
-                                        self.endPoint,
-                                        self.CGFunction,
-                                        self.extendsPastStart,
-                                        self.extendsPastEnd)
+        if(self.gradientType == .axial) {
+           return CGShading(axialSpace: self.colorSpace,
+                                        start: self.startPoint,
+                                        end: self.endPoint,
+                                        function: self.handleFunction!,
+                                        extendStart: self.extendsPastStart,
+                                        extendEnd: self.extendsPastEnd)
         } else {
-            assert(self.gradientType == .Radial)
-            shading = CGShadingCreateRadial(self.colorSpace,
-                                         self.startPoint,
-                                         self.startRadius,
-                                         self.endPoint,
-                                         self.endRadius,
-                                         self.CGFunction,
-                                         self.extendsPastStart,
-                                         self.extendsPastEnd)
+            assert(self.gradientType == .radial)
+            return CGShading(radialSpace: self.colorSpace,
+                                         start: self.startPoint,
+                                         startRadius: self.startRadius,
+                                         end: self.endPoint,
+                                         endRadius: self.endRadius,
+                                         function: self.handleFunction!,
+                                         extendStart: self.extendsPastStart,
+                                         extendEnd: self.extendsPastEnd)
         }
-        
-        return shading
     }()
 }

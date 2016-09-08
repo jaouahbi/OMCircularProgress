@@ -17,7 +17,7 @@
 
 import UIKit
 
-public class OMShadingGradientLayer : OMGradientLayer {
+open class OMShadingGradientLayer : OMGradientLayer {
     
     convenience public init(type:OMGradientType) {
         self.init()
@@ -29,20 +29,20 @@ public class OMShadingGradientLayer : OMGradientLayer {
         super.init()
     }
     
-    public var slopeFunction: EasingFunctionsTuple  = kEasingFunctionLinear {
+    open var slopeFunction: EasingFunctionsTuple  = kEasingFunctionLinear {
         didSet {
             self.setNeedsDisplay();
         }
     }
     
-    public var function: GradientFunction = .Linear {
+    open var function: GradientFunction = .linear {
         didSet {
             self.setNeedsDisplay();
         }
     }
     
-    override public  init(layer: AnyObject) {
-        super.init(layer: layer)
+    override public  init(layer: Any) {
+        super.init(layer: layer as AnyObject)
         if let other = layer as? OMShadingGradientLayer {
             self.slopeFunction = other.slopeFunction;
         }
@@ -52,8 +52,8 @@ public class OMShadingGradientLayer : OMGradientLayer {
         super.init(coder: aDecoder)
     }
     
-    override public func drawInContext(ctx: CGContext) {
-        super.drawInContext(ctx)
+    override open func draw(in ctx: CGContext) {
+        super.draw(in: ctx)
         
         var locations   :[CGFloat]? = self.locations
         var colors      :[UIColor]  = self.colors
@@ -62,10 +62,12 @@ public class OMShadingGradientLayer : OMGradientLayer {
         var startRadius : CGFloat   = self.startRadius
         var endRadius   : CGFloat   = self.endRadius
         
-        if let player = self.presentationLayer() as? OMShadingGradientLayer {
-            #if DEBUG_VERBOSE
-                print("drawing presentationLayer\n\(player)")
-            #endif
+        let player = self.presentation()
+    
+        if let player = player {
+            
+            SpeedLog.print("drawing presentationLayer")
+            SpeedLog.print("\(player)")
             
             colors       = player.colors
             locations    = player.locations
@@ -75,22 +77,13 @@ public class OMShadingGradientLayer : OMGradientLayer {
             endRadius    = player.endRadius
             
         } else {
-            #if DEBUG_VERBOSE
-                print("drawing modelLayer\n\(self)")
-            #endif
+            SpeedLog.print("drawing modelLayer")
+            SpeedLog.print("\(self)")
         }
         
-        if (canDrawGradient()) {
-            var shading:OMShadingGradient
-            if (startRadius == endRadius && self.isRadial) {
-                // nothing to do
-                #if VERBOSE
-                    print("Start radius and end radius are equal. \(startRadius) \(endRadius)")
-                #endif
-                return
-            }
-            CGContextSaveGState(ctx)
+        if (isDrawable()) {
             
+            ctx.saveGState()
             // The starting point of the axis, in the shading's target coordinate space.
             var start:CGPoint = startPoint * self.bounds.size
             // The ending point of the axis, in the shading's target coordinate space.
@@ -112,9 +105,8 @@ public class OMShadingGradientLayer : OMGradientLayer {
                     }
                 }
                 
-                CGContextScaleCTM(ctx,
-                                  self.bounds.size.width,
-                                  self.bounds.size.height );
+                ctx.scaleBy(x: self.bounds.size.width,
+                                  y: self.bounds.size.height );
                 
                 start  = start / self.bounds.size
                 end    = end   / self.bounds.size
@@ -128,30 +120,30 @@ public class OMShadingGradientLayer : OMGradientLayer {
                 
             }
             
-            shading = OMShadingGradient(colors: colors,
-                                        locations: locations,
-                                        startPoint: start ,
-                                        startRadius: startRadius,
-                                        endPoint:end ,
-                                        endRadius: endRadius,
-                                        extendStart: self.extendsBeforeStart,
-                                        extendEnd: self.extendsPastEnd,
-                                        functionType: self.function,
-                                        gradientType: self.gradientType,
-                                        slopeFunction: self.slopeFunction)
-            CGContextDrawShading(ctx, shading.CGShading);
-            CGContextRestoreGState(ctx);
+            var shading:OMShadingGradient = OMShadingGradient(colors: colors,
+                                                              locations: locations,
+                                                              startPoint: start ,
+                                                              startRadius: startRadius,
+                                                              endPoint:end ,
+                                                              endRadius: endRadius,
+                                                              extendStart: self.extendsBeforeStart,
+                                                              extendEnd: self.extendsPastEnd,
+                                                              gradientType: self.gradientType,
+                                                              functionType: self.function,
+                                                              slopeFunction: self.slopeFunction)
+            ctx.drawShading(shading.shadingHandle);
+            ctx.restoreGState();
         }
     }
     
-    override public var description:String {
+    override open var description:String {
         get {
             var currentDescription:String = super.description
-            if  (self.function == .Linear)  {
+            if  (self.function == .linear)  {
                 currentDescription += "\nlinear interpolation"
-            } else if(self.function == .Exponential) {
+            } else if(self.function == .exponential) {
                 currentDescription += "\nexponential interpolation"
-            } else if(self.function == .Cosine) {
+            } else if(self.function == .cosine) {
                 currentDescription += "\ncosine interpolation"
             }
             currentDescription += " \(self.slopeFunction.1)"

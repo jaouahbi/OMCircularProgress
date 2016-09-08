@@ -1,3 +1,4 @@
+
 //
 //    Copyright 2015 - Jorge Ouahbi
 //
@@ -13,23 +14,24 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 //
-//
 
-//  NSNumber+Format.swift
-//
-//  Created by Jorge Ouaubi on 26/11/15.
-//  Copyright © 2015 Jorge Ouahbi. All rights reserved.
-//
 
-import UIKit
+import Darwin
 
-//
-//  NSNumber extension.
-//
 
-extension NSNumber {
-    func format(_ formatStyle:CFNumberFormatterStyle,locale:CFLocale = CFLocaleCopyCurrent()) -> String! {
-        let fmt = CFNumberFormatterCreate( kCFAllocatorDefault , locale,formatStyle)
-        return CFNumberFormatterCreateStringWithNumber(nil,fmt,self)  as String
+let 𝜏 = 2.0 * π
+
+extension OMAngle {
+    
+    func circlePerimeter(_ radius:Double) -> Double {
+        return 𝜏 * radius
+    }
+    
+    func circleArea(_ radius:Double) -> Double {
+        return π * radius * radius
+    }
+    
+    func circleArcLength(_ radius:Double, theta: OMAngle) -> Double {
+        return circlePerimeter(radius) * theta.length() / π
     }
 }

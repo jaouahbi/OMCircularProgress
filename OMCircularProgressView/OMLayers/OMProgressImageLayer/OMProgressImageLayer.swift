@@ -38,10 +38,10 @@
 
 public enum OMProgressType : Int
 {
-    case Horizontal
-    case Vertical
-    case Circular
-    case Radial
+    case horizontal
+    case vertical
+    case circular
+    case radial
 }
 
 //
@@ -52,7 +52,7 @@ private struct OMProgressImageLayerProperties {
     static var Progress = "progress"
 }
 
-@objc class OMProgressImageLayer : OMLayer
+@objc class OMProgressImageLayer : CALayer
 {
     // progress showing image or hiding
     
@@ -84,13 +84,13 @@ private struct OMProgressImageLayerProperties {
     
     var beginRadians: Double = -M_PI_2 {
         didSet {
-            if(self.type == .Circular) {
+            if(self.type == .circular) {
                 setNeedsDisplay()
             }
         }
     }
     
-    var type:OMProgressType  = .Circular {
+    var type:OMProgressType  = .circular {
         didSet {
             setNeedsDisplay()
         }
@@ -102,10 +102,10 @@ private struct OMProgressImageLayerProperties {
         }
     }
     
-    func animateProgress(fromValue:Double,toValue:Double,beginTime:NSTimeInterval,duration:NSTimeInterval, delegate:AnyObject?) {
+    func animateProgress(_ fromValue:Double,toValue:Double,beginTime:TimeInterval,duration:TimeInterval, delegate:AnyObject?) {
         self.animateKeyPath(OMProgressImageLayerProperties.Progress,
-            fromValue:fromValue,
-            toValue:toValue,
+            fromValue:fromValue as AnyObject?,
+            toValue:toValue as AnyObject?,
             beginTime:beginTime,
             duration:duration,
             delegate:delegate)
@@ -113,6 +113,14 @@ private struct OMProgressImageLayerProperties {
     
     override init(){
         super.init()
+        self.contentsScale = UIScreen.main.scale
+        self.needsDisplayOnBoundsChange = true;
+        
+        // https://github.com/danielamitay/iOS-App-Performance-Cheatsheet/blob/master/QuartzCore.md
+        
+        //self.shouldRasterize = true
+        self.drawsAsynchronously = true
+        self.allowsGroupOpacity  = false
     }
     
     convenience init(image:UIImage){
@@ -120,7 +128,7 @@ private struct OMProgressImageLayerProperties {
         self.image = image
     }
     
-    override init(layer: AnyObject) {
+    override init(layer: Any) {
         super.init(layer: layer)
         if let other = layer as? OMProgressImageLayer {
             self.progress        = other.progress
@@ -137,29 +145,29 @@ private struct OMProgressImageLayerProperties {
         super.init(coder:aDecoder)
     }
     
-    override class func needsDisplayForKey(event: String) -> Bool
+    override class func needsDisplay(forKey event: String) -> Bool
     {
         if(event == OMProgressImageLayerProperties.Progress){
             return true
         }
-        return super.needsDisplayForKey(event)
+        return super.needsDisplay(forKey: event)
     }
     
-    override func actionForKey(event: String) -> CAAction?
+    override func action(forKey event: String) -> CAAction?
     {
         if(event == OMProgressImageLayerProperties.Progress){
             return animationActionForKey(event);
         }
-        return super.actionForKey(event)
+        return super.action(forKey: event)
     }
     
     
-    private func imageForDrawInContext() -> UIImage?
+    fileprivate func imageForDrawInContext() -> UIImage?
     {
         var newImage:UIImage?  = nil
         var newProgress:Double = self.progress
         
-        if let presentationLayer: AnyObject = self.presentationLayer(){
+        if let presentationLayer: AnyObject = self.presentation(){
             newProgress = presentationLayer.progress
         }
         
@@ -167,7 +175,7 @@ private struct OMProgressImageLayerProperties {
         {
             switch(self.type)
             {
-            case .Radial:
+            case .radial:
                 
                 let radius = image!.size.max() * CGFloat(newProgress)
                 
@@ -179,14 +187,14 @@ private struct OMProgressImageLayerProperties {
                     endAngle: CGFloat(M_PI * 2.0),
                     clockwise: true)
                 
-                path.addLineToPoint(center)
-                path.closePath()
+                path.addLine(to: center)
+                path.close()
                 
                 newImage = self.image!.maskImage(path)
                 break
                 
                 
-            case .Circular:
+            case .circular:
                 
                 let radius = image!.size.max()
                 
@@ -208,14 +216,14 @@ private struct OMProgressImageLayerProperties {
                     endAngle: CGFloat(endAngle),
                     clockwise: self.showing)
                 
-                path.addLineToPoint(center)
-                path.closePath()
+                path.addLine(to: center)
+                path.close()
                 
                 newImage = self.image!.maskImage(path)
                 
                 break;
                 
-            case .Vertical:
+            case .vertical:
                 
                 let newHeight = Double(self.bounds.size.height) * newProgress
                 
@@ -224,7 +232,7 @@ private struct OMProgressImageLayerProperties {
                 newImage = self.image!.maskImage(path)
                 break;
                 
-            case .Horizontal:
+            case .horizontal:
                 
                 let newWidth = Double(self.bounds.size.width) * newProgress
                 
@@ -244,9 +252,9 @@ private struct OMProgressImageLayerProperties {
     
     // MARK: overrides
     
-    override func drawInContext(context: CGContext) {
+    override func draw(in context: CGContext) {
         
-        super.drawInContext(context)
+        super.draw(in: context)
         
         // Image setup
         
@@ -254,17 +262,20 @@ private struct OMProgressImageLayerProperties {
         
         // Core Text Coordinate System and Core Graphics are OSX style
         
-        self.flipContextIfNeed(context)
+        #if os(iOS)
+            context.translateBy(x: 0, y: self.bounds.size.height);
+            context.scaleBy(x: 1.0, y: -1.0);
+        #endif
         
         if(newImage != nil) {
             
-            let rect = CGRectMake(0, 0, newImage!.size.width, newImage!.size.height);
+            let rect = CGRect(x: 0, y: 0, width: newImage!.size.width, height: newImage!.size.height);
             
             if ( grayScale ){
                 // original image grayscaled + original image blend
-                CGContextDrawImage(context, rect, self.image?.grayScaleWithAlphaImage().blendImage(newImage!).CGImage)
+                context.draw((self.image?.grayScaleWithAlphaImage().blendImage(newImage!).cgImage)!, in: rect)
             }else{
-                CGContextDrawImage(context, rect, newImage!.CGImage)
+                context.draw(newImage!.cgImage!, in: rect)
             }
         }
     }

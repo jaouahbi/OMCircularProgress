@@ -25,9 +25,9 @@
 import UIKit
 
 enum InterpolationType {
-    case Linear
-    case Exponential
-    case Cosine
+    case linear
+    case exponential
+    case cosine
 }
 
 class Interpolation
@@ -41,7 +41,7 @@ class Interpolation
      a3 = y1;
      */
     
-    class func cubicerp(y0:CGFloat,y1:CGFloat,y2:CGFloat,y3:CGFloat,t:CGFloat) -> CGFloat {
+    class func cubicerp(_ y0:CGFloat,y1:CGFloat,y2:CGFloat,y3:CGFloat,t:CGFloat) -> CGFloat {
         var a0:CGFloat
         var a1:CGFloat
         var a2:CGFloat
@@ -56,7 +56,7 @@ class Interpolation
         
         return(a0*t*t2+a1*t2+a2*t+a3);
     }
-    class func eerp(y0:CGFloat,y1:CGFloat,t:CGFloat) -> CGFloat {
+    class func eerp(_ y0:CGFloat,y1:CGFloat,t:CGFloat) -> CGFloat {
         assert(t >= 0.0 && t <= 1.0);
         let end    = log(max(Double(y0), 0.01))
         let start  = log(max(Double(y1), 0.01))
@@ -71,13 +71,13 @@ class Interpolation
     // Precise method which guarantees v = v1 when t = 1.
     // (1-t)*v0 + t*v1;
     
-    class func lerp(y0:CGFloat,y1:CGFloat,t:CGFloat) -> CGFloat {
+    class func lerp(_ y0:CGFloat,y1:CGFloat,t:CGFloat) -> CGFloat {
         assert(t >= 0.0 && t <= 1.0);
         let inverse = 1.0 - t;
         return inverse * y0 + t * y1
     }
     
-    class func bilerp(y00:CGFloat,y01:CGFloat,t1:CGFloat,y10:CGFloat,y11:CGFloat,t2:CGFloat) -> CGFloat {
+    class func bilerp(_ y00:CGFloat,y01:CGFloat,t1:CGFloat,y10:CGFloat,y11:CGFloat,t2:CGFloat) -> CGFloat {
         assert(t1 >= 0.0 && t1 <= 1.0);
          assert(t2 >= 0.0 && t2 <= 1.0);
 
@@ -89,7 +89,7 @@ class Interpolation
     
     
     
-    class func coserp(y0:CGFloat,y1:CGFloat,t:CGFloat) -> CGFloat {
+    class func coserp(_ y0:CGFloat,y1:CGFloat,t:CGFloat) -> CGFloat {
         assert(t >= 0.0 && t <= 1.0);
         let mu2 = CGFloat(1.0-cos(Double(t)*M_PI))/2;
         return (y0*(1.0-mu2)+y1*mu2);

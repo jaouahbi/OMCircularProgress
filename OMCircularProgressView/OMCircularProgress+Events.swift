@@ -33,11 +33,11 @@ extension OMCircularProgress
      - returns: return the layer that contains the point
      */
     
-    func layerForLocation( location:CGPoint ) -> CALayer?
+    func layerForLocation( _ location:CGPoint ) -> CALayer?
     {
         // hitTest Returns the farthest descendant of the layer (Copy of layer)
         
-        if let player = self.layer.presentationLayer()
+        if let player = self.layer.presentation()
         {
             let hitPresentationLayer = player.hitTest(location)
             
@@ -45,10 +45,10 @@ extension OMCircularProgress
                 
                 // Real layer
                 
-                return hitplayer.modelLayer() as? CALayer
+                return hitplayer.model()
             }
             
-            print("[!] Unable to locate the layer that contains the location \(location)")
+            SpeedLog.print("Unable to locate the layer that contains the location \(location)")
         }
         
         return nil;
@@ -56,13 +56,13 @@ extension OMCircularProgress
     
     // MARK: UIResponder
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         if let touch = touches.first {
             
-            var location:CGPoint = touch.locationInView(self);
+            var location:CGPoint = touch.location(in: self);
             
-            location = self.convertPoint(location, toView:nil)
+            location = self.convert(location, to:nil)
             
             if let la = self.layerForLocation(location) {
                 
@@ -72,6 +72,6 @@ extension OMCircularProgress
             }
         }
         
-        super.touchesBegan(touches , withEvent:event)
+        super.touchesBegan(touches , with:event)
     }
 }

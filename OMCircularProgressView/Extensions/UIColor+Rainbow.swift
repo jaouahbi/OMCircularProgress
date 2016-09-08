@@ -25,14 +25,13 @@ import UIKit
 
 extension UIColor
 {
-    class func rainbow(numberOfSteps:Int,hue:Double = 0.0) -> Array<UIColor>!{
+    class func rainbow(_ numberOfSteps:Int,hue:Double = 0.0) -> Array<UIColor>!{
         
         var colors:Array<UIColor> = []
         
         let iNumberOfSteps =  1.0 / Double(numberOfSteps)
-        
-        for (var hue:Double = hue; hue < 1.0; hue += iNumberOfSteps)
-        {
+        var hue:Double = hue
+        while hue < 1.0 {
             if(colors.count == numberOfSteps){
                 break
             }
@@ -43,6 +42,7 @@ extension UIColor
                                 alpha:CGFloat(1.0));
             
             colors.append(color)
+            hue += iNumberOfSteps
         }
         
         // assert(colors.count == numberOfSteps, "Unexpected number of rainbow colors \(colors.count). Expecting \(numberOfSteps)")

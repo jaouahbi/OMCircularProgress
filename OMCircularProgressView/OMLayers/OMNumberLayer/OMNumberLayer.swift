@@ -21,7 +21,7 @@
 //  Description:
 //  Simple derived OMTextLayer class that support animation of a number.
 //
-//  Version: 0.0.1 : (7-5-2015) 
+//  Version: 0.0.1 : (7-5-2015)
 //  Added the NSNumber extension.
 //
 
@@ -58,7 +58,7 @@ private struct OMNumberLayerProperties {
         }
     }
     
-    var formatStyle: CFNumberFormatterStyle = CFNumberFormatterStyle.NoStyle {
+    var formatStyle: CFNumberFormatterStyle = CFNumberFormatterStyle.noStyle {
         didSet{
             setNeedsDisplay()
         }
@@ -71,8 +71,8 @@ private struct OMNumberLayerProperties {
     }
     
     convenience init( number : NSNumber ,
-        formatStyle: CFNumberFormatterStyle = CFNumberFormatterStyle.NoStyle,
-        alignmentMode:String = "center")
+                      formatStyle: CFNumberFormatterStyle = CFNumberFormatterStyle.noStyle,
+                      alignmentMode:String = "center")
     {
         self.init()
         self.number = number
@@ -81,8 +81,8 @@ private struct OMNumberLayerProperties {
         setAlignmentMode(alignmentMode)
     }
     
-    override init(layer: AnyObject) {
-        super.init(layer: layer)
+    override init(layer: Any) {
+        super.init(layer: layer as AnyObject)
         if let other = layer as? OMNumberLayer {
             self.formatStyle =  other.formatStyle
             self.number = other.number
@@ -94,48 +94,48 @@ private struct OMNumberLayerProperties {
     }
     
     /**
-    Calculate the frame size of the NSNumber to represent.
-    
-    :note: the max. percent representation is 1
-    
-    - parameter number: the number
-    
-    - returns: return the frame size needed for represent the string
-    */
-    func frameSizeLengthFromNumber(number:NSNumber) -> CGSize {
+     Calculate the frame size of the NSNumber to represent.
+     
+     :note: the max. percent representation is 1
+     
+     - parameter number: the number
+     
+     - returns: return the frame size needed for represent the string
+     */
+    func frameSizeLengthFromNumber(_ number:NSNumber) -> CGSize {
         return frameSizeLengthFromAttributedString(NSAttributedString(string : number.format(self.formatStyle)))
     }
     
-    func animateNumber(fromValue:Double,toValue:Double,beginTime:NSTimeInterval,duration:NSTimeInterval,delegate:AnyObject?) {
+    func animateNumber(_ fromValue:Double,toValue:Double,beginTime:TimeInterval,duration:TimeInterval,delegate:AnyObject?) {
         self.animateKeyPath(OMNumberLayerProperties.Number,
-            fromValue:fromValue,
-            toValue:toValue,
-            beginTime:beginTime,
-            duration:duration,
-            delegate:delegate)
+                            fromValue:fromValue as AnyObject?,
+                            toValue:toValue as AnyObject?,
+                            beginTime:beginTime,
+                            duration:duration,
+                            delegate:delegate)
     }
     
     // MARK: overrides
     
-    override class func needsDisplayForKey(event: String) -> Bool {
+    override class func needsDisplay(forKey event: String) -> Bool {
         if (event == OMNumberLayerProperties.Number) {
             return true
         }
-        return super.needsDisplayForKey(event)
+        return super.needsDisplay(forKey: event)
     }
     
-    override func actionForKey(event: String) -> CAAction? {
+    override func action(forKey event: String) -> CAAction? {
         if (event == OMNumberLayerProperties.Number) {
             return animationActionForKey(event);
         }
-        return super.actionForKey(event)
+        return super.action(forKey: event)
     }
     
-    override func drawInContext(context: CGContext) {
+    override func draw(in context: CGContext) {
         
         var theNumber:NSNumber? = self.number
         
-        let presentation = self.presentationLayer()
+        let presentation = self.presentation()
         
         if presentation != nil {
             theNumber = presentation!.number
@@ -144,13 +144,13 @@ private struct OMNumberLayerProperties {
         if(theNumber == nil){
             return
         }
-
-        let model = self.modelLayer() as! OMNumberLayer
+        
+        let model = self.model() 
         
         model.string = self.number.format(self.formatStyle)
         
         // The base class do the work
         
-        super.drawInContext(context)
+        super.draw(in: context)
     }
 }

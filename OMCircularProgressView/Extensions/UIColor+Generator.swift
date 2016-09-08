@@ -30,10 +30,10 @@ import UIKit
 *
 */
 
-extension UIColor : GeneratorType
+extension UIColor : IteratorProtocol
 {
     var alpha : CGFloat {
-        return CGColorGetAlpha(self.CGColor)
+        return self.cgColor.alpha
     }
 
     var hue: CGFloat {
@@ -87,13 +87,13 @@ extension UIColor : GeneratorType
 
     public func next() -> UIColor?
     {
-        let increment = 360.0 / 14
+        let increment = 360.0 / 7
 
         let hue = (Double(self.hue) * 360.0)
 
         // make it circular
 
-        let degrees =  (hue + increment) % 360.0
+        let degrees =  (hue + increment).truncatingRemainder(dividingBy: 360.0)
 
         return UIColor(hue: CGFloat(1.0 * degrees / 360.0),
             saturation: saturation,
@@ -104,13 +104,13 @@ extension UIColor : GeneratorType
     
     public func prev() -> UIColor?
     {
-        let increment = 360.0 / 14
+        let increment = 360.0 / 7
         
         let hue = (Double(self.hue) * 360.0)
         
         // make it circular
         
-        let degrees =  (hue - increment) % 360.0
+        let degrees =  (hue - increment).truncatingRemainder(dividingBy: 360.0)
         
         return UIColor(hue: CGFloat(1.0 * degrees / 360.0),
                        saturation: saturation,

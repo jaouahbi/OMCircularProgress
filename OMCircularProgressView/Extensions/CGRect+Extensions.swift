@@ -1,4 +1,3 @@
-
 //
 //    Copyright 2015 - Jorge Ouahbi
 //
@@ -15,22 +14,26 @@
 //   limitations under the License.
 //
 
+//
+//  CGRectExtension.swift
+//
+//  Created by Jorge Ouahbi on 25/11/15.
+//  Copyright © 2015 Jorge Ouahbi. All rights reserved.
+//
 
-import Darwin
+import UIKit
 
-class OMCircle
-{
-    static var TWO_PI:Double = 2.0 * M_PI
-    let radius: Double = 0.0
-    var perimeter: Double {
-        return OMCircle.TWO_PI * radius
+
+extension CGRect{
+    
+    mutating func apply(_ t:CGAffineTransform) {
+        self = self.applying(t)
     }
     
-    var area: Double {
-        return M_PI * radius * radius
+    func center(_ mainRect:CGRect) -> CGRect{
+        let dx = mainRect.midX - self.midX
+        let dy = mainRect.midY - self.midY
+        return self.offsetBy(dx: dx, dy: dy);
     }
     
-    func arcLength(theta: OMAngle) -> Double {
-        return perimeter * theta.length() / M_PI
-    }
 }

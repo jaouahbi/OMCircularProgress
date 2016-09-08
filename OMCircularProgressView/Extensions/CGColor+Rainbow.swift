@@ -26,13 +26,12 @@ import UIKit
 
 extension CGColor
 {
-    class func rainbow(numberOfSteps:Int, hue:Double = 0.0) ->  Array<CGColorRef>!{
-        var colors:Array<CGColorRef> = []
+    class func rainbow(_ numberOfSteps:Int, hue:Double = 0.0) ->  Array<CGColor>!{
+        var colors:Array<CGColor> = []
         
         let iNumberOfSteps = 1.0 / Double(numberOfSteps)
-        
-        for (var hue:Double = hue; hue < 1.0; hue += iNumberOfSteps)
-        {
+        var hue:Double = hue
+        while hue < 1.0 {
             if(colors.count == numberOfSteps){
                 break
             }
@@ -42,11 +41,11 @@ extension CGColor
                                 brightness:CGFloat(1.0),
                                 alpha:CGFloat(1.0));
             
-            colors.append(color.CGColor)
+            colors.append(color.cgColor)
+            
+            hue += iNumberOfSteps
         }
-        
         //assert(colors.count == numberOfSteps, "Unexpected number of rainbow colors \(colors.count). Expecting \(numberOfSteps)")
-        
         return colors
     }
 }
