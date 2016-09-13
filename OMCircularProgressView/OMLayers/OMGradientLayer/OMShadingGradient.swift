@@ -28,7 +28,7 @@ import Foundation
 import UIKit
 
 // function slope
-typealias GradientSlopeFunction = (Double) -> Double
+typealias GradientSlopeFunction = EasingFunction
 
 // interpolate two UIColors
 typealias GradientInterpolationFunction = (UIColor,UIColor,CGFloat) -> UIColor
@@ -37,6 +37,26 @@ public enum GradientFunction {
     case linear
     case exponential
     case cosine
+}
+
+func InsetGradient() -> ([CGFloat],[CGFloat]) {
+    return  ([0 / 255.0, 0 / 255.0, 0 / 255.0, 0 ],[ 0 / 255.0, 0 / 255.0, 0 / 255.0, 0.2 ])
+}
+
+func ShineGradient() -> ([CGFloat],[CGFloat]) {
+     return  ([1, 1, 1, 0.8 ],[ 1, 1, 1, 0])
+}
+
+func ShadeGradient() -> ([CGFloat],[CGFloat]) {
+   return ([ 178 / 255.0, 178 / 255.0, 178 / 255.0, 0.65 ],[ 252 / 255.0, 252 / 255.0, 252 / 255.0, 0.65 ])
+}
+
+func ConvexGradient() -> ([CGFloat],[CGFloat]) {
+    return ([ 255 / 255.0, 255 / 255.0, 255 / 255.0, 0.05 ],[ 255 / 255.0, 255 / 255.0, 255 / 255.0, 0.43])
+}
+
+func ConcaveGradient()  -> ([CGFloat],[CGFloat]) {
+    return  ([255 / 255.0, 255 / 255.0, 255 / 255.0, 0.46],[ 255 / 255.0, 255 / 255.0, 255 / 255.0, 0 ])
 }
 
 func ShadingFunctionCreate(_ colors : [UIColor],
@@ -54,7 +74,7 @@ func ShadingFunctionCreate(_ colors : [UIColor],
         
         positionIndex += 1;
         
-        var stop2Position = CGFloat(0.0)
+        var stop2Position:CGFloat = 0.0
         var stop2Color:UIColor;
         
         if (colorCount > 1) {
@@ -82,7 +102,7 @@ func ShadingFunctionCreate(_ colors : [UIColor],
         
         if (alpha <= stop1Position) {
             // if we are less than our lowest position, return our first color
-            SpeedLog.print("alpha:\(String(format:"%.1f",alpha)) <= position \(String(format:"%.1f",stop1Position)) color \(stop1Color.shortDescription)")
+            VERBOSE("alpha:\(String(format:"%.1f",alpha)) <= position \(String(format:"%.1f",stop1Position)) color \(stop1Color.shortDescription)")
             outData[0] = (stop1Color.components?[0])!
             outData[1] = (stop1Color.components?[1])!
             outData[2] = (stop1Color.components?[2])!
@@ -90,7 +110,7 @@ func ShadingFunctionCreate(_ colors : [UIColor],
             
         } else if (alpha >= stop2Position) {
             // likewise if we are greater than our highest position, return the last color
-            SpeedLog.print("alpha:\(String(format:"%.1f",alpha)) >= position \(String(format:"%.1f",stop2Position)) color \(stop1Color.shortDescription)")
+            VERBOSE("alpha:\(String(format:"%.1f",alpha)) >= position \(String(format:"%.1f",stop2Position)) color \(stop1Color.shortDescription)")
             outData[0] = (stop2Color.components?[0])!
             outData[1] = (stop2Color.components?[1])!
             outData[2] = (stop2Color.components?[2])!
@@ -102,7 +122,8 @@ func ShadingFunctionCreate(_ colors : [UIColor],
             let newPosition = (alpha - stop1Position) / (stop2Position - stop1Position);
             
             let newColor : UIColor = interpolationFunction(stop1Color, stop2Color, newPosition)
-            SpeedLog.print("alpha:\(String(format:"%.1f",alpha)) position \(String(format:"%.1f",newPosition)) color \(newColor.shortDescription)")
+            
+            VERBOSE("alpha:\(String(format:"%.1f",alpha)) position \(String(format:"%.1f",newPosition)) color \(newColor.colorDescription)")
             
             for componentIndex in 0 ..< 3 {
                 outData[componentIndex] = (newColor.components?[componentIndex])!
@@ -115,7 +136,9 @@ func ShadingFunctionCreate(_ colors : [UIColor],
 }
 
 
-func ShadingCallback(_ infoPointer:UnsafeMutableRawPointer?, inData: UnsafePointer<CGFloat>, outData: UnsafeMutablePointer<CGFloat>) -> Swift.Void {
+func ShadingCallback(_ infoPointer:UnsafeMutableRawPointer?,
+                     inData: UnsafePointer<CGFloat>,
+                     outData: UnsafeMutablePointer<CGFloat>) -> Swift.Void {
     
     let rawPointer = UnsafeMutableRawPointer(infoPointer)
     
@@ -136,7 +159,7 @@ public struct OMShadingGradient {
     let extendsPastStart:Bool
     let extendsPastEnd:Bool
     let colorSpace: CGColorSpace = CGColorSpaceCreateDeviceRGB()
-    let slopeFunction: EasingFunctionsTuple
+    let slopeFunction: EasingFunction
     let functionType : GradientFunction
     let gradientType : OMGradientType
     
@@ -147,7 +170,7 @@ public struct OMShadingGradient {
           extendStart: Bool = false,
           extendEnd: Bool = false,
           functionType: GradientFunction = .linear,
-          slopeFunction: EasingFunctionsTuple =  kEasingFunctionLinear) {
+          slopeFunction:  @escaping EasingFunction =  Linear) {
         
         self.init(colors:colors,
                   locations: locations,
@@ -159,7 +182,7 @@ public struct OMShadingGradient {
                   extendEnd: extendEnd,
                   gradientType: .axial,
                   functionType: functionType,
-                  slopeFunction: slopeFunction)
+                  slopeFunction:  slopeFunction)
     }
     
      init(colors: [UIColor],
@@ -171,7 +194,7 @@ public struct OMShadingGradient {
           extendStart: Bool = false,
           extendEnd: Bool = false,
           functionType: GradientFunction = .linear,
-          slopeFunction: EasingFunctionsTuple =  kEasingFunctionLinear) {
+          slopeFunction: @escaping EasingFunction =  Linear) {
         
         self.init(colors:colors,
                   locations: locations,
@@ -196,7 +219,7 @@ public struct OMShadingGradient {
          extendEnd: Bool,
          gradientType : OMGradientType  = .axial,
          functionType : GradientFunction = .linear,
-         slopeFunction: EasingFunctionsTuple  =  kEasingFunctionLinear)
+         slopeFunction: @escaping EasingFunction  =  Linear)
     {
         self.locations   = locations
         self.startPoint  = startPoint
@@ -225,7 +248,7 @@ public struct OMShadingGradient {
                 assert(color.colorSpace?.model == .rgb,"unexpected color space model \(color.colorSpace?.model.name)")
                 if(color.colorSpace?.model != .rgb) {
                     //TODO: handle different color spaces
-                    SpeedLog.print("Unsupported color space. model: \(color.colorSpace?.model.name)")
+                    WARNING("Unsupported color space. model: \(color.colorSpace?.model.name)")
                 }
             }
         }
@@ -249,8 +272,8 @@ public struct OMShadingGradient {
             monotonicLocations = monotonic(colors.count)
         }
         
-        SpeedLog.print("\(monotonicLocations.count) monotonic locations")
-        SpeedLog.print(" \(monotonicLocations)")
+        VERBOSE("\(monotonicLocations.count) monotonic locations")
+        VERBOSE("\(monotonicLocations)")
     }
     
     lazy var shadingFunction : (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void = {
@@ -268,7 +291,7 @@ public struct OMShadingGradient {
         }
         return ShadingFunctionCreate(self.colors,
                                      locations: self.monotonicLocations,
-                                     slopeFunction: self.slopeFunction.0,
+                                     slopeFunction: self.slopeFunction,
                                      interpolationFunction: interpolationFunction )
     }()
     

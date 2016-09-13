@@ -15,13 +15,13 @@ extension UIColor {
   /// colorDescription will used instead of description
   class func swizzleDescription() {
     let instance = UIColor.red
-    instance.swizzleMethods(#selector(NSObject.description as () -> String), withSelector: #selector(UIColor.colorDescription))
+    instance.swizzleMethods(origSelector: #selector(UIColor.description as () -> String), withSelector: #selector(UIColor.colorDescription))
   }
 
   /// Restore back original description method
   class func undoDesriptionSwizzling() {
     let instance = UIColor.red
-    instance.swizzleMethods(#selector(UIColor.colorDescription), withSelector: #selector(NSObject.description as () -> String))
+    instance.swizzleMethods(origSelector: #selector(UIColor.colorDescription), withSelector: #selector(UIColor.description as () -> String))
   }
 }
 
@@ -60,7 +60,7 @@ extension UIColor {
 
   func colorDescription() -> String {
     let color = rgbColor
-    return "\(color) - " + ColorLog.background(color, object: " ")
+    return "\(color) - " + ColorLog.background(color: color, object: " ")
   }
 }
 

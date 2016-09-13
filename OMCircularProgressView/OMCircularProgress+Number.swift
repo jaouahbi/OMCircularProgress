@@ -25,14 +25,17 @@
 
 import UIKit
 
+// MARK: Center numerical text layer extension
 
 extension OMCircularProgress
 {
-    // MARK: Numerical text layer
-    
-    func updateNumericalLayer() {
+    /**
+     * Update the center numerical layer
+     */
+
+    func updateCenterNumericalLayer() {
         
-        if let numberLayer = numberLayer {
+        if let numberLayer = centerNumberLayer {
             
             numberLayer.fontStrokeWidth = fontStrokeWidth
             numberLayer.fontStrokeColor = fontStrokeColor
@@ -43,14 +46,13 @@ extension OMCircularProgress
             
             // The percent is represented from 0.0 to 1.0
             
-            let numberToRepresent = ( percentText ) ? 1 : dataSteps.count;
+            let numberToRepresent = NSNumber(value:Int32(( percentText ) ? 1 : dataSteps.count));
             
-            let size = numberLayer.frameSizeLengthFromNumber(NSNumber(value:Int32(numberToRepresent)))
+            let size = numberLayer.frameSizeLengthFromNumber(numberToRepresent)
             
-            numberLayer.frame = bounds.size.center().centerRect( size )
+            numberLayer.frame = bounds.size.center().centerRect(size)
             
             // Shadow for center text
-            
             if shadowText {
                 
                 numberLayer.shadowOpacity = shadowOpacity
@@ -75,16 +77,16 @@ extension OMCircularProgress
      * Create/Update the numerical text layer
      */
     
-    func setUpNumericalTextLayer() {
-        if numberLayer == nil {
+    func setUpCenterNumericalTextLayer() {
+        if centerNumberLayer == nil {
             // create the numerical text layer with the text centered
             let alignmentMode = "center"
-            numberLayer = OMNumberLayer(number: 0, formatStyle: numberStyle(), alignmentMode: alignmentMode)
+            centerNumberLayer = OMNumberLayer(number: 0, formatStyle: numberStyle(), alignmentMode: alignmentMode)
             #if TAG_LAYERS
-                numberLayer?.name = "text layer"
+                centerNumberLayer?.name = "text layer"
             #endif
         }
         
-        updateNumericalLayer()
+        updateCenterNumericalLayer()
     }
 }

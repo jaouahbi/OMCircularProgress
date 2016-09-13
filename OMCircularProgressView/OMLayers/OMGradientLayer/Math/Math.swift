@@ -24,8 +24,6 @@
 
 import UIKit
 
-//let π  = M_PI
-//let π2 = M_PI * 2.0
 
 public func clamp<T: Comparable>(_ value: T, lower: T, upper: T) -> T {
     return min(max(value, lower), upper)

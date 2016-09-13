@@ -72,10 +72,10 @@ struct OMGradient {
                 numberOfLocations = self.colors.count
             }
             
-            SpeedLog.print("\(numberOfLocations) locations")
+            VERBOSE("\(numberOfLocations) locations")
             
             if self.locations != nil {
-                SpeedLog.print(" \(self.locations!)")
+                VERBOSE(" \(self.locations!)")
             }
             
             if (numberOfLocations > 0) {

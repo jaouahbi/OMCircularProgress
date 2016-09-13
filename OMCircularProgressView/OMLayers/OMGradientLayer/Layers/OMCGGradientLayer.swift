@@ -102,7 +102,7 @@ open class OMCGGradientLayer : OMGradientLayer {
         let player = self.presentation()
         
         if let player = player {
-            SpeedLog.print("drawing presentationLayer\n\(player)")
+            VERBOSE("drawing presentationLayer\n\(player)")
             
             colors       = player.colors
             locations    = player.locations
@@ -112,7 +112,7 @@ open class OMCGGradientLayer : OMGradientLayer {
             endRadius    = player.endRadius
             
         } else {
-            SpeedLog.print("drawing modelLayer\n\(self)")
+            VERBOSE("drawing modelLayer\n\(self)")
         }
     
         if (isDrawable()) {

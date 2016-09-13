@@ -44,8 +44,49 @@ extension UIColor {
         if let colorSpace = self.colorSpace {
             return "<\(colorSpace.model.name):\(r) \(g) \(b) \(a)>";
         }
-        
         return "<\(r) \(g) \(b) \(a)>";
+    }
+}
+
+extension UIColor {
+    
+    func difference(fromColor: UIColor) -> Int {
+        // get the current color's red, green, blue and alpha values
+        let red:CGFloat = self.components![0]
+        let green:CGFloat = self.components![1]
+        let blue:CGFloat = self.components![2]
+        //var alpha:CGFloat = self.components![3]
+        
+        // get the fromColor's red, green, blue and alpha values
+        let fromRed:CGFloat = fromColor.components![0]
+        let fromGreen:CGFloat = fromColor.components![1]
+        let fromBlue:CGFloat = fromColor.components![2]
+        //var fromAlpha:CGFloat = fromColor.components![3]
+    
+        let redValue = (max(red, fromRed) - min(red, fromRed)) * 255
+        let greenValue = (max(green, fromGreen) - min(green, fromGreen)) * 255
+        let blueValue = (max(blue, fromBlue) - min(blue, fromBlue)) * 255
+        
+        return Int(redValue + greenValue + blueValue)
+    }
+    
+    func brightnessDifference(fromColor: UIColor) -> Int {
+        // get the current color's red, green, blue and alpha values
+        let red:CGFloat = self.components![0]
+        let green:CGFloat = self.components![1]
+        let blue:CGFloat = self.components![2]
+        //var alpha:CGFloat = self.components![3]
+        let brightness = Int((((red * 299) + (green * 587) + (blue * 114)) * 255) / 1000)
+
+        // get the fromColor's red, green, blue and alpha values
+        let fromRed:CGFloat = fromColor.components![0]
+        let fromGreen:CGFloat = fromColor.components![1]
+        let fromBlue:CGFloat = fromColor.components![2]
+        //var fromAlpha:CGFloat = fromColor.components![3]
+        
+        let fromBrightness = Int((((fromRed * 299) + (fromGreen * 587) + (fromBlue * 114)) * 255) / 1000)
+        
+        return max(brightness, fromBrightness) - min(brightness, fromBrightness)
     }
 }
 
@@ -77,10 +118,18 @@ extension UIColor
     public class func eerp(_ start:UIColor, end:UIColor, t:CGFloat) -> UIColor {
         let srgba = start.components
         let ergba = end.components
-        return UIColor(red: Interpolation.eerp(srgba![0],y1: ergba![0],t: t),
-                       green: Interpolation.eerp(srgba![1],y1: ergba![1],t: t),
-                       blue: Interpolation.eerp(srgba![2],y1: ergba![2],t: t),
-                       alpha: Interpolation.eerp(srgba![3],y1: ergba![3],t: t))
+        
+        let r = clamp(Interpolation.eerp(srgba![0],y1: ergba![0],t: t),lower: 0,upper: 1)
+        let g = clamp(Interpolation.eerp(srgba![1],y1: ergba![1],t: t),lower: 0,upper: 1)
+        let b = clamp(Interpolation.eerp(srgba![2],y1: ergba![2],t: t),lower: 0,upper: 1)
+        let a = clamp(Interpolation.eerp(srgba![3],y1: ergba![3],t: t),lower: 0,upper: 1)
+        
+        assert(r <= 1.0 && g <= 1.0 && b <= 1.0 && a <= 1.0);
+        
+        return UIColor(red: r,
+                       green: g,
+                       blue: b,
+                       alpha: a)
         
     }
     // bilinear interpolation

@@ -33,7 +33,7 @@ extension OMCircularProgress
      */
     func dumpAllSteps() {
         for (index, step) in dataSteps.enumerated() {
-            SpeedLog.print("\(index): \(step as! OMStepData)")
+            VERBOSE("\(index): \(step as! OMStepData)")
         }
     }
     
@@ -47,7 +47,7 @@ extension OMCircularProgress
     func dumpLayers(_ level:UInt, layer:CALayer) {
         if (layer.sublayers != nil) {
             for (_, curLayer) in layer.sublayers!.enumerated() {
-                SpeedLog.print("[\(level):\(layer)] \(curLayer.name) \(curLayer)")
+                VERBOSE("[\(level):\(layer)] \(curLayer.name) \(curLayer)")
                 if(curLayer.sublayers != nil){
                     dumpLayers(level+1, layer: curLayer)
                 }
@@ -56,36 +56,7 @@ extension OMCircularProgress
     }
     
     // MARK: Consistency functions
-    
-    /**
-    Check if the angle is in range +/- M_PI*2
-    
-    - parameter angle: angle to check
-    
-    - returns: return if the angle is in range
-    */
-    func isAngleInCircleRange(_ angle:Double) -> Bool{
-        return (angle > (M_PI * 2) || angle < -(M_PI * 2)) == false
-    }
-    
-    /**
-     Get the total number of radians
-     
-     - returns: number of radians
-     */
-    func numberOfRadians() -> Double {
-        
-        let rads = dataSteps.reduce(0){
-            $0 + ($1 as! OMStepData).angle.length()
-        }
-        
-        //        var rads = 0.0
-        //        for var index = 0; index < dataSteps.count ; ++index{
-        //            rads +=  (dataSteps[index] as! OMStepData).angle.length()
-        //        }
-        //
-        return rads
-    }
+
     
     /// debug description
     

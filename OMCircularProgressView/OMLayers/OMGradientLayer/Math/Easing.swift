@@ -25,43 +25,47 @@
 
 import Foundation
 
-public typealias EasingFunctionsTuple = (function: (Double) -> Double, name: String)
+public typealias EasingFunction = (Double) -> Double
+public typealias EasingFunctionsTuple = (function: EasingFunction, name: String)
 
-public let kEasingFunctionLinear = kEasingFunctions[0]
 
-public var kEasingFunctions : Array<EasingFunctionsTuple> = [
-        (Linear,"Linear"),
-        (QuadraticEaseIn,"QuadraticEaseIn"),
-        (QuadraticEaseOut,"QuadraticEaseOut"),
-        (QuadraticEaseInOut,"QuadraticEaseInOut"),
-        (CubicEaseIn,"CubicEaseIn"),
-        (CubicEaseOut,"CubicEaseOut"),
-        (CubicEaseInOut,"CubicEaseInOut"),
-        (QuarticEaseIn,"QuarticEaseIn"),
-        (QuarticEaseOut,"QuarticEaseOut"),
-        (QuarticEaseInOut,"QuarticEaseInOut"),
-        (QuinticEaseIn,"QuinticEaseIn"),
-        (QuinticEaseOut,"QuinticEaseOut"),
-        (QuinticEaseInOut,"QuinticEaseInOut"),
-        (SineEaseIn,"SineEaseIn"),
-        (SineEaseOut,"SineEaseOut"),
-        (SineEaseInOut,"SineEaseInOut"),
-        (CircularEaseIn,"CircularEaseIn"),
-        (CircularEaseOut,"CircularEaseOut"),
-        (CircularEaseInOut,"CircularEaseInOut"),
-        (ExponentialEaseIn,"ExponentialEaseIn"),
-        (ExponentialEaseOut,"ExponentialEaseOut"),
-        (ExponentialEaseInOut,"ExponentialEaseInOut"),
-        (ElasticEaseIn,"ElasticEaseIn"),
-        (ElasticEaseOut,"ElasticEaseOut"),
-        (ElasticEaseInOut,"ElasticEaseInOut"),
-        (BackEaseIn,"BackEaseIn"),
-        (BackEaseOut,"BackEaseOut"),
-        (BackEaseInOut,"BackEaseInOut"),
-        (BounceEaseIn,"BounceEaseIn"),
-        (BounceEaseOut,"BounceEaseOut"),
-        (BounceEaseInOut,"BounceEaseInOut")
-        ]
+/*
+ 
+ public var kEasingFunctions : Array<EasingFunctionsTuple> = [
+ (Linear,"Linear"),
+ (QuadraticEaseIn,"QuadraticEaseIn"),
+ (QuadraticEaseOut,"QuadraticEaseOut"),
+ (QuadraticEaseInOut,"QuadraticEaseInOut"),
+ (CubicEaseIn,"CubicEaseIn"),
+ (CubicEaseOut,"CubicEaseOut"),
+ (CubicEaseInOut,"CubicEaseInOut"),
+ (QuarticEaseIn,"QuarticEaseIn"),
+ (QuarticEaseOut,"QuarticEaseOut"),
+ (QuarticEaseInOut,"QuarticEaseInOut"),
+ (QuinticEaseIn,"QuinticEaseIn"),
+ (QuinticEaseOut,"QuinticEaseOut"),
+ (QuinticEaseInOut,"QuinticEaseInOut"),
+ (SineEaseIn,"SineEaseIn"),
+ (SineEaseOut,"SineEaseOut"),
+ (SineEaseInOut,"SineEaseInOut"),
+ (CircularEaseIn,"CircularEaseIn"),
+ (CircularEaseOut,"CircularEaseOut"),
+ (CircularEaseInOut,"CircularEaseInOut"),
+ (ExponentialEaseIn,"ExponentialEaseIn"),
+ (ExponentialEaseOut,"ExponentialEaseOut"),
+ (ExponentialEaseInOut,"ExponentialEaseInOut"),
+ (ElasticEaseIn,"ElasticEaseIn"),
+ (ElasticEaseOut,"ElasticEaseOut"),
+ (ElasticEaseInOut,"ElasticEaseInOut"),
+ (BackEaseIn,"BackEaseIn"),
+ (BackEaseOut,"BackEaseOut"),
+ (BackEaseInOut,"BackEaseInOut"),
+ (BounceEaseIn,"BounceEaseIn"),
+ (BounceEaseOut,"BounceEaseOut"),
+ (BounceEaseInOut,"BounceEaseInOut")
+ ]
+
+ */
 //
 //  easing.c
 //

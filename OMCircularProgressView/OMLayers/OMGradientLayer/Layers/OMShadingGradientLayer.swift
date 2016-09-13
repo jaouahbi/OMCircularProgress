@@ -29,12 +29,11 @@ open class OMShadingGradientLayer : OMGradientLayer {
         super.init()
     }
     
-    open var slopeFunction: EasingFunctionsTuple  = kEasingFunctionLinear {
+    open var slopeFunction: EasingFunction  = Linear {
         didSet {
             self.setNeedsDisplay();
         }
     }
-    
     open var function: GradientFunction = .linear {
         didSet {
             self.setNeedsDisplay();
@@ -66,8 +65,8 @@ open class OMShadingGradientLayer : OMGradientLayer {
     
         if let player = player {
             
-            SpeedLog.print("drawing presentationLayer")
-            SpeedLog.print("\(player)")
+            VERBOSE("drawing presentationLayer")
+            VERBOSE("\(player)")
             
             colors       = player.colors
             locations    = player.locations
@@ -77,8 +76,8 @@ open class OMShadingGradientLayer : OMGradientLayer {
             endRadius    = player.endRadius
             
         } else {
-            SpeedLog.print("drawing modelLayer")
-            SpeedLog.print("\(self)")
+           VERBOSE("drawing modelLayer")
+           VERBOSE("\(self)")
         }
         
         if (isDrawable()) {
@@ -146,7 +145,7 @@ open class OMShadingGradientLayer : OMGradientLayer {
             } else if(self.function == .cosine) {
                 currentDescription += "\ncosine interpolation"
             }
-            currentDescription += " \(self.slopeFunction.1)"
+            //currentDescription += " \(self.slopeFunction.1)"
             return currentDescription
         }
     }

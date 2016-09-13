@@ -24,8 +24,8 @@
 import UIKit
 
 /**
-*  Double Extension for conversion from/to degrees/radians and clamp
-*/
+ *  Double Extension for conversion from/to degrees/radians and clamp
+ */
 
 public extension Double {
     

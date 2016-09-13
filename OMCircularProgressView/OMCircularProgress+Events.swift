@@ -48,7 +48,7 @@ extension OMCircularProgress
                 return hitplayer.model()
             }
             
-            SpeedLog.print("Unable to locate the layer that contains the location \(location)")
+            VERBOSE("Unable to locate the layer that contains the location \(location)")
         }
         
         return nil;

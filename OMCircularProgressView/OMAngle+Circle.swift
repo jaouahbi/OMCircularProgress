@@ -18,20 +18,52 @@
 
 import Darwin
 
-
 let 𝜏 = 2.0 * π
 
-extension OMAngle {
+open class OMCircleAngle : OMAngle {
     
-    func circlePerimeter(_ radius:Double) -> Double {
+    func perimeter(_ radius:Double) -> Double {
         return 𝜏 * radius
     }
     
-    func circleArea(_ radius:Double) -> Double {
+    func area(_ radius:Double) -> Double {
         return π * radius * radius
     }
     
-    func circleArcLength(_ radius:Double, theta: OMAngle) -> Double {
-        return circlePerimeter(radius) * theta.length() / π
+    func arcLength(_ radius:Double, theta: OMAngle) -> Double {
+        return perimeter(radius) * theta.length() / π
     }
+    
+    /**
+     * Get the normalized angle
+     *
+     * returns: return angle length in radians
+     */
+    
+    func norm() -> Double {
+        return self.start / 𝜏
+    }
+    
+    static func step(elements:Double) -> Double {
+        return 𝜏 / elements
+    }
+    
+    /**
+     * Check if the angle is in range +/- 𝜏
+     *
+     * returns: return if the angle is in range
+     */
+    
+    func range() -> Bool {
+        return (self.end > 𝜏 || self.start < -𝜏) == false
+    }
+    
+    static func range(angle:Double) -> Bool {
+        return (angle > 𝜏 || angle < -𝜏) == false
+    }
+    
+    public override func valid() -> Bool {
+        return super.valid() && range()
+    }
+    
 }

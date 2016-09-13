@@ -30,13 +30,13 @@ extension OMCircularProgress : CAAnimationDelegate
 {
     /// MARK: CAAnimation delegate
     
-    func animationDidStart(_ anim: CAAnimation){
-        SpeedLog.print("START:\((anim as! CABasicAnimation).keyPath) : \((anim as! CABasicAnimation).beginTime) ")
+    func animationDidStart(_ anim: CAAnimation) {
+        VERBOSE("START:\((anim as! CABasicAnimation).keyPath) : \((anim as! CABasicAnimation).beginTime) ")
     }
     
-    func animationDidStop(_ anim: CAAnimation, finished flag: Bool){
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         if flag {
-            SpeedLog.print("END:\((anim as! CABasicAnimation).keyPath)")
+            VERBOSE("END:\((anim as! CABasicAnimation).keyPath)")
         }
     }
     
@@ -48,58 +48,56 @@ extension OMCircularProgress : CAAnimationDelegate
         
         assert(progress >= 0);
         
+        weak var delegate = self
+        
         // Remove all animations
         step.shapeLayer.removeAllAnimations()
         
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        let strokeAnimation = CABasicAnimation(keyPath: "strokeEnd")
         
-        animation.fromValue =  0.0
-        animation.toValue   =  progress
+        strokeAnimation.fromValue =  0.0
+        strokeAnimation.toValue   =  progress
         
-        animation.duration = (animationDuration / Double(numberOfSteps)) * progress
+        strokeAnimation.duration = (animationDuration / Double(numberOfSteps)) * progress
         
-        animation.isRemovedOnCompletion = false
-        animation.isAdditive = true
-        animation.fillMode = kCAFillModeForwards
-        animation.delegate = self
+        strokeAnimation.isRemovedOnCompletion = false
+        strokeAnimation.isAdditive = true
+        strokeAnimation.fillMode = kCAFillModeForwards
+        strokeAnimation.delegate = self
         
         if (progressStyle == .sequentialProgress) {
             
             // Current animation beginTime
             
             if  (newBeginTime != 0)  {
-                animation.beginTime = newBeginTime
+                strokeAnimation.beginTime = newBeginTime
             }  else  {
-                animation.beginTime = beginTime
+                strokeAnimation.beginTime = beginTime
             }
             
             // Calculate the next animation beginTime
-            
-            newBeginTime = animation.beginTime + animation.duration
+            newBeginTime = strokeAnimation.beginTime + strokeAnimation.duration
         }
         
         //
         // Add animation to the stroke of the shape layer.
         //
         
-        step.shapeLayer.add(animation, forKey: "strokeEnd")
+        step.shapeLayer.add(strokeAnimation, forKey: "strokeEnd")
         
         if let shapeLayerBorder = step.shapeLayerBorder {
-            shapeLayerBorder.add(animation, forKey: "strokeEnd")
+            shapeLayerBorder.add(strokeAnimation, forKey: "strokeEnd")
         }
         
         if let imgLayer = step.imageLayer {
-            
             // Remove all animations
             imgLayer.removeAllAnimations()
-            
             // Add animation to the image
-            
             imgLayer.animateProgress(0.0,
                 toValue:  progress,
-                beginTime: animation.beginTime,
-                duration: animation.duration ,
-                delegate: self)
+                beginTime: strokeAnimation.beginTime,
+                duration: strokeAnimation.duration ,
+                delegate: delegate)
         }
     }
 }

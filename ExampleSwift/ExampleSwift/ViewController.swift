@@ -44,12 +44,12 @@ class ViewController: UIViewController {
         // TODO:
         // OMCircularProgressView.appearance()
         
-        self.progressViewMood.layer.name = "1"
-        self.progressViewClock.layer.name = "2"
-        self.progressViewImagesWithDifferentsSize.layer.name = "3"
-        self.progressViewSimple.layer.name = "4"
-        self.progressViewGradientMask.layer.name = "5"
-        self.progressViewFlower.layer.name = "6"
+        self.progressViewMood.layer.name = "Mood"
+        self.progressViewClock.layer.name = "Clock"
+        self.progressViewImagesWithDifferentsSize.layer.name = "ImagesWithDifferentsSize"
+        self.progressViewSimple.layer.name = "Simple"
+        self.progressViewGradientMask.layer.name = "GradientMask"
+        self.progressViewFlower.layer.name = "Flower"
         
         self.progressViewMood.layer.borderWidth = 1;
         self.progressViewClock.layer.borderWidth = 1;
@@ -66,26 +66,27 @@ class ViewController: UIViewController {
         
         
         // clock example
-    
-        let r = self.progressViewClock.radius / 3
         
-        self.progressViewClockMinutes.radius = r * 2
+        //        let r = self.progressViewClock.radius / 3
+        //
+        //        self.progressViewClockMinutes.radius = r * 2
+        //
+        //        self.progressViewClockSeconds.radius = r
         
-        self.progressViewClockSeconds.radius = r
+        updateClockRadius()
         
-        self.setupClockExample(self.progressViewClock)
-        self.setupClockMinute(self.progressViewClockMinutes)
-        self.setupClockSeconds(self.progressViewClockSeconds)
+        
+        setupClockExample(self.progressViewClock)
+        setupClockMinute(self.progressViewClockMinutes)
+        setupClockSeconds(self.progressViewClockSeconds)
         
         // mood example
         
-        self.setupMoodExample(self.progressViewMood);
-        
-        
-        self.setupWithImagesWithDifferentsSize(self.progressViewImagesWithDifferentsSize);
-        self.setupColorsFullWithGradientMaskAndDirectProgress(self.progressViewSimple);
-        self.setupWithGradientMask(self.progressViewGradientMask);
-        self.setupFlower(self.progressViewFlower);
+        setupMoodExample(self.progressViewMood);
+        setupWithImagesWithDifferentsSize(self.progressViewImagesWithDifferentsSize);
+        setupColorsFullWithGradientMaskAndDirectProgress(self.progressViewSimple);
+        setupWithGradientMask(self.progressViewGradientMask);
+        setupFlower(self.progressViewFlower);
         
         let time = DispatchTime.now() + Double(Int64(NSEC_PER_SEC) * 1) / Double(NSEC_PER_SEC)
         
@@ -140,23 +141,19 @@ class ViewController: UIViewController {
         // Configure the animation
         
         theProgressView.animationDuration  = 2.0
-        
-        theProgressView.thicknessRatio    = 1.0      // 100%
+        theProgressView.thicknessRatio     = 1.0      // 100%
         
         let colors : [UIColor] = [UIColor(red:0.294, green:0.780, blue:0.812, alpha:1.0),
-        UIColor(red:0.114, green:0.675, blue:0.839, alpha:1.0),
-        UIColor(red:0.294, green:0.780, blue:0.812, alpha:1.0)]
+                                  UIColor(red:0.114, green:0.675, blue:0.839, alpha:1.0),
+                                  UIColor(red:0.294, green:0.780, blue:0.812, alpha:1.0)]
         
-        let stepAngle = (M_PI * 2.0) / Double(colors.count)
+        let stepAngle = OMCircleAngle.step(elements: Double(colors.count))
         
         for i in 0 ..< colors.count  {
             
             // Create the step.
             
-            let theStep = theProgressView.addStep( stepAngle, color:colors[i] as UIColor)
-            
-            theStep!.wellColor  = nil
-            
+            let theStep = theProgressView.addStep(stepAngle, color:colors[i] as UIColor)
             
             // configure the gradient
             let gradientLayer       = OMShadingGradientLayer(type:.radial)
@@ -166,10 +163,10 @@ class ViewController: UIViewController {
             gradientLayer.colors     = [
                 color,
                 color.next()!]
-//            
-//            gradientLayer.locations     = [
-//                0.95,
-//                0.90]
+            //
+            //            gradientLayer.locations     = [
+            //                0.95,
+            //                0.90]
             
             
             //gradientLayer.function  = .Exponential
@@ -185,7 +182,7 @@ class ViewController: UIViewController {
             
             gradientLayer.extendsPastEnd  = true
             gradientLayer.extendsBeforeStart = true
-            gradientLayer.slopeFunction = (kEasingFunctions.last)!
+            gradientLayer.slopeFunction  = Linear
             
             // mask it
             theStep!.maskLayer        = gradientLayer
@@ -194,21 +191,11 @@ class ViewController: UIViewController {
     
     func setupWithGradientMask(_ theProgressView:OMCircularProgress)
     {
-        theProgressView.progressStyle = .sequentialProgress
         
         // Configure the animation
         theProgressView.animation          = true;
         theProgressView.animationDuration  = 10
-        
-        /// Configure the separation
-        
-        // Ratio
-        
-        //theProgressView.separatorRatio    = 0.5
-        
-        theProgressView.thicknessRatio    = 0.5      // 50%
-        //theoProgressView.roundedHead    = false
-        
+        theProgressView.thicknessRatio     = 0.5      // 50%
         
         /// Configure the text
         
@@ -226,7 +213,7 @@ class ViewController: UIViewController {
         
         let colors : [UIColor] = UIColor.rainbow(2, hue: 0)
         
-        let stepAngle = (M_PI * 2.0) / Double(colors.count)
+        let stepAngle = OMCircleAngle.step(elements: Double(colors.count))
         
         for i in 0 ..< colors.count  {
             
@@ -234,9 +221,6 @@ class ViewController: UIViewController {
             
             let theStep = theProgressView.addStep(stepAngle, color:colors[i])
             
-            theStep?.wellColor = nil
-            
-            
             // configure the gradient
             let gradientLayer       = OMShadingGradientLayer(type:.axial)
             
@@ -260,31 +244,21 @@ class ViewController: UIViewController {
     }
     
     
-    func setupFlower(_ theProgressView:OMCircularProgress)
-    {
-        theProgressView.progressStyle = .sequentialProgress
+    func setupFlower(_ theProgressView:OMCircularProgress) {
         
         // Configure the animation
         
-        theProgressView.animationDuration  = 10
-        
-        /// Configure the separation ratio
-        
-        // theProgressView.separatorRatio  = 0.1
-        
-        theProgressView.thicknessRatio  = 0.7      // 70%
+        theProgressView.animationDuration  = 10       // 20 seconds
+        theProgressView.thicknessRatio     = 0.7      // 70%
         
         let colors : [UIColor] = UIColor.rainbow(25, hue: 0) as [UIColor]
         
-        let stepAngle = (M_PI * 2.0) / Double(colors.count)
+        let stepAngle = OMCircleAngle.step(elements: Double(colors.count))
         
         for i in 0 ..< colors.count  {
-            
             // Create the step.
-            
             let theStep = theProgressView.addStep( stepAngle, color:colors[i])
-            
-            // configure the gradient
+            // Configure the gradient
             let gradientLayer       = OMShadingGradientLayer(type:.axial)
             
             gradientLayer.function  = .exponential
@@ -307,15 +281,10 @@ class ViewController: UIViewController {
     }
     
     
-    func setupWithImagesWithDifferentsSize(_ theProgressView:OMCircularProgress)
-    {
-        theProgressView.progressStyle = .sequentialProgress
+    func setupWithImagesWithDifferentsSize(_ theProgressView:OMCircularProgress) {
         
         theProgressView.animationDuration  = 4
-        
         theProgressView.thicknessRatio     = 0.4      // 40%
-        
-        //   theProgressView.separatorRatio     = 0.1
         
         let colors : [UIColor] = UIColor.rainbow(16, hue: 0)
         
@@ -325,22 +294,10 @@ class ViewController: UIViewController {
             
             let theStep = theProgressView.addStep( stepAngle, color:colors[i] as UIColor)!
             
-            // Configure the step
-            
-            theStep.text                   = "\(i)"
-            theStep.textAlign              = .center
-            theStep.textOrientationToAngle = true
-            
-            theStep.fontName               = "HelveticaNeue-Light"
-            theStep.fontSize               = 9
-            theStep.fontBackgroundColor    = UIColor.clear
-            theStep.fontStrokeColor        = UIColor.white
-            
             if(i == 0){
                 theStep.image = UIImage(named: "center")
             }else if  (i % 2 == 0)  {
                 theStep.image  = UIImage(named: "0")
-                //step.imageIsSeparator = true
             } else if(i % 3 == 0) {
                 theStep.image  = UIImage(named: "1")
             } else {
@@ -348,8 +305,7 @@ class ViewController: UIViewController {
                 //
             }
             
-            theStep.imageAlign              = .middle
-            theStep.imageOrientationToAngle = true
+            theStep.imageAlign      = .middle
             
             // configure the gradient
             let gradientLayer       = OMShadingGradientLayer(type:.axial)
@@ -364,26 +320,20 @@ class ViewController: UIViewController {
             gradientLayer.startPoint = points.0
             gradientLayer.endPoint   = points.1
             
-            gradientLayer.extendsPastEnd  = true
+            gradientLayer.extendsPastEnd     = true
             gradientLayer.extendsBeforeStart = true
             
             // mask it
             theStep.maskLayer        = gradientLayer
-            
-            
         }
         
-        theProgressView.image = UIImage(named: "center")
+        theProgressView.centerImage = UIImage(named: "center")
     }
     
     func setupMoodExample(_ theProgressView:OMCircularProgress)
     {
-        theProgressView.progressStyle = .sequentialProgress
-        
         // Configure the animation duration
-        
         theProgressView.animationDuration  = 10
-        
         theProgressView.thicknessRatio     = 0.70
         
         // from https://github.com/CaptainRedmuff/UIColor-Crayola
@@ -399,9 +349,9 @@ class ViewController: UIViewController {
         
         let strings : [String] = ["Grumpy", "Normal","Happy","Very Happy"]
         
-        let images : [String] = ["3","0","1","2"]
+        let images : [String] = ["3","0","1","5"]
         
-        let stepAngle = (M_PI * 2.0) / Double(strings.count)
+        let stepAngle = OMCircleAngle.step(elements:Double(strings.count))
         
         for i in 0 ..< strings.count {
             
@@ -410,16 +360,9 @@ class ViewController: UIViewController {
             let theStep = theProgressView.addStep( stepAngle, color:colorsFrom[i])!
             
             // Step text
-            theStep.text                   = strings[i]
-            theStep.fontName               = "HelveticaNeue"
-            theStep.fontSize               = 12
-            theStep.fontColor              = UIColor.black
-            theStep.fontBackgroundColor    = UIColor.clear
-            theStep.fontStrokeColor        = UIColor.white
-            theStep.fontStrokeWidth        = -2
             
             // step image
-            theStep.image                  = UIImage(named: images[i])
+            theStep.image           = UIImage(named: images[i])
             
             // configure the gradient
             let gradientLayer       = OMShadingGradientLayer(type:.axial)
@@ -444,53 +387,49 @@ class ViewController: UIViewController {
         
         // image center
         
-        theProgressView.image = UIImage(named: "center")
-        
+        // theProgressView.image = UIImage(named: "center")
+        theProgressView.centerImage = UIImage(named: "4")
     }
     
-    //
-    // Clock
-    //
+    // MARK: Clock example
+    
+    // Update the clock layers radius
+    func updateClockRadius() {
+        let radius = self.progressViewClock.radius / 3
+        self.progressViewClockMinutes.radius = radius * 2
+        self.progressViewClockSeconds.radius = radius
+    }
     
     
     func setupClockExample(_ theProgressView:OMCircularProgress) {
+        //
+        //        let fillLayer = CAShapeLayer()
+        //        fillLayer.fillColor = UIColor.white.cgColor
+        //        fillLayer.opacity   = 1.0
+        //
+        //        let rd : CGFloat = theProgressView.outerRadius * 2
+        //
+        //        let pathRect    = theProgressView.bounds
+        //        let circleRect  = CGRect(x: 0, y: 0, width: rd, height: rd).center(pathRect)
+        //
+        //        let path = UIBezierPath(roundedRect: pathRect, cornerRadius: 0.0)
+        //        let circlePath = UIBezierPath(roundedRect: circleRect, cornerRadius: rd)
+        //        path.append(circlePath)
+        //        path.usesEvenOddFillRule = true
+        //
+        //        fillLayer.path = path.cgPath
+        //        fillLayer.fillRule = kCAFillRuleEvenOdd
+        //
+        //        // mask the OMCircularProgress with a circle.
+        //        theProgressView.layer.addSublayer(fillLayer)
+        //        theProgressView.backgroundColor = UIColor.black
         
-        let fillLayer = CAShapeLayer()
-        fillLayer.fillColor = UIColor.white.cgColor
-        fillLayer.opacity   = 1.0
         
-        let rd : CGFloat = theProgressView.outerRadius * 2
-        
-        let pathRect    = theProgressView.bounds
-        let circleRect  = CGRect(x: 0, y: 0, width: rd, height: rd).center(pathRect)
-        
-        let path = UIBezierPath(roundedRect: pathRect, cornerRadius: 0.0)
-        let circlePath = UIBezierPath(roundedRect: circleRect, cornerRadius: rd)
-        path.append(circlePath)
-        path.usesEvenOddFillRule = true
-        
-        fillLayer.path = path.cgPath
-        fillLayer.fillRule = kCAFillRuleEvenOdd
-        
-        // mask the OMCircularProgress with a circle.
-        theProgressView.layer.addSublayer(fillLayer)
-        theProgressView.backgroundColor = UIColor.black
-        
-        
-        theProgressView.progressStyle = .sequentialProgress
         theProgressView.animation = false
-        
-        // Ratio
-        
-        // theProgressView.separatorRatio = 0.0
-        
         theProgressView.thicknessRatio = 0.33     // 33.3 %
-        theProgressView.roundedHead    = false
         
-        //theProgressView.startAngle     = -90.degreesToRadians()
         
         /// Unicode roman numbers.
-        
         let romanNumbers : [String] = ["Ⅰ",
                                        "Ⅱ",
                                        "Ⅲ",
@@ -504,9 +443,9 @@ class ViewController: UIViewController {
                                        "Ⅺ",
                                        "Ⅻ"]
         
-        let color = UIColor(red: 0,green: 0,blue: 0,alpha: 0.5)
+        let color : UIColor = UIColor.sunglowCrayolaColor()
         
-        let clockAngle = (M_PI * 2.0) / Double(romanNumbers.count)
+        let clockAngle = OMCircleAngle.step(elements: Double(romanNumbers.count))
         
         for i in 0 ..< romanNumbers.count  {
             
@@ -514,49 +453,50 @@ class ViewController: UIViewController {
             
             let step = theProgressView.addStep( clockAngle, color:color )!
             
-            // without well
-            
-            step.wellColor = nil;
-            
             // Configure the step
             
             step.text                   = romanNumbers[i]
             step.fontName               = "HelveticaNeue"
-            step.fontSize               = 14
-            step.fontColor              = UIColor.white
+            step.fontSize               = 11
+            step.fontColor              = UIColor.black
             step.fontBackgroundColor    = UIColor.clear
-            step.fontStrokeColor        = UIColor.gray
-            
+            step.fontStrokeColor        = UIColor.white
+            step.fontStrokeWidth        = -4
             
             step.textAlign              = .middle
             step.textOrientationToAngle = true
             step.textAngleAlign         = .end
             
+            // configure the gradient
+            let gradientLayer       = OMShadingGradientLayer(type:.radial)
+
             
-            let gradientLayer           = OMShadingGradientLayer(type:.radial)
-            gradientLayer.frame         = theProgressView.bounds
+            gradientLayer.function  = .linear
+            gradientLayer.frame     = theProgressView.bounds
+            gradientLayer.colors    = [color,
+                                       UIColor.mulberryCrayolaColor(),
+                                       UIColor.sunglowCrayolaColor(),
+                                       UIColor.wildWatermelonCrayolaColor()]
             
-            gradientLayer.colors        = [color,UIColor.lightGray]
             
-            gradientLayer.startPoint   = CGPoint(x: 0.5,y: 0.5)
-            gradientLayer.endPoint     = CGPoint(x: 0.5,y: 0.5)
+            // axial gradient
+            gradientLayer.startPoint = CGPoint(x: 0.5,y: 0.5)
+            gradientLayer.endPoint   = CGPoint(x: 0.5,y: 0.5)
             
             gradientLayer.startRadius   = theProgressView.innerRadius
             gradientLayer.endRadius     = theProgressView.outerRadius
+            
             gradientLayer.extendsPastEnd  = true
             gradientLayer.extendsBeforeStart = true
-            //gradientLayer.function      =  .Exponential
             
-            // set the mask
-            step.maskLayer              = gradientLayer
-            
+            // Mask it
+            step.maskLayer      = gradientLayer
+
         }
     }
     
     func setupClockSeconds(_ theProgressView:OMCircularProgress)
     {
-        theProgressView.progressStyle = .sequentialProgress
-        
         // Configure the animation
         
         theProgressView.animation      = false
@@ -566,9 +506,9 @@ class ViewController: UIViewController {
         let quartersPerHour = 4
         let quarter         = 60 / quartersPerHour
         
-        let color = UIColor(red: 0,green: 0,blue: 0,alpha: 1.0)
+        let color =   UIColor.sunglowCrayolaColor()
         
-        let clockAngle = (M_PI * 2.0) / Double(minutesPerHour)
+        let clockAngle = OMCircleAngle.step(elements: Double(minutesPerHour))
         
         for i in 0 ..< minutesPerHour   {
             
@@ -576,18 +516,17 @@ class ViewController: UIViewController {
             
             let step = theProgressView.addStep(clockAngle, color:color)!
             
-            step.wellColor = nil;
-            
             // Configure the quarter
             
             if((i % quarter) == 0) {
                 
                 step.text                   = "\(i)"
-                step.fontName               = "HelveticaNeue-Light"
-                step.fontSize               = 12
-                step.fontColor              = UIColor.white
+                step.fontName               = "HelveticaNeue"
+                step.fontSize               = 7
+                step.fontColor              = UIColor.black
                 step.fontBackgroundColor    = UIColor.clear
-                step.fontStrokeColor        = UIColor.gray
+                step.fontStrokeColor        = UIColor.white
+                step.fontStrokeWidth        = -2
                 
                 
                 step.textOrientationToAngle = false
@@ -598,9 +537,12 @@ class ViewController: UIViewController {
             // configure the gradient
             let gradientLayer       = OMShadingGradientLayer(type:.radial)
             
-            gradientLayer.function  = .exponential
+            gradientLayer.function  = .linear
             gradientLayer.frame     = theProgressView.bounds
-            //gradientLayer.colors    = [color,UIColor(white:0,alpha: 0.8),color]
+            gradientLayer.colors    = [color,
+                                       UIColor.mulberryCrayolaColor(),
+                                       UIColor.sunglowCrayolaColor(),
+                                       UIColor.wildWatermelonCrayolaColor()]
             
             
             // axial gradient
@@ -610,79 +552,56 @@ class ViewController: UIViewController {
             gradientLayer.startRadius   = theProgressView.innerRadius
             gradientLayer.endRadius     = theProgressView.outerRadius
             
-            gradientLayer.extendsPastEnd  = true
+            gradientLayer.extendsPastEnd     = true
             gradientLayer.extendsBeforeStart = true
-            
-            
-            gradientLayer.colors      = [UIColor(red: 1,green: 1,blue: 1,alpha:0.6),
-                                         color.withAlphaComponent(0.9)]
             
             // mask it
             step.maskLayer        = gradientLayer
             
-            step.maskLayer  = gradientLayer
         }
     }
     
     
     func setupClockMinute(_ theProgressView:OMCircularProgress)
     {
-        
-        theProgressView.progressStyle = .sequentialProgress
-        
         // Configure the animation
-        
-        theProgressView.animation = false
-        
-        /// Configure the separator ratio
-        
-        //   theProgressView.separatorRatio = 0.1 // 10%
-        
-        theProgressView.thicknessRatio = 0.5 // 50%
-        
-        // theProgressView.startAngle     = -90.degreesToRadians()
+        theProgressView.animation      = false
+        theProgressView.thicknessRatio = 0.5    // 50%
         
         let minutesPerHour  = 60
         
-        let color = UIColor(red: 0.6,green: 0.6,blue: 0.6,alpha: 0.6)
+        let color =  UIColor.sunglowCrayolaColor()
         
-        let clockAngle = (M_PI * 2.0) / Double(minutesPerHour)
+        let clockAngle = OMCircleAngle.step(elements: Double(minutesPerHour))
         
-        for _ in 0 ..< minutesPerHour   {
+        for i in 0 ..< minutesPerHour {
             
-            // Create the step.
+            // Create one step for each minute
+            let step = theProgressView.addStep(clockAngle, color:color)!
             
-            let step = theProgressView.addStep( clockAngle, color:color)!
+            if((i % 5) == 0) {
+                
+                // Configure the text
+                step.text                   = "\(i)"
+                step.fontName               = "HelveticaNeue"
+                step.fontSize               = 9
+                step.fontColor              = UIColor.black
+                step.fontBackgroundColor    = UIColor.clear
+                step.fontStrokeColor        = UIColor.white
+                step.fontStrokeWidth        = -3
+                step.textAngleAlign         = .start
+            }
             
-            step.wellColor = nil;
-            
-//            let gradientLayer         = OMCGGradientLayer(type:.Radial)
-//            gradientLayer.frame       = theProgressView.bounds
-//            
-//            
-//            gradientLayer.startPoint = CGPoint(x: 0.5,y: 0.5)
-//            gradientLayer.endPoint = CGPoint(x: 0.5,y: 0.5)
-//            gradientLayer.extendsPastEnd  = true
-//            gradientLayer.extendsBeforeStart = true
-//            
-//            
-//            gradientLayer.startRadius   = theProgressView.innerRadius
-//            gradientLayer.endRadius     = theProgressView.outerRadius
-//            
-//            gradientLayer.colors      = [color,color.colorWithAlphaComponent(0.2)]
-//            //
-//            step.maskLayer  = gradientLayer
-            
-            
-            // configure the gradient
+            // Configure the radial gradient
             let gradientLayer       = OMShadingGradientLayer(type:.radial)
             
-            //gradientLayer.function  = .Exponential
+            gradientLayer.function  = .linear
             gradientLayer.frame     = theProgressView.bounds
-            gradientLayer.colors    = [color,UIColor(white:0,alpha: 0.8),color]
-            
-            
-            // axial gradient
+            gradientLayer.colors    = [color,
+                                       UIColor.mulberryCrayolaColor(),
+                                       UIColor.sunglowCrayolaColor(),
+                                       UIColor.wildWatermelonCrayolaColor()]
+        
             gradientLayer.startPoint = CGPoint(x: 0.5,y: 0.5)
             gradientLayer.endPoint   = CGPoint(x: 0.5,y: 0.5)
             
@@ -694,35 +613,16 @@ class ViewController: UIViewController {
             
             // mask it
             step.maskLayer        = gradientLayer
-            
         }
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view, typically from a nib.
-        
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    
     override func viewDidLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        
-        // Update the clock
-        
-        let r = self.progressViewClock.radius / 3
-        
-        self.progressViewClockMinutes.radius = r * 2
-        
-        self.progressViewClockSeconds.radius = r
-        
+        updateClockRadius()
     }
+
 }
 

@@ -52,7 +52,7 @@ private struct OMProgressImageLayerProperties {
     static var Progress = "progress"
 }
 
-@objc class OMProgressImageLayer : CALayer
+class OMProgressImageLayer : CALayer
 {
     // progress showing image or hiding
     
@@ -273,7 +273,9 @@ private struct OMProgressImageLayerProperties {
             
             if ( grayScale ){
                 // original image grayscaled + original image blend
-                context.draw((self.image?.grayScaleWithAlphaImage().blendImage(newImage!).cgImage)!, in: rect)
+                if let image = self.image {
+                    context.draw((image.grayScaleWithAlphaImage().blendImage(newImage!).cgImage)!, in: rect)
+                }
             }else{
                 context.draw(newImage!.cgImage!, in: rect)
             }

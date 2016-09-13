@@ -25,11 +25,9 @@
 import UIKit
 import CoreGraphics
 
-extension CAShapeLayer
-{
+extension CAShapeLayer {
     override open func contains(_ p:CGPoint) -> Bool {
         let eoFill:Bool = (self.fillRule == "even-odd")
-        
         if((self.path != nil)){
             return self.path!.contains(p, using: eoFill ? .evenOdd : .winding)
         }
