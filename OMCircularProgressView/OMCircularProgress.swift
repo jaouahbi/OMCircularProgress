@@ -285,11 +285,11 @@ enum OMAlign : Int
     
     /// Sets shadow to the well layer
     
-    @IBInspectable var shadowWell : Bool = true {
+ /*   @IBInspectable var shadowWell : Bool = false {
         didSet{
             setNeedsLayout()
         }
-    }
+    }*/
     
     //
     @IBInspectable var shadowBorder : Bool = false {
@@ -828,8 +828,7 @@ enum OMAlign : Int
             step.wellLayer?.lineWidth       = borderWidth
             
             // Activate shadow only if exist space between steps.
-            
-            step.wellLayer?.shadowPath = nil
+            /*step.wellLayer?.shadowOpacity   = 0
             
             if  shadowWell {
                 
@@ -837,14 +836,12 @@ enum OMAlign : Int
                 step.wellLayer?.shadowOffset  = shadowOffset
                 step.wellLayer?.shadowRadius  = shadowRadius
                 step.wellLayer?.shadowColor   = shadowColor.cgColor
-            }
+            }*/
            
             // Same as shape layer
-            
             step.wellLayer?.lineCap = step.shapeLayer.lineCap
             
             // Add the layer behind the other layers
-            
             layer.insertSublayer(step.wellLayer!, at:0)
         }
         #endif
@@ -870,6 +867,7 @@ enum OMAlign : Int
      */
     
     fileprivate func anglePoint(_ angle:Double, align:OMAlign, size:CGSize = CGSize.zero) -> CGPoint {
+        DEBUG("anglePoint(\(angle) \(align) \(size))")
         // .middle (default)
         let newRadius:Double
         switch(align){
