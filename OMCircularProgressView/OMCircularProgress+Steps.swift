@@ -77,8 +77,9 @@ extension OMCircularProgress
     
     func addStep(_ startAngle:Double, endAngle:Double, color:UIColor!) -> OMStepData? {
         let angle = OMCircleAngle(startAngle:startAngle,endAngle:endAngle)
-        assert(angle.valid(), "Invalid angle:\(angle). range in radians : -(2*PI)/+(2*PI)")
-        if(!angle.valid()) {
+        let valid = angle.valid()
+        assert(valid,"Invalid angle:\(angle). range in radians : -(2*PI)/+(2*PI)")
+        if(!valid) {
             WARNING("Invalid angle :\(angle)")
             return nil;
         }

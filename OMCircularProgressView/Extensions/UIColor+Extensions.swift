@@ -25,9 +25,9 @@ import UIKit
 
 extension UIColor
 {
-    class func rainbow(_ numberOfSteps:Int,hue:Double = 0.0) -> Array<UIColor>!{
+    class func rainbow(_ numberOfSteps:Int,hue:Double = 0.0) -> [UIColor]!{
         
-        var colors:Array<UIColor> = []
+        var colors:[UIColor] = []
         
         let iNumberOfSteps =  1.0 / Double(numberOfSteps)
         var hue:Double = hue

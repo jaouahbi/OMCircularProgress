@@ -206,9 +206,6 @@ extension UIImage
 
 extension UIImage {
     
-    func addInnerShadow() {
-        //TODO:
-    }
     
     
     func addShadowColor(_ offset:CGSize, color:UIColor = UIColor.darkGray, blur:CGFloat = 6.0) -> UIImage

@@ -48,7 +48,7 @@ func ShineGradient() -> ([CGFloat],[CGFloat]) {
 }
 
 func ShadeGradient() -> ([CGFloat],[CGFloat]) {
-   return ([ 178 / 255.0, 178 / 255.0, 178 / 255.0, 0.65 ],[ 252 / 255.0, 252 / 255.0, 252 / 255.0, 0.65 ])
+   return ([ 178 / 255.0, 178 / 255.0, 178 / 255.0, 0.65 ],[ 252 / 255.0, 252 / 255.0, 252 / 255.0, 0.65])
 }
 
 func ConvexGradient() -> ([CGFloat],[CGFloat]) {

@@ -155,6 +155,9 @@ public enum OMVerticalAlignment {
         self.drawsAsynchronously = true
         self.allowsGroupOpacity  = false
         
+//        self.shouldRasterize = true
+//        self.rasterizationScale = UIScreen.main.scale
+        
     }
     
     convenience init(string : String, alignmentMode:String = "center") {
@@ -334,6 +337,87 @@ public enum OMVerticalAlignment {
         setFont(font.fontName, fontSize: font.pointSize, matrix: matrix)
     }
     
+    func addInnerShadowToRect(context: CGContext,
+                              rect:CGRect,
+                              innerShadowColor:UIColor,
+                              innerShadowOffset:CGSize,
+                              innerShadowBlur:CGFloat) {
+        
+        var  alphaMask:CGImage? = nil
+        let textRect = context.boundingBoxOfClipPath
+        
+        //draw mask
+        context.saveGState();
+        context.clip(to: textRect);
+        UIColor.black.setFill();
+        UIRectFill(textRect);
+        context.restoreGState();
+        
+        //create an image mask from what we've drawn so far
+        alphaMask = context.makeImage();
+        
+        //clear the context
+        context.clear(textRect);
+        
+        
+        //clip the context
+//        self.saveGState();
+//        self.translateBy(x: 0, y: rect.size.height);
+//        self.scaleBy(x: 1.0, y: -1.0);
+        context.clip(to: rect, mask: alphaMask!)
+        
+        //            if (hasGradient)
+        //            {
+        //                //create array of pre-blended CGColors
+        //                NSMutableArray *colors = [NSMutableArray arrayWithCapacity:self.gradientColors.count];
+        //                for (UIColor *color in self.gradientColors)
+        //                {
+        //                    UIColor *blended = [self FXLabel_color:color.CGColor blendedWithColor:textColor.CGColor];
+        //                    [colors addObject:(__bridge id)blended.CGColor];
+        //                }
+        //
+        //                //draw gradient
+        //                CGContextSaveGState(context);
+        //                CGContextScaleCTM(context, 1.0, -1.0);
+        //                CGContextTranslateCTM(context, 0, -contentRect.size.height);
+        //                CGGradientRef gradient = CGGradientCreateWithColors(NULL, (__bridge CFArrayRef)colors, NULL);
+        //                CGPoint startPoint = CGPointMake(textRect.origin.x + self.gradientStartPoint.x * textRect.size.width,
+        //                                                 textRect.origin.y + self.gradientStartPoint.y * textRect.size.height);
+        //                CGPoint endPoint = CGPointMake(textRect.origin.x + self.gradientEndPoint.x * textRect.size.width,
+        //                                               textRect.origin.y + self.gradientEndPoint.y * textRect.size.height);
+        //                CGContextDrawLinearGradient(context, gradient, startPoint, endPoint,
+        //                                            (CGGradientDrawingOptions)(kCGGradientDrawsAfterEndLocation | kCGGradientDrawsBeforeStartLocation));
+        //                CGGradientRelease(gradient);
+        //                CGContextRestoreGState(context);
+        //            }
+        //            else
+        //{
+        //fill text
+        UIColor.clear.setFill();
+        UIRectFill(textRect);
+        //}
+        
+        
+        //generate inverse mask
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale);
+        let shadowContext = UIGraphicsGetCurrentContext();
+        innerShadowColor.withAlphaComponent(1.0).setFill();
+        UIRectFill(rect);
+        shadowContext!.clip(to: rect, mask: alphaMask!);
+        shadowContext!.clear(rect);
+        let shadowImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        //draw shadow
+        context.setShadow(offset: innerShadowOffset, blur: innerShadowBlur, color: innerShadowColor.cgColor);
+        context.setBlendMode(.darken);
+        shadowImage?.draw(in: rect);
+        
+        
+        
+    }
+
+    
     // MARK: overrides
     
     override func draw(in context: CGContext) {
@@ -389,8 +473,74 @@ public enum OMVerticalAlignment {
             
             // Draw the specified frame in the given context.
             CTFrameDraw(frame, context);
+
+//            context.flush()
             
-            context.restoreGState();
+            context.restoreGState()
+            
+            
+//            //create an image mask from what we've drawn so far
+//            let alphaMask = context.makeImage();
+//            
+//            //clear the context
+//            context.clear(rect);
+//            
+//            //clip the context
+//            context.saveGState();
+//            context.translateBy(x: 0, y: rect.size.height);
+//            context.scaleBy(x: 1.0, y: -1.0);
+//            context.clip(to: rect, mask: alphaMask!)
+//            
+//            //            if (hasGradient)
+//            //            {
+//            //                //create array of pre-blended CGColors
+//            //                NSMutableArray *colors = [NSMutableArray arrayWithCapacity:self.gradientColors.count];
+//            //                for (UIColor *color in self.gradientColors)
+//            //                {
+//            //                    UIColor *blended = [self FXLabel_color:color.CGColor blendedWithColor:textColor.CGColor];
+//            //                    [colors addObject:(__bridge id)blended.CGColor];
+//            //                }
+//            //
+//            //                //draw gradient
+//            //                CGContextSaveGState(context);
+//            //                CGContextScaleCTM(context, 1.0, -1.0);
+//            //                CGContextTranslateCTM(context, 0, -contentRect.size.height);
+//            //                CGGradientRef gradient = CGGradientCreateWithColors(NULL, (__bridge CFArrayRef)colors, NULL);
+//            //                CGPoint startPoint = CGPointMake(textRect.origin.x + self.gradientStartPoint.x * textRect.size.width,
+//            //                                                 textRect.origin.y + self.gradientStartPoint.y * textRect.size.height);
+//            //                CGPoint endPoint = CGPointMake(textRect.origin.x + self.gradientEndPoint.x * textRect.size.width,
+//            //                                               textRect.origin.y + self.gradientEndPoint.y * textRect.size.height);
+//            //                CGContextDrawLinearGradient(context, gradient, startPoint, endPoint,
+//            //                                            (CGGradientDrawingOptions)(kCGGradientDrawsAfterEndLocation | kCGGradientDrawsBeforeStartLocation));
+//            //                CGGradientRelease(gradient);
+//            //                CGContextRestoreGState(context);
+//            //            }
+//            //            else
+//            //{
+//            //fill text
+//            context.setFillColor( UIColor.clear.cgColor );
+//            context.fill( rect );
+//            //}
+//            
+//            
+//            //generate inverse mask
+//            UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale);
+//            let shadowContext = UIGraphicsGetCurrentContext();
+//            shadowContext?.translateBy(x: 0, y: rect.size.height);
+//            shadowContext?.scaleBy(x: 1.0, y: -1.0);
+//            shadowContext!.setFillColor( UIColor.black.withAlphaComponent(1.0).cgColor );
+//            shadowContext!.fill( rect );
+//            shadowContext!.clip(to: rect, mask: alphaMask!);
+//            shadowContext!.clear(rect);
+//            let shadowImage = UIGraphicsGetImageFromCurrentImageContext();
+//            UIGraphicsEndImageContext();
+//            
+//            //draw shadow
+//            context.setShadow(offset: CGSize(width:0.5,height:0.5), blur: 1.0, color: UIColor.black.cgColor);
+//            context.setBlendMode(.darken);
+//            context.draw((shadowImage?.cgImage)!, in: rect)
+//            
+//            context.restoreGState();
         }
     }
 }

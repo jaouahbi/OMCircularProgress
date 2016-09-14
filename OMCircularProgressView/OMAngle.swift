@@ -59,13 +59,13 @@ open class OMAngle : CustomDebugStringConvertible {
     
     // MARK: Contructors
     
-    convenience init(startAngle:Double,endAngle:Double){
+    convenience init(startAngle:Double, endAngle:Double){
         self.init()
         start = startAngle
         end   = endAngle;
     }
     
-    convenience init(startAngle:Double,length:Double){
+    convenience init(startAngle:Double, length:Double){
         self.init()
         start = startAngle
         end   = startAngle+length;

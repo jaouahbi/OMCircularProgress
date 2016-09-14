@@ -43,7 +43,7 @@ open class OMStepData {
     var borderRatio:Double  = 0.2                           // border layer ratio. Default: 20%
     // Optional well layer.
     var wellLayer:CAShapeLayer?                             // optional well layer
-    var wellColor:UIColor?  = nil                           // optional well layer color
+    var wellColor:UIColor?  = UIColor.lightGray             // optional well layer color
     // Optional text
     var text:String? = nil                                   // optional step text
     internal var textLayer:OMTextLayer? = nil                // optional layer for the text

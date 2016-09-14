@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Progress Example View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ExampleSwift" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ProgressExampleViewController" customModule="ExampleSwift" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="DaV-pg-yp8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pNq-Oe-QTu" customClass="OMCircularProgress" customModule="ExampleSwift" customModuleProvider="target">
-                                <rect key="frame" x="3" y="2" width="154" height="154"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pNq-Oe-QTu" customClass="OMCircularProgress" customModule="ExampleSwift" customModuleProvider="target">
+                                <frame key="frameInset" minX="3" minY="2" width="154" height="154"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zqg-az-Jm3" customClass="OMCircularProgress" customModule="ExampleSwift" customModuleProvider="target">
-                                <rect key="frame" x="163" y="2" width="154" height="154"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zqg-az-Jm3" customClass="OMCircularProgress" customModule="ExampleSwift" customModuleProvider="target">
+                                <frame key="frameInset" minX="163" minY="2" width="154" height="154"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sjg-IQ-Z7V" customClass="OMCircularProgress" customModule="ExampleSwift" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="154" height="154"/>
+                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sjg-IQ-Z7V" customClass="OMCircularProgress" customModule="ExampleSwift" customModuleProvider="target">
+                                        <frame key="frameInset" width="154" height="154"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="61A-JK-aY8" customClass="OMCircularProgress" customModule="ExampleSwift" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="154" height="154"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="61A-JK-aY8" customClass="OMCircularProgress" customModule="ExampleSwift" customModuleProvider="target">
+                                                <frame key="frameInset" width="154" height="154"/>
+                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="61A-JK-aY8" secondAttribute="bottom" id="Brq-Af-d8p"/>
                                             <constraint firstItem="61A-JK-aY8" firstAttribute="top" secondItem="Sjg-IQ-Z7V" secondAttribute="top" id="J5n-uc-Dlt"/>
@@ -41,7 +42,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="Sjg-IQ-Z7V" secondAttribute="trailing" id="NEb-j5-Z2f"/>
                                     <constraint firstAttribute="bottom" secondItem="Sjg-IQ-Z7V" secondAttribute="bottom" id="glw-UZ-6Gg"/>
@@ -49,24 +50,24 @@
                                     <constraint firstItem="Sjg-IQ-Z7V" firstAttribute="top" secondItem="Zqg-az-Jm3" secondAttribute="top" id="ofy-2Z-kt9"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uyf-im-w8A" customClass="OMCircularProgress" customModule="ExampleSwift" customModuleProvider="target">
-                                <rect key="frame" x="3" y="160" width="154" height="154"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uyf-im-w8A" customClass="OMCircularProgress" customModule="ExampleSwift" customModuleProvider="target">
+                                <frame key="frameInset" minX="3" minY="160" width="154" height="154"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vTn-1I-JSP" customClass="OMCircularProgress" customModule="ExampleSwift" customModuleProvider="target">
-                                <rect key="frame" x="163" y="320" width="154" height="154"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vTn-1I-JSP" customClass="OMCircularProgress" customModule="ExampleSwift" customModuleProvider="target">
+                                <frame key="frameInset" minX="163" minY="320" width="154" height="154"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uoF-o6-Cqx" customClass="OMCircularProgress" customModule="ExampleSwift" customModuleProvider="target">
-                                <rect key="frame" x="3" y="320" width="154" height="154"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uoF-o6-Cqx" customClass="OMCircularProgress" customModule="ExampleSwift" customModuleProvider="target">
+                                <frame key="frameInset" minX="3" minY="320" width="154" height="154"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eil-PD-c5a" customClass="OMCircularProgress" customModule="ExampleSwift" customModuleProvider="target">
-                                <rect key="frame" x="163" y="160" width="154" height="154"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eil-PD-c5a" customClass="OMCircularProgress" customModule="ExampleSwift" customModuleProvider="target">
+                                <frame key="frameInset" minX="163" minY="160" width="154" height="154"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Zqg-az-Jm3" firstAttribute="top" secondItem="DaV-pg-yp8" secondAttribute="top" constant="2" id="25G-H0-ewe"/>
                             <constraint firstItem="uoF-o6-Cqx" firstAttribute="top" secondItem="uyf-im-w8A" secondAttribute="bottom" constant="6" id="2WF-ek-Arv"/>
@@ -97,7 +98,6 @@
                             <constraint firstItem="Eil-PD-c5a" firstAttribute="width" secondItem="pNq-Oe-QTu" secondAttribute="width" id="zeR-1f-xZx"/>
                         </constraints>
                     </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="progressViewClock" destination="Zqg-az-Jm3" id="IKQ-HQ-NDs"/>
                         <outlet property="progressViewClockMinutes" destination="Sjg-IQ-Z7V" id="wca-El-khD"/>

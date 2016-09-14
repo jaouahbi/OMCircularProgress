@@ -30,9 +30,40 @@ open class OMCircleAngle : OMAngle {
         return π * radius * radius
     }
     
-    func arcLength(_ radius:Double, theta: OMAngle) -> Double {
-        return perimeter(radius) * theta.length() / π
+    func arcLength(_ radius:Double) -> Double {
+        return perimeter(radius) * self.length() / π
     }
+    
+    
+    // http://planetcalc.com/1421/
+    //
+    //    func calcChord( radius : Double, angle : Double )
+    //    {
+    //    let rad = angle;
+    //    let r2=radius*radius;
+    //    let area = ( r2/2.0 * (rad-sin( rad ) ) );
+    //    let chord = 2.0*radius*sin(rad/2);
+    //    let arclen = rad*radius;
+    //    let perimeter = ( area + chord );
+    //    let height = radius*(1.0-cos(rad/2.0))
+    //    };
+
+    
+    func arcChord( radius : Double ) -> Double {
+        return 2.0 * radius * sin(self.length() / 2.0);
+    }
+
+    func chordHeight( radius : Double ) -> Double {
+        return radius * (1.0-cos(self.length()/2.0))
+    };
+    
+    func chordPerimeter( radius : Double) -> Double {
+        let r2=radius*radius;
+        let rad = self.length()
+        let area = ( r2/2.0 * (rad-sin( rad ) ) );
+        let chord = 2.0*radius*sin(rad/2);
+        return ( area + chord );
+    };
     
     /**
      * Get the normalized angle
