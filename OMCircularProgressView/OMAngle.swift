@@ -59,16 +59,28 @@ open class OMAngle : CustomDebugStringConvertible {
     
     // MARK: Contructors
     
-    convenience init(startAngle:Double, endAngle:Double){
+    convenience init(start:Double, end:Double){
         self.init()
-        start = startAngle
-        end   = endAngle;
+        self.start = start
+        self.end   = end;
     }
     
-    convenience init(startAngle:Double, length:Double){
+    convenience init(start:Double, length:Double){
         self.init()
-        start = startAngle
-        end   = startAngle+length;
+        self.start = start
+        self.end   = start+length;
+    }
+
+    convenience init(startDegree:Double, endDegree:Double){
+        self.init()
+        self.start = startDegree.degreesToRadians()
+        self.end   = endDegree.degreesToRadians()
+    }
+    
+    convenience init(startDegree:Double, lengthDegree:Double){
+        self.init()
+        self.start = startDegree.degreesToRadians()
+        self.end   = startDegree.degreesToRadians()+lengthDegree.degreesToRadians();
     }
     
     /**
@@ -140,6 +152,7 @@ open class OMAngle : CustomDebugStringConvertible {
         }
         return resultAngle;
     }
+    
 
     // MARK: DebugPrintable protocol
     

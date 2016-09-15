@@ -35,8 +35,18 @@ public func between<T: Comparable>(_ value: T, lower: T, upper: T , include: Boo
     return include ? (value >= left && value <= right) : (value > left && value < right)
 }
 
+/*
+
 public func degreesToRadians(_ degrees:CGFloat) -> CGFloat {
     return degrees * 0.017453292519943295
+}
+
+
+public func degreesToRadians(_ degrees:Float) -> Float {
+    return degrees * 0.017453292519943295
+}
+public func radiansToDegrees(_ radians:Float) -> Float{
+    return radians * 57.29577951
 }
 
 public func radiansToDegrees(_ radians:CGFloat) -> CGFloat{
@@ -50,7 +60,7 @@ public func degreesToRadians(_ degrees:Double) -> Double {
 public func radiansToDegrees(_ radians:Double) -> Double{
     return radians * 57.29577951
 }
-
+*/
 public func minRadius(_ size: CGSize) -> CGFloat {
     return min(size.height,size.width) * 0.5;
 }

@@ -17,6 +17,7 @@
 
 
 import Darwin
+import CoreGraphics
 
 let 𝜏 = 2.0 * π
 
@@ -34,7 +35,6 @@ open class OMCircleAngle : OMAngle {
         return perimeter(radius) * self.length() / π
     }
     
-    
     // http://planetcalc.com/1421/
     //
     //    func calcChord( radius : Double, angle : Double )
@@ -47,14 +47,14 @@ open class OMCircleAngle : OMAngle {
     //    let perimeter = ( area + chord );
     //    let height = radius*(1.0-cos(rad/2.0))
     //    };
-
+    
     
     func arcChord( radius : Double ) -> Double {
         return 2.0 * radius * sin(self.length() / 2.0);
     }
-
+    
     func chordHeight( radius : Double ) -> Double {
-        return radius * (1.0-cos(self.length()/2.0))
+        return radius * (1.0 - cos(self.length() / 2.0))
     };
     
     func chordPerimeter( radius : Double) -> Double {
@@ -97,4 +97,28 @@ open class OMCircleAngle : OMAngle {
         return super.valid() && range()
     }
     
+    public func point(angle:Double, radius:CGFloat, center:CGPoint) -> CGPoint {
+        // Given a radius length r and an angle in radians and a circle's center (x,y),
+        // calculate the coordinates of a point on the circumference
+        
+        let theta = CGFloat( angle )
+        
+        // Cartesian angle to polar.
+        
+        return CGPoint(x: center.x + CGFloat(radius) * cos(theta), y: center.y + CGFloat(radius) * sin(theta))
+    }
+    
+    // correct discontinuity
+    
+    static public func angleFromPoint(source:CGPoint, target: CGPoint) -> Double {
+        let originX = target.x - source.x
+        let originY = target.y - source.y
+        let bearingRadians = atan2f(Float(originY), Float(originX))
+        // correct discontinuity
+        var bearingDegrees = bearingRadians.radiansToDegrees()
+        while bearingDegrees < 0 {
+            bearingDegrees += 360
+        }
+        return Double(bearingDegrees)
+    }
 }

@@ -71,7 +71,7 @@ class ProgressExampleViewController: UIViewController {
         
         // mood example
         
-        setupMoodExample(self.progressViewMood);
+        setupTopLeftProgressViewExample(self.progressViewMood);
         setupWithImagesWithDifferentsSize(self.progressViewImagesWithDifferentsSize);
         setupColorsFullWithGradientMaskAndDirectProgress(self.progressViewSimple);
         setupWithGradientMask(self.progressViewGradientMask);
@@ -328,8 +328,8 @@ class ProgressExampleViewController: UIViewController {
         theProgressView.centerImage = UIImage(named: "center")
     }
     
-    func setupMoodExample(_ theProgressView:OMCircularProgress)
-    {
+    func setupTopLeftProgressViewExample(_ theProgressView:OMCircularProgress) {
+        
         // Configure the animation duration
         theProgressView.animationDuration  = 10
         theProgressView.thicknessRatio     = 0.70
@@ -402,6 +402,8 @@ class ProgressExampleViewController: UIViewController {
     }
     
     
+
+    
     func setupClockExample(_ theProgressView:OMCircularProgress) {
         //
         //        let fillLayer = CAShapeLayer()
@@ -428,6 +430,8 @@ class ProgressExampleViewController: UIViewController {
         
         theProgressView.animation = false
         theProgressView.thicknessRatio = 0.33     // 33.3 %
+        //theProgressView.roundedHead    = true
+        //theProgressView.showWell       = true;
         
         
         /// Unicode roman numbers.
@@ -479,7 +483,6 @@ class ProgressExampleViewController: UIViewController {
                                        UIColor.sunglowCrayolaColor(),
                                        UIColor.wildWatermelonCrayolaColor()]
             
-            
             // axial gradient
             gradientLayer.startPoint = CGPoint(x: 0.5,y: 0.5)
             gradientLayer.endPoint   = CGPoint(x: 0.5,y: 0.5)
@@ -493,6 +496,9 @@ class ProgressExampleViewController: UIViewController {
             // Mask it
             step.maskLayer      = gradientLayer
             
+            
+            step.wellColor      = UIColor.sunglowCrayolaColor()
+            
         }
     }
     
@@ -502,6 +508,7 @@ class ProgressExampleViewController: UIViewController {
         
         theProgressView.animation      = false
         theProgressView.thicknessRatio = 1.0     // 100%
+       
         
         let minutesPerHour  = 60
         let quartersPerHour = 4

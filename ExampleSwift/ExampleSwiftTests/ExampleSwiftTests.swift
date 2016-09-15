@@ -48,4 +48,26 @@ class ExampleSwiftTests: XCTestCase {
         }
     }
     
+    func testCircleAngle() {
+        let angle90 = OMCircleAngle.angleFromPoint(source:CGPoint.zero,target:CGPoint(x:0,y:1))
+        XCTAssert(angle90 == 90,"angleFromPoint")
+        let angle270 = OMCircleAngle.angleFromPoint(source:CGPoint(x:0,y:1),target:CGPoint.zero)
+        XCTAssert(angle270 == 270,"angleFromPoint")
+        /*
+        let circle = OMCircleAngle(startDegree:0, lengthDegree: 45)
+
+        let perimeter = circle.perimeter(1)
+        let arc       = circle.arc(1)
+        let arcLength = circle.arcLength(1)
+
+        let perimeterChord = circle.chordPerimeter(radius: 1)
+        let chordHeight = circle.chordHeight(radius: 1)
+        let arcChord = circle.arcChord(radius: 1)
+        
+        XCTAssert(arc == 20.8,"angleFromPoint")
+ */
+        
+        
+    }
+    
 }

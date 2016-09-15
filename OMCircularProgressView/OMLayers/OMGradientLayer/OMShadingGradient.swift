@@ -39,24 +39,33 @@ public enum GradientFunction {
     case cosine
 }
 
+/*
+ let x  = ShineGradient()
+ 
+ let c = UIColor(red:x.0[0],green:x.0[1],blue:x.0[2],alpha:x.0[3])
+ let d = UIColor(red:x.1[0],green:x.1[1],blue:x.1[2],alpha:x.1[3])
+ gradientLayer.colors = [c,d]
+ 
+ */
+
 func InsetGradient() -> ([CGFloat],[CGFloat]) {
     return  ([0 / 255.0, 0 / 255.0, 0 / 255.0, 0 ],[ 0 / 255.0, 0 / 255.0, 0 / 255.0, 0.2 ])
 }
 
 func ShineGradient() -> ([CGFloat],[CGFloat]) {
-     return  ([1, 1, 1, 0.8 ],[ 1, 1, 1, 0])
+     return  ([ 1, 1, 1, 0],[1, 1, 1, 0.8 ])
 }
 
 func ShadeGradient() -> ([CGFloat],[CGFloat]) {
-   return ([ 178 / 255.0, 178 / 255.0, 178 / 255.0, 0.65 ],[ 252 / 255.0, 252 / 255.0, 252 / 255.0, 0.65])
+   return ([ 252 / 255.0, 252 / 255.0, 252 / 255.0, 0.65],[ 178 / 255.0, 178 / 255.0, 178 / 255.0, 0.65 ])
 }
 
 func ConvexGradient() -> ([CGFloat],[CGFloat]) {
-    return ([ 255 / 255.0, 255 / 255.0, 255 / 255.0, 0.05 ],[ 255 / 255.0, 255 / 255.0, 255 / 255.0, 0.43])
+    return ([ 255 / 255.0, 255 / 255.0, 255 / 255.0, 0.43],[ 255 / 255.0, 255 / 255.0, 255 / 255.0, 0.05 ])
 }
 
 func ConcaveGradient()  -> ([CGFloat],[CGFloat]) {
-    return  ([255 / 255.0, 255 / 255.0, 255 / 255.0, 0.46],[ 255 / 255.0, 255 / 255.0, 255 / 255.0, 0 ])
+    return  ([ 255 / 255.0, 255 / 255.0, 255 / 255.0, 0 ],[255 / 255.0, 255 / 255.0, 255 / 255.0, 0.46])
 }
 
 func ShadingFunctionCreate(_ colors : [UIColor],

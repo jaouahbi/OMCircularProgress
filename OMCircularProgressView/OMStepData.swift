@@ -33,17 +33,17 @@ import UIKit
 
 open class OMStepData {
     /// Basic step data
-    var angle:OMCircleAngle!                                // step angle
-    var color:UIColor!                                      // step color
-    internal var shapeLayer:CAShapeLayer = CAShapeLayer()   // progress shape
-    var maskLayer:CALayer? = nil                            // optional layer mask
+    var angle:OMCircleAngle!                                 // step angle
+    var color:UIColor!                                       // step color
+    internal var shapeLayer:CAShapeLayer = CAShapeLayer()    // progress shape
+    var maskLayer:CALayer? = nil                             // optional layer mask
     // Optional border.
-    internal var shapeLayerBorder:CAShapeLayer? = nil       // optional border layer
-    var borderColor:UIColor = UIColor.lightGray             // border layer color. Default: lightGray
-    var borderRatio:Double  = 0.2                           // border layer ratio. Default: 20%
+    internal var shapeLayerBorder:CAShapeLayer? = nil        // optional border layer
+    var borderColor:UIColor = UIColor.black                  // border layer color. Default: lightGray
+    var borderRatio:Double  = 0.0                            // border layer ratio. Default: 0%
     // Optional well layer.
-    var wellLayer:CAShapeLayer?                             // optional well layer
-    var wellColor:UIColor?  = UIColor(white: 0.9, alpha: 0.8)             // optional well layer color
+    var wellLayer:CAShapeLayer?                              // optional well layer
+    var wellColor:UIColor?  = UIColor(white:0.9, alpha:0.8)  // optional well layer color
     // Optional text
     var text:String? = nil                                   // optional step text
     internal var textLayer:OMTextLayer? = nil                // optional layer for the text
@@ -67,18 +67,27 @@ open class OMStepData {
     var imageAngleAlign : OMAngleAlign = .start              // image angle align. Default : .Start
     
 
+    
+    /*lazy var text : OMTextLayer! = {
+        if let text = self.textLayer {
+            return text
+        }else{
+            self.textLayer = OMTextLayer()
+        }
+    }()*/
+    
     /**
      * OMStepData convenience constructor.
      *
-     * parameter startAngle: step start angle in radians
+     * parameter start: step start angle in radians
      * parameter percent:    percent of circle
      * parameter color:      color step
      *
      */
     
-    required convenience public init(startAngle:Double, percent:Double, color:UIColor!){
-        self.init(startAngle:startAngle,
-            endAngle: startAngle + (𝜏 * percent),
+    required convenience public init(start:Double, percent:Double, color:UIColor!){
+        self.init(start:start,
+            end: start + (𝜏 * percent),
             color:color)
     }
     /**
@@ -90,8 +99,8 @@ open class OMStepData {
      *
      */
     
-    convenience init(startAngle:Double, endAngle:Double, color:UIColor!) {
-        let angle = OMCircleAngle(startAngle:startAngle, endAngle:endAngle)
+    convenience init(start:Double, end:Double, color:UIColor!) {
+        let angle = OMCircleAngle(start:start, end:end)
         self.init(angle:angle, color:color)
     }
 
@@ -112,19 +121,19 @@ open class OMStepData {
     }
     
     /**
-     *  Set/Get the step progress
+     *  Set/Get the step progress from the shape layer
      */
     
-    var progress:Double {
-        set {
+    var progress:Double = 0.0 {
+        didSet(newValue) {
             shapeLayer.strokeEnd = CGFloat(newValue)
             if let shapeLayerBorder = shapeLayerBorder {
                 // update the border layer too
                 shapeLayerBorder.strokeEnd = CGFloat(newValue)
             }
         }
-        get {
-            return Double(shapeLayer.strokeEnd)
-        }
+ //       get {
+ //           return Double(shapeLayer.strokeEnd)
+ //       }
     }
 }

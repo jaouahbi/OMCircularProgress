@@ -68,15 +68,15 @@ extension OMCircularProgress
      *
      * Each progress step is represented by the object OMStepData
      *
-     * parameter startAngle: step start angle
-     * parameter endAngle:   step end angle
+     * parameter start: step start angle
+     * parameter end:   step end angle
      * parameter color:      step color
      *
      * returns: return a OMStepData object.
      */
     
-    func addStep(_ startAngle:Double, endAngle:Double, color:UIColor!) -> OMStepData? {
-        let angle = OMCircleAngle(startAngle:startAngle,endAngle:endAngle)
+    func addStep(_ start:Double, end:Double, color:UIColor!) -> OMStepData? {
+        let angle = OMCircleAngle(start:start,end:end)
         let valid = angle.valid()
         assert(valid,"Invalid angle:\(angle). range in radians : -(2*PI)/+(2*PI)")
         if(!valid) {
@@ -127,7 +127,7 @@ extension OMCircularProgress
     
     func addStep(_ angle:Double, color:UIColor!) -> OMStepData? {
         let startAngle = getStartAngle()
-        return addStep( startAngle, endAngle:startAngle + angle, color:color );
+        return addStep( startAngle, end:startAngle + angle, color:color );
     }
     
     /**
@@ -140,12 +140,12 @@ extension OMCircularProgress
      * returns: return a OMStepData object.
      */
     
-    func  addStepWithPercent(_ startAngle:Double, percent:Double, color:UIColor!) -> OMStepData? {
-        assert(OMCircleAngle.range(angle: startAngle),
+    func  addStepWithPercent(_ start:Double, percent:Double, color:UIColor!) -> OMStepData? {
+        assert(OMCircleAngle.range(angle: start),
                "Invalid angle:\(startAngle). range in radians : -(2*PI)/+(2*PI)")
         
         // clap the percent.
-        let step = OMStepData(startAngle:startAngle,
+        let step = OMStepData(start:start,
                               percent:clamp(percent, lower: 0.0,upper: 1.0),
                               color:color)
         
