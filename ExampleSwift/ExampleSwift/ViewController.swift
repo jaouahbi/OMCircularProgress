@@ -137,7 +137,7 @@ class ProgressExampleViewController: UIViewController {
         
         // Configure the animation
         
-        theProgressView.animationDuration  = 2.0
+        theProgressView.animationDuration  = 20.0
         theProgressView.thicknessRatio     = 1.0      // 100%
         
         let colors : [UIColor] = [UIColor(red:0.294, green:0.780, blue:0.812, alpha:1.0),
@@ -150,7 +150,7 @@ class ProgressExampleViewController: UIViewController {
             
             // Create the step.
             
-            let theStep = theProgressView.addStep(stepAngle, color:colors[i] as UIColor)
+            let theStep = theProgressView.addStep(stepAngle, color:colors[i])
             
             // configure the gradient
             let gradientLayer       = OMShadingGradientLayer(type:.radial)
@@ -184,6 +184,11 @@ class ProgressExampleViewController: UIViewController {
             // mask it
             theStep!.maskLayer        = gradientLayer
         }
+        
+        
+        theProgressView.centerImage = UIImage(named: "8")
+        //theProgressView.centerImageLayer?.progress = 1.0
+
     }
     
     func setupWithGradientMask(_ theProgressView:OMCircularProgress)
@@ -200,11 +205,11 @@ class ProgressExampleViewController: UIViewController {
         
         // Configure the font of text
         
-        theProgressView.fontName = "HelveticaNeue-Bold"
-        theProgressView.fontSize = 50
-        theProgressView.fontColor = UIColor.black
-        theProgressView.fontBackgroundColor = UIColor.clear
-        theProgressView.fontStrokeColor = UIColor.white
+        let textLayer = theProgressView.centerText()
+        textLayer.font = UIFont(name: "HelveticaNeue-Bold",size:50)
+        textLayer.foregroundColor = UIColor.black
+        textLayer.fontBackgroundColor = UIColor.clear
+        textLayer.fontStrokeColor = UIColor.white
         
         // Colors, angles and other steps configurations.
         
@@ -290,25 +295,28 @@ class ProgressExampleViewController: UIViewController {
         
         for i in 0 ..< colors.count  {
             
-            let theStep = theProgressView.addStep( stepAngle, color:colors[i] as UIColor)!
+            let theStep = theProgressView.addStep( stepAngle, color:colors[i] )!
             
-            if(i == 0){
-                theStep.image = UIImage(named: "center")
-            }else if  (i % 2 == 0)  {
-                theStep.image  = UIImage(named: "0")
-            } else if(i % 3 == 0) {
-                theStep.image  = UIImage(named: "1")
-            } else {
-                theStep.image  = UIImage(named: "2")
-                //
+            //if(i == 0){
+            //    theStep.image = UIImage(named: "5")
+        //    }else
+            if  (i % 4 == 0)  {
+                theStep.image  = UIImage(named: "5")
             }
+        //else if(i % 3 == 0) {
+          //      theStep.image  = UIImage(named: "5")
+           // } else {
+           //     theStep.image  = UIImage(named: "5")
+                //
+           // }
             
+            theStep.borderRatio     = 0.1
             theStep.imageAlign      = .middle
             
             // configure the gradient
             let gradientLayer       = OMShadingGradientLayer(type:.axial)
             
-            gradientLayer.function  = .exponential
+            gradientLayer.function  = .linear
             gradientLayer.frame     = theProgressView.bounds
             gradientLayer.colors    = [colors[i],UIColor(white:0,alpha: 0.8),colors[i]]
             
@@ -325,7 +333,7 @@ class ProgressExampleViewController: UIViewController {
             theStep.maskLayer        = gradientLayer
         }
         
-        theProgressView.centerImage = UIImage(named: "center")
+        theProgressView.centerImage = UIImage(named: "5")
     }
     
     func setupTopLeftProgressViewExample(_ theProgressView:OMCircularProgress) {
@@ -460,17 +468,16 @@ class ProgressExampleViewController: UIViewController {
             
             // Configure the step
             
-            step.text                   = romanNumbers[i]
-            step.fontName               = "HelveticaNeue"
-            step.fontSize               = 11
-            step.fontColor              = UIColor.black
-            step.fontBackgroundColor    = UIColor.clear
-            step.fontStrokeColor        = UIColor.white
-            step.fontStrokeWidth        = -4
+            step.text.string                 = romanNumbers[i]
+            step.text.font                   = UIFont(name:"HelveticaNeue",size:11)
+            step.text.foregroundColor        = UIColor.black
+            step.text.fontBackgroundColor    = UIColor.clear
+            step.text.fontStrokeColor        = UIColor.white
+            step.text.fontStrokeWidth        = -4
             
-            step.textAlign              = .middle
-            step.textOrientationToAngle = true
-            step.textAngleAlign         = .end
+            step.textAlign                   = .middle
+            step.textOrientationToAngle      = true
+            step.textAngleAlign              = .end
             
             // configure the gradient
             let gradientLayer       = OMShadingGradientLayer(type:.radial)
@@ -496,8 +503,7 @@ class ProgressExampleViewController: UIViewController {
             // Mask it
             step.maskLayer      = gradientLayer
             
-            
-            step.wellColor      = UIColor.sunglowCrayolaColor()
+            step.well.strokeColor  = UIColor.sunglowCrayolaColor().cgColor
             
         }
     }
@@ -528,13 +534,12 @@ class ProgressExampleViewController: UIViewController {
             
             if((i % quarter) == 0) {
                 
-                step.text                   = "\(i)"
-                step.fontName               = "HelveticaNeue"
-                step.fontSize               = 7
-                step.fontColor              = UIColor.black
-                step.fontBackgroundColor    = UIColor.clear
-                step.fontStrokeColor        = UIColor.white
-                step.fontStrokeWidth        = -2
+                step.text.string                 = "\(i)"
+                step.text.font                   = UIFont(name:"HelveticaNeue",size:7)
+                step.text.foregroundColor        = UIColor.black
+                step.text.fontBackgroundColor    = UIColor.clear
+                step.text.fontStrokeColor        = UIColor.white
+                step.text.fontStrokeWidth        = -2
                 
                 
                 step.textOrientationToAngle = false
@@ -588,15 +593,16 @@ class ProgressExampleViewController: UIViewController {
             let step = theProgressView.addStep(clockAngle, color:color)!
             
             if((i % 5) == 0) {
-                
+            
                 // Configure the text
-                step.text                   = "\(i)"
-                step.fontName               = "HelveticaNeue"
-                step.fontSize               = 9
-                step.fontColor              = UIColor.black
-                step.fontBackgroundColor    = UIColor.clear
-                step.fontStrokeColor        = UIColor.white
-                step.fontStrokeWidth        = -3
+                
+                step.text.string                 = "\(i)"
+                step.text.font                   = UIFont(name:"HelveticaNeue",size:9)
+                step.text.foregroundColor        = UIColor.black
+                step.text.fontBackgroundColor    = UIColor.clear
+                step.text.fontStrokeColor        = UIColor.white
+                step.text.fontStrokeWidth        = -3
+                
                 step.textAngleAlign         = .start
             }
             

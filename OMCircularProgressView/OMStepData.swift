@@ -37,27 +37,21 @@ open class OMStepData {
     var color:UIColor!                                       // step color
     internal var shapeLayer:CAShapeLayer = CAShapeLayer()    // progress shape
     var maskLayer:CALayer? = nil                             // optional layer mask
-    // Optional border.
-    internal var shapeLayerBorder:CAShapeLayer? = nil        // optional border layer
-    var borderColor:UIColor = UIColor.black                  // border layer color. Default: lightGray
-    var borderRatio:Double  = 0.0                            // border layer ratio. Default: 0%
-    // Optional well layer.
-    var wellLayer:CAShapeLayer?                              // optional well layer
-    var wellColor:UIColor?  = UIColor(white:0.9, alpha:0.8)  // optional well layer color
+
     // Optional text
-    var text:String? = nil                                   // optional step text
-    internal var textLayer:OMTextLayer? = nil                // optional layer for the text
+    //var text:String? = nil                                   // optional step text
+
     var textAlign:OMAlign = .middle                          // text align. Default : .Middle
     var textOrientationToAngle  : Bool = true                // is the text oriented to the step angle. Default : true
     var textAngleAlign : OMAngleAlign = .middle              // text angle align. Default : .Middle
     var textRadius : CGFloat = 0.0                           // text radius. Default : 0.0
     // Text font
-    var fontName : String = "Helvetica";                     // text font name. Default : Helvetica
-    var fontColor : UIColor = UIColor.black                  // text font color. Default : black
-    var fontSize : CGFloat = 9                               // text font size. Default : 9
-    var fontBackgroundColor : UIColor = UIColor.clear        // text font backgound color. Default : clear
-    var fontStrokeWidth : Float = 0                          // text font stroke width. Default : 0
-    var fontStrokeColor : UIColor = UIColor.clear            // text font stroke color. Default : clear
+    //var fontName : String = "Helvetica";                     // text font name. Default : Helvetica
+    //var fontColor : UIColor = UIColor.black                  // text font color. Default : black
+    //var fontSize : CGFloat = 9                               // text font size. Default : 9
+    //var fontBackgroundColor : UIColor = UIColor.clear        // text font backgound color. Default : clear
+    //var fontStrokeWidth : Float = 0                          // text font stroke width. Default : 0
+    //var fontStrokeColor : UIColor = UIColor.clear            // text font stroke color. Default : clear
     // Optional step image
     var image : UIImage?                                     // optional image
     internal var imageScaled:UIImage? = nil                  // real image used to draw
@@ -67,13 +61,54 @@ open class OMStepData {
     var imageAngleAlign : OMAngleAlign = .start              // image angle align. Default : .Start
     
 
-    
-    /*lazy var text : OMTextLayer! = {
-        if let text = self.textLayer {
-            return text
-        }else{
-            self.textLayer = OMTextLayer()
+    internal var textLayer:OMTextLayer? = nil                // layer for the text
+    lazy var text : OMTextLayer! = {
+        
+        if self.textLayer  == nil {
+           self.textLayer = OMTextLayer()
         }
+        return self.textLayer!
+    }()
+    
+    // Optional border.
+    var borderColor:UIColor = UIColor.black                  // border layer color. Default: lightGray
+    var borderRatio:Double  = 0.0                            // border layer ratio. Default: 0%
+    internal var shapeLayerBorder:CAShapeLayer? = nil        // layer for the border
+    lazy var border : CAShapeLayer! = {
+
+        if self.shapeLayerBorder == nil {
+            self.shapeLayerBorder = CAShapeLayer()
+        }
+        return self.shapeLayerBorder!;
+    }()
+    
+    
+    // Well layer.
+    internal var wellLayer:CAShapeLayer?                              // optional well layer
+    
+    lazy var well : CAShapeLayer! = {
+        
+        if self.wellLayer == nil {
+            self.wellLayer = CAShapeLayer()
+        }
+        return self.wellLayer!;
+    }()
+    
+    
+    //var wellColor:UIColor?  = UIColor(white:0.9, alpha:0.8)  // optional well layer color
+    
+    
+    /*
+    internal var textLayer:OMTextLayer? = nil                // layer for the text
+    lazy var image : OMProgressImageLayer! = {
+        
+        if let imageLayer = self.imageLayer {
+            return imageLayer
+        } else {
+            self.imageLayer = OMProgressImageLayer()
+        }
+        
+        return self.imageLayer
     }()*/
     
     /**
