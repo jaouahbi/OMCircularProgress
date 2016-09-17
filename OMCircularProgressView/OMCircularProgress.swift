@@ -45,16 +45,31 @@
 
 let kControlInset:CGFloat = 20.0
 
+let kCompleteProgress:Double = Double.infinity
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// The OMCircularProgress delegate Protocol
+//
+////////////////////////////////////////////////////////////////////////////////
+
+@objc protocol OMCircularProgressProtocol
+{
+    /**
+     
+     Notificate the layer hit
+     
+     - parameter ctl:      The object caller
+     - parameter layer:    The layer hitted
+     - parameter location: The CGPoint where the layer was hitted
+     */
+    @objc optional func layerHit(_ ctl:UIControl, layer:CALayer, location:CGPoint)
+}
+
+
 // MARK: - Constant Definitions
-
-let OMCompleteProgress:Double = Double.infinity
-//let OMWellProgressDefaultColor:UIColor = UIColor(white: 0.9, alpha: 1.0)
-//DEBUG
-let OMWellProgressDefaultColor:UIColor = UIColor.black
-let OMProgressDefaultShadowColor:UIColor = UIColor.darkGray
-let OMMinSeparatorRadians: Double =  1.0.degreesToRadians()
-
-
 
 ///LogMode type. Specify what details should be included to the log
 public struct ProgressOptions : OptionSet {
@@ -144,6 +159,14 @@ enum OMAlign : Int
     
     var dataSteps: NSMutableArray   = []         // Array of OMStepData
     
+    /// Transforma layer create prespective.
+    
+    //internal var prespectiveAngle: Double  = 0
+    //internal let prespective     : CGFloat = -1.0/1000.0;
+    //internal var transformLayer  : CATransformLayer?
+    
+    internal var containerLayer  : CALayer?
+    
     /// Center
     
     internal var centerImageLayer:OMProgressImageLayer?   // center image layer
@@ -151,9 +174,8 @@ enum OMAlign : Int
     
     // Animations
     
-    internal var beginTime: TimeInterval    = 0;
-    internal var newBeginTime: TimeInterval = 0;
-    internal let prespective : CGFloat      = -1.0/500.0;
+    internal var beginTime: Double    = 0;
+    internal var newBeginTime: Double = 0;
     @IBInspectable var animation : Bool     = true;
     @IBInspectable var animationDuration : TimeInterval = 1.0
     
@@ -168,7 +190,7 @@ enum OMAlign : Int
     var options      : ProgressOptions       = []                       // Progress options
     
     /// The start angle of the all steps. (default: -90 degrees == 12 o'clock)
-
+    
     @IBInspectable var startAngle : Double = -90.degreesToRadians() {
         didSet{
             assert(OMCircleAngle.range(angle: startAngle),
@@ -200,99 +222,99 @@ enum OMAlign : Int
     //    didSet{
     //        setNeedsLayout()
     //    }
-   // }
+    // }
     
     /// Sets shadow to the well layer
     
- /*   @IBInspectable var shadowWell : Bool = false {
-        didSet{
-            setNeedsLayout()
-        }
-    }*/
+    /*   @IBInspectable var shadowWell : Bool = false {
+     didSet{
+     setNeedsLayout()
+     }
+     }*/
     
     /*
-    //
-    @IBInspectable var shadowBorder : Bool = false {
-        didSet{
-            setNeedsLayout()
-        }
-    }
-    
-    /// Shadow Opacity
-    @IBInspectable var shadowOpacity : Float = 0.85 {
-        didSet{
-            setNeedsLayout()
-        }
-    }
-    /// Shadow Offset
-    @IBInspectable var shadowOffset:CGSize = CGSize(width: 0, height: 3.0){
-        didSet{
-            setNeedsLayout()
-        }
-    }
-    /// Shadow Radius
-    @IBInspectable var shadowRadius:CGFloat = 1.5 {
-        didSet{
-            setNeedsLayout()
-        }
-    }
-    /// Shadow Color
-    @IBInspectable var shadowColor:UIColor = OMProgressDefaultShadowColor {
-        didSet{
-            setNeedsLayout()
-        }
-    }
- */
+     //
+     @IBInspectable var shadowBorder : Bool = false {
+     didSet{
+     setNeedsLayout()
+     }
+     }
+     
+     /// Shadow Opacity
+     @IBInspectable var shadowOpacity : Float = 0.85 {
+     didSet{
+     setNeedsLayout()
+     }
+     }
+     /// Shadow Offset
+     @IBInspectable var shadowOffset:CGSize = CGSize(width: 0, height: 3.0){
+     didSet{
+     setNeedsLayout()
+     }
+     }
+     /// Shadow Radius
+     @IBInspectable var shadowRadius:CGFloat = 1.5 {
+     didSet{
+     setNeedsLayout()
+     }
+     }
+     /// Shadow Color
+     @IBInspectable var shadowColor:UIColor = OMProgressDefaultShadowColor {
+     didSet{
+     setNeedsLayout()
+     }
+     }
+     */
     
     /*
+     
+     /// The text font name
+     @IBInspectable var fontName : String = "Helvetica" {
+     didSet{
+     updateCenterNumericalLayer()
+     }
+     }
+     
+     /// The text font color
+     @IBInspectable var fontColor : UIColor = UIColor.black{
+     didSet {
+     updateCenterNumericalLayer()
+     }
+     }
+     
+     /// The text font size.
+     @IBInspectable var fontSize : CGFloat = 12 {
+     didSet {
+     updateCenterNumericalLayer()
+     }
+     }
+     /// The text font backgound color.
+     @IBInspectable var fontBackgroundColor : UIColor = UIColor.clear{
+     didSet {
+     updateCenterNumericalLayer()
+     }
+     }
+     /// The text font width stroke
+     @IBInspectable var fontStrokeWidth : Float = -3 {
+     didSet {
+     updateCenterNumericalLayer()
+     }
+     }
+     /// The text font width stroke color
+     @IBInspectable var fontStrokeColor : UIColor = UIColor.clear{
+     didSet {
+     updateCenterNumericalLayer()
+     }
+     }
+     
+     @IBInspectable var textRadius : CGFloat = 0.0 {
+     didSet {
+     updateCenterNumericalLayer()
+     }
+     }
+     
+     */
     
-    /// The text font name
-    @IBInspectable var fontName : String = "Helvetica" {
-        didSet{
-            updateCenterNumericalLayer()
-        }
-    }
-    
-    /// The text font color
-    @IBInspectable var fontColor : UIColor = UIColor.black{
-        didSet {
-            updateCenterNumericalLayer()
-        }
-    }
-    
-    /// The text font size.
-    @IBInspectable var fontSize : CGFloat = 12 {
-        didSet {
-            updateCenterNumericalLayer()
-        }
-    }
-    /// The text font backgound color.
-    @IBInspectable var fontBackgroundColor : UIColor = UIColor.clear{
-        didSet {
-            updateCenterNumericalLayer()
-        }
-    }
-    /// The text font width stroke
-    @IBInspectable var fontStrokeWidth : Float = -3 {
-        didSet {
-            updateCenterNumericalLayer()
-        }
-    }
-    /// The text font width stroke color
-    @IBInspectable var fontStrokeColor : UIColor = UIColor.clear{
-        didSet {
-            updateCenterNumericalLayer()
-        }
-    }
-    
-    @IBInspectable var textRadius : CGFloat = 0.0 {
-        didSet {
-            updateCenterNumericalLayer()
-        }
-    }
- 
- */
- 
     
     func centerText() -> OMNumberLayer {
         
@@ -307,7 +329,7 @@ enum OMAlign : Int
         
         return centerNumberLayer!
     }
-
+    
     
     
     /**
@@ -326,15 +348,6 @@ enum OMAlign : Int
         let size = numberLayer.frameSizeLengthFromNumber(numberToRepresent)
         
         numberLayer.frame = bounds.size.center().centerRect(size)
-        
-        // Shadow for center text
-        /*if shadowText {
-            
-            numberLayer.shadowOpacity = shadowOpacity
-            numberLayer.shadowOffset  = shadowOffset
-            numberLayer.shadowRadius  = shadowRadius
-            numberLayer.shadowColor   = shadowColor.cgColor
-        }*/
     }
     
     /**
@@ -350,32 +363,40 @@ enum OMAlign : Int
     // MARK: Images
     
     // @IBInspectable var imageShadow : Bool = true
+    /*
+     internal var centerImageScaled:UIImage? = nil
+     
+     @IBInspectable var centerImage : UIImage? {
+     set(newValue) {
+     self.centerImageScaled = newValue
+     if self.centerImageScaled != nil {
+     self.centerImageScaled = scaleCenterImageIfNeeded()
+     if let scaledImage = self.centerImageScaled  {
+     if let centerImageLayer = centerImageLayer {
+     centerImageLayer.image = scaledImage
+     } else {
+     centerImageLayer = OMProgressImageLayer(image: scaledImage)
+     #if TAG_LAYERS
+     imageLayer?.name = "progress center image"
+     #endif
+     }
+     }
+     }
+     }
+     
+     get {
+     return self.centerImageScaled
+     }
+     }
+     */
     
-    internal var centerImageScaled:UIImage? = nil
-    
-    @IBInspectable var centerImage : UIImage? {
-        set(newValue) {
-            self.centerImageScaled = newValue
-            if self.centerImageScaled != nil {
-                self.centerImageScaled = scaleCenterImageIfNeeded()
-                if let scaledImage = self.centerImageScaled  {
-                    if let centerImageLayer = centerImageLayer {
-                        centerImageLayer.image = scaledImage
-                    } else {
-                        centerImageLayer = OMProgressImageLayer(image: scaledImage)
-                        #if TAG_LAYERS
-                            imageLayer?.name = "progress center image"
-                        #endif
-                    }
-                }
-            }
+    internal var imageLayer : OMProgressImageLayer? = nil    // optional image layer
+    lazy var image : OMProgressImageLayer! = {
+        if self.imageLayer  == nil {
+            self.imageLayer = OMProgressImageLayer()
         }
-        
-        get {
-            return self.centerImageScaled
-        }
-    }
-    
+        return self.imageLayer!
+    }()
     
     // MARK: Font and Text (do no need layout)
     
@@ -454,7 +475,7 @@ enum OMAlign : Int
     }
     
     
-
+    
     /// Border radio (default: 10%)
     
     var thicknessRatio : Double = 0.1 {
@@ -493,7 +514,7 @@ enum OMAlign : Int
             //let rads = numberOfRadians()
             //assert(abs(rads - 2 * M_PI) < DBL_EPSILON, "Unexpected consistence of circle radians (2 * π) != \(rads)")
             
-            if (progress == OMCompleteProgress) {
+            if (progress == kCompleteProgress) {
                 progress = Double(numberOfSteps)
             }
             
@@ -706,49 +727,6 @@ enum OMAlign : Int
         }
     }
     
-
-    /**
-     * Add the border layer.
-     *
-     * parameter step: step data
-     */
-    
-    fileprivate func addBorderLayer(_ step:OMStepData) {
-        
-        DEBUG("addBorderLayer()")
-        
-        assert((step.shapeLayer.path != nil), "CAShapeLayer with a nil CGPath");
-        
-        step.border.path        = step.shapeLayer.path
-        step.border.fillColor   = nil
-        step.border.strokeColor = step.borderColor.cgColor
-        
-        /*
-        if  shadowBorder {
-            layerBorder.shadowOpacity = shadowOpacity
-            layerBorder.shadowOffset  = shadowOffset
-            layerBorder.shadowRadius  = shadowRadius
-            layerBorder.shadowColor   = shadowColor.cgColor
-            //             layerBorder.shadowPath    = step.shapeLayer.path
-        } else {
-            layerBorder.shadowOpacity = 0
-        }
-         */
-        
-        
-        #if TAG_LAYERS
-            step.border.name = "step \(stepIndex(step)) shape border"
-        #endif
-        
-        step.border.strokeStart = 0.0
-        step.border.strokeEnd   = 0.0
-        step.border.lineWidth   = borderWidth
-        
-        step.border.lineCap     = step.shapeLayer.lineCap
-        
-        step.shapeLayer.lineWidth = (borderWidth * CGFloat(1.0 - step.borderRatio))
-    }
-    
     
     /**
      * Set Up the progress (shape) layer
@@ -770,18 +748,19 @@ enum OMAlign : Int
         #endif
         
         // TODO: the head can be rounded?
-    
+        
         let canRoundedHead = true
         let roundedHeadArcAngleStart:Double = 0
         let roundedHeadArcAngleEnd:Double   = 0
         // angle
         let theAngle = OMAngle(start: startAngle + roundedHeadArcAngleStart,
-                               end: endAngle   - roundedHeadArcAngleEnd)
+                               end  : endAngle   - roundedHeadArcAngleEnd)
         
         
         VERBOSE("STEP[\(stepIndex(step))] angle:\(theAngle) Rounded head angle arc len : \(round(roundedHeadArcAngleStart.radiansToDegrees()))°")
         
         let shapeLayer = step.shapeLayer
+        
         
         let bezier = UIBezierPath( arcCenter:bounds.size.center(),
                                    radius:midRadius,
@@ -798,10 +777,31 @@ enum OMAlign : Int
         shapeLayer.strokeEnd       = 0.0
         
         if step.borderRatio > 0 {
-            addBorderLayer(step);
+            INFO("Adding the border layer.")
+            assert((step.shapeLayer.path != nil), "CAShapeLayer with a nil CGPath");
+            
+            step.border.path        = step.shapeLayer.path
+            step.border.fillColor   = nil
+            if(step.border.strokeColor == nil) {
+                step.border.strokeColor = UIColor.black.cgColor //step.borderColor.cgColor
+            }
+            
+            #if TAG_LAYERS
+                step.border.name = "step \(stepIndex(step)) shape border"
+            #endif
+            
+            step.border.strokeStart = 0.0
+            step.border.strokeEnd   = 0.0
+            step.border.lineWidth   = borderWidth
+            
+            step.border.lineCap     = step.shapeLayer.lineCap
+            
+            
+            step.shapeLayer.lineWidth = (borderWidth * CGFloat(1.0 - step.borderRatio))
         } else {
             shapeLayer.lineWidth  = borderWidth
         }
+        
         
         if let mask = step.maskLayer,let border = step.shapeLayerBorder {
             border.addSublayer(shapeLayer)
@@ -833,15 +833,15 @@ enum OMAlign : Int
         DEBUG("setUpWellLayer()")
         
         #if !DEBUG_NO_WELL
-       
+            
             /*if let stepWellColor = step.wellColor {
-            if  step.wellLayer == nil {
-                // Create the well layer
-                step.wellLayer = CAShapeLayer()
-                #if TAG_LAYERS
-                    step.wellLayer?.name = "step \(stepIndex(step)) well"
-                #endif
-            }*/
+             if  step.wellLayer == nil {
+             // Create the well layer
+             step.wellLayer = CAShapeLayer()
+             #if TAG_LAYERS
+             step.wellLayer?.name = "step \(stepIndex(step)) well"
+             #endif
+             }*/
             
             // This layer uses the shape path
             step.well.path            = step.shapeLayer.path
@@ -855,21 +855,21 @@ enum OMAlign : Int
             
             // Activate shadow only if exist space between steps.
             /*step.wellLayer?.shadowOpacity   = 0
+             
+             if  shadowWell {
+             
+             step.wellLayer?.shadowOpacity = shadowOpacity
+             step.wellLayer?.shadowOffset  = shadowOffset
+             step.wellLayer?.shadowRadius  = shadowRadius
+             step.wellLayer?.shadowColor   = shadowColor.cgColor
+             }*/
             
-            if  shadowWell {
-                
-                step.wellLayer?.shadowOpacity = shadowOpacity
-                step.wellLayer?.shadowOffset  = shadowOffset
-                step.wellLayer?.shadowRadius  = shadowRadius
-                step.wellLayer?.shadowColor   = shadowColor.cgColor
-            }*/
-           
             // Same as shape layer
             step.well.lineCap = step.shapeLayer.lineCap
             
             // Add the layer behind the other layers
             layer.insertSublayer(step.well, at:0)
-        //}
+            //}
         #endif
     }
     
@@ -934,18 +934,18 @@ enum OMAlign : Int
     
     fileprivate func addStepImageLayers() {
         #if !NO_IMAGES
-        DEBUG("addStepImageLayers()")
-        for (index, step) in dataSteps.enumerated() {
-            let curStep = step as! OMStepData
-            
-            if let imageLayer = curStep.imageLayer {
-                #if TAG_LAYERS
-                    imageLayer.name = "step \(index) image"
-                #endif
-                //imageLayer.setPlainShadow()
-                layer.addSublayer(imageLayer)
+            DEBUG("addStepImageLayers()")
+            for (index, step) in dataSteps.enumerated() {
+                let curStep = step as! OMStepData
+                
+                if let imageLayer = curStep.imageLayer {
+                    #if TAG_LAYERS
+                        imageLayer.name = "step \(index) image"
+                    #endif
+                    //imageLayer.setPlainShadow()
+                    layer.addSublayer(imageLayer)
+                }
             }
-        }
         #endif
     }
     /**
@@ -967,15 +967,16 @@ enum OMAlign : Int
      */
     fileprivate func addCenterImageLayer() {
         #if !NO_IMAGES
-        DEBUG("addCenterImageLayer()")
-        if let centerImageLayer = centerImageLayer, let progressImage = centerImage {
-            centerImageLayer.frame = bounds.size.center().centerRect(progressImage.size)
-            #if TAG_LAYERS
-                centerImageLayer.name = "center image"
-            #endif
-            //imgLayer.setShadow()
-            layer.addSublayer(centerImageLayer)
-        }
+            DEBUG("addCenterImageLayer()")
+            
+            if let img  = image.image {
+                image.frame = bounds.size.center().centerRect(img.size)
+                #if TAG_LAYERS
+                    image.name = "center image"
+                #endif
+                //imgLayer.setShadow()
+                layer.addSublayer(image)
+            }
         #endif
     }
     
@@ -985,28 +986,29 @@ enum OMAlign : Int
      * parameter step: Step Object
      */
     
-    func scaleStepImageIfNeeded(_ step:OMStepData) {
-        DEBUG("scaleStepImageIfNeeded() : \(step.image?.size)")
-        if let image = step.image {
-            let maxSide = image.size.max()
-            var arcChord:CGFloat = round(CGFloat(step.angle.arcChord(radius: Double(outerRadius))))
-            if (step.imageAlign == .border) {
-                arcChord /= 3.0
-                if(arcChord > 0.0 && (arcChord < maxSide)){
-                    let newSize = CGSize(width:  arcChord,height: arcChord)
-                    VERBOSE("Scaling the center image \(image.size) to \(newSize)")
-                    // TODO: the minimun size of the image must be limited
-                    step.imageScaled  = image.scaledToFitToSize(newSize)
-                }
-            } else if (arcChord > 0.0 && (arcChord < maxSide)) {
-                let newSize = CGSize(width:  arcChord,height: arcChord)
-                VERBOSE("Scaling the center image \(image.size) to \(newSize)")
-                step.imageScaled  = image.scaledToFitToSize(newSize)
-            } else {
-                step.imageScaled = nil;
-            }
-        }
-    }
+    /*
+     func scaleStepImageIfNeeded(_ step:OMStepData) {
+     DEBUG("scaleStepImageIfNeeded() : \(step.image?.size)")
+     if let image = step.image {
+     let maxSide = image.size.max()
+     var arcChord:CGFloat = round(CGFloat(step.angle.arcChord(radius: Double(outerRadius))))
+     if (step.imageAlign == .border) {
+     arcChord /= 3.0
+     if(arcChord > 0.0 && (arcChord < maxSide)){
+     let newSize = CGSize(width:  arcChord,height: arcChord)
+     VERBOSE("Scaling the center image \(image.size) to \(newSize)")
+     // TODO: the minimun size of the image must be limited
+     step.imageScaled  = image.scaledToFitToSize(newSize)
+     }
+     } else if (arcChord > 0.0 && (arcChord < maxSide)) {
+     let newSize = CGSize(width:  arcChord,height: arcChord)
+     VERBOSE("Scaling the center image \(image.size) to \(newSize)")
+     step.imageScaled  = image.scaledToFitToSize(newSize)
+     } else {
+     step.imageScaled = nil;
+     }
+     }
+     }*/
     
     /**
      * Scale the center image if needed
@@ -1016,64 +1018,29 @@ enum OMAlign : Int
     
     func scaleCenterImageIfNeeded() -> UIImage? {
         
-        DEBUG("scaleCenterImageIfNeeded() : \(centerImage?.size)")
-        if let image = centerImage {
-            let curSize = image.size.max()
+        DEBUG("scaleCenterImageIfNeeded() : \(image.image?.size)")
+        if let img = image.image {
+            let curSize = img.size.max()
             let maxSide:CGFloat = CGFloat((1.0 - self.thicknessRatio) * Double(self.radius) * 2.0);
             
             //assert(maxSide > 0.0, "overflow side.")
             if maxSide > 0.0 && maxSide < curSize {
                 let newSize = CGSize(width:  maxSide,height: maxSide)
-                VERBOSE("Scaling the center image \(image.size) to \(newSize)")
+                VERBOSE("Scaling the center image \(img.size) to \(newSize)")
                 //the minimun size of the image must be limited
-                return  image.scaledToFitToSize(newSize)
+                return  img.scaledToFitToSize(newSize)
             }
-            let r = CGFloat(self.thicknessRatio) * self.radius
-            if image.size.max() * 0.5 >  r {
-                  return  image.scaledToFitToSize(CGSize(width:  r,height: r))
-            }
+            /*
+             let r = CGFloat(self.thicknessRatio) * self.radius
+             if img.size.max() * 0.5 >  r {
+             return  img.scaledToFitToSize(CGSize(width:  r,height: r))
+             }
+             */
         }
-        return centerImage
+        return image.image
     }
-
-
-    
-    /**
-     * SetUp the image layer
-     *
-     * parameter step: Step Object
-     */
     
     
-    fileprivate func setUpStepImageLayer(_ step:OMStepData) {
-        DEBUG("setUpImageLayer()")
-        var newLayer = false
-        /// Image
-        // Scale the image if is necesary
-        scaleStepImageIfNeeded(step)
-        // Select the correct image
-        if let imageScaled = step.imageScaled ?? step.image {
-            // Create the progress image layer
-            if step.imageLayer == nil {
-                newLayer = true
-                step.imageLayer = OMProgressImageLayer(image: imageScaled)
-                #if TAG_LAYERS
-                    curStep.imageLayer?.name = "step \(stepIndex(curStep)) image"
-                #endif
-            } else {
-                // Update the image
-                step.imageLayer?.image = imageScaled
-            }
-            setUpStepImageLayerGeometry(step: step)
-            
-            if newLayer {
-               // step.textLayer?.setCurvedShadow()
-            }
-            
-            // Mark the layer for repaint
-            step.imageLayer?.setNeedsDisplay()
-        }
-    }
     
     
     /**
@@ -1081,49 +1048,50 @@ enum OMAlign : Int
      *
      * parameter step: Step Object
      */
-    
-    fileprivate func setUpTextLayer(_ step:OMStepData) {
-        DEBUG("setUpTextLayer()")
-        var newLayer = true
-        /*
-        // Update the text layer. If it don't exist, create it.
-        if let curTextLayer = step.textLayer {
-            newLayer = false
-            curTextLayer.string = step.text
-            #if TAG_LAYERS
-                curTextLayer.name = "step \(stepIndex(step)) text"
-            #endif
-        } else {
-            step.textLayer = OMTextLayer(string: step.text!)
-            
-        }*/
-        
-        /*
-        if !step.fontName.isEmpty {
-            var notCreateFont:Bool = false
-            if step.textLayer?.font != nil {
-                notCreateFont = (step.textLayer?.font?.fontName  == step.fontName &&
-                    step.textLayer?.font?.pointSize == step.fontSize)
-            }
-            if !notCreateFont {
-                DEBUG("Setting new font (\(step.fontName)) size: \( step.fontSize)")
-                DEBUG("Old font (\(step.textLayer?.font?.fontName)) size: \( step.textLayer?.font?.pointSize)")
-                step.textLayer?.font = UIFont(name: step.fontName, size: step.fontSize)
-            }
-        }*/
-        
-       /* step.textLayer?.foregroundColor = step.fontColor
-        step.textLayer?.fontStrokeColor = step.fontStrokeColor
-        step.textLayer?.backgroundColor = step.fontBackgroundColor.cgColor
-        step.textLayer?.fontStrokeWidth = step.fontStrokeWidth
- */
-        
-        setUpStepTextLayerGeometry(step)
-        
-        if newLayer {
-            //step.textLayer?.setCurvedShadow()
-        }
-    }
+    /*
+     fileprivate func setUpTextLayer(_ step:OMStepData) {
+     DEBUG("setUpTextLayer()")
+     var newLayer = true
+     /*
+     // Update the text layer. If it don't exist, create it.
+     if let curTextLayer = step.textLayer {
+     newLayer = false
+     curTextLayer.string = step.text
+     #if TAG_LAYERS
+     curTextLayer.name = "step \(stepIndex(step)) text"
+     #endif
+     } else {
+     step.textLayer = OMTextLayer(string: step.text!)
+     
+     }*/
+     
+     /*
+     if !step.fontName.isEmpty {
+     var notCreateFont:Bool = false
+     if step.textLayer?.font != nil {
+     notCreateFont = (step.textLayer?.font?.fontName  == step.fontName &&
+     step.textLayer?.font?.pointSize == step.fontSize)
+     }
+     if !notCreateFont {
+     DEBUG("Setting new font (\(step.fontName)) size: \( step.fontSize)")
+     DEBUG("Old font (\(step.textLayer?.font?.fontName)) size: \( step.textLayer?.font?.pointSize)")
+     step.textLayer?.font = UIFont(name: step.fontName, size: step.fontSize)
+     }
+     }*/
+     
+     /* step.textLayer?.foregroundColor = step.fontColor
+     step.textLayer?.fontStrokeColor = step.fontStrokeColor
+     step.textLayer?.backgroundColor = step.fontBackgroundColor.cgColor
+     step.textLayer?.fontStrokeWidth = step.fontStrokeWidth
+     */
+     
+     setUpStepTextLayerGeometry(step)
+     
+     if newLayer {
+     //step.textLayer?.setCurvedShadow()
+     }
+     }
+     */
     
     
     /**
@@ -1189,27 +1157,49 @@ enum OMAlign : Int
             layer.removeFromSuperlayer()
         }
     }
-
+    
+    func addImages() {
+        
+        // Add the center image
+        addCenterImageLayer()
+        // Add all steps image
+        addStepImageLayers()
+    }
+    
     /**
      *   Create or update all the necesary layers
      */
     internal func updateLayerTree() {
+        
         DEBUG("updateLayerTree()")
+        
+        containerLayer = layer
+        
+        /*if let transformLayer = transformLayer {
+         //Initialize the TransformLayer
+         transformLayer.frame = self.bounds;
+         }*/
+        
         /// Recalculate the layer tree
         if percentText || stepText {
             // set up the central numerical text layer.
-             updateCenterTextLayerGeometry()
+            updateCenterTextLayerGeometry()
         }
         // Create and setup the position of the text and image step layers
         for (_, step) in dataSteps.enumerated() {
             let curStep  = step as! OMStepData
             // Image Layer
-            if curStep.image != nil {
-                setUpStepImageLayer(curStep)
+            if curStep.image.image != nil {
+                
+                #if TAG_LAYERS
+                    curStep.image.name = "step \(stepIndex(curStep)) image"
+                #endif
+                
+                setUpStepImageLayerGeometry(step: curStep)
             }
             // Text Layer
             if  curStep.text  != nil {
-                setUpTextLayer(curStep)
+                setUpStepTextLayerGeometry(curStep)
             }
         }
         
@@ -1221,17 +1211,14 @@ enum OMAlign : Int
                         endAngle: curStep.angle.end)
         }
         
+        addImages()
         
-        // Add the center image
-        addCenterImageLayer()
-        // Add all steps image
-        addStepImageLayers()
         // Add all steps texts
         #if !NO_TEXT
             addStepTextLayers()
             /// Add the text layer.
             if let numberLayer = centerNumberLayer {
-                layer.addSublayer(numberLayer)
+                containerLayer?.addSublayer(numberLayer)
             }
         #endif
         
@@ -1245,8 +1232,326 @@ enum OMAlign : Int
         #endif
         
         
-        //self.layer.transformSublayers(angle:75, prespective: prespective)
+        /*if let transformLayer = transformLayer {
+         //Initialize the TransformLayer
+         transformLayer.transformSublayers(angle:prespectiveAngle, prespective: prespective)
+         }*/
     }
     
     
 }
+
+
+extension OMCircularProgress
+{
+    /**
+     * Get the number of steps
+     */
+    var numberOfSteps : Int {
+        return self.dataSteps.count;
+    }
+    
+    /**
+     * Step to index in the steps array
+     */
+    func stepIndex(_ step:OMStepData) -> Int {
+        return self.dataSteps.index(of: step)
+    }
+    
+    /**
+     *  Get/Set the step data, subscripted by index from the list of steps
+     */
+    
+    subscript(stepIndex: Int) -> OMStepData? {
+        get {
+            assert(stepIndex < numberOfSteps, "out of bounds. \(stepIndex) max: \(numberOfSteps)")
+            if stepIndex < numberOfSteps {
+                return dataSteps[stepIndex] as? OMStepData
+            }
+            return nil
+        }
+        
+        set(newStep) {
+            assert(stepIndex < numberOfSteps, "out of bounds. \(stepIndex) max: \(numberOfSteps)")
+            if stepIndex < numberOfSteps {
+                dataSteps[Int(stepIndex)] = newStep!
+            }
+        }
+    }
+    
+    /**
+     * Create a new progress step.
+     *
+     * Each progress step is represented by the object OMStepData
+     *
+     * parameter start: step start angle
+     * parameter end:   step end angle
+     * parameter color:      step color
+     *
+     * returns: return a OMStepData object.
+     */
+    
+    func addStep(_ start:Double, end:Double, color:UIColor!) -> OMStepData? {
+        let angle = OMCircleAngle(start:start,end:end)
+        let valid = angle.valid()
+        assert(valid,"Invalid angle:\(angle). range in radians : -(2*PI)/+(2*PI)")
+        if(!valid) {
+            WARNING("Invalid angle :\(angle)")
+            return nil;
+        }
+        // Create the step
+        let step = OMStepData(angle: angle, color:color)
+        if isOverflow(lenght: angle.length()) {
+            return nil
+        }
+        // Save the step
+        dataSteps.add(step)
+        return step
+    }
+    
+    /**
+     * Remove all steps.
+     */
+    
+    func removeAllSteps() {
+        self.dataSteps.removeAllObjects()
+        removeSublayers()
+        layoutSubviews()
+    }
+    
+    /**
+     * Check steps overflow
+     */
+    
+    internal func isOverflow(lenght:Double) -> Bool {
+        let numberOfRad = numberOfRadians() + lenght
+        let diference   = numberOfRad - 𝜏
+        if diference > Double(FLT_EPSILON) {
+            WARNING("Out of radians: can't create the step. overflow by \(𝜏 - numberOfRad) radians")
+            return true
+        }
+        return false
+    }
+    /**
+     * Create a new step progress.
+     *
+     * parameter angle:   step end angle
+     * parameter color:      step color
+     *
+     * returns: return a OMStepData object.
+     */
+    
+    func addStep(_ angle:Double, color:UIColor!) -> OMStepData? {
+        let startAngle = getStartAngle()
+        return addStep( startAngle, end:startAngle + angle, color:color );
+    }
+    
+    /**
+     * Create a new step progress.
+     *
+     * parameter startAngle: step start angle
+     * parameter percent:    step end angle expresed as percent of complete circle.
+     * parameter color:      step color
+     *
+     * returns: return a OMStepData object.
+     */
+    
+    func addStepWithPercent(_ start:Double, percent:Double, color:UIColor!) -> OMStepData? {
+        assert(OMCircleAngle.range(angle: start),
+               "Invalid angle:\(startAngle). range in radians : -(2*PI)/+(2*PI)")
+        
+        // clap the percent.
+        let step = OMStepData(start:start,
+                              percent:clamp(percent, lower: 0.0,upper: 1.0),
+                              color:color)
+        
+        if isOverflow(lenght: step.angle.length()) {
+            return nil
+        }
+        
+        dataSteps.add(step)
+        return step
+    }
+    
+    /**
+     * Create a new step progress.
+     *
+     * parameter percent:   step angle expresed as percent of complete circle.
+     * parameter color:     step color
+     *
+     * returns: return a OMStepData object.
+     */
+    
+    func addStepWithPercent(_ percent:Double, color:UIColor!) -> OMStepData? {
+        return addStepWithPercent(getStartAngle(), percent: percent, color: color);
+    }
+}
+extension OMCircularProgress
+{
+    // MARK: Debug functions
+    
+    /**
+     * Debug print all steps
+     */
+    func dumpAllSteps() {
+        for (index, step) in dataSteps.enumerated() {
+            VERBOSE("\(index): \(step as! OMStepData)")
+        }
+    }
+    
+    /**
+     * Debug print all layers
+     *
+     * parameter level: recursion level
+     * parameter layer: layer to debug print
+     */
+    
+    func dumpLayers(_ level:UInt, layer:CALayer) {
+        if (layer.sublayers != nil) {
+            for (_, curLayer) in layer.sublayers!.enumerated() {
+                VERBOSE("[\(level):\(layer)] \(curLayer.name) \(curLayer)")
+                if(curLayer.sublayers != nil){
+                    dumpLayers(level+1, layer: curLayer)
+                }
+            }
+        }
+    }
+    
+    // MARK: Consistency functions
+    
+    /// debug description
+    override var debugDescription: String {
+        var str : String = super.description
+        str += "Radius : \(radius) Inner Radius: \(innerRadius) Outer Radius: \(outerRadius) Mid Radius: \(midRadius) Border : \(borderWidth)"
+        return str;
+    }
+    
+}
+
+extension OMCircularProgress : CAAnimationDelegate
+{
+    /// MARK: CAAnimation delegate
+    
+    func animationDidStart(_ anim: CAAnimation) {
+        VERBOSE("START:\((anim as! CABasicAnimation).keyPath) : \((anim as! CABasicAnimation).beginTime) ")
+    }
+    
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        if flag {
+            VERBOSE("END:\((anim as! CABasicAnimation).keyPath)")
+        }
+    }
+    
+    //
+    // Animate the shapeLayer and the image for the step
+    //
+    
+    func stepAnimation(_ step:OMStepData, progress:Double) {
+        
+        assert(progress >= 0);
+        
+        weak var delegate = self
+        
+        // Remove all animations
+        step.shapeLayer.removeAllAnimations()
+        
+        let strokeAnimation = CABasicAnimation(keyPath: "strokeEnd")
+        
+        strokeAnimation.fromValue =  0.0
+        strokeAnimation.toValue   =  progress
+        
+        strokeAnimation.duration = (animationDuration / Double(numberOfSteps)) * progress
+        
+        strokeAnimation.isRemovedOnCompletion = false
+        strokeAnimation.isAdditive = true
+        strokeAnimation.fillMode = kCAFillModeForwards
+        strokeAnimation.delegate = self
+        
+        if (progressStyle == .sequentialProgress) {
+            
+            // Current animation beginTime
+            
+            if  (newBeginTime != 0)  {
+                strokeAnimation.beginTime = newBeginTime
+            }  else  {
+                strokeAnimation.beginTime = beginTime
+            }
+            
+            // Calculate the next animation beginTime
+            newBeginTime = strokeAnimation.beginTime + strokeAnimation.duration
+        }
+        
+        //
+        // Add animation to the stroke of the shape layer.
+        //
+        
+        step.shapeLayer.add(strokeAnimation, forKey: "strokeEnd")
+        
+        if let shapeLayerBorder = step.shapeLayerBorder {
+            shapeLayerBorder.add(strokeAnimation, forKey: "strokeEnd")
+        }
+        
+        if let imgLayer = step.imageLayer {
+            // Remove all animations
+            imgLayer.removeAllAnimations()
+            // Add animation to the image
+            imgLayer.animateProgress(0.0,
+                                     toValue:  progress,
+                                     beginTime: strokeAnimation.beginTime,
+                                     duration: strokeAnimation.duration ,
+                                     delegate: delegate)
+        }
+    }
+}
+extension OMCircularProgress
+{
+    /**
+     Get the correct layer for the location
+     
+     - parameter location: point location in the view
+     - returns: return the layer that contains the point
+     */
+    
+    func layerForLocation( _ location:CGPoint ) -> CALayer?
+    {
+        // hitTest Returns the farthest descendant of the layer (Copy of layer)
+        
+        if let player = self.layer.presentation()
+        {
+            let hitPresentationLayer = player.hitTest(location)
+            
+            if let hitplayer = hitPresentationLayer {
+                
+                // Real layer
+                
+                return hitplayer.model()
+            }
+            
+            VERBOSE("Unable to locate the layer that contains the location \(location)")
+        }
+        
+        return nil;
+    }
+    
+    // MARK: UIResponder
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        if let touch = touches.first {
+            
+            var location:CGPoint = touch.location(in: self);
+            
+            location = self.convert(location, to:nil)
+            
+            if let la = self.layerForLocation(location) {
+                
+                if((self.delegate) != nil && (self.delegate!.layerHit) != nil) {
+                    self.delegate!.layerHit!(self, layer: la, location: location)
+                }
+            }
+        }
+        
+        super.touchesBegan(touches , with:event)
+    }
+}
+

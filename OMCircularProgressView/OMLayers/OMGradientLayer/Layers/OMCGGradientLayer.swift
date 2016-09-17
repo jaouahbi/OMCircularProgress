@@ -22,6 +22,10 @@ open class OMCGGradientLayer : OMGradientLayer {
     convenience public init(type:OMGradientType) {
         self.init()
         self.gradientType = type
+        if(type == .radial){
+            self.startPoint = CGPoint(x: 0.5,y: 0.5)
+            self.endPoint   = CGPoint(x: 0.5,y: 0.5)
+        }
     }
     
     // MARK: - Object Overrides

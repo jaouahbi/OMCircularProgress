@@ -73,7 +73,6 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
         }
     }
     
-    
     open var startPoint: CGPoint  = CGPoint(x: 0.0, y: 0.5) {
         didSet {
             self.setNeedsDisplay();

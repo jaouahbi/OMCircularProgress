@@ -22,17 +22,11 @@
 		352CB7501A6D1FBB00863568 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 352CB74E1A6D1FBB00863568 /* Main.storyboard */; };
 		352CB7521A6D1FBB00863568 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 352CB7511A6D1FBB00863568 /* Images.xcassets */; };
 		352CB7611A6D1FBB00863568 /* ExampleSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352CB7601A6D1FBB00863568 /* ExampleSwiftTests.swift */; };
-		353130C91D8173B000F9657C /* OMCircularProgress+Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353130C31D8173B000F9657C /* OMCircularProgress+Number.swift */; };
-		353130CA1D8173B000F9657C /* OMCircularProgress+Steps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353130C41D8173B000F9657C /* OMCircularProgress+Steps.swift */; };
-		353130CB1D8173B000F9657C /* OMCircularProgress+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353130C51D8173B000F9657C /* OMCircularProgress+Debug.swift */; };
-		353130CC1D8173B000F9657C /* OMCircularProgress+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353130C61D8173B000F9657C /* OMCircularProgress+Animations.swift */; };
-		353130CD1D8173B000F9657C /* OMCircularProgress+Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353130C71D8173B000F9657C /* OMCircularProgress+Events.swift */; };
-		353130CE1D8173B000F9657C /* OMCircularProgress+Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353130C81D8173B000F9657C /* OMCircularProgress+Protocol.swift */; };
 		353FAB251CBB1EA300D6964F /* OMAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB0B1CBB1EA300D6964F /* OMAngle.swift */; };
 		353FAB261CBB1EA300D6964F /* OMAngle+Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB0C1CBB1EA300D6964F /* OMAngle+Circle.swift */; };
 		353FAB271CBB1EA300D6964F /* OMCircularProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB0D1CBB1EA300D6964F /* OMCircularProgress.swift */; };
 		353FAB301CBB1EA300D6964F /* OMStepData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB161CBB1EA300D6964F /* OMStepData.swift */; };
-		35F32DFA1D85EB6D00576BA1 /* UIColor+RainbowCrayons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F32DF31D85EB6D00576BA1 /* UIColor+RainbowCrayons.swift */; };
+		3585FD261D8BF72800ABE139 /* UIColor+Crayola.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3585FD251D8BF72800ABE139 /* UIColor+Crayola.swift */; };
 		35F32E021D867EAE00576BA1 /* BezierPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F32E011D867EAE00576BA1 /* BezierPolygon.swift */; };
 		35F32E041D867ED300576BA1 /* Compatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F32E031D867ED300576BA1 /* Compatibility.swift */; };
 		35F5DD691AEBDA1400F36353 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 35F5DD681AEBDA1400F36353 /* Default-568h@2x.png */; };
@@ -97,17 +91,11 @@
 		352CB75A1A6D1FBB00863568 /* ExampleSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		352CB75F1A6D1FBB00863568 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		352CB7601A6D1FBB00863568 /* ExampleSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSwiftTests.swift; sourceTree = "<group>"; };
-		353130C31D8173B000F9657C /* OMCircularProgress+Number.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OMCircularProgress+Number.swift"; sourceTree = "<group>"; };
-		353130C41D8173B000F9657C /* OMCircularProgress+Steps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OMCircularProgress+Steps.swift"; sourceTree = "<group>"; };
-		353130C51D8173B000F9657C /* OMCircularProgress+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OMCircularProgress+Debug.swift"; sourceTree = "<group>"; };
-		353130C61D8173B000F9657C /* OMCircularProgress+Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OMCircularProgress+Animations.swift"; sourceTree = "<group>"; };
-		353130C71D8173B000F9657C /* OMCircularProgress+Events.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OMCircularProgress+Events.swift"; sourceTree = "<group>"; };
-		353130C81D8173B000F9657C /* OMCircularProgress+Protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OMCircularProgress+Protocol.swift"; sourceTree = "<group>"; };
 		353FAB0B1CBB1EA300D6964F /* OMAngle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMAngle.swift; sourceTree = "<group>"; };
 		353FAB0C1CBB1EA300D6964F /* OMAngle+Circle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OMAngle+Circle.swift"; sourceTree = "<group>"; };
 		353FAB0D1CBB1EA300D6964F /* OMCircularProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCircularProgress.swift; sourceTree = "<group>"; };
 		353FAB161CBB1EA300D6964F /* OMStepData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMStepData.swift; sourceTree = "<group>"; };
-		35F32DF31D85EB6D00576BA1 /* UIColor+RainbowCrayons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+RainbowCrayons.swift"; sourceTree = "<group>"; };
+		3585FD251D8BF72800ABE139 /* UIColor+Crayola.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Crayola.swift"; sourceTree = "<group>"; };
 		35F32E011D867EAE00576BA1 /* BezierPolygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BezierPolygon.swift; sourceTree = "<group>"; };
 		35F32E031D867ED300576BA1 /* Compatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compatibility.swift; sourceTree = "<group>"; };
 		35F5DD681AEBDA1400F36353 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -167,7 +155,6 @@
 		351DA3A81D81644400BDBEE2 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				35F32DEF1D85EB6D00576BA1 /* Rainbow */,
 				351DA3A91D81644400BDBEE2 /* SpeedLog */,
 			);
 			path = Vendor;
@@ -255,12 +242,6 @@
 			children = (
 				353FAB161CBB1EA300D6964F /* OMStepData.swift */,
 				353FAB0D1CBB1EA300D6964F /* OMCircularProgress.swift */,
-				353130C31D8173B000F9657C /* OMCircularProgress+Number.swift */,
-				353130C41D8173B000F9657C /* OMCircularProgress+Steps.swift */,
-				353130C51D8173B000F9657C /* OMCircularProgress+Debug.swift */,
-				353130C61D8173B000F9657C /* OMCircularProgress+Animations.swift */,
-				353130C71D8173B000F9657C /* OMCircularProgress+Events.swift */,
-				353130C81D8173B000F9657C /* OMCircularProgress+Protocol.swift */,
 				353FAB0B1CBB1EA300D6964F /* OMAngle.swift */,
 				353FAB0C1CBB1EA300D6964F /* OMAngle+Circle.swift */,
 				351DA3A81D81644400BDBEE2 /* Vendor */,
@@ -269,14 +250,6 @@
 			);
 			name = OMCircularProgressView;
 			path = ../../OMCircularProgressView;
-			sourceTree = "<group>";
-		};
-		35F32DEF1D85EB6D00576BA1 /* Rainbow */ = {
-			isa = PBXGroup;
-			children = (
-				35F32DF31D85EB6D00576BA1 /* UIColor+RainbowCrayons.swift */,
-			);
-			path = Rainbow;
 			sourceTree = "<group>";
 		};
 		35F6A7051D80379A0023CFF3 /* OMLayers */ = {
@@ -365,6 +338,7 @@
 		35F6A7371D80386D0023CFF3 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				3585FD251D8BF72800ABE139 /* UIColor+Crayola.swift */,
 				350BAE921D8AF86B0094540B /* Float+Math.swift */,
 				35F6A7381D80386D0023CFF3 /* CAShapeLayer+HitTest.swift */,
 				35F6A7391D80386D0023CFF3 /* CATransform3D+Extension.swift */,
@@ -497,7 +471,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				353130CD1D8173B000F9657C /* OMCircularProgress+Events.swift in Sources */,
 				353FAB261CBB1EA300D6964F /* OMAngle+Circle.swift in Sources */,
 				353FAB271CBB1EA300D6964F /* OMCircularProgress.swift in Sources */,
 				35F6A7321D80379A0023CFF3 /* OMShadingGradient.swift in Sources */,
@@ -510,14 +483,13 @@
 				35F6A7361D80379A0023CFF3 /* OMTextLayer.swift in Sources */,
 				35F6A7471D80386D0023CFF3 /* CGAffineTransform+Extension.swift in Sources */,
 				35F6A7261D80379A0023CFF3 /* CGPoint+Extension.swift in Sources */,
-				35F32DFA1D85EB6D00576BA1 /* UIColor+RainbowCrayons.swift in Sources */,
 				35F6A7281D80379A0023CFF3 /* UIColor+Interpolation.swift in Sources */,
 				35F6A72C1D80379A0023CFF3 /* OMGradientLayerProtocols.swift in Sources */,
 				35F6A74E1D80386D0023CFF3 /* String+Random.swift in Sources */,
 				351DA3B21D81644400BDBEE2 /* SpeedLog.swift in Sources */,
 				35F6A7271D80379A0023CFF3 /* Float+Extensions.swift in Sources */,
+				3585FD261D8BF72800ABE139 /* UIColor+Crayola.swift in Sources */,
 				351DA3B11D81644400BDBEE2 /* ColorLog.swift in Sources */,
-				353130CC1D8173B000F9657C /* OMCircularProgress+Animations.swift in Sources */,
 				35F6A7251D80379A0023CFF3 /* CGFloat+Extensions.swift in Sources */,
 				35F32E021D867EAE00576BA1 /* BezierPolygon.swift in Sources */,
 				35F6A7311D80379A0023CFF3 /* OMGradient.swift in Sources */,
@@ -528,13 +500,11 @@
 				35F6A7231D80379A0023CFF3 /* CALayer+Extensions.swift in Sources */,
 				35F6A72B1D80379A0023CFF3 /* OMGradientLayer.swift in Sources */,
 				35F6A72D1D80379A0023CFF3 /* OMShadingGradientLayer.swift in Sources */,
-				353130C91D8173B000F9657C /* OMCircularProgress+Number.swift in Sources */,
 				353FAB301CBB1EA300D6964F /* OMStepData.swift in Sources */,
 				35F6A7461D80386D0023CFF3 /* CATransform3D+Extension.swift in Sources */,
 				35F6A7481D80386D0023CFF3 /* CGColor+Extensions.swift in Sources */,
 				351DA3B51D81644400BDBEE2 /* UIColor+Log.swift in Sources */,
 				35F6A7241D80379A0023CFF3 /* CGColorSpace+Extension.swift in Sources */,
-				353130CE1D8173B000F9657C /* OMCircularProgress+Protocol.swift in Sources */,
 				35F6A7221D80379A0023CFF3 /* CALayer+AnimationKeyPath.swift in Sources */,
 				35F6A7351D80379A0023CFF3 /* OMProgressImageLayer.swift in Sources */,
 				352CB74B1A6D1FBB00863568 /* AppDelegate.swift in Sources */,
@@ -543,10 +513,8 @@
 				35F6A72A1D80379A0023CFF3 /* OMCGGradientLayer.swift in Sources */,
 				351DA3B31D81644400BDBEE2 /* Swizzling.swift in Sources */,
 				35F6A74D1D80386D0023CFF3 /* NSNumber+Format.swift in Sources */,
-				353130CA1D8173B000F9657C /* OMCircularProgress+Steps.swift in Sources */,
 				35F32E041D867ED300576BA1 /* Compatibility.swift in Sources */,
 				35F6A7301D80379A0023CFF3 /* Math.swift in Sources */,
-				353130CB1D8173B000F9657C /* OMCircularProgress+Debug.swift in Sources */,
 				351DA3B41D81644400BDBEE2 /* SpeedLog+UIColor.swift in Sources */,
 				35F6A74A1D80386D0023CFF3 /* CGRect+Extensions.swift in Sources */,
 				350BAE931D8AF86B0094540B /* Float+Math.swift in Sources */,

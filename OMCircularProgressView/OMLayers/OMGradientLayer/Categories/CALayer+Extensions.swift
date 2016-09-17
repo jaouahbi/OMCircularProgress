@@ -42,37 +42,42 @@ extension CALayer
     }
 }
 
-extension CALayer
+
+extension CATransformLayer
 {
     /** This function performs the transformation on each plane **/
     func transformSublayers(angle:Double, prespective:CGFloat) {
         
-        if let sublayers = self.sublayers{
+        assert(self.isKind(of: CATransformLayer.self),"Unexpected layer")
+        
+        if !self.isKind(of: CATransformLayer.self) {
+            // nothing to transform
+            return ;
+        }
+        
+        if let sublayers = self.sublayers {
+            
             //Define the degrees needed for each plane to create a circle
-            let degForPlane:Double = Double(360 / sublayers.count)
+            let degForPlane:Double = Double(M_PI * 2) / Double(sublayers.count)
             
             //The current angle offset (initially it is 0... it will change through the pan function)
             var theAngle = angle;
             
             for (_, layer) in sublayers.enumerated() {
                 
+                layer.isDoubleSided = true
                 //Create the Matrix identity
                 var  newTransform = CATransform3DIdentity;
                 //Setup the perspective modifying the matrix elementat [3][4]
                 newTransform.m34 = prespective
-                
                 //Perform rotate on the matrix identity
                 newTransform = CATransform3DRotate(newTransform,
-                                                   CGFloat( angle.degreesToRadians()), CGFloat(0.0), CGFloat(0.1), CGFloat(0.0));
-                
-                //Perform translate on the current transform matrix (identity + rotate)
-                //t = CATransform3DTranslate(t, 0.0, 0.0,  250.0);
-                
-                //Avoid animations
-                //[CATransaction setAnimationDuration:0.0];
-                
+                                                   CGFloat(theAngle),
+                                                   CGFloat(0.0),
+                                                   CGFloat(0.1),
+                                                   CGFloat(0.0));
+            
                 //concat the transform with the current layer transform.
-                
                 layer.transform = CATransform3DConcat(layer.transform, newTransform)
                 //Add the degree needed for the next plane
                 theAngle += degForPlane;
@@ -85,7 +90,6 @@ extension CALayer
 
 extension CALayer {
 
-    
     func setRectangularShadow(_ color:UIColor =  UIColor.black,
                               offset:CGSize = CGSize(width: 10.0, height: 10.0),
                               opacity:Float = 0.7,

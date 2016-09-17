@@ -99,7 +99,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="progressViewClock" destination="Zqg-az-Jm3" id="IKQ-HQ-NDs"/>
+                        <outlet property="progressViewClockHours" destination="Zqg-az-Jm3" id="U8u-ij-AbF"/>
                         <outlet property="progressViewClockMinutes" destination="Sjg-IQ-Z7V" id="wca-El-khD"/>
                         <outlet property="progressViewClockSeconds" destination="61A-JK-aY8" id="Mkr-vJ-jIx"/>
                         <outlet property="progressViewFlower" destination="vTn-1I-JSP" id="G8R-rs-Af0"/>
