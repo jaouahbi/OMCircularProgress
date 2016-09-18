@@ -152,5 +152,12 @@ private struct OMNumberLayerProperties {
         // The base class do the work
         
         super.draw(in: context)
+        
+        /*let imgRef = context.makeImage();
+        
+        let img = UIImage(cgImage:imgRef!);
+        
+        print("\(img)");*/
+        
     }
 }

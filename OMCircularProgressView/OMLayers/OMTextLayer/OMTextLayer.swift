@@ -359,7 +359,8 @@ public enum OMVerticalAlignment {
     override func draw(in context: CGContext) {
         
         super.draw(in: context)
-        
+
+
         if let string = self.string {
             
             context.saveGState();
@@ -415,5 +416,14 @@ public enum OMVerticalAlignment {
             context.restoreGState()
     
         }
+        
+        /*
+        let imgRef = context.makeImage();
+        
+        let img = UIImage(cgImage:imgRef!);
+        
+        print("\(img)");
+        */
+        
     }
 }

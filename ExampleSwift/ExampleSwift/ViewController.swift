@@ -76,7 +76,7 @@ class ProgressExampleViewController: UIViewController {
         
         setupTopLeftProgressViewExample(self.progressViewMood);
         setupWithImagesWithDifferentsSize(self.progressViewImagesWithDifferentsSize);
-        setupColorsFullWithGradientMaskAndDirectProgress(self.progressViewSimple);
+        setupDirectProgressExample(self.progressViewSimple);
         setupWithGradientMask(self.progressViewGradientMask);
         setupFlower(self.progressViewFlower);
         
@@ -135,7 +135,7 @@ class ProgressExampleViewController: UIViewController {
         
     }
     
-    func setupColorsFullWithGradientMaskAndDirectProgress(_ progress:OMCircularProgress)
+    func setupDirectProgressExample(_ progress:OMCircularProgress)
     {
         progress.progressStyle = .directProgress
         
@@ -157,20 +157,20 @@ class ProgressExampleViewController: UIViewController {
             let color   = colors[i]
             let theStep = progress.addStep(stepAngle, color:color)
             
+            theStep?.borderRatio            = 0.1
+            theStep?.border.strokeColor     = color.cgColor
+            
             // configure the gradient
             let gradient       = OMShadingGradientLayer(type:.radial)
             
-            gradient.colors    = [color.darkerColor(percent: 0.65),
-                                  color.darkerColor(percent: 0.35),
-                                  color.lighterColor(percent: 1.0),
-                                  colors[0].lighterColor(percent: 1.0),
-                                  colors[1].lighterColor(percent: 1.0),
-                                  colors[2].lighterColor(percent: 1.0),
-                                  colors[1].lighterColor(percent: 1.0)]
+            gradient.colors    = [colors[2].darkerColor(percent: 0.4),
+                                  colors[1],
+                                  colors[0],
+                                  color.lighterColor(percent: 0.1) ]
 
-            
             gradient.frame     = progress.bounds
-            gradient.function  = .cosine
+            //gradient.function  = .exponential
+            gradient.slopeFunction =  BounceEaseInOut
             
             
             gradient.startRadius   = progress.innerRadius
@@ -205,7 +205,6 @@ class ProgressExampleViewController: UIViewController {
         
         let textLayer = progress.centerText()
         
-        
         let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 100 : 50
         
         textLayer.font = UIFont(name: "HelveticaNeue-Bold",size:CGFloat(fontSize))
@@ -239,7 +238,11 @@ class ProgressExampleViewController: UIViewController {
             gradient.endPoint   = points.1
             
             // mask it
-            theStep!.maskLayer        = gradient
+            theStep!.maskLayer     = gradient
+            
+            theStep!.borderRatio             = 0.1
+            theStep!.border.strokeColor     = colors[i].darkerColor(percent: 0.6).cgColor
+            
         }
     }
     
@@ -296,15 +299,18 @@ class ProgressExampleViewController: UIViewController {
                 theStep.image.image  = UIImage(named: "5")
             }
 
-            theStep.borderRatio     = 0.1
-            theStep.imageAlign      = .border
+            let color = colors[i]
+       
+            theStep.borderRatio             = 0.1
+            theStep.border.strokeColor     = color.darkerColor(percent: 0.6).cgColor
+            theStep.imageAlign              = .middle
             
             // configure the gradient
             let gradient       = OMShadingGradientLayer(type:.radial)
             
             gradient.function  = .linear
             gradient.frame     = progress.bounds
-            let color = colors[i]
+        
             gradient.colors    = [color.darkerColor(percent: 0.65),
                                        color.lighterColor(percent: 1.0),
                                        color.darkerColor(percent: 0.35)]
@@ -348,7 +354,7 @@ class ProgressExampleViewController: UIViewController {
             
             // Create and configure the step
             
-            let theStep = progress.addStep( stepAngle, color:colorsFrom[i])!
+            let theStep = progress.addStep(stepAngle, color:colorsFrom[i])!
             
             // Step text
             
@@ -500,6 +506,7 @@ class ProgressExampleViewController: UIViewController {
         let clockAngle = OMCircleAngle.step(elements: Double(minutesPerHour))
         
         let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 16 : 8
+        
         let font = UIFont(name:"HelveticaNeue",size:CGFloat(fontSize))
         
         for i in 0 ..< minutesPerHour   {

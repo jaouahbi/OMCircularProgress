@@ -165,7 +165,7 @@ enum OMAlign : Int
     //internal let prespective     : CGFloat = -1.0/1000.0;
     //internal var transformLayer  : CATransformLayer?
     
-    internal var containerLayer  : CALayer?
+    internal var containerLayer  : CALayer = CALayer()
     
     /// Center
     
@@ -316,13 +316,27 @@ enum OMAlign : Int
      */
     
     
+    /*
+    internal var textLayer:OMNumberLayer? = nil                // layer for the text
+    lazy var text : OMTextLayer! = {
+        if self.textLayer  == nil {
+            // create the numerical text layer with the text centered
+            let alignmentMode = "center"
+            self.textLayer =  OMNumberLayer(number: 0, formatStyle: numberStyle(), alignmentMode: alignmentMode)
+            #if true
+                 self.textLayer?.name = "text layer"
+            #endif
+        }
+        return self.textLayer!
+    }()*/
+    
     func centerText() -> OMNumberLayer {
         
         if centerNumberLayer == nil {
             // create the numerical text layer with the text centered
             let alignmentMode = "center"
             centerNumberLayer = OMNumberLayer(number: 0, formatStyle: numberStyle(), alignmentMode: alignmentMode)
-            #if TAG_LAYERS
+            #if true
                 centerNumberLayer?.name = "text layer"
             #endif
         }
@@ -348,6 +362,7 @@ enum OMAlign : Int
         let size = numberLayer.frameSizeLengthFromNumber(numberToRepresent)
         
         numberLayer.frame = bounds.size.center().centerRect(size)
+        
     }
     
     /**
@@ -376,7 +391,7 @@ enum OMAlign : Int
      centerImageLayer.image = scaledImage
      } else {
      centerImageLayer = OMProgressImageLayer(image: scaledImage)
-     #if TAG_LAYERS
+     #if true
      imageLayer?.name = "progress center image"
      #endif
      }
@@ -495,7 +510,7 @@ enum OMAlign : Int
     //                } else {
     //                    centerImageLayer = CALayer()
     //                    centerImageLayer?.contents = image.cgImage
-    //                     #if TAG_LAYERS
+    //                     #if true
     //                        centerImageLayer?.name = "center image"
     //                    #endif
     //                }
@@ -743,7 +758,7 @@ enum OMAlign : Int
                "The start angle and the end angle cannot be the same. angle: \(startAngle.radiansToDegrees())")
         assert(startAngle < endAngle, "Unexpected start/end angle. \(startAngle)/\(endAngle)");
         
-        #if TAG_LAYERS
+        #if true
             step.shapeLayer.name = "step \(stepIndex(step)) shape"
         #endif
         
@@ -786,7 +801,7 @@ enum OMAlign : Int
                 step.border.strokeColor = UIColor.black.cgColor //step.borderColor.cgColor
             }
             
-            #if TAG_LAYERS
+            #if true
                 step.border.name = "step \(stepIndex(step)) shape border"
             #endif
             
@@ -805,20 +820,20 @@ enum OMAlign : Int
         
         if let mask = step.maskLayer,let border = step.shapeLayerBorder {
             border.addSublayer(shapeLayer)
-            layer.addSublayer(border)
+            containerLayer.addSublayer(border)
             mask.mask = step.shapeLayer
-            layer.addSublayer(mask)
+            containerLayer.addSublayer(mask)
         } else if let mask = step.maskLayer {
             mask.mask = shapeLayer
-            layer.addSublayer(mask)
+            containerLayer.addSublayer(mask)
             #if DEBUG_MASK
-                layer.addSublayer(shapeLayer)
+                containerLayer.addSublayer(shapeLayer)
             #endif
         } else if let border = step.shapeLayerBorder {
             border.addSublayer(shapeLayer)
-            layer.addSublayer(step.shapeLayerBorder!)
+            containerLayer.addSublayer(step.shapeLayerBorder!)
         } else {
-            layer.addSublayer(shapeLayer)
+            containerLayer.addSublayer(shapeLayer)
         }
     }
     
@@ -838,7 +853,7 @@ enum OMAlign : Int
              if  step.wellLayer == nil {
              // Create the well layer
              step.wellLayer = CAShapeLayer()
-             #if TAG_LAYERS
+             #if true
              step.wellLayer?.name = "step \(stepIndex(step)) well"
              #endif
              }*/
@@ -868,7 +883,7 @@ enum OMAlign : Int
             step.well.lineCap = step.shapeLayer.lineCap
             
             // Add the layer behind the other layers
-            layer.insertSublayer(step.well, at:0)
+            containerLayer.insertSublayer(step.well, at:0)
             //}
         #endif
     }
@@ -939,11 +954,11 @@ enum OMAlign : Int
                 let curStep = step as! OMStepData
                 
                 if let imageLayer = curStep.imageLayer {
-                    #if TAG_LAYERS
+                    #if true
                         imageLayer.name = "step \(index) image"
                     #endif
                     //imageLayer.setPlainShadow()
-                    layer.addSublayer(imageLayer)
+                    containerLayer.addSublayer(imageLayer)
                 }
             }
         #endif
@@ -955,10 +970,10 @@ enum OMAlign : Int
         DEBUG("addStepTextLayers()")
         for (index, step) in dataSteps.enumerated() {
             if (step as! OMStepData).text.string != nil {
-                #if TAG_LAYERS
-                    curStep.text.name = "step \(index) text"
+                #if true
+                    (step as! OMStepData).text.name = "step \(index) text"
                 #endif
-                layer.addSublayer((step as! OMStepData).text)
+                containerLayer.addSublayer((step as! OMStepData).text)
             }
         }
     }
@@ -971,11 +986,12 @@ enum OMAlign : Int
             
             if let img  = image.image {
                 image.frame = bounds.size.center().centerRect(img.size)
-                #if TAG_LAYERS
+                #if true
                     image.name = "center image"
                 #endif
                 //imgLayer.setShadow()
-                layer.addSublayer(image)
+                
+                containerLayer.addSublayer(image)
             }
         #endif
     }
@@ -1057,7 +1073,7 @@ enum OMAlign : Int
      if let curTextLayer = step.textLayer {
      newLayer = false
      curTextLayer.string = step.text
-     #if TAG_LAYERS
+     #if true
      curTextLayer.name = "step \(stepIndex(step)) text"
      #endif
      } else {
@@ -1152,18 +1168,24 @@ enum OMAlign : Int
      */
     func removeSublayers() {
         DEBUG("removeSublayers()")
-        for (_, layer) in self.layer.sublayers!.enumerated() {
-            layer.removeAllAnimations()
-            layer.removeFromSuperlayer()
+        if let s = containerLayer.sublayers {
+            for (_, layer) in s.enumerated() {
+                layer.removeAllAnimations()
+                layer.removeFromSuperlayer()
+            }
         }
+        containerLayer.removeAllAnimations()
+        containerLayer.removeFromSuperlayer()
     }
     
     func addImages() {
         
-        // Add the center image
-        addCenterImageLayer()
         // Add all steps image
         addStepImageLayers()
+        
+        // Add the center image
+        addCenterImageLayer()
+
     }
     
     /**
@@ -1173,7 +1195,7 @@ enum OMAlign : Int
         
         DEBUG("updateLayerTree()")
         
-        containerLayer = layer
+        layer.addSublayer(containerLayer)
         
         /*if let transformLayer = transformLayer {
          //Initialize the TransformLayer
@@ -1191,7 +1213,7 @@ enum OMAlign : Int
             // Image Layer
             if curStep.image.image != nil {
                 
-                #if TAG_LAYERS
+                #if true
                     curStep.image.name = "step \(stepIndex(curStep)) image"
                 #endif
                 
@@ -1218,24 +1240,26 @@ enum OMAlign : Int
             addStepTextLayers()
             /// Add the text layer.
             if let numberLayer = centerNumberLayer {
-                containerLayer?.addSublayer(numberLayer)
+                containerLayer.addSublayer(numberLayer)
             }
         #endif
         
-        #if DEBUG
-            #if DUMP_LAYERS
-                dumpLayers(0,layer:self.layer)
-            #endif
+        //#if DEBUG
+            //#if DUMP_LAYERS
+            //    dumpLayers(0, layer:self.layer)
+            //#endif
             #if DUMP_STEPS
                 dumpAllSteps()
             #endif
-        #endif
+        //#endif
         
         
         /*if let transformLayer = transformLayer {
          //Initialize the TransformLayer
          transformLayer.transformSublayers(angle:prespectiveAngle, prespective: prespective)
          }*/
+        
+        print(self.debugDescription)
     }
     
     
@@ -1247,14 +1271,14 @@ extension OMCircularProgress
     /**
      * Get the number of steps
      */
-    var numberOfSteps : Int {
+    public var numberOfSteps : Int {
         return self.dataSteps.count;
     }
     
     /**
      * Step to index in the steps array
      */
-    func stepIndex(_ step:OMStepData) -> Int {
+    internal func stepIndex(_ step:OMStepData) -> Int {
         return self.dataSteps.index(of: step)
     }
     
@@ -1301,6 +1325,9 @@ extension OMCircularProgress
         }
         // Create the step
         let step = OMStepData(angle: angle, color:color)
+        
+        VERBOSE("Adding new step with the angle: \(step.angle)")
+        
         if isOverflow(lenght: angle.length()) {
             return nil
         }
@@ -1365,7 +1392,8 @@ extension OMCircularProgress
                               percent:clamp(percent, lower: 0.0,upper: 1.0),
                               color:color)
         
-        if isOverflow(lenght: step.angle.length()) {
+        VERBOSE("Adding new step with the angle: \(step.angle)")
+        if isOverflow(lenght:  step.angle.length()) {
             return nil
         }
         
@@ -1409,7 +1437,8 @@ extension OMCircularProgress
     func dumpLayers(_ level:UInt, layer:CALayer) {
         if (layer.sublayers != nil) {
             for (_, curLayer) in layer.sublayers!.enumerated() {
-                VERBOSE("[\(level):\(layer)] \(curLayer.name) \(curLayer)")
+                let name = curLayer.name ?? String(describing: curLayer)
+                print("[\(level):\(name)]")
                 if(curLayer.sublayers != nil){
                     dumpLayers(level+1, layer: curLayer)
                 }
@@ -1420,9 +1449,15 @@ extension OMCircularProgress
     // MARK: Consistency functions
     
     /// debug description
-    override var debugDescription: String {
+    override var description : String {
         var str : String = super.description
-        str += "Radius : \(radius) Inner Radius: \(innerRadius) Outer Radius: \(outerRadius) Mid Radius: \(midRadius) Border : \(borderWidth)"
+        str += "Radius : \(radius) Inner Radius: \(innerRadius) Outer Radius: \(outerRadius) Mid Radius: \(midRadius) Border : \(borderWidth) "
+        str += " Steps:[ "
+        for (index, step) in dataSteps.enumerated() {
+            str += "\(index): \((step as! OMStepData)) "
+        }
+        str += "]"
+        
         return str;
     }
     

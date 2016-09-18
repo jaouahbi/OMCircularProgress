@@ -121,6 +121,7 @@ class OMProgressImageLayer : CALayer
         //self.shouldRasterize = true
         self.drawsAsynchronously = true
         self.allowsGroupOpacity  = false
+        //self.contentsGravity = "resizeAspect"
     }
     
     convenience init(image:UIImage){
