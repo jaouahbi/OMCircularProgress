@@ -28,18 +28,7 @@
 //DUMP_LAYERS
 //NO_IMAGES
 //NO_TEXT
-
 //DEBUG
-
-//let DEBUG_LAYERS = false     // very usefull
-//let DEBUG_STEPS = false
-//let DEBUG_NO_WELL = false
-//let DEBUG_NO_TEXT = false
-//let DEBUG_NO_IMAGES = false
-//let DEBUG_ANIMATIONS = false
-//let DEBUG_VERBOSE = false
-//let DEBUG_MASK = false
-//let DEBUG_ANGLES = false
 
 // Some constants
 
@@ -47,7 +36,7 @@ let kControlInset:CGFloat = 20.0
 
 let kCompleteProgress:Double = Double.infinity
 
-
+let kDefaultBorderColor:CGColor =  UIColor.black.cgColor
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -166,12 +155,7 @@ enum OMAlign : Int
     //internal var transformLayer  : CATransformLayer?
     
     internal var containerLayer  : CALayer = CALayer()
-    
-    /// Center
-    
-    internal var centerImageLayer:OMProgressImageLayer?   // center image layer
-    internal var centerNumberLayer:OMNumberLayer?         // center number layer
-    
+
     // Animations
     
     internal var beginTime: Double    = 0;
@@ -179,10 +163,8 @@ enum OMAlign : Int
     @IBInspectable var animation : Bool     = true;
     @IBInspectable var animationDuration : TimeInterval = 1.0
     
-    
     // Delegate
     weak var delegate:OMCircularProgressProtocol?
-    
     
     /// Component behavior
     
@@ -192,7 +174,7 @@ enum OMAlign : Int
     /// The start angle of the all steps. (default: -90 degrees == 12 o'clock)
     
     @IBInspectable var startAngle : Double = -90.degreesToRadians() {
-        didSet{
+        didSet {
             assert(OMCircleAngle.range(angle: startAngle),
                    "Invalid angle : \(startAngle).The angle range must be in radians : -(2*PI)/+(2*PI)")
             setNeedsLayout()
@@ -215,135 +197,51 @@ enum OMAlign : Int
             setNeedsLayout()
         }
     }
-    
-    // MARK: Shadow
-    
-    //@IBInspectable var shadowText : Bool = true {
-    //    didSet{
-    //        setNeedsLayout()
-    //    }
-    // }
-    
-    /// Sets shadow to the well layer
-    
-    /*   @IBInspectable var shadowWell : Bool = false {
-     didSet{
-     setNeedsLayout()
-     }
-     }*/
-    
-    /*
-     //
-     @IBInspectable var shadowBorder : Bool = false {
-     didSet{
-     setNeedsLayout()
-     }
-     }
-     
-     /// Shadow Opacity
-     @IBInspectable var shadowOpacity : Float = 0.85 {
-     didSet{
-     setNeedsLayout()
-     }
-     }
-     /// Shadow Offset
-     @IBInspectable var shadowOffset:CGSize = CGSize(width: 0, height: 3.0){
-     didSet{
-     setNeedsLayout()
-     }
-     }
-     /// Shadow Radius
-     @IBInspectable var shadowRadius:CGFloat = 1.5 {
-     didSet{
-     setNeedsLayout()
-     }
-     }
-     /// Shadow Color
-     @IBInspectable var shadowColor:UIColor = OMProgressDefaultShadowColor {
-     didSet{
-     setNeedsLayout()
-     }
-     }
-     */
-    
-    /*
-     
-     /// The text font name
-     @IBInspectable var fontName : String = "Helvetica" {
-     didSet{
-     updateCenterNumericalLayer()
-     }
-     }
-     
-     /// The text font color
-     @IBInspectable var fontColor : UIColor = UIColor.black{
-     didSet {
-     updateCenterNumericalLayer()
-     }
-     }
-     
-     /// The text font size.
-     @IBInspectable var fontSize : CGFloat = 12 {
-     didSet {
-     updateCenterNumericalLayer()
-     }
-     }
-     /// The text font backgound color.
-     @IBInspectable var fontBackgroundColor : UIColor = UIColor.clear{
-     didSet {
-     updateCenterNumericalLayer()
-     }
-     }
-     /// The text font width stroke
-     @IBInspectable var fontStrokeWidth : Float = -3 {
-     didSet {
-     updateCenterNumericalLayer()
-     }
-     }
-     /// The text font width stroke color
-     @IBInspectable var fontStrokeColor : UIColor = UIColor.clear{
-     didSet {
-     updateCenterNumericalLayer()
-     }
-     }
-     
-     @IBInspectable var textRadius : CGFloat = 0.0 {
-     didSet {
-     updateCenterNumericalLayer()
-     }
-     }
-     
-     */
+
     
     
     /*
-    internal var textLayer:OMNumberLayer? = nil                // layer for the text
+    internal var textLayer:OMTextLayer? = nil                // layer for the text
     lazy var text : OMTextLayer! = {
         if self.textLayer  == nil {
             // create the numerical text layer with the text centered
-            let alignmentMode = "center"
-            self.textLayer =  OMNumberLayer(number: 0, formatStyle: numberStyle(), alignmentMode: alignmentMode)
+            self.textLayer =  OMTextLayer(string:"")
             #if true
                  self.textLayer?.name = "text layer"
             #endif
         }
         return self.textLayer!
-    }()*/
+    }()
+    */
     
-    func centerText() -> OMNumberLayer {
-        
-        if centerNumberLayer == nil {
+    internal var numberLayer:OMNumberLayer? = nil                // layer for the text
+    lazy var number : OMNumberLayer! = {
+        if self.numberLayer  == nil {
+            // create the numerical text layer with the text centered
+            self.numberLayer =  OMNumberLayer()
+            #if true
+                self.numberLayer?.name = "number layer"
+            #endif
+        }
+        return self.numberLayer!
+    }()
+    
+    
+    /*
+    internal var numberLayer:OMNumberLayer?  = nil       // center number layer
+    lazy var number: OMNumberLayer! {
+        if numberLayer == nil {
             // create the numerical text layer with the text centered
             let alignmentMode = "center"
-            centerNumberLayer = OMNumberLayer(number: 0, formatStyle: numberStyle(), alignmentMode: alignmentMode)
+            numberLayer = OMNumberLayer(number: 0, formatStyle: numberStyle(), alignmentMode: alignmentMode)
             #if true
-                centerNumberLayer?.name = "text layer"
+                numberLayer!.name = "number layer"
             #endif
         }
         
-        return centerNumberLayer!
-    }
-    
+        return numberLayer!
+    }()
+    */
     
     
     /**
@@ -351,13 +249,16 @@ enum OMAlign : Int
      */
     
     
-    func updateCenterTextLayerGeometry() {
+    func updateNumberLayerGeometry() {
         
-        let numberLayer = centerText()
+        let numberLayer = number!
         
-        // The percent is represented from 0.0 to 1.0
+        // 1.- The percent is represented from 0.0 to 1.0
+        // 2.- The number of steps
         
-        let numberToRepresent = NSNumber(value:Int32(( percentText ) ? 1 : dataSteps.count));
+        //let numberToRepresent = NSNumber(value:Int32(( percentText ) ? 1 : dataSteps.count));
+        
+        let numberToRepresent = NSNumber(value:Int32(1));
         
         let size = numberLayer.frameSizeLengthFromNumber(numberToRepresent)
         
@@ -365,15 +266,20 @@ enum OMAlign : Int
         
     }
     
-    /**
-     * Format style for the númerical layer
-     *
-     * returns: return the number style (CFNumberFormatterStyle)
-     */
+    /*
+    func updateTextLayerGeometry() {
+        
+        let textLayer = text!
+        
+        if let string = textLayer.string {
+            let size = textLayer.frameSizeLengthFromAttributedString(NSAttributedString(string : string))
+            
+            textLayer.frame = bounds.size.center().centerRect(size)
+        }
+    }*/
     
-    func numberStyle() -> CFNumberFormatterStyle {
-        return  percentText  ? .percentStyle : .decimalStyle
-    }
+    
+
     
     // MARK: Images
     
@@ -415,21 +321,16 @@ enum OMAlign : Int
     
     // MARK: Font and Text (do no need layout)
     
+    // text
     
     /// The text represent a percent number.
     var percentText:Bool = false {
         didSet{
-            updateCenterTextLayerGeometry()
+            number.formatStyle = percentText ? .percentStyle : .noStyle
+            updateNumberLayerGeometry()
         }
     }
-    
-    /// The text represent a arb. text.
-    var stepText:Bool = false {
-        didSet{
-            updateCenterTextLayerGeometry()
-        }
-    }
-    
+ 
     /// Radius
     
     /// Internal Radius
@@ -583,8 +484,9 @@ enum OMAlign : Int
         
         ///  center image
         weak var delegate = self
-        
-        if let centerImageLayer = centerImageLayer  {
+     
+        if let centerImageLayer = imageLayer  {
+            
             if animation  {
                 // Remove all animations
                 centerImageLayer.removeAllAnimations()
@@ -598,13 +500,12 @@ enum OMAlign : Int
         
         ///  center number
         
-        if let numberLayer = centerNumberLayer {
-            let number:Double = (stepText) ? Double(numberOfSteps) : toValue
+        if let numberLayer = number {
             if animation  {
                 // Remove all animations
                 numberLayer.removeAllAnimations()
                 numberLayer.animateNumber(  0.0,
-                                            toValue:number,
+                                            toValue:toValue,
                                             beginTime:beginTime,
                                             duration:duration,
                                             delegate:delegate)
@@ -612,18 +513,18 @@ enum OMAlign : Int
                 numberLayer.number = toValue as NSNumber
             }
         }
+    
         
         CATransaction.commit()
         
         DEBUG("updateCompleteProgress (progress: \(clamped_progress))")
     }
     
-    
     /**
-     Get the progress of the step by index
-     
-     - parameter index:           step index
-     - returns:               step progress
+     * Get the progress of the step by index
+     *
+     * parameter index:           step index
+     * returns:               step progress
      */
     
     func getStepProgress(_ index:Int) -> Double
@@ -639,10 +540,11 @@ enum OMAlign : Int
     
     
     /**
-     Set step progress at index with animation if is needed
-     
-     - parameter index:           step index
-     - parameter progressAtIndex: step progress
+     * Set step progress at index with animation if is needed
+     *
+     * parameter index:           step index
+     * parameter progressAtIndex: step progress
+     *
      */
     func setStepProgress(_ index:Int, stepProgress:Double) {
         
@@ -652,7 +554,9 @@ enum OMAlign : Int
             return
         }
         
-        DEBUG("setStepProgress (index : \(index) progress: \(stepProgress))")
+        let oldStepProgress = getStepProgress(index)
+        
+        DEBUG("setStepProgress (index : \(index) progress: \(stepProgress) \\ \(oldStepProgress))")
         
         if let step = self[index] {
             
@@ -716,22 +620,25 @@ enum OMAlign : Int
      - parameter startAngle: start angle of the  step
      - parameter endAngle:   end angle of the step
      */
-    fileprivate func setUpLayers(_ step:OMStepData, startAngle:Double, endAngle:Double) {
+    fileprivate func setUpLayers(_ step:OMStepData, start:Double, end:Double) {
         
-        DEBUG("setUpLayers:\(stepIndex(step)) \(OMAngle(start: startAngle, end: endAngle))")
+        DEBUG("setUpLayers: \(stepIndex(step)) \(OMAngle(start: start, end: end))")
         
         // SetUp the mask layer
         
         if let maskLayer = step.maskLayer {
             // Update the mask frame
-            if maskLayer.frame != bounds {
+            //if maskLayer.frame != bounds {
                 maskLayer.frame = bounds
                 // Mark the layer for update because has a new frame.
                 maskLayer.setNeedsDisplay()
-            }
+            //}
+            
+           // maskLayer.backgroundColor =  UIColor.red.cgColor    ;
+            
         }
         
-        setUpProgressLayer(step,startAngle:startAngle,endAngle:endAngle)
+        setUpProgressLayer(step,start:start,end:end)
         
         // The user wants a well
         
@@ -751,12 +658,12 @@ enum OMAlign : Int
      * parameter end:   end angle of the step
      */
     
-    fileprivate func setUpProgressLayer(_ step:OMStepData, startAngle:Double, endAngle:Double) {
-        DEBUG("setUpProgressLayer(startAngle:\(startAngle) endAngle:\(endAngle))")
+    fileprivate func setUpProgressLayer(_ step:OMStepData, start:Double, end:Double) {
+        DEBUG("setUpProgressLayer(startAngle:\(start) endAngle:\(end))")
         // This assert can be caused when separator Ratio is 1.0
-        assert(startAngle != endAngle,
-               "The start angle and the end angle cannot be the same. angle: \(startAngle.radiansToDegrees())")
-        assert(startAngle < endAngle, "Unexpected start/end angle. \(startAngle)/\(endAngle)");
+        assert(start != end,
+               "The start angle and the end angle cannot be the same. angle: \(start.radiansToDegrees())")
+        assert(start < end, "Unexpected start/end angle. \(start)/\(end)");
         
         #if true
             step.shapeLayer.name = "step \(stepIndex(step)) shape"
@@ -768,14 +675,13 @@ enum OMAlign : Int
         let roundedHeadArcAngleStart:Double = 0
         let roundedHeadArcAngleEnd:Double   = 0
         // angle
-        let theAngle = OMAngle(start: startAngle + roundedHeadArcAngleStart,
-                               end  : endAngle   - roundedHeadArcAngleEnd)
+        let theAngle = OMAngle(start: start + roundedHeadArcAngleStart,
+                               end  : end   - roundedHeadArcAngleEnd)
         
         
         VERBOSE("STEP[\(stepIndex(step))] angle:\(theAngle) Rounded head angle arc len : \(round(roundedHeadArcAngleStart.radiansToDegrees()))°")
         
         let shapeLayer = step.shapeLayer
-        
         
         let bezier = UIBezierPath( arcCenter:bounds.size.center(),
                                    radius:midRadius,
@@ -792,27 +698,30 @@ enum OMAlign : Int
         shapeLayer.strokeEnd       = 0.0
         
         if step.borderRatio > 0 {
-            INFO("Adding the border layer.")
-            assert((step.shapeLayer.path != nil), "CAShapeLayer with a nil CGPath");
+            let borderLayer = step.border!
             
-            step.border.path        = step.shapeLayer.path
-            step.border.fillColor   = nil
-            if(step.border.strokeColor == nil) {
-                step.border.strokeColor = UIColor.black.cgColor //step.borderColor.cgColor
+            INFO("Adding the border layer with the ratio: \(step.borderRatio)")
+            assert((shapeLayer.path != nil), "CAShapeLayer with a nil CGPath");
+            
+            borderLayer.path        = bezier.cgPath
+            borderLayer.fillColor   = nil
+            if(borderLayer.strokeColor == nil) {
+                borderLayer.strokeColor = kDefaultBorderColor
             }
             
             #if true
                 step.border.name = "step \(stepIndex(step)) shape border"
             #endif
             
-            step.border.strokeStart = 0.0
-            step.border.strokeEnd   = 0.0
-            step.border.lineWidth   = borderWidth
+            borderLayer.strokeStart = 0.0
+            borderLayer.strokeEnd   = 0.0
+            borderLayer.lineWidth   = borderWidth
             
-            step.border.lineCap     = step.shapeLayer.lineCap
+            borderLayer.lineCap     = shapeLayer.lineCap
+            borderLayer.lineJoin    = shapeLayer.lineJoin
+            borderLayer.miterLimit  = shapeLayer.miterLimit
             
-            
-            step.shapeLayer.lineWidth = (borderWidth * CGFloat(1.0 - step.borderRatio))
+            shapeLayer.lineWidth = (borderWidth * CGFloat(1.0 - step.borderRatio))
         } else {
             shapeLayer.lineWidth  = borderWidth
         }
@@ -821,7 +730,7 @@ enum OMAlign : Int
         if let mask = step.maskLayer,let border = step.shapeLayerBorder {
             border.addSublayer(shapeLayer)
             containerLayer.addSublayer(border)
-            mask.mask = step.shapeLayer
+            mask.mask = shapeLayer
             containerLayer.addSublayer(mask)
         } else if let mask = step.maskLayer {
             mask.mask = shapeLayer
@@ -930,7 +839,6 @@ enum OMAlign : Int
             newRadius = Double(outerRadius + (size.height * 0.5))
             break
         }
-        
         
         // Given a radius length r and an angle in radians and a circle's center (x,y),
         // calculate the coordinates of a point on the circumference
@@ -1058,64 +966,18 @@ enum OMAlign : Int
     
     
     
-    
-    /**
-     * SetUp the textLayer
-     *
-     * parameter step: Step Object
-     */
-    /*
-     fileprivate func setUpTextLayer(_ step:OMStepData) {
-     DEBUG("setUpTextLayer()")
-     var newLayer = true
-     /*
-     // Update the text layer. If it don't exist, create it.
-     if let curTextLayer = step.textLayer {
-     newLayer = false
-     curTextLayer.string = step.text
-     #if true
-     curTextLayer.name = "step \(stepIndex(step)) text"
-     #endif
-     } else {
-     step.textLayer = OMTextLayer(string: step.text!)
-     
-     }*/
-     
-     /*
-     if !step.fontName.isEmpty {
-     var notCreateFont:Bool = false
-     if step.textLayer?.font != nil {
-     notCreateFont = (step.textLayer?.font?.fontName  == step.fontName &&
-     step.textLayer?.font?.pointSize == step.fontSize)
-     }
-     if !notCreateFont {
-     DEBUG("Setting new font (\(step.fontName)) size: \( step.fontSize)")
-     DEBUG("Old font (\(step.textLayer?.font?.fontName)) size: \( step.textLayer?.font?.pointSize)")
-     step.textLayer?.font = UIFont(name: step.fontName, size: step.fontSize)
-     }
-     }*/
-     
-     /* step.textLayer?.foregroundColor = step.fontColor
-     step.textLayer?.fontStrokeColor = step.fontStrokeColor
-     step.textLayer?.backgroundColor = step.fontBackgroundColor.cgColor
-     step.textLayer?.fontStrokeWidth = step.fontStrokeWidth
-     */
-     
-     setUpStepTextLayerGeometry(step)
-     
-     if newLayer {
-     //step.textLayer?.setCurvedShadow()
-     }
-     }
-     */
-    
-    
     /**
      * SetUp the text layer geometry
      *
      * parameter step: Step Object
      */
     
+    
+    //sizeOfImage
+    //angle
+    //angle align
+    //image Align
+    //imageOrientationToAngle
     
     fileprivate func setUpStepImageLayerGeometry(step:OMStepData) {
         DEBUG("setUpStepImageLayerGeometric()")
@@ -1179,15 +1041,39 @@ enum OMAlign : Int
     }
     
     func addImages() {
-        
+        #if !NO_IMAGE
         // Add all steps image
         addStepImageLayers()
         
         // Add the center image
         addCenterImageLayer()
-
+        #endif
     }
     
+    func addTexts()
+    {
+        #if !NO_TEXT
+        // Add all steps texts
+        addStepTextLayers()
+        /// Add the text layer.
+        if percentText  {
+            if let numberLayer = number {
+                containerLayer.addSublayer(numberLayer)
+            }
+        }
+        #endif
+    }
+    
+    func debug()  {
+        #if DEBUG
+            #if DUMP_LAYERS
+                dumpLayers(0, layer:containerLayer)
+            #endif
+            #if DUMP_STEPS
+                dumpAllSteps()
+            #endif
+        #endif
+    }
     /**
      *   Create or update all the necesary layers
      */
@@ -1197,16 +1083,10 @@ enum OMAlign : Int
         
         layer.addSublayer(containerLayer)
         
-        /*if let transformLayer = transformLayer {
-         //Initialize the TransformLayer
-         transformLayer.frame = self.bounds;
-         }*/
-        
-        /// Recalculate the layer tree
-        if percentText || stepText {
-            // set up the central numerical text layer.
-            updateCenterTextLayerGeometry()
+        if (percentText) {
+            updateNumberLayerGeometry()
         }
+
         // Create and setup the position of the text and image step layers
         for (_, step) in dataSteps.enumerated() {
             let curStep  = step as! OMStepData
@@ -1229,40 +1109,16 @@ enum OMAlign : Int
         for (_, step) in dataSteps.enumerated() {
             let curStep = step as! OMStepData
             setUpLayers(curStep,
-                        startAngle:curStep.angle.start,
-                        endAngle: curStep.angle.end)
+                        start:curStep.angle.start,
+                        end: curStep.angle.end)
         }
         
         addImages()
+     
+        addTexts()
         
-        // Add all steps texts
-        #if !NO_TEXT
-            addStepTextLayers()
-            /// Add the text layer.
-            if let numberLayer = centerNumberLayer {
-                containerLayer.addSublayer(numberLayer)
-            }
-        #endif
-        
-        //#if DEBUG
-            //#if DUMP_LAYERS
-            //    dumpLayers(0, layer:self.layer)
-            //#endif
-            #if DUMP_STEPS
-                dumpAllSteps()
-            #endif
-        //#endif
-        
-        
-        /*if let transformLayer = transformLayer {
-         //Initialize the TransformLayer
-         transformLayer.transformSublayers(angle:prespectiveAngle, prespective: prespective)
-         }*/
-        
-        print(self.debugDescription)
+        debug()
     }
-    
-    
 }
 
 

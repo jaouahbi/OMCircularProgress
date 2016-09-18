@@ -186,7 +186,7 @@ class ProgressExampleViewController: UIViewController {
         
         
         progress.image.image = UIImage(named: "8")
-        //progress.centerImageLayer?.progress = 1.0
+        progress.image.progress = 1.0
 
     }
     
@@ -203,11 +203,12 @@ class ProgressExampleViewController: UIViewController {
         
         // Configure the font of text
         
-        let textLayer = progress.centerText()
+        let textLayer = progress.number!
         
         let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 100 : 50
         
         textLayer.font = UIFont(name: "HelveticaNeue-Bold",size:CGFloat(fontSize))
+        
         textLayer.foregroundColor = UIColor.black
         textLayer.fontBackgroundColor = UIColor.clear
         textLayer.fontStrokeColor = UIColor.white
@@ -238,9 +239,9 @@ class ProgressExampleViewController: UIViewController {
             gradient.endPoint   = points.1
             
             // mask it
-            theStep!.maskLayer     = gradient
+            theStep!.maskLayer  = gradient
             
-            theStep!.borderRatio             = 0.1
+            theStep!.borderRatio            = 0.1
             theStep!.border.strokeColor     = colors[i].darkerColor(percent: 0.6).cgColor
             
         }
@@ -278,6 +279,9 @@ class ProgressExampleViewController: UIViewController {
             
             // mask it
             step!.maskLayer        = gradient
+            
+            step!.borderRatio        = drand48()
+            step!.border.strokeColor = UIColor.white.cgColor
         }
     }
     
@@ -295,9 +299,9 @@ class ProgressExampleViewController: UIViewController {
             
             let theStep = progress.addStep(stepAngle,color:colors[i])!
         
-            if  (i % 4 == 0)  {
-                theStep.image.image  = UIImage(named: "5")
-            }
+    //        if  (i % 4 == 0)  {
+    //            theStep.image.image  = UIImage(named: "7")
+    //        }
 
             let color = colors[i]
        
@@ -322,7 +326,7 @@ class ProgressExampleViewController: UIViewController {
             theStep.maskLayer        = gradient
         }
         
-        progress.image.image = UIImage(named: "5")
+        progress.image.image = UIImage(named: "7")
     }
     
     func setupTopLeftProgressViewExample(_ progress:OMCircularProgress) {

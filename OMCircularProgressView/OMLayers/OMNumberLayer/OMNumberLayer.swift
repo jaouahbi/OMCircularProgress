@@ -52,7 +52,7 @@ private struct OMNumberLayerProperties {
 {
     // MARK: properties
     
-    var number: NSNumber = 0.0 {
+    var number: NSNumber? = nil {
         didSet{
             setNeedsDisplay()
         }
@@ -79,6 +79,7 @@ private struct OMNumberLayerProperties {
         self.formatStyle = formatStyle
         
         setAlignmentMode(alignmentMode)
+        
     }
     
     override init(layer: Any) {
@@ -135,19 +136,13 @@ private struct OMNumberLayerProperties {
         
         var theNumber:NSNumber? = self.number
         
-        let presentation = self.presentation()
-        
-        if presentation != nil {
-            theNumber = presentation!.number
+        if let presentation = self.presentation() {
+            theNumber = presentation.number
         }
         
-        if(theNumber == nil){
-            return
+        if let num = theNumber  {
+            self.model().string = num.format(self.formatStyle)
         }
-        
-        let model = self.model() 
-        
-        model.string = self.number.format(self.formatStyle)
         
         // The base class do the work
         

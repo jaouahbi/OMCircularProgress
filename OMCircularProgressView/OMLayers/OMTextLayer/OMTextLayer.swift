@@ -161,6 +161,12 @@ public enum OMVerticalAlignment {
         self.drawsAsynchronously = true
         self.allowsGroupOpacity  = false
         
+        
+        
+    //   self.borderWidth = 2    ;
+   //     self.borderColor = UIColor.red.cgColor
+        
+        
 //        self.shouldRasterize = true
 //        self.rasterizationScale = UIScreen.main.scale
         
@@ -358,9 +364,6 @@ public enum OMVerticalAlignment {
     
     override func draw(in context: CGContext) {
         
-        super.draw(in: context)
-
-
         if let string = self.string {
             
             context.saveGState();
@@ -381,11 +384,11 @@ public enum OMVerticalAlignment {
             // The path need not be rectangular.
             var rect:CGRect = bounds
             let path = CGMutablePath();
-            
-            // Calculate the rect
-            if (self.verticalAlignment == .top) {
+           
+            /*// Calculate the rect
+            if (self.verticalAlignment == .middle) {
                 // Draw normally (top)
-            } else if (self.verticalAlignment == .middle) {
+            } else if (self.verticalAlignment == .top) {
                 let boundingBox = CTFontGetBoundingBox(fontRef);
                 //Get the position on the y axis (middle)
                 var midHeight = bounds.size.height * 0.5;
@@ -393,11 +396,11 @@ public enum OMVerticalAlignment {
                 rect  = CGRect(x:0, y:midHeight, width:bounds.size.width, height:boundingBox.size.height)
             } else if (self.verticalAlignment == .bottom) {
                 let boundingBox = CTFontGetBoundingBox(fontRef);
-                rect  = CGRect(x:0, y:0, width:bounds.size.width, height:boundingBox.size.height)
+                rect  = CGRect(x:0, y:bounds.size.height-boundingBox.size.height, width:bounds.size.width, height:boundingBox.size.height)
             } else {
                 assertionFailure();
                 // Draw normally (top)
-            }
+            }*/
 
             // add the rect for the frame
             path.addRect(rect);
@@ -416,6 +419,9 @@ public enum OMVerticalAlignment {
             context.restoreGState()
     
         }
+        
+        
+        super.draw(in: context)
         
         /*
         let imgRef = context.makeImage();
