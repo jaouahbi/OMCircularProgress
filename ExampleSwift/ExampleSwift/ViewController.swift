@@ -150,7 +150,7 @@ class ProgressExampleViewController: UIViewController {
                                   UIColor.crayolaCeruleanColor,
                                   UIColor.crayolaSeaSerpentColor]
         
-        let stepAngle = OMCircleAngle.step(elements: Double(colors.count))
+        let stepAngle = OMAngle.step(elements: Double(colors.count))
         
         for i in 0 ..< colors.count  {
             
@@ -219,7 +219,7 @@ class ProgressExampleViewController: UIViewController {
         
         let colors : [UIColor] = UIColor.rainbow(2, hue: 0)
         
-        let stepAngle = OMCircleAngle.step(elements: Double(colors.count))
+        let stepAngle = OMAngle.step(elements: Double(colors.count))
         
         for i in 0 ..< colors.count  {
             
@@ -259,7 +259,7 @@ class ProgressExampleViewController: UIViewController {
         
         let colors : [UIColor] = UIColor.rainbow(25, hue: 0)
         
-        let stepAngle = OMCircleAngle.step(elements: Double(colors.count))
+        let stepAngle = OMAngle.step(elements: Double(colors.count))
         
         for i in 0 ..< colors.count  {
             
@@ -320,9 +320,9 @@ class ProgressExampleViewController: UIViewController {
             
             let theStep = progress.addStep(stepAngle,color:colors[i])!
         
-    //        if  (i % 4 == 0)  {
-    //            theStep.image.image  = UIImage(named: "7")
-    //        }
+            if  (i % 4 == 0)  {
+                theStep.image.image  = UIImage(named: "satellite")
+            }
 
             let color = colors[i]
        
@@ -371,7 +371,7 @@ class ProgressExampleViewController: UIViewController {
         
         let images  : [String] = ["6","6","6","6"]
         
-        let stepAngle = OMCircleAngle.step(elements:Double(strings.count))
+        let stepAngle = OMAngle.step(elements:Double(strings.count))
         
         let centerColor = UIColor(white:0,alpha: 0.8)
         
@@ -384,8 +384,8 @@ class ProgressExampleViewController: UIViewController {
             // Step text
             
             // step image
-            theStep.image.image             = UIImage(named: images[i])
-            theStep.imageOrientationToAngle = false;
+            //theStep.image.image             = UIImage(named: images[i])
+            //theStep.imageOrientationToAngle = false;
             
             // configure the gradient
             let gradient       = OMShadingGradientLayer(type:.axial)
@@ -402,8 +402,6 @@ class ProgressExampleViewController: UIViewController {
 
             // mask it
             theStep.maskLayer        = gradient
-            
-            theStep.image.mask       = gradient
             
         }
         
@@ -451,8 +449,7 @@ class ProgressExampleViewController: UIViewController {
         
         progress.animation = false
         progress.thicknessRatio = 0.33     // 33.3 %
-        //progress.roundedHead    = true
-        //progress.showWell       = true;
+        progress.options          = [.roundedHead];
         
         
         /// Unicode roman numbers.
@@ -471,7 +468,7 @@ class ProgressExampleViewController: UIViewController {
         
         let color : UIColor = UIColor.crayolaQuickSilverColor
         
-        let clockAngle = OMCircleAngle.step(elements: Double(romanNumbers.count))
+        let clockAngle = OMAngle.step(elements: Double(romanNumbers.count))
         
         for i in 0 ..< romanNumbers.count  {
             
@@ -522,7 +519,7 @@ class ProgressExampleViewController: UIViewController {
         
         progress.animation      = false
         progress.thicknessRatio = 1.0     // 100%
-       
+        progress.options          = [.roundedHead];
         
         let minutesPerHour  = 60
         let quartersPerHour = 4
@@ -530,7 +527,7 @@ class ProgressExampleViewController: UIViewController {
         
         let color =   UIColor.crayolaQuickSilverColor
         
-        let clockAngle = OMCircleAngle.step(elements: Double(minutesPerHour))
+        let clockAngle = OMAngle.step(elements: Double(minutesPerHour))
         
         let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 16 : 8
         
@@ -586,12 +583,14 @@ class ProgressExampleViewController: UIViewController {
         // Configure the animation
         progress.animation      = false
         progress.thicknessRatio = 0.5    // 50%
+        progress.options          = [.roundedHead];
+        
         
         let minutesPerHour  = 60
         
         let color =  UIColor.crayolaQuickSilverColor
         
-        let clockAngle = OMCircleAngle.step(elements: Double(minutesPerHour))
+        let clockAngle = OMAngle.step(elements: Double(minutesPerHour))
         
         let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 18 : 9
         let font = UIFont(name:"HelveticaNeue",size:CGFloat(fontSize))

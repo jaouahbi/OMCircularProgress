@@ -36,6 +36,8 @@ let kControlInset:CGFloat = 20.0
 
 let kCompleteProgress:Double = Double.infinity
 
+let kDefaultStartAngle:Double = -90.degreesToRadians()
+
 let kDefaultBorderColor:CGColor       = UIColor.black.cgColor
 
 // Image Shadow
@@ -45,9 +47,9 @@ let kDefaultImageShadowColor:CGColor  = UIColor.black.cgColor
 
 
 // Border Shadow
-let kDefaultBorderShadowOffset:CGSize  = CGSize(width:0.0,height: 5.0)
+let kDefaultBorderShadowOffset:CGSize  = CGSize(width:0.0,height: 2.5)
 let kDefaultBorderShadowRadius:CGFloat = 2
-let kDefaultBorderShadowColor:CGColor  = UIColor(white:0.2,alpha:1.0).cgColor
+let kDefaultBorderShadowColor:CGColor  = UIColor(white:0.3,alpha:1.0).cgColor
 
 //
 // The OMCircularProgress delegate Protocol
@@ -78,10 +80,10 @@ public struct ProgressOptions : OptionSet {
     public init(rawValue: UInt)  { self.rawValue = rawValue }
     
     //MARK:- Options
-    public static let Well     = ProgressOptions(rawValue: 0)
-    public static let Text     = ProgressOptions(rawValue: 1 << 0)
-    public static let Image    = ProgressOptions(rawValue: 1 << 1)
-    public static let Border   = ProgressOptions(rawValue: 1 << 2)
+    public static let well          = ProgressOptions(rawValue: 1 << 0)
+    public static let roundedHead   = ProgressOptions(rawValue: 1 << 1)
+    //public static let image         = ProgressOptions(rawValue: 1 << 2)
+    //public static let border        = ProgressOptions(rawValue: 1 << 4)
     
     /// AllOptions - Enable all options, [FileName, FuncName, Line]
     //    public static let AllOptions: LogMode = [Date, FileName, FuncName, Line]
@@ -138,43 +140,44 @@ enum OMAlign : Int
     
     required init?(coder : NSCoder) {
         super.init(coder: coder)
-        
+        commonInit()
+    }
+    
+    required init?(style : CircularProgressStyle) {
+        super.init(frame:CGRect.zero)
+        self.progressStyle = style
         commonInit()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         commonInit()
     }
     
     func commonInit() {
-        #if DEBUG_UI
-            layer.borderWidth = 1.0
-            layer.borderColor = UIColor.greenColor().CGColor
-        #endif
-        
-        //SLog.enableVisualColorLog()
+
     }
     
-    var dataSteps: NSMutableArray   = []         // Array of OMStepData
+    // Array of OMStepData
     
-    /// Transforma layer create prespective.
-    
-    //internal var prespectiveAngle: Double  = 0
-    //internal let prespective     : CGFloat = -1.0/1000.0;
-    //internal var transformLayer  : CATransformLayer?
-    
+    var dataSteps: NSMutableArray   = []
+
+    //internal var containerLayer  : CATransformLayer? = nil
     internal var containerLayer  : CALayer? = nil
     
-    // Animations
+    /// Animations
     
-    internal var beginTime: Double    = 0;
-    internal var newBeginTime: Double = 0;
     @IBInspectable var animation : Bool     = true;
     @IBInspectable var animationDuration : TimeInterval = 1.0
     
+    // Animation control
+    
+    internal var beginTime: Double    = 0;
+    internal var newBeginTime: Double = 0;
+    
+    
     // Delegate
+    
     weak var delegate:OMCircularProgressProtocol?
     
     /// Component behavior
@@ -184,9 +187,9 @@ enum OMAlign : Int
     
     /// The start angle of the all steps. (default: -90 degrees == 12 o'clock)
     
-    @IBInspectable var startAngle : Double = -90.degreesToRadians() {
+    @IBInspectable var startAngle : Double = kDefaultStartAngle {
         didSet {
-            assert(OMCircleAngle.range(angle: startAngle),
+            assert(OMAngle.inRange(angle: startAngle),
                    "Invalid angle : \(startAngle).The angle range must be in radians : -(2*PI)/+(2*PI)")
             setNeedsLayout()
         }
@@ -194,20 +197,19 @@ enum OMAlign : Int
     
     /// Set the rounded head to each step representation  (default: false)
     
-    @IBInspectable var roundedHead : Bool = false {
-        didSet {
-            setNeedsLayout();
-        }
-    }
-    
+    //@IBInspectable var roundedHead : Bool = false {
+    //    didSet {
+    //        setNeedsLayout();
+    //    }
+    //}
     
     /// Show the well layer (default: false)
     
-    @IBInspectable var showWell : Bool = false {
-        didSet{
-            setNeedsLayout()
-        }
-    }
+//    @IBInspectable var showWell : Bool = false {
+//        didSet{
+//            setNeedsLayout()
+//        }
+//    }
     
     internal var numberLayer:OMNumberLayer? = nil                // layer for the text
     lazy var number : OMNumberLayer! = {
@@ -262,27 +264,27 @@ enum OMAlign : Int
     
     /// Radius
     
-    /// Internal Radius
+    // Internal Radius
     
     var innerRadius  : CGFloat {
         return self.radius - self.borderWidth;
     }
     
-    /// Center Radius
+    // Center Radius
     var midRadius  : CGFloat {
         return self.radius - (self.borderWidth * 0.5);
     }
     
-    /// Radius
+    // Radius
     var outerRadius  : CGFloat {
         return self.radius;
     }
     
-    /// Private member for calculate the radius
+    // Private member for calculate the radius
     
     fileprivate(set) var suggestedRadius : CGFloat = 0.0
     
-    /// Radius of the progress view
+    // Radius of the progress view
     
     var radius : CGFloat {
         
@@ -309,14 +311,15 @@ enum OMAlign : Int
         }
     }
     
-    /// Border width
+    // Border
+    
+    // Border width
     
     internal var borderWidth : CGFloat {
         return CGFloat(thicknessRatio * Double(radius))
     }
     
-    
-    /// Border radio (default: 10%)
+    // Border radio (default: 10%)
     
     public var thicknessRatio : Double = 0.1 {
         didSet {
@@ -350,7 +353,7 @@ enum OMAlign : Int
     // MARK:
     
     /**
-     Update the progress stuff.
+     * Update the progress stuff.
      */
     fileprivate func updateCompleteProgress()
     {
@@ -363,12 +366,12 @@ enum OMAlign : Int
         
         assert(progress <= Double(numberOfSteps),"Unexpected progress \(progress) max \(numberOfSteps) ")
         
-        var clamped_progress:Double = progress
+        var clmprogress:Double = progress
         
-        clamped_progress.clamp(toLowerValue: 0.0,upperValue: Double(numberOfSteps))
+        clmprogress.clamp(toLowerValue: 0.0,upperValue: Double(numberOfSteps))
         
-        let stepsDone   = Int(clamped_progress);
-        let curStep     = clamped_progress - floor(clamped_progress);
+        let stepsDone   = Int(clmprogress);
+        let curStep     = clmprogress - floor(clmprogress);
         
         // Initialize the sequential time control vars.
         
@@ -383,16 +386,15 @@ enum OMAlign : Int
             setStepProgress(index, stepProgress: (index < stepsDone) ?  1.0 : curStep)
         }
         
-        let duration        = (animationDuration / Double(numberOfSteps)) * clamped_progress
+        let duration        = (animationDuration / Double(numberOfSteps)) * clmprogress
         var toValue:Double  = (progress / Double(numberOfSteps))
         
         toValue.clamp(toLowerValue: 0.0,upperValue: 1.0)
-        
-        ///  center image
+    
         weak var delegate = self
-        
+    
+        ///  center image
         if let centerImageLayer = image  {
-            
             if animation  {
                 // Remove all animations
                 centerImageLayer.removeAllAnimations()
@@ -405,7 +407,6 @@ enum OMAlign : Int
         }
         
         ///  center number
-        
         if let numberLayer = number {
             if animation  {
                 // Remove all animations
@@ -420,10 +421,9 @@ enum OMAlign : Int
             }
         }
         
-        
         CATransaction.commit()
         
-        print("DEBUG(\(layer.name ?? "")): updateCompleteProgress (progress: \(clamped_progress))")
+        print("DEBUG(\(layer.name ?? "")): updateCompleteProgress (progress: \(clmprogress))")
     }
     
     /**
@@ -465,19 +465,15 @@ enum OMAlign : Int
         print("DEBUG(\(layer.name ?? "")): setStepProgress (index : \(index) progress: \(stepProgress) \\ \(oldStepProgress))")
         
         if let step = self[index] {
-            
             if animation {
                 stepAnimation(step, progress:stepProgress)
             } else {
-                // Remove the default animation from strokeEnd
-                
+                // Remove the default animation of strokeEnd from the shape layers.
                 step.shapeLayer.actions = ["strokeEnd" : NSNull()]
-                
                 if let shapeLayerBorder = step.shapeLayerBorder {
-                    shapeLayerBorder.actions = step.shapeLayer.actions
+                    shapeLayerBorder.actions = ["strokeEnd" : NSNull()]
                 }
                 // Simply assign the new step value
-                
                 step.progress = stepProgress
             }
         }
@@ -494,6 +490,11 @@ enum OMAlign : Int
             $0 + ($1 as! OMStepData).angle.length()
         }
     }
+    /**
+     * Get the total percent of radians done. (2 * M_PI)
+     *
+     * returns: percent of radian done
+     */
     
     func percentDone() -> Double {
         let radians =  numberOfRadians()
@@ -512,7 +513,7 @@ enum OMAlign : Int
         var startAngle = self.startAngle;
         if (dataSteps.count > 0) {
             // The new startAngle is the last endAngle
-            startAngle  = (dataSteps.lastObject  as! OMStepData).angle.end
+            startAngle  = (dataSteps.lastObject as! OMStepData).angle.end
         }
         return startAngle;
     }
@@ -531,11 +532,9 @@ enum OMAlign : Int
         print("DEBUG(\(layer.name ?? "")): setUpLayers: \(stepIndex(step)) \(OMAngle(start: start, end: end))")
         
         // SetUp the mask layer
-        
         if let maskLayer = step.maskLayer {
             // Update the mask frame
             if maskLayer.frame != bounds {
-                
                 maskLayer.frame = bounds
                 // Mark the layer for update because has a new frame.
                 maskLayer.setNeedsDisplay()
@@ -547,7 +546,7 @@ enum OMAlign : Int
         
         // The user wants a well
         
-        if showWell {
+        if self.options.contains(.well) {
             
             print("VERBOSE(\(layer.name ?? "")): Setupping the well layer")
             
@@ -633,7 +632,12 @@ enum OMAlign : Int
         shapeLayer.backgroundColor = UIColor.clear.cgColor
         shapeLayer.fillColor       = nil
         shapeLayer.strokeColor     = ( step.maskLayer != nil ) ? UIColor.black.cgColor : step.color.cgColor
-        shapeLayer.lineCap         = (roundedHead && canRoundedHead) ?  kCALineCapRound : kCALineCapButt;
+        
+        if self.options.contains(.roundedHead) && canRoundedHead {
+            shapeLayer.lineCap   = kCALineCapRound;
+        } else {
+            shapeLayer.lineCap   = kCALineCapButt;
+        }
         shapeLayer.strokeStart     = 0.0
         shapeLayer.strokeEnd       = 0.0
         
@@ -1028,7 +1032,7 @@ extension OMCircularProgress
      */
     
     func addStep(_ start:Double, end:Double, color:UIColor!) -> OMStepData? {
-        let angle = OMCircleAngle(start:start,end:end)
+        let angle = OMAngle(start:start,end:end)
         let valid = angle.valid()
         assert(valid,"Invalid angle:\(angle). range in radians : -(2*PI)/+(2*PI)")
         if(!valid) {
@@ -1096,7 +1100,7 @@ extension OMCircularProgress
      */
     
     func addStepWithPercent(_ start:Double, percent:Double, color:UIColor!) -> OMStepData? {
-        assert(OMCircleAngle.range(angle: start),
+        assert(OMAngle.inRange(angle: start),
                "Invalid angle:\(startAngle). range in radians : -(2*PI)/+(2*PI)")
         
         // clap the percent.

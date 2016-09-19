@@ -19,8 +19,8 @@
 import Darwin
 import CoreGraphics
 
-let 𝜏 = 2.0 * π
-
+/*
+ let 𝜏 = 2.0 * π
 open class OMCircleAngle : OMAngle {
     
     func perimeter(_ radius:Double) -> Double {
@@ -122,3 +122,4 @@ open class OMCircleAngle : OMAngle {
         return Double(bearingDegrees)
     }
 }
+*/

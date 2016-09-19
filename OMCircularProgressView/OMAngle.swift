@@ -28,7 +28,8 @@ import UIKit
  * Constants
  */
 
-let π     = M_PI
+let π   = M_PI
+let 𝜏   = 2.0 * π
 
 /**
  * Angle alignment
@@ -63,40 +64,83 @@ open class OMAngle : CustomDebugStringConvertible {
         self.init()
         self.start = start
         self.end   = end;
+        
+        assert(valid())
     }
     
     convenience init(start:Double, length:Double){
         self.init()
         self.start = start
         self.end   = start+length;
+        
+        assert(valid())
     }
 
     convenience init(startDegree:Double, endDegree:Double){
         self.init()
         self.start = startDegree.degreesToRadians()
         self.end   = endDegree.degreesToRadians()
+        
+        if(!valid()) {
+            print("WARNING(OMAngle): Angle overflow. \(self)")
+        }
     }
     
     convenience init(startDegree:Double, lengthDegree:Double){
         self.init()
-        self.start = startDegree.degreesToRadians()
-        self.end   = startDegree.degreesToRadians()+lengthDegree.degreesToRadians();
+        let start = startDegree
+        let end   = startDegree+lengthDegree
+        
+        // convert to radians
+        self.start =  start.degreesToRadians();
+        self.end   =  end.degreesToRadians();
+        
+        if(!valid()) {
+            print("WARNING(OMAngle): Angle overflow. \(self)")
+        }
     }
+    
     
     /**
      * Get the angle arc length
      *
      * returns: return the angle arc length
+     * info   : arc angle = θ / r
      */
-    public func arc(_ radius:CGFloat) -> Double {
+    public func arcAngle(_ radius:CGFloat) -> Double {
         return length() / Double(radius)
     }
+    
+    /**
+     * Get angle arc length
+     *
+     * returns: return the angle arc length
+     * info   : arc length = θ × r
+     */
+    
+    public func arcLength(_ radius:CGFloat) -> Double {
+        return length() * Double(radius)
+    }
+    
     
     /**
      * Add radians to the angle
      */
     public func add(_ len:Double){
         end += len;
+        if(!valid()) {
+            print("WARNING(OMAngle): Angle overflow. \(self)")
+        }
+    }
+    
+    /**
+     * Add radians to the angle
+     */
+    public func sub(_ len:Double){
+        end -= len;
+        if(!valid()) {
+            print("WARNING(OMAngle): Angle underflow. \(self)")
+        }
     }
     
     /**
@@ -127,8 +171,28 @@ open class OMAngle : CustomDebugStringConvertible {
      */
     
     public func valid() -> Bool {
-        return length() > 0.0
+        let len = length()
+        return len > 0.0 && len <= (M_PI * 2)
     }
+    
+    static func inRange(angle:Double) -> Bool {
+        return (angle > 𝜏 || angle < -𝜏) == false
+    }
+    
+    /**
+     * Get the normalized angle
+     *
+     * returns: return angle length in radians
+     */
+    
+    func norm() -> Double {
+        return self.start / 𝜏
+    }
+    
+    static func step(elements:Double) -> Double {
+        return 𝜏 / elements
+    }
+    
     
     /**
      * Aling angle to OMAngleAlign
@@ -138,19 +202,14 @@ open class OMAngle : CustomDebugStringConvertible {
      */
     
     public func align(_ align:OMAngleAlign) -> Double {
-        var resultAngle: Double = self.mid()
         switch(align) {
         case .middle:
-            resultAngle = self.mid()
-            break;
+            return self.mid()
         case .start:
-            resultAngle = self.start
-            break;
+            return self.start
         case .end:
-            resultAngle = self.end
-            break;
+            return self.end
         }
-        return resultAngle;
     }
     
 

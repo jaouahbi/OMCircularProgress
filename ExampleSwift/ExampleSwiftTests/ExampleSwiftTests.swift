@@ -47,12 +47,65 @@ class ExampleSwiftTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
+
+    func testAngle() {
+        let angel1 = OMAngle(start: 0, end: M_PI * 2);
+        let angel2 = OMAngle(start: M_PI, length: M_PI * 2)
+        
+        let angel3 = OMAngle(start: -0, end: M_PI * 2);
+        let angel4 = OMAngle(start: -M_PI, length: M_PI * 2)
+        
+        let radius10:CGFloat = 10
+        let radius1:CGFloat  = 1
+       
+        XCTAssert(angel1.valid() && angel2.valid())
+        XCTAssert(angel3.valid() && angel4.valid())
+
+        let arcAngle  = angel1.arcAngle(radius1)
+        let arcLength = angel1.arcLength(radius1)
+        
+        XCTAssert(arcAngle == arcLength);
     
+        let angelArc   = OMAngle(start: 0, end: M_PI_2)
+        let arcLength1 = angelArc.arcLength(radius10)
+        let arcAngle1  = angelArc.arcAngle(radius10)
+        let arcAngleDegree = arcAngle1.radiansToDegrees()
+       
+        XCTAssert(arcAngleDegree == 8.9999999995158309)
+        XCTAssert(arcLength1     == 15.707963267948966)
+        
+        // add one degree
+        let oneDegree = 1.0.degreesToRadians()
+        angel1.add(oneDegree)
+        angel2.add(oneDegree)
+        angel3.add(oneDegree)
+        angel4.add(oneDegree)
+        
+        XCTAssert(angel1.valid() == false &&
+                  angel2.valid() == false &&
+                  angel3.valid() == false &&
+                  angel4.valid() == false)
+        
+        angel1.sub(oneDegree)
+        angel2.sub(oneDegree)
+        angel3.sub(oneDegree)
+        angel4.sub(oneDegree)
+        
+        XCTAssert(angel1.valid() &&
+                  angel2.valid() &&
+                  angel3.valid() &&
+                  angel4.valid())
+        
+        XCTAssert(OMAngle.inRange(angle: M_PI * 3)      == false)
+        XCTAssert(OMAngle.inRange(angle: M_PI * 3 * -1) == false)
+        
+    }
     func testCircleAngle() {
-        let angle90 = OMCircleAngle.angleFromPoint(source:CGPoint.zero,target:CGPoint(x:0,y:1))
-        XCTAssert(angle90 == 90,"angleFromPoint")
-        let angle270 = OMCircleAngle.angleFromPoint(source:CGPoint(x:0,y:1),target:CGPoint.zero)
-        XCTAssert(angle270 == 270,"angleFromPoint")
+        //let angle90 = OMAngle.angleFromPoint(source:CGPoint.zero,target:CGPoint(x:0.0,y:1.0))
+        //XCTAssert(angle90 == 90,"angleFromPoint")
+        //let angle270 = OMAngle.angleFromPoint(source:CGPoint(x:0.0,y:1.0),target:CGPoint.zero)
+        //XCTAssert(angle270 == 270,"angleFromPoint")
+        
         /*
         let circle = OMCircleAngle(startDegree:0, lengthDegree: 45)
 
@@ -66,7 +119,6 @@ class ExampleSwiftTests: XCTestCase {
         
         XCTAssert(arc == 20.8,"angleFromPoint")
  */
-        
         
     }
     

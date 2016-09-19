@@ -33,13 +33,12 @@ import UIKit
 
 open class OMStepData : CustomDebugStringConvertible {
     /// Basic step data
-    var angle:OMCircleAngle!                                 // step angle
+    var angle:OMAngle!                                       // step angle
     var color:UIColor!                                       // step color
     internal var shapeLayer:CAShapeLayer = CAShapeLayer()    // progress shape
     var maskLayer:CALayer? = nil                             // optional layer mask
     
     // Optional step image
-    //internal var imageScaled:UIImage? = nil                  // real image used to draw
     internal var imageLayer : OMProgressImageLayer? = nil    // optional image layer
     lazy var image : OMProgressImageLayer! = {
         if self.imageLayer  == nil {
@@ -116,7 +115,7 @@ open class OMStepData : CustomDebugStringConvertible {
      */
     
     convenience init(start:Double, end:Double, color:UIColor!) {
-        let angle = OMCircleAngle(start:start, end:end)
+        let angle = OMAngle(start:start, end:end)
         self.init(angle:angle, color:color)
     }
 
@@ -130,7 +129,7 @@ open class OMStepData : CustomDebugStringConvertible {
      *
      */
     
-    init(angle:OMCircleAngle, color:UIColor!) {
+    init(angle:OMAngle, color:UIColor!) {
         assert(angle.valid())
         self.angle = angle
         self.color = color
@@ -151,7 +150,7 @@ open class OMStepData : CustomDebugStringConvertible {
     }
     
     public var debugDescription: String {
-        var str = "[\(angle!) \(color.shortDescription) \(progress) \(borderRatio)]"
+        let str = "[\(angle!) \(color.shortDescription) \(progress) \(borderRatio)]"
         //str += "[layers] mask: \(maskLayer) shape: \(shapeLayer) image: \(imageLayer) text:\(textLayer) border:\(shapeLayerBorder)"
         return str
     }
