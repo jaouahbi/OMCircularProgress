@@ -70,8 +70,8 @@ open class OMShadingGradientLayer : OMGradientLayer {
     
         if let player = player {
             
-            print("VERBOSE: drawing presentationLayer")
-            print("VERBOSE: \(player)")
+            print("VERBOSE(\(self.name ?? ""))drawing presentationLayer")
+            print("VERBOSE(\(self.name ?? ""))\(player)")
             
             colors       = player.colors
             locations    = player.locations
@@ -81,8 +81,8 @@ open class OMShadingGradientLayer : OMGradientLayer {
             endRadius    = player.endRadius
             
         } else {
-           print("VERBOSE: drawing modelLayer")
-           print("VERBOSE: \(self)")
+           print("VERBOSE(\(self.name ?? ""))drawing modelLayer")
+           print("VERBOSE(\(self.name ?? ""))\(self)")
         }
         
         if (isDrawable()) {
@@ -144,11 +144,11 @@ open class OMShadingGradientLayer : OMGradientLayer {
         get {
             var currentDescription:String = super.description
             if  (self.function == .linear)  {
-                currentDescription += "\nlinear interpolation"
+                currentDescription += " linear interpolation"
             } else if(self.function == .exponential) {
-                currentDescription += "\nexponential interpolation"
+                currentDescription += " exponential interpolation"
             } else if(self.function == .cosine) {
-                currentDescription += "\ncosine interpolation"
+                currentDescription += " cosine interpolation"
             }
             //currentDescription += " \(self.slopeFunction.1)"
             return currentDescription

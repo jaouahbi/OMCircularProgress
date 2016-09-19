@@ -31,7 +31,7 @@ import UIKit
  *
  */
 
-open class OMStepData {
+open class OMStepData : CustomDebugStringConvertible {
     /// Basic step data
     var angle:OMCircleAngle!                                 // step angle
     var color:UIColor!                                       // step color
@@ -39,8 +39,7 @@ open class OMStepData {
     var maskLayer:CALayer? = nil                             // optional layer mask
     
     // Optional step image
-    //var image : UIImage?                                     // optional image
-    internal var imageScaled:UIImage? = nil                  // real image used to draw
+    //internal var imageScaled:UIImage? = nil                  // real image used to draw
     internal var imageLayer : OMProgressImageLayer? = nil    // optional image layer
     lazy var image : OMProgressImageLayer! = {
         if self.imageLayer  == nil {
@@ -72,6 +71,7 @@ open class OMStepData {
      * Border
      */
     var borderRatio:Double  = 0.0                            // border layer ratio. Default: 0%
+    var borderShadow:Bool  = true                            // border layer shadow. Default: true
     internal var shapeLayerBorder:CAShapeLayer? = nil        // layer for the border
     lazy var border : CAShapeLayer! = {
         if self.shapeLayerBorder == nil {
@@ -85,9 +85,7 @@ open class OMStepData {
      */
     
     internal var wellLayer:CAShapeLayer?                     // optional well layer
-    
     lazy var well : CAShapeLayer! = {
-        
         if self.wellLayer == nil {
             self.wellLayer = CAShapeLayer()
         }
@@ -145,13 +143,16 @@ open class OMStepData {
     var progress:Double = 0.0 {
         didSet(newValue) {
             shapeLayer.strokeEnd = CGFloat(newValue)
-            if let shapeLayerBorder = shapeLayerBorder {
+            if let shapeLayerBorder = border {
                 // update the border layer too
                 shapeLayerBorder.strokeEnd = CGFloat(newValue)
             }
         }
- //       get {
- //           return Double(shapeLayer.strokeEnd)
- //       }
+    }
+    
+    public var debugDescription: String {
+        var str = "[\(angle!) \(color.shortDescription) \(progress) \(borderRatio)]"
+        //str += "[layers] mask: \(maskLayer) shape: \(shapeLayer) image: \(imageLayer) text:\(textLayer) border:\(shapeLayerBorder)"
+        return str
     }
 }

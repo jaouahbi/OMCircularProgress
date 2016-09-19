@@ -48,20 +48,22 @@ class ProgressExampleViewController: UIViewController {
         //var pogressViewAppearance = OMCircularProgress.appearance()
         
         self.progressViewMood.layer.name = "Mood"
-        self.progressViewClockHours.layer.name = "Clock"
+        self.progressViewClockHours.layer.name = "Clock Hours"
+        self.progressViewClockMinutes.layer.name = "Clock Minutes"
+        self.progressViewClockSeconds.layer.name = "Clock Seconds"
         self.progressViewImagesWithDifferentsSize.layer.name = "ImagesWithDifferentsSize"
-        self.progressViewSimple.layer.name = "Simple"
+        self.progressViewSimple.layer.name = "Direct"
         self.progressViewGradientMask.layer.name = "GradientMask"
         self.progressViewFlower.layer.name = "Flower"
         
-        self.progressViewMood.layer.borderWidth = 1;
-        self.progressViewClockHours.layer.borderWidth = 1;
-        self.progressViewImagesWithDifferentsSize.layer.borderWidth = 1;
-        self.progressViewSimple.layer.borderWidth = 1;
-        self.progressViewGradientMask.layer.borderWidth = 1;
-        self.progressViewFlower.layer.borderWidth = 1;
+        //self.progressViewMood.layer.borderWidth = 1;
+        //self.progressViewClockHours.layer.borderWidth = 1;
+        //self.progressViewImagesWithDifferentsSize.layer.borderWidth = 1;
+        //self.progressViewSimple.layer.borderWidth = 1;
+        //self.progressViewGradientMask.layer.borderWidth = 1;
+        //self.progressViewFlower.layer.borderWidth = 1;
         
-        self.view.layoutIfNeeded()
+        //self.view.layoutIfNeeded()
         
         //
         // Setup the circular progress examples
@@ -280,11 +282,30 @@ class ProgressExampleViewController: UIViewController {
             // mask it
             step!.maskLayer        = gradient
             
-            step!.borderRatio        = drand48()
+            step!.borderRatio      = drand48()
+            step!.borderShadow     = false
             step!.border.strokeColor = UIColor.white.cgColor
         }
     }
     
+    
+    func simpleGradientRadial(progress:OMCircularProgress, color:UIColor) -> OMGradientLayer
+    {
+        // configure the gradient
+        let gradient       = OMShadingGradientLayer(type:.radial)
+        
+        gradient.function  = .linear
+        gradient.frame     = progress.bounds
+        
+        gradient.colors    = [color.darkerColor(percent: 0.65),
+        color.lighterColor(percent: 1.0),
+        color.darkerColor(percent: 0.35)]
+        
+        gradient.startRadius   = progress.innerRadius
+        gradient.endRadius     = progress.outerRadius
+        
+        return gradient;
+    }
     
     func setupWithImagesWithDifferentsSize(_ progress:OMCircularProgress) {
         
@@ -363,7 +384,7 @@ class ProgressExampleViewController: UIViewController {
             // Step text
             
             // step image
-            theStep.image.image                   = UIImage(named: images[i])
+            theStep.image.image             = UIImage(named: images[i])
             theStep.imageOrientationToAngle = false;
             
             // configure the gradient
@@ -381,6 +402,8 @@ class ProgressExampleViewController: UIViewController {
 
             // mask it
             theStep.maskLayer        = gradient
+            
+            theStep.image.mask       = gradient
             
         }
         

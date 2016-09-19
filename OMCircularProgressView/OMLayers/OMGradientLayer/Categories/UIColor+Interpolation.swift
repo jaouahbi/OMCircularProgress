@@ -36,15 +36,29 @@ extension UIColor {
     }
     var shortDescription:String {
         
-        let r = self.components?[0].format(true)
-        let g = self.components?[1].format(true)
-        let b = self.components?[2].format(true)
-        let a = self.components?[3].format(true)
-
-        if let colorSpace = self.colorSpace {
-            return "<\(colorSpace.model.name):\(r) \(g) \(b) \(a)>";
+        if (numberOfComponents == 2) {
+            
+            let w = (self.components?[0])!.format(true)
+            let a = (self.components?[1])!.format(true)
+            
+            if let colorSpace = self.colorSpace {
+                return "<\(colorSpace.model.name):\(w) \(a)>";
+            }
+            return "<\(w) \(a)>";
+            
+        } else {
+            
+            assert(numberOfComponents == 4)
+            let r = (self.components?[0])!.format(true)
+            let g = (self.components?[1])!.format(true)
+            let b = (self.components?[2])!.format(true)
+            let a = (self.components?[3])!.format(true)
+            
+            if let colorSpace = self.colorSpace {
+                return "<\(colorSpace.model.name):\(r) \(g) \(b) \(a)>";
+            }
+            return "<\(r) \(g) \(b) \(a)>";
         }
-        return "<\(r) \(g) \(b) \(a)>";
     }
 }
 
@@ -62,7 +76,7 @@ extension UIColor {
         let fromGreen:CGFloat = fromColor.components![1]
         let fromBlue:CGFloat = fromColor.components![2]
         //var fromAlpha:CGFloat = fromColor.components![3]
-    
+        
         let redValue = (max(red, fromRed) - min(red, fromRed)) * 255
         let greenValue = (max(green, fromGreen) - min(green, fromGreen)) * 255
         let blueValue = (max(blue, fromBlue) - min(blue, fromBlue)) * 255
@@ -77,7 +91,7 @@ extension UIColor {
         let blue:CGFloat = self.components![2]
         //var alpha:CGFloat = self.components![3]
         let brightness = Int((((red * 299) + (green * 587) + (blue * 114)) * 255) / 1000)
-
+        
         // get the fromColor's red, green, blue and alpha values
         let fromRed:CGFloat = fromColor.components![0]
         let fromGreen:CGFloat = fromColor.components![1]

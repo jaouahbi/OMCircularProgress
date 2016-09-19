@@ -47,4 +47,8 @@ extension CGSize
     func center() -> CGPoint {
         return CGPoint(x:width * 0.5,y:height * 0.5)
     }
+    
+    func integral() -> CGSize {
+        return CGSize(width:round(width),height:round(height))
+    }
 }

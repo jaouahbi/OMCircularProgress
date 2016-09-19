@@ -320,17 +320,17 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     func isDrawable() -> Bool {
         if (colors.count == 0) {
             // nothing to do
-            print("VERBOSE: Unable to do the shading without colors.")
+            print("VERBOSE(\(self.name ?? "")) Unable to do the shading without colors.")
             return false
         }
         if (startPoint.isZero && endPoint.isZero) {
             // nothing to do
-            print("VERBOSE: Start point and end point are {x:0, y:0}.")
+            print("VERBOSE(\(self.name ?? "")) Start point and end point are {x:0, y:0}.")
             return false
         }
         if (startRadius == endRadius && self.isRadial) {
             // nothing to do
-            print("VERBOSE: Start radius and end radius are equal. \(startRadius) \(endRadius)")
+            print("VERBOSE(\(self.name ?? "")) Start radius and end radius are equal. \(startRadius) \(endRadius)")
             return false
         }
         return true;
@@ -338,16 +338,16 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     
     override open var description:String {
         get {
-            var currentDescription:String = "type: \((self.isAxial ? "Axial" : "Radial"))\n"
+            var currentDescription:String = "type: \((self.isAxial ? "Axial" : "Radial")) "
             if let locations = locations {
                 if(locations.count == colors.count) {
-                    _ = zip(colors,locations).flatMap { currentDescription += "color: \($0.shortDescription) location: \($1)\n" }
+                    _ = zip(colors,locations).flatMap { currentDescription += "color: \($0.shortDescription) location: \($1) " }
                 } else {
                     if (locations.count > 0) {
-                        _ = locations.map({currentDescription += "\($0)\n"})
+                        _ = locations.map({currentDescription += "\($0) "})
                     }
                     if (colors.count > 0) {
-                        _ = colors.map({currentDescription += "\($0.shortDescription)\n"})
+                        _ = colors.map({currentDescription += "\($0.shortDescription) "})
                     }
                 }
             }
@@ -357,10 +357,10 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
                 currentDescription += "from : \(startPoint) to \(endPoint)"
             }
             if  (self.extendsPastEnd)  {
-                currentDescription += "\ndraws after end location"
+                currentDescription += " draws after end location "
             }
             if  (self.extendsBeforeStart)  {
-                currentDescription += "\ndraws before start location"
+                currentDescription += " draws before start location "
             }
             return currentDescription
         }

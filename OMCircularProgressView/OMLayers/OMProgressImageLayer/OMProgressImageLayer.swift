@@ -243,7 +243,7 @@ class OMProgressImageLayer : CALayer
                 
                 break;
             }
-        }else{
+        } else {
         
             newImage = self.image?.grayScaleWithAlphaImage()
         }
@@ -256,6 +256,7 @@ class OMProgressImageLayer : CALayer
     override func draw(in context: CGContext) {
         
         super.draw(in: context)
+
         
         // Image setup
         
@@ -277,9 +278,14 @@ class OMProgressImageLayer : CALayer
                 if let image = self.image {
                     context.draw((image.grayScaleWithAlphaImage().blendImage(newImage!).cgImage)!, in: rect)
                 }
-            }else{
+            } else {
                 context.draw(newImage!.cgImage!, in: rect)
             }
+            
+            let x = context.makeImage()
+            let img = UIImage(cgImage:x!)
+            var xx = 0
+            xx += 1
         }
     }
 }
