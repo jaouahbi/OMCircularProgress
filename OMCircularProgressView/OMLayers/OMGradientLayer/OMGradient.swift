@@ -72,10 +72,10 @@ struct OMGradient {
                 numberOfLocations = self.colors.count
             }
             
-            VERBOSE("\(numberOfLocations) locations")
+            print("VERBOSE: \(numberOfLocations) locations")
             
             if self.locations != nil {
-                VERBOSE(" \(self.locations!)")
+                print("VERBOSE:  \(self.locations!)")
             }
             
             if (numberOfLocations > 0) {

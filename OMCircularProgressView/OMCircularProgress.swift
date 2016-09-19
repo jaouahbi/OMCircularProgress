@@ -197,22 +197,6 @@ enum OMAlign : Int
             setNeedsLayout()
         }
     }
-
-    
-    
-    /*
-    internal var textLayer:OMTextLayer? = nil                // layer for the text
-    lazy var text : OMTextLayer! = {
-        if self.textLayer  == nil {
-            // create the numerical text layer with the text centered
-            self.textLayer =  OMTextLayer(string:"")
-            #if true
-                 self.textLayer?.name = "text layer"
-            #endif
-        }
-        return self.textLayer!
-    }()
-    */
     
     internal var numberLayer:OMNumberLayer? = nil                // layer for the text
     lazy var number : OMNumberLayer! = {
@@ -225,23 +209,6 @@ enum OMAlign : Int
         }
         return self.numberLayer!
     }()
-    
-    
-    /*
-    internal var numberLayer:OMNumberLayer?  = nil       // center number layer
-    lazy var number: OMNumberLayer! {
-        if numberLayer == nil {
-            // create the numerical text layer with the text centered
-            let alignmentMode = "center"
-            numberLayer = OMNumberLayer(number: 0, formatStyle: numberStyle(), alignmentMode: alignmentMode)
-            #if true
-                numberLayer!.name = "number layer"
-            #endif
-        }
-        
-        return numberLayer!
-    }()
-    */
     
     
     /**
@@ -266,50 +233,9 @@ enum OMAlign : Int
         
     }
     
-    /*
-    func updateTextLayerGeometry() {
-        
-        let textLayer = text!
-        
-        if let string = textLayer.string {
-            let size = textLayer.frameSizeLengthFromAttributedString(NSAttributedString(string : string))
-            
-            textLayer.frame = bounds.size.center().centerRect(size)
-        }
-    }*/
-    
-    
 
     
     // MARK: Images
-    
-    // @IBInspectable var imageShadow : Bool = true
-    /*
-     internal var centerImageScaled:UIImage? = nil
-     
-     @IBInspectable var centerImage : UIImage? {
-     set(newValue) {
-     self.centerImageScaled = newValue
-     if self.centerImageScaled != nil {
-     self.centerImageScaled = scaleCenterImageIfNeeded()
-     if let scaledImage = self.centerImageScaled  {
-     if let centerImageLayer = centerImageLayer {
-     centerImageLayer.image = scaledImage
-     } else {
-     centerImageLayer = OMProgressImageLayer(image: scaledImage)
-     #if true
-     imageLayer?.name = "progress center image"
-     #endif
-     }
-     }
-     }
-     }
-     
-     get {
-     return self.centerImageScaled
-     }
-     }
-     */
     
     internal var imageLayer : OMProgressImageLayer? = nil    // optional image layer
     lazy var image : OMProgressImageLayer! = {
@@ -401,31 +327,13 @@ enum OMAlign : Int
         }
     }
     
-    /// The center image of the component.
-    
-    //    @IBInspectable var image: UIImage? {
-    //        didSet {
-    //            if let image = image {
-    //                if let imageLayer = centerImageLayer {
-    //                    imageLayer.contents = image.cgImage
-    //                } else {
-    //                    centerImageLayer = CALayer()
-    //                    centerImageLayer?.contents = image.cgImage
-    //                     #if true
-    //                        centerImageLayer?.name = "center image"
-    //                    #endif
-    //                }
-    //            }
-    //        }
-    //    }
-    
     // !!!FIXME: if progress does not exist, then the Images are hidden
     
     var progress: Double = 0.0 {
         
         didSet {
             
-            DEBUG("progress: \(progress)")
+            print("DEBUG: progress: \(progress)")
             
             //let rads = numberOfRadians()
             //assert(abs(rads - 2 * M_PI) < DBL_EPSILON, "Unexpected consistence of circle radians (2 * π) != \(rads)")
@@ -448,7 +356,7 @@ enum OMAlign : Int
      */
     fileprivate func updateCompleteProgress()
     {
-        DEBUG("updateCompleteProgress (progress: \(progress))")
+        print("DEBUG: updateCompleteProgress (progress: \(progress))")
         
         if progress == 0 {
             // Nothing to update
@@ -472,7 +380,7 @@ enum OMAlign : Int
         
         for index:Int in 0..<numberOfSteps {
             
-            VERBOSE("#\(index) of \(numberOfSteps) in \(progress) : done:\(stepsDone) current:\(curStep)")
+            print("VERBOSE: #\(index) of \(numberOfSteps) in \(progress) : done:\(stepsDone) current:\(curStep)")
             
             setStepProgress(index, stepProgress: (index < stepsDone) ?  1.0 : curStep)
         }
@@ -517,7 +425,7 @@ enum OMAlign : Int
         
         CATransaction.commit()
         
-        DEBUG("updateCompleteProgress (progress: \(clamped_progress))")
+        print("DEBUG: updateCompleteProgress (progress: \(clamped_progress))")
     }
     
     /**
@@ -556,7 +464,7 @@ enum OMAlign : Int
         
         let oldStepProgress = getStepProgress(index)
         
-        DEBUG("setStepProgress (index : \(index) progress: \(stepProgress) \\ \(oldStepProgress))")
+        print("DEBUG: setStepProgress (index : \(index) progress: \(stepProgress) \\ \(oldStepProgress))")
         
         if let step = self[index] {
             
@@ -622,19 +530,18 @@ enum OMAlign : Int
      */
     fileprivate func setUpLayers(_ step:OMStepData, start:Double, end:Double) {
         
-        DEBUG("setUpLayers: \(stepIndex(step)) \(OMAngle(start: start, end: end))")
+        print("DEBUG: setUpLayers: \(stepIndex(step)) \(OMAngle(start: start, end: end))")
         
         // SetUp the mask layer
         
         if let maskLayer = step.maskLayer {
             // Update the mask frame
-            //if maskLayer.frame != bounds {
+            if maskLayer.frame != bounds {
+      
                 maskLayer.frame = bounds
                 // Mark the layer for update because has a new frame.
                 maskLayer.setNeedsDisplay()
-            //}
-            
-           // maskLayer.backgroundColor =  UIColor.red.cgColor    ;
+            }
             
         }
         
@@ -659,11 +566,11 @@ enum OMAlign : Int
      */
     
     fileprivate func setUpProgressLayer(_ step:OMStepData, start:Double, end:Double) {
-        DEBUG("setUpProgressLayer(startAngle:\(start) endAngle:\(end))")
+        print("DEBUG: setUpProgressLayer(start:\(round(start.radiansToDegrees())) end:\(round(end.radiansToDegrees())))")
         // This assert can be caused when separator Ratio is 1.0
         assert(start != end,
-               "The start angle and the end angle cannot be the same. angle: \(start.radiansToDegrees())")
-        assert(start < end, "Unexpected start/end angle. \(start)/\(end)");
+               "The start angle and the end angle cannot be the same. angle: \(round(start.radiansToDegrees()))")
+        assert(start < end, "Unexpected start/end angle. \(round(start.radiansToDegrees()))/\(round(end.radiansToDegrees()))");
         
         #if true
             step.shapeLayer.name = "step \(stepIndex(step)) shape"
@@ -679,7 +586,7 @@ enum OMAlign : Int
                                end  : end   - roundedHeadArcAngleEnd)
         
         
-        VERBOSE("STEP[\(stepIndex(step))] angle:\(theAngle) Rounded head angle arc len : \(round(roundedHeadArcAngleStart.radiansToDegrees()))°")
+        print("VERBOSE: STEP[\(stepIndex(step))] angle:\(theAngle) Rounded head angle arc len : \(round(roundedHeadArcAngleStart.radiansToDegrees()))°")
         
         let shapeLayer = step.shapeLayer
         
@@ -700,7 +607,7 @@ enum OMAlign : Int
         if step.borderRatio > 0 {
             let borderLayer = step.border!
             
-            INFO("Adding the border layer with the ratio: \(step.borderRatio)")
+            print("INFO: Adding the border layer with the ratio: \(step.borderRatio)")
             assert((shapeLayer.path != nil), "CAShapeLayer with a nil CGPath");
             
             borderLayer.path        = bezier.cgPath
@@ -754,18 +661,9 @@ enum OMAlign : Int
      */
     
     fileprivate func setUpWellLayer(_ step:OMStepData) {
-        DEBUG("setUpWellLayer()")
+        print("DEBUG: setUpWellLayer()")
         
         #if !DEBUG_NO_WELL
-            
-            /*if let stepWellColor = step.wellColor {
-             if  step.wellLayer == nil {
-             // Create the well layer
-             step.wellLayer = CAShapeLayer()
-             #if true
-             step.wellLayer?.name = "step \(stepIndex(step)) well"
-             #endif
-             }*/
             
             // This layer uses the shape path
             step.well.path            = step.shapeLayer.path
@@ -801,7 +699,7 @@ enum OMAlign : Int
      *   Layout the subviews
      */
     override func layoutSubviews() {
-        DEBUG("layoutSubviews()")
+        print("DEBUG: layoutSubviews()")
         super.layoutSubviews()
         updateLayerTree()
     }
@@ -817,12 +715,12 @@ enum OMAlign : Int
      */
     
     fileprivate func angleRect(_ angle:Double, align:OMAlign, size:CGSize = CGSize.zero) -> CGRect {
-        DEBUG("anglePointCentered(\(angle) \(align) \(size))")
+        print("DEBUG: anglePointCentered(\(angle) \(align) \(size))")
         return anglePoint(angle,align: align,size: size).centerRect(size)
         
     }
     fileprivate func anglePoint(_ angle:Double, align:OMAlign, size:CGSize = CGSize.zero) -> CGPoint {
-        DEBUG("anglePoint(\(angle) \(align) \(size))")
+        print("DEBUG: anglePoint(\(angle) \(align) \(size))")
         //
         let newRadius:Double
         switch(align){
@@ -857,7 +755,7 @@ enum OMAlign : Int
     
     fileprivate func addStepImageLayers() {
         #if !NO_IMAGES
-            DEBUG("addStepImageLayers()")
+            print("DEBUG: addStepImageLayers()")
             for (index, step) in dataSteps.enumerated() {
                 let curStep = step as! OMStepData
                 
@@ -865,7 +763,6 @@ enum OMAlign : Int
                     #if true
                         imageLayer.name = "step \(index) image"
                     #endif
-                    //imageLayer.setPlainShadow()
                     containerLayer.addSublayer(imageLayer)
                 }
             }
@@ -875,7 +772,7 @@ enum OMAlign : Int
      * Add the created step image layers to the root layer.
      */
     fileprivate func addStepTextLayers() {
-        DEBUG("addStepTextLayers()")
+        print("DEBUG: addStepTextLayers()")
         for (index, step) in dataSteps.enumerated() {
             if (step as! OMStepData).text.string != nil {
                 #if true
@@ -890,81 +787,18 @@ enum OMAlign : Int
      */
     fileprivate func addCenterImageLayer() {
         #if !NO_IMAGES
-            DEBUG("addCenterImageLayer()")
+            print("DEBUG: addCenterImageLayer()")
             
             if let img  = image.image {
                 image.frame = bounds.size.center().centerRect(img.size)
                 #if true
                     image.name = "center image"
                 #endif
-                //imgLayer.setShadow()
                 
                 containerLayer.addSublayer(image)
             }
         #endif
     }
-    
-    /**
-     * Scale the step image if needed
-     *
-     * parameter step: Step Object
-     */
-    
-    /*
-     func scaleStepImageIfNeeded(_ step:OMStepData) {
-     DEBUG("scaleStepImageIfNeeded() : \(step.image?.size)")
-     if let image = step.image {
-     let maxSide = image.size.max()
-     var arcChord:CGFloat = round(CGFloat(step.angle.arcChord(radius: Double(outerRadius))))
-     if (step.imageAlign == .border) {
-     arcChord /= 3.0
-     if(arcChord > 0.0 && (arcChord < maxSide)){
-     let newSize = CGSize(width:  arcChord,height: arcChord)
-     VERBOSE("Scaling the center image \(image.size) to \(newSize)")
-     // TODO: the minimun size of the image must be limited
-     step.imageScaled  = image.scaledToFitToSize(newSize)
-     }
-     } else if (arcChord > 0.0 && (arcChord < maxSide)) {
-     let newSize = CGSize(width:  arcChord,height: arcChord)
-     VERBOSE("Scaling the center image \(image.size) to \(newSize)")
-     step.imageScaled  = image.scaledToFitToSize(newSize)
-     } else {
-     step.imageScaled = nil;
-     }
-     }
-     }*/
-    
-    /**
-     * Scale the center image if needed
-     *
-     * parameter step: Step Object
-     */
-    
-    func scaleCenterImageIfNeeded() -> UIImage? {
-        
-        DEBUG("scaleCenterImageIfNeeded() : \(image.image?.size)")
-        if let img = image.image {
-            let curSize = img.size.max()
-            let maxSide:CGFloat = CGFloat((1.0 - self.thicknessRatio) * Double(self.radius) * 2.0);
-            
-            //assert(maxSide > 0.0, "overflow side.")
-            if maxSide > 0.0 && maxSide < curSize {
-                let newSize = CGSize(width:  maxSide,height: maxSide)
-                VERBOSE("Scaling the center image \(img.size) to \(newSize)")
-                //the minimun size of the image must be limited
-                return  img.scaledToFitToSize(newSize)
-            }
-            /*
-             let r = CGFloat(self.thicknessRatio) * self.radius
-             if img.size.max() * 0.5 >  r {
-             return  img.scaledToFitToSize(CGSize(width:  r,height: r))
-             }
-             */
-        }
-        return image.image
-    }
-    
-    
     
     /**
      * SetUp the text layer geometry
@@ -980,20 +814,20 @@ enum OMAlign : Int
     //imageOrientationToAngle
     
     fileprivate func setUpStepImageLayerGeometry(step:OMStepData) {
-        DEBUG("setUpStepImageLayerGeometric()")
+        print("DEBUG: setUpStepImageLayerGeometric()")
         let sizeOf = step.imageLayer?.image?.size
         // Reset the angle orientation before sets the new frame
         step.imageLayer?.setTransformRotationZ(0)
         let angle = step.angle.align(step.imageAngleAlign)
-        DEBUG("Angle \(round(angle.radiansToDegrees())) image aling:\(step.imageAngleAlign)")
+        print("DEBUG: Angle \(round(angle.radiansToDegrees())) image aling:\(step.imageAngleAlign)")
         let anglePoint = self.anglePoint(angle, align: step.imageAlign, size: sizeOf!)
         let positionInAngle = anglePoint.centerRect(sizeOf!)
-        VERBOSE("Frame \(positionInAngle) from the aligned step angle \(angle) and the image size \(sizeOf)")
+        print("VERBOSE: Frame \(positionInAngle) from the aligned step angle \(angle) and the image size \(sizeOf)")
         step.imageLayer?.frame = positionInAngle
         // Rotate the layer
         if (step.imageOrientationToAngle) {
             let rotationZ = (angle - startAngle)
-            VERBOSE("Image will be oriented to angle: \(rotationZ)")
+            print("VERBOSE: Image will be oriented to angle: \(round(rotationZ.radiansToDegrees()))")
             step.imageLayer?.setTransformRotationZ(rotationZ)
         }
     }
@@ -1005,21 +839,21 @@ enum OMAlign : Int
      */
     
     fileprivate func setUpStepTextLayerGeometry(_ step:OMStepData) {
-        DEBUG("setUpStepTextLayerGeometric()")
+        print("DEBUG: setUpStepTextLayerGeometric()")
         if step.text.string != nil {
             // Reset the angle orientation before sets the new frame
             step.text.setTransformRotationZ(0.0)
             let sizeOf = step.text.frameSize();
             let angle:Double = step.angle.align(step.textAngleAlign)
-            DEBUG("Angle \(round(angle.radiansToDegrees())) text aling:\(step.textAngleAlign)")
+            print("DEBUG: Angle \(round(angle.radiansToDegrees())) text aling:\(step.textAngleAlign)")
             let anglePoint = self.anglePoint(angle, align: step.textAlign, size: sizeOf)
-            DEBUG("Position in angle \(anglePoint) Align:\(step.textAlign)")
+            print("DEBUG: Position in angle \(anglePoint) Align:\(step.textAlign)")
             let positionInAngle = anglePoint.centerRect(sizeOf)
-            VERBOSE("Frame \(positionInAngle) from the aligned step angle \(angle) and the text size \(sizeOf)")
+            print("VERBOSE: Frame \(positionInAngle) from the aligned step angle \(angle) and the text size \(sizeOf)")
             step.text.frame = positionInAngle
             if step.textOrientationToAngle {
                 let rotationZ = (angle - startAngle)
-                VERBOSE("Image will be oriented to angle: \(rotationZ)")
+                print("VERBOSE: Image will be oriented to angle: \(round(rotationZ.radiansToDegrees()))")
                 step.text.setTransformRotationZ( rotationZ )
             }
         }
@@ -1029,7 +863,7 @@ enum OMAlign : Int
      * Remove all layers from the superlayer.
      */
     func removeSublayers() {
-        DEBUG("removeSublayers()")
+        print("DEBUG: removeSublayers()")
         if let s = containerLayer.sublayers {
             for (_, layer) in s.enumerated() {
                 layer.removeAllAnimations()
@@ -1079,7 +913,7 @@ enum OMAlign : Int
      */
     internal func updateLayerTree() {
         
-        DEBUG("updateLayerTree()")
+        print("DEBUG: updateLayerTree()")
         
         layer.addSublayer(containerLayer)
         
@@ -1176,13 +1010,13 @@ extension OMCircularProgress
         let valid = angle.valid()
         assert(valid,"Invalid angle:\(angle). range in radians : -(2*PI)/+(2*PI)")
         if(!valid) {
-            WARNING("Invalid angle :\(angle)")
+            print("WARNING: Invalid angle :\(angle)")
             return nil;
         }
         // Create the step
         let step = OMStepData(angle: angle, color:color)
         
-        VERBOSE("Adding new step with the angle: \(step.angle)")
+        print("VERBOSE: Adding new step with the angle: \(angle)")
         
         if isOverflow(lenght: angle.length()) {
             return nil
@@ -1210,7 +1044,7 @@ extension OMCircularProgress
         let numberOfRad = numberOfRadians() + lenght
         let diference   = numberOfRad - 𝜏
         if diference > Double(FLT_EPSILON) {
-            WARNING("Out of radians: can't create the step. overflow by \(𝜏 - numberOfRad) radians")
+            print("WARNING: Out of radians: can't create the step. overflow by \(𝜏 - numberOfRad) radians")
             return true
         }
         return false
@@ -1248,7 +1082,7 @@ extension OMCircularProgress
                               percent:clamp(percent, lower: 0.0,upper: 1.0),
                               color:color)
         
-        VERBOSE("Adding new step with the angle: \(step.angle)")
+        print("VERBOSE: Adding new step with the angle: \(step.angle!)")
         if isOverflow(lenght:  step.angle.length()) {
             return nil
         }
@@ -1279,7 +1113,7 @@ extension OMCircularProgress
      */
     func dumpAllSteps() {
         for (index, step) in dataSteps.enumerated() {
-            VERBOSE("\(index): \(step as! OMStepData)")
+            print("VERBOSE: \(index): \(step as! OMStepData)")
         }
     }
     
@@ -1324,12 +1158,12 @@ extension OMCircularProgress : CAAnimationDelegate
     /// MARK: CAAnimation delegate
     
     func animationDidStart(_ anim: CAAnimation) {
-        VERBOSE("START:\((anim as! CABasicAnimation).keyPath) : \((anim as! CABasicAnimation).beginTime) ")
+        print("VERBOSE: START:\((anim as! CABasicAnimation).keyPath) : \((anim as! CABasicAnimation).beginTime) ")
     }
     
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         if flag {
-            VERBOSE("END:\((anim as! CABasicAnimation).keyPath)")
+            print("VERBOSE: END:\((anim as! CABasicAnimation).keyPath)")
         }
     }
     
@@ -1418,7 +1252,7 @@ extension OMCircularProgress
                 return hitplayer.model()
             }
             
-            VERBOSE("Unable to locate the layer that contains the location \(location)")
+            print("VERBOSE: Unable to locate the layer that contains the location \(location)")
         }
         
         return nil;

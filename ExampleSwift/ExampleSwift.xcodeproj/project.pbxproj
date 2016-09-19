@@ -12,11 +12,6 @@
 		350BAE911D8AF8050094540B /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F6A73F1D80386D0023CFF3 /* Double+Extensions.swift */; };
 		350BAE931D8AF86B0094540B /* Float+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350BAE921D8AF86B0094540B /* Float+Math.swift */; };
 		350BAE941D8AF87D0094540B /* Float+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350BAE921D8AF86B0094540B /* Float+Math.swift */; };
-		351DA3B11D81644400BDBEE2 /* ColorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351DA3AA1D81644400BDBEE2 /* ColorLog.swift */; };
-		351DA3B21D81644400BDBEE2 /* SpeedLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351DA3AC1D81644400BDBEE2 /* SpeedLog.swift */; };
-		351DA3B31D81644400BDBEE2 /* Swizzling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351DA3AD1D81644400BDBEE2 /* Swizzling.swift */; };
-		351DA3B41D81644400BDBEE2 /* SpeedLog+UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351DA3AF1D81644400BDBEE2 /* SpeedLog+UIColor.swift */; };
-		351DA3B51D81644400BDBEE2 /* UIColor+Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351DA3B01D81644400BDBEE2 /* UIColor+Log.swift */; };
 		352CB74B1A6D1FBB00863568 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352CB74A1A6D1FBB00863568 /* AppDelegate.swift */; };
 		352CB74D1A6D1FBB00863568 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352CB74C1A6D1FBB00863568 /* ViewController.swift */; };
 		352CB7501A6D1FBB00863568 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 352CB74E1A6D1FBB00863568 /* Main.storyboard */; };
@@ -77,11 +72,6 @@
 
 /* Begin PBXFileReference section */
 		350BAE921D8AF86B0094540B /* Float+Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Float+Math.swift"; sourceTree = "<group>"; };
-		351DA3AA1D81644400BDBEE2 /* ColorLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorLog.swift; sourceTree = "<group>"; };
-		351DA3AC1D81644400BDBEE2 /* SpeedLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeedLog.swift; sourceTree = "<group>"; };
-		351DA3AD1D81644400BDBEE2 /* Swizzling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Swizzling.swift; sourceTree = "<group>"; };
-		351DA3AF1D81644400BDBEE2 /* SpeedLog+UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SpeedLog+UIColor.swift"; sourceTree = "<group>"; };
-		351DA3B01D81644400BDBEE2 /* UIColor+Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Log.swift"; sourceTree = "<group>"; };
 		352CB7451A6D1FBB00863568 /* ExampleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		352CB7491A6D1FBB00863568 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		352CB74A1A6D1FBB00863568 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -155,29 +145,8 @@
 		351DA3A81D81644400BDBEE2 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				351DA3A91D81644400BDBEE2 /* SpeedLog */,
 			);
 			path = Vendor;
-			sourceTree = "<group>";
-		};
-		351DA3A91D81644400BDBEE2 /* SpeedLog */ = {
-			isa = PBXGroup;
-			children = (
-				351DA3AA1D81644400BDBEE2 /* ColorLog.swift */,
-				351DA3AC1D81644400BDBEE2 /* SpeedLog.swift */,
-				351DA3AD1D81644400BDBEE2 /* Swizzling.swift */,
-				351DA3AE1D81644400BDBEE2 /* UIKit */,
-			);
-			path = SpeedLog;
-			sourceTree = "<group>";
-		};
-		351DA3AE1D81644400BDBEE2 /* UIKit */ = {
-			isa = PBXGroup;
-			children = (
-				351DA3AF1D81644400BDBEE2 /* SpeedLog+UIColor.swift */,
-				351DA3B01D81644400BDBEE2 /* UIColor+Log.swift */,
-			);
-			path = UIKit;
 			sourceTree = "<group>";
 		};
 		352CB73C1A6D1FBB00863568 = {
@@ -486,10 +455,8 @@
 				35F6A7281D80379A0023CFF3 /* UIColor+Interpolation.swift in Sources */,
 				35F6A72C1D80379A0023CFF3 /* OMGradientLayerProtocols.swift in Sources */,
 				35F6A74E1D80386D0023CFF3 /* String+Random.swift in Sources */,
-				351DA3B21D81644400BDBEE2 /* SpeedLog.swift in Sources */,
 				35F6A7271D80379A0023CFF3 /* Float+Extensions.swift in Sources */,
 				3585FD261D8BF72800ABE139 /* UIColor+Crayola.swift in Sources */,
-				351DA3B11D81644400BDBEE2 /* ColorLog.swift in Sources */,
 				35F6A7251D80379A0023CFF3 /* CGFloat+Extensions.swift in Sources */,
 				35F32E021D867EAE00576BA1 /* BezierPolygon.swift in Sources */,
 				35F6A7311D80379A0023CFF3 /* OMGradient.swift in Sources */,
@@ -503,7 +470,6 @@
 				353FAB301CBB1EA300D6964F /* OMStepData.swift in Sources */,
 				35F6A7461D80386D0023CFF3 /* CATransform3D+Extension.swift in Sources */,
 				35F6A7481D80386D0023CFF3 /* CGColor+Extensions.swift in Sources */,
-				351DA3B51D81644400BDBEE2 /* UIColor+Log.swift in Sources */,
 				35F6A7241D80379A0023CFF3 /* CGColorSpace+Extension.swift in Sources */,
 				35F6A7221D80379A0023CFF3 /* CALayer+AnimationKeyPath.swift in Sources */,
 				35F6A7351D80379A0023CFF3 /* OMProgressImageLayer.swift in Sources */,
@@ -511,11 +477,9 @@
 				35F6A74C1D80386D0023CFF3 /* Double+Extensions.swift in Sources */,
 				35F6A7501D80386D0023CFF3 /* UIColor+Extensions.swift in Sources */,
 				35F6A72A1D80379A0023CFF3 /* OMCGGradientLayer.swift in Sources */,
-				351DA3B31D81644400BDBEE2 /* Swizzling.swift in Sources */,
 				35F6A74D1D80386D0023CFF3 /* NSNumber+Format.swift in Sources */,
 				35F32E041D867ED300576BA1 /* Compatibility.swift in Sources */,
 				35F6A7301D80379A0023CFF3 /* Math.swift in Sources */,
-				351DA3B41D81644400BDBEE2 /* SpeedLog+UIColor.swift in Sources */,
 				35F6A74A1D80386D0023CFF3 /* CGRect+Extensions.swift in Sources */,
 				350BAE931D8AF86B0094540B /* Float+Math.swift in Sources */,
 				35F6A7491D80386D0023CFF3 /* CGPoint+Center.swift in Sources */,
