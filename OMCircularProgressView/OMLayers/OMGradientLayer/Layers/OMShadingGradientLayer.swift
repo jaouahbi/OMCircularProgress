@@ -70,8 +70,7 @@ open class OMShadingGradientLayer : OMGradientLayer {
     
         if let player = player {
             
-            print("VERBOSE(\(self.name ?? ""))drawing presentationLayer")
-            print("VERBOSE(\(self.name ?? ""))\(player)")
+            print("VERBOSE(\(self.name ?? "")) drawing presentationLayer \(player)")
             
             colors       = player.colors
             locations    = player.locations
@@ -81,8 +80,7 @@ open class OMShadingGradientLayer : OMGradientLayer {
             endRadius    = player.endRadius
             
         } else {
-           print("VERBOSE(\(self.name ?? ""))drawing modelLayer")
-           print("VERBOSE(\(self.name ?? ""))\(self)")
+           print("VERBOSE(\(self.name ?? "")) drawing modelLayer \(self)")
         }
         
         if (isDrawable()) {

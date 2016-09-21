@@ -106,7 +106,7 @@ open class OMCGGradientLayer : OMGradientLayer {
         let player = self.presentation()
         
         if let player = player {
-            print("VERBOSE(\(self.name ?? ""))drawing presentationLayer\n\(player)")
+            print("VERBOSE(\(self.name ?? "")) drawing presentationLayer\n\(player)")
             
             colors       = player.colors
             locations    = player.locations
@@ -116,7 +116,7 @@ open class OMCGGradientLayer : OMGradientLayer {
             endRadius    = player.endRadius
             
         } else {
-            print("VERBOSE(\(self.name ?? ""))drawing modelLayer\n\(self)")
+            print("VERBOSE(\(self.name ?? "")) drawing modelLayer\n\(self)")
         }
     
         if (isDrawable()) {

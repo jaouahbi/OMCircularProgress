@@ -41,7 +41,7 @@ let kDefaultStartAngle:Double = -90.degreesToRadians()
 let kDefaultBorderColor:CGColor       = UIColor.black.cgColor
 
 // Image Shadow
-let kDefaultImageShadowOffset:CGSize  = CGSize(width:0.0,height: 5.0)
+let kDefaultImageShadowOffset:CGSize  = CGSize(width:0.0,height: 10.0)
 let kDefaultImageShadowRadius:CGFloat = 3
 let kDefaultImageShadowColor:CGColor  = UIColor.black.cgColor
 
@@ -155,19 +155,19 @@ enum OMAlign : Int
     }
     
     func commonInit() {
-
+        
     }
     
     // Array of OMStepData
     
     var dataSteps: NSMutableArray   = []
-
+    
     //internal var containerLayer  : CATransformLayer? = nil
     internal var containerLayer  : CALayer? = nil
     
     /// Animations
     
-    @IBInspectable var animation : Bool     = true;
+    @IBInspectable var enableAnimations : Bool     = true;
     @IBInspectable var animationDuration : TimeInterval = 1.0
     
     // Animation control
@@ -205,11 +205,11 @@ enum OMAlign : Int
     
     /// Show the well layer (default: false)
     
-//    @IBInspectable var showWell : Bool = false {
-//        didSet{
-//            setNeedsLayout()
-//        }
-//    }
+    //    @IBInspectable var showWell : Bool = false {
+    //        didSet{
+    //            setNeedsLayout()
+    //        }
+    //    }
     
     internal var numberLayer:OMNumberLayer? = nil                // layer for the text
     lazy var number : OMNumberLayer! = {
@@ -332,7 +332,7 @@ enum OMAlign : Int
     
     public var progress: Double = 0.0 {
         
-        didSet {
+        didSet(newValue) {
             
             print("DEBUG(\(layer.name ?? "")): progress: \(progress)")
             
@@ -366,9 +366,7 @@ enum OMAlign : Int
         
         assert(progress <= Double(numberOfSteps),"Unexpected progress \(progress) max \(numberOfSteps) ")
         
-        var clmprogress:Double = progress
-        
-        clmprogress.clamp(toLowerValue: 0.0,upperValue: Double(numberOfSteps))
+        let clmprogress:Double = clamp(progress, lower: 0.0,upper: Double(numberOfSteps))
         
         let stepsDone   = Int(clmprogress);
         let curStep     = clmprogress - floor(clmprogress);
@@ -387,15 +385,14 @@ enum OMAlign : Int
         }
         
         let duration        = (animationDuration / Double(numberOfSteps)) * clmprogress
-        var toValue:Double  = (progress / Double(numberOfSteps))
+        let toValue:Double  = clamp((progress / Double(numberOfSteps)),lower: 0.0,upper: 1.0)
+
         
-        toValue.clamp(toLowerValue: 0.0,upperValue: 1.0)
-    
         weak var delegate = self
-    
+        
         ///  center image
         if let centerImageLayer = image  {
-            if animation  {
+            if enableAnimations  {
                 // Remove all animations
                 centerImageLayer.removeAllAnimations()
                 centerImageLayer.animateProgress( 0,
@@ -403,12 +400,14 @@ enum OMAlign : Int
                                                   beginTime: beginTime,
                                                   duration: duration,
                                                   delegate: delegate)
+            }else {
+                image.progress = toValue
             }
         }
         
         ///  center number
         if let numberLayer = number {
-            if animation  {
+            if enableAnimations  {
                 // Remove all animations
                 numberLayer.removeAllAnimations()
                 numberLayer.animateNumber(  0.0,
@@ -417,7 +416,7 @@ enum OMAlign : Int
                                             duration:duration,
                                             delegate:delegate)
             } else {
-                numberLayer.number = toValue as NSNumber
+                number.number = toValue as NSNumber
             }
         }
         
@@ -465,7 +464,7 @@ enum OMAlign : Int
         print("DEBUG(\(layer.name ?? "")): setStepProgress (index : \(index) progress: \(stepProgress) \\ \(oldStepProgress))")
         
         if let step = self[index] {
-            if animation {
+            if enableAnimations {
                 stepAnimation(step, progress:stepProgress)
             } else {
                 // Remove the default animation of strokeEnd from the shape layers.
@@ -565,12 +564,12 @@ enum OMAlign : Int
                 step.well.lineWidth       = borderWidth
                 
                 // Activate shadow only if exist space between steps.
-                 
-//                 step.well.shadowOpacity = 1.0
-//                 step.well.shadowOffset  = CGSize(width:0,height:10)
-//                 step.well.shadowRadius  = 0
-//                 step.well.shadowColor   = UIColor.black.cgColor
- 
+                
+                //                 step.well.shadowOpacity = 1.0
+                //                 step.well.shadowOffset  = CGSize(width:0,height:10)
+                //                 step.well.shadowRadius  = 0
+                //                 step.well.shadowColor   = UIColor.black.cgColor
+                
                 
                 // Same as shape layer
                 
@@ -672,7 +671,7 @@ enum OMAlign : Int
             borderLayer.lineJoin    = shapeLayer.lineJoin
             borderLayer.miterLimit  = shapeLayer.miterLimit
             
-        
+            
             borderLayer.shadowOpacity = step.borderShadow ? 1.0 : 0.0
             borderLayer.shadowOffset  = kDefaultBorderShadowOffset
             borderLayer.shadowRadius  = kDefaultBorderShadowRadius
@@ -690,7 +689,6 @@ enum OMAlign : Int
             //shapeLayer .shadowRadius  = 0
             //shapeLayer.shadowColor   = UIColor.black.cgColor
         }
-        
         
         if let mask = step.maskLayer,let border = step.shapeLayerBorder {
             border.addSublayer(shapeLayer)
@@ -710,7 +708,7 @@ enum OMAlign : Int
             containerLayer!.addSublayer(shapeLayer)
         }
     }
-
+    
     
     /**
      *   Layout the subviews
@@ -766,6 +764,12 @@ enum OMAlign : Int
         
     }
     
+    func correctedShadowOffsetForTransformRotationZ(_ angle:Double,offset:CGSize)-> CGSize {
+        let x = offset.height*CGFloat(sin(angle)) + offset.width*CGFloat(cos(angle));
+        let y = offset.height*CGFloat(cos(angle)) - offset.width*CGFloat(sin(angle));
+        return CGSize(width: x, height: y)
+    }
+    
     /**
      * Add the created step image layers to the root layer.
      */
@@ -779,9 +783,18 @@ enum OMAlign : Int
                     imageLayer.name = "step \(index) image"
                     containerLayer!.addSublayer(imageLayer)
                     imageLayer.shadowOpacity = 1.0
-                    imageLayer.shadowOffset  = kDefaultImageShadowOffset
                     imageLayer.shadowRadius  = kDefaultImageShadowRadius
                     imageLayer.shadowColor   = kDefaultImageShadowColor
+                    imageLayer.shadowOffset  = kDefaultImageShadowOffset
+                    
+                    if curStep.imageOrientationToAngle {
+                        
+                        let angle = imageLayer.getTransformRotationZ()
+                        
+                        imageLayer.shadowOffset = correctedShadowOffsetForTransformRotationZ(angle, offset: imageLayer.shadowOffset)
+                        
+                        print("DEBUG(\(layer.name ?? "")):shadowOffset: \(imageLayer.shadowOffset) angle:\(round((angle).radiansToDegrees())))")
+                    }
                 }
             }
         #endif
@@ -805,7 +818,7 @@ enum OMAlign : Int
             }
         }
     }
-
+    
     /**
      * SetUp the text layer geometry
      *
@@ -886,7 +899,7 @@ enum OMAlign : Int
         #if !NO_IMAGE
             // Add all steps image
             addStepImageLayers()
-             // Add the center image layer to the root layer.
+            // Add the center image layer to the root layer.
             print("INFO(\(layer.name ?? "")): Add the center image layer to the container layer.")
             if let img  = image.image {
                 image.frame = bounds.size.center().centerRect(img.size)
@@ -910,11 +923,11 @@ enum OMAlign : Int
             if percentText  {
                 if let numberLayer = number {
                     containerLayer!.addSublayer(numberLayer)
-/*                  numberLayer.shadowOpacity = 1.0
-                    numberLayer.shadowOffset  = CGSize(width:0,height:10)
-                    numberLayer .shadowRadius  = 0
-                    numberLayer.shadowColor   = UIColor.black.cgColor
- */
+                    /*                  numberLayer.shadowOpacity = 1.0
+                     numberLayer.shadowOffset  = CGSize(width:0,height:10)
+                     numberLayer .shadowRadius  = 0
+                     numberLayer.shadowColor   = UIColor.black.cgColor
+                     */
                 }
             }
         #endif

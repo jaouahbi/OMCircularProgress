@@ -195,7 +195,7 @@ class ProgressExampleViewController: UIViewController {
     func setupWithGradientMask(_ progress:OMCircularProgress)
     {
         // Configure the animation
-        progress.animation          = true;
+        progress.enableAnimations          = true;
         progress.animationDuration  = 10
         progress.thicknessRatio     = 0.5      // 50%
         
@@ -207,7 +207,7 @@ class ProgressExampleViewController: UIViewController {
         
         let textLayer = progress.number!
         
-        let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 100 : 50
+        let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 120 : 50
         
         textLayer.font = UIFont(name: "HelveticaNeue-Bold",size:CGFloat(fontSize))
         
@@ -322,6 +322,7 @@ class ProgressExampleViewController: UIViewController {
         
             if  (i % 4 == 0)  {
                 theStep.image.image  = UIImage(named: "satellite")
+                theStep.imageOrientationToAngle = true
             }
 
             let color = colors[i]
@@ -424,31 +425,11 @@ class ProgressExampleViewController: UIViewController {
 
     
     func setupClockHours(_ progress:OMCircularProgress) {
-        //
-        //        let fillLayer = CAShapeLayer()
-        //        fillLayer.fillColor = UIColor.white.cgColor
-        //        fillLayer.opacity   = 1.0
-        //
-        //        let rd : CGFloat = progress.outerRadius * 2
-        //
-        //        let pathRect    = progress.bounds
-        //        let circleRect  = CGRect(x: 0, y: 0, width: rd, height: rd).center(pathRect)
-        //
-        //        let path = UIBezierPath(roundedRect: pathRect, cornerRadius: 0.0)
-        //        let circlePath = UIBezierPath(roundedRect: circleRect, cornerRadius: rd)
-        //        path.append(circlePath)
-        //        path.usesEvenOddFillRule = true
-        //
-        //        fillLayer.path = path.cgPath
-        //        fillLayer.fillRule = kCAFillRuleEvenOdd
-        //
-        //        // mask the OMCircularProgress with a circle.
-        //        progress.layer.addSublayer(fillLayer)
-        //        progress.backgroundColor = UIColor.black
+
         
         
-        progress.animation = false
-        progress.thicknessRatio = 0.33     // 33.3 %
+        progress.enableAnimations = false
+        progress.thicknessRatio = 0.33   // 33.3 %
         progress.options          = [.roundedHead];
         
         
@@ -517,8 +498,8 @@ class ProgressExampleViewController: UIViewController {
     {
         // Configure the animation
         
-        progress.animation      = false
-        progress.thicknessRatio = 1.0     // 100%
+        progress.enableAnimations      = false
+        progress.thicknessRatio = 1.0      // 100%
         progress.options          = [.roundedHead];
         
         let minutesPerHour  = 60
@@ -581,7 +562,7 @@ class ProgressExampleViewController: UIViewController {
     func setupClockMinute(_ progress:OMCircularProgress)
     {
         // Configure the animation
-        progress.animation      = false
+        progress.enableAnimations      = false
         progress.thicknessRatio = 0.5    // 50%
         progress.options          = [.roundedHead];
         
