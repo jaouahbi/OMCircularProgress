@@ -49,11 +49,11 @@ class ExampleSwiftTests: XCTestCase {
     }
 
     func testAngle() {
-        let angel1 = OMAngle(start: 0, end: M_PI * 2);
-        let angel2 = OMAngle(start: M_PI, length: M_PI * 2)
+        let angel1 = CPCAngle(start: 0, end: M_PI * 2);
+        let angel2 = CPCAngle(start: M_PI, length: M_PI * 2)
         
-        let angel3 = OMAngle(start: -0, end: M_PI * 2);
-        let angel4 = OMAngle(start: -M_PI, length: M_PI * 2)
+        let angel3 = CPCAngle(start: -0, end: M_PI * 2);
+        let angel4 = CPCAngle(start: -M_PI, length: M_PI * 2)
         
         let radius10:CGFloat = 10
         let radius1:CGFloat  = 1
@@ -66,7 +66,7 @@ class ExampleSwiftTests: XCTestCase {
         
         XCTAssert(arcAngle == arcLength);
     
-        let angelArc   = OMAngle(start: 0, end: M_PI_2)
+        let angelArc   = CPCAngle(start: 0, end: M_PI_2)
         let arcLength1 = angelArc.arcLength(radius10)
         let arcAngle1  = angelArc.arcAngle(radius10)
         let arcAngleDegree = arcAngle1.radiansToDegrees()
@@ -96,14 +96,16 @@ class ExampleSwiftTests: XCTestCase {
                   angel3.valid() &&
                   angel4.valid())
         
-        XCTAssert(OMAngle.inRange(angle: M_PI * 3)      == false)
-        XCTAssert(OMAngle.inRange(angle: M_PI * 3 * -1) == false)
+        XCTAssert(CPCAngle.inRange(angle: M_PI * 3)      == false)
+        XCTAssert(CPCAngle.inRange(angle: M_PI * 3 * -1) == false)
+        
+        XCTAssert(CPCAngle.ratio(elements: M_PI*2.0) == 1.0)
         
     }
     func testCircleAngle() {
-        //let angle90 = OMAngle.angleFromPoint(source:CGPoint.zero,target:CGPoint(x:0.0,y:1.0))
+        //let angle90 = CPCAngle.angleFromPoint(source:CGPoint.zero,target:CGPoint(x:0.0,y:1.0))
         //XCTAssert(angle90 == 90,"angleFromPoint")
-        //let angle270 = OMAngle.angleFromPoint(source:CGPoint(x:0.0,y:1.0),target:CGPoint.zero)
+        //let angle270 = CPCAngle.angleFromPoint(source:CGPoint(x:0.0,y:1.0),target:CGPoint.zero)
         //XCTAssert(angle270 == 270,"angleFromPoint")
         
         /*

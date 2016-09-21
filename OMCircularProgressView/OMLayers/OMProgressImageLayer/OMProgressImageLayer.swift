@@ -162,17 +162,16 @@ class OMProgressImageLayer : CALayer
         return super.action(forKey: event)
     }
     
-    
     fileprivate func imageForDrawInContext() -> UIImage?
     {
-        var newImage:UIImage?  = nil
+        var newImage:UIImage?
         var newProgress:Double = self.progress
         
         if let presentationLayer: AnyObject = self.presentation(){
             newProgress = presentationLayer.progress
         }
         
-        if(newProgress > 0)
+        if newProgress > 0
         {
             switch(self.type)
             {
@@ -257,7 +256,6 @@ class OMProgressImageLayer : CALayer
         
         super.draw(in: context)
 
-        
         // Image setup
         
         let newImage = self.imageForDrawInContext()
@@ -273,7 +271,7 @@ class OMProgressImageLayer : CALayer
             
             let rect = CGRect(x: 0, y: 0, width: newImage!.size.width, height: newImage!.size.height);
             
-            if ( grayScale ){
+            if  grayScale {
                 // original image grayscaled + original image blend
                 if let image = self.image {
                     context.draw((image.grayScaleWithAlphaImage().blendImage(newImage!).cgImage)!, in: rect)
@@ -281,11 +279,6 @@ class OMProgressImageLayer : CALayer
             } else {
                 context.draw(newImage!.cgImage!, in: rect)
             }
-            
-            let x = context.makeImage()
-            let img = UIImage(cgImage:x!)
-            var xx = 0
-            xx += 1
         }
     }
 }

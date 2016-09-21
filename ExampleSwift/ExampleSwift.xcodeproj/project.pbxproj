@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		350BAE8D1D8AF4240094540B /* OMAngle+Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB0C1CBB1EA300D6964F /* OMAngle+Circle.swift */; };
-		350BAE8E1D8AF42C0094540B /* OMAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB0B1CBB1EA300D6964F /* OMAngle.swift */; };
+		350BAE8E1D8AF42C0094540B /* CPCAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB0B1CBB1EA300D6964F /* CPCAngle.swift */; };
 		350BAE911D8AF8050094540B /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F6A73F1D80386D0023CFF3 /* Double+Extensions.swift */; };
 		350BAE931D8AF86B0094540B /* Float+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350BAE921D8AF86B0094540B /* Float+Math.swift */; };
 		350BAE941D8AF87D0094540B /* Float+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350BAE921D8AF86B0094540B /* Float+Math.swift */; };
@@ -17,10 +16,9 @@
 		352CB7501A6D1FBB00863568 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 352CB74E1A6D1FBB00863568 /* Main.storyboard */; };
 		352CB7521A6D1FBB00863568 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 352CB7511A6D1FBB00863568 /* Images.xcassets */; };
 		352CB7611A6D1FBB00863568 /* ExampleSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352CB7601A6D1FBB00863568 /* ExampleSwiftTests.swift */; };
-		353FAB251CBB1EA300D6964F /* OMAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB0B1CBB1EA300D6964F /* OMAngle.swift */; };
-		353FAB261CBB1EA300D6964F /* OMAngle+Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB0C1CBB1EA300D6964F /* OMAngle+Circle.swift */; };
+		353FAB251CBB1EA300D6964F /* CPCAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB0B1CBB1EA300D6964F /* CPCAngle.swift */; };
 		353FAB271CBB1EA300D6964F /* OMCircularProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB0D1CBB1EA300D6964F /* OMCircularProgress.swift */; };
-		353FAB301CBB1EA300D6964F /* OMStepData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB161CBB1EA300D6964F /* OMStepData.swift */; };
+		353FAB301CBB1EA300D6964F /* CPCStepData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB161CBB1EA300D6964F /* CPCStepData.swift */; };
 		3585FD261D8BF72800ABE139 /* UIColor+Crayola.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3585FD251D8BF72800ABE139 /* UIColor+Crayola.swift */; };
 		35F32E021D867EAE00576BA1 /* BezierPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F32E011D867EAE00576BA1 /* BezierPolygon.swift */; };
 		35F32E041D867ED300576BA1 /* Compatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F32E031D867ED300576BA1 /* Compatibility.swift */; };
@@ -81,10 +79,9 @@
 		352CB75A1A6D1FBB00863568 /* ExampleSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		352CB75F1A6D1FBB00863568 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		352CB7601A6D1FBB00863568 /* ExampleSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSwiftTests.swift; sourceTree = "<group>"; };
-		353FAB0B1CBB1EA300D6964F /* OMAngle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMAngle.swift; sourceTree = "<group>"; };
-		353FAB0C1CBB1EA300D6964F /* OMAngle+Circle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OMAngle+Circle.swift"; sourceTree = "<group>"; };
+		353FAB0B1CBB1EA300D6964F /* CPCAngle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CPCAngle.swift; sourceTree = "<group>"; };
 		353FAB0D1CBB1EA300D6964F /* OMCircularProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCircularProgress.swift; sourceTree = "<group>"; };
-		353FAB161CBB1EA300D6964F /* OMStepData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMStepData.swift; sourceTree = "<group>"; };
+		353FAB161CBB1EA300D6964F /* CPCStepData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CPCStepData.swift; sourceTree = "<group>"; };
 		3585FD251D8BF72800ABE139 /* UIColor+Crayola.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Crayola.swift"; sourceTree = "<group>"; };
 		35F32E011D867EAE00576BA1 /* BezierPolygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BezierPolygon.swift; sourceTree = "<group>"; };
 		35F32E031D867ED300576BA1 /* Compatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compatibility.swift; sourceTree = "<group>"; };
@@ -142,13 +139,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		351DA3A81D81644400BDBEE2 /* Vendor */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Vendor;
-			sourceTree = "<group>";
-		};
 		352CB73C1A6D1FBB00863568 = {
 			isa = PBXGroup;
 			children = (
@@ -209,11 +199,9 @@
 		35984D371AC958FC002D4BB8 /* OMCircularProgressView */ = {
 			isa = PBXGroup;
 			children = (
-				353FAB161CBB1EA300D6964F /* OMStepData.swift */,
 				353FAB0D1CBB1EA300D6964F /* OMCircularProgress.swift */,
-				353FAB0B1CBB1EA300D6964F /* OMAngle.swift */,
-				353FAB0C1CBB1EA300D6964F /* OMAngle+Circle.swift */,
-				351DA3A81D81644400BDBEE2 /* Vendor */,
+				353FAB161CBB1EA300D6964F /* CPCStepData.swift */,
+				353FAB0B1CBB1EA300D6964F /* CPCAngle.swift */,
 				35F6A7371D80386D0023CFF3 /* Extensions */,
 				35F6A7051D80379A0023CFF3 /* OMLayers */,
 			);
@@ -440,14 +428,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				353FAB261CBB1EA300D6964F /* OMAngle+Circle.swift in Sources */,
 				353FAB271CBB1EA300D6964F /* OMCircularProgress.swift in Sources */,
 				35F6A7321D80379A0023CFF3 /* OMShadingGradient.swift in Sources */,
 				35F6A72F1D80379A0023CFF3 /* Interpolation.swift in Sources */,
 				352CB74D1A6D1FBB00863568 /* ViewController.swift in Sources */,
 				35F6A7291D80379A0023CFF3 /* OMGradientView.swift in Sources */,
 				35F6A7451D80386D0023CFF3 /* CAShapeLayer+HitTest.swift in Sources */,
-				353FAB251CBB1EA300D6964F /* OMAngle.swift in Sources */,
+				353FAB251CBB1EA300D6964F /* CPCAngle.swift in Sources */,
 				35F6A7991D80ADDD0023CFF3 /* OMNumberLayer.swift in Sources */,
 				35F6A7361D80379A0023CFF3 /* OMTextLayer.swift in Sources */,
 				35F6A7471D80386D0023CFF3 /* CGAffineTransform+Extension.swift in Sources */,
@@ -467,7 +454,7 @@
 				35F6A7231D80379A0023CFF3 /* CALayer+Extensions.swift in Sources */,
 				35F6A72B1D80379A0023CFF3 /* OMGradientLayer.swift in Sources */,
 				35F6A72D1D80379A0023CFF3 /* OMShadingGradientLayer.swift in Sources */,
-				353FAB301CBB1EA300D6964F /* OMStepData.swift in Sources */,
+				353FAB301CBB1EA300D6964F /* CPCStepData.swift in Sources */,
 				35F6A7461D80386D0023CFF3 /* CATransform3D+Extension.swift in Sources */,
 				35F6A7481D80386D0023CFF3 /* CGColor+Extensions.swift in Sources */,
 				35F6A7241D80379A0023CFF3 /* CGColorSpace+Extension.swift in Sources */,
@@ -492,8 +479,7 @@
 			files = (
 				350BAE941D8AF87D0094540B /* Float+Math.swift in Sources */,
 				350BAE911D8AF8050094540B /* Double+Extensions.swift in Sources */,
-				350BAE8E1D8AF42C0094540B /* OMAngle.swift in Sources */,
-				350BAE8D1D8AF4240094540B /* OMAngle+Circle.swift in Sources */,
+				350BAE8E1D8AF42C0094540B /* CPCAngle.swift in Sources */,
 				352CB7611A6D1FBB00863568 /* ExampleSwiftTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

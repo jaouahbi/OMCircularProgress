@@ -15,7 +15,7 @@
 //   limitations under the License.
 //
 
-//  OMAngle.swift
+//  CPCAngle.swift
 //
 //  Created by Jorge Ouahbi on 24/11/15.
 //  Copyright © 2015 Jorge Ouahbi. All rights reserved.
@@ -32,14 +32,14 @@ let π   = M_PI
 let 𝜏   = 2.0 * π
 
 /**
- * Angle alignment
+ * Angle position
  *
- * start : Align to start of the angle
- * middle: Align to middle of the angle
- * end   : Align to the end of the angle
+ * start : start of the angle
+ * middle: middle of the angle
+ * end   : end of the angle
  */
 
-public enum OMAngleAlign: Int
+public enum CPCAnglePosition : Int
 {
     case start
     case middle
@@ -53,7 +53,7 @@ public enum OMAngleAlign: Int
  * Object that encapsulate a angle
  */
 
-open class OMAngle : CustomDebugStringConvertible {
+open class CPCAngle : CustomDebugStringConvertible {
     
     var start:Double = 0.0                // start of angle in radians
     var end:Double   = 0.0                // end of angle in radians
@@ -82,7 +82,7 @@ open class OMAngle : CustomDebugStringConvertible {
         self.end   = endDegree.degreesToRadians()
         
         if(!valid()) {
-            print("WARNING(OMAngle): Angle overflow. \(self)")
+            print("WARNING(CPCAngle): Angle overflow. \(self)")
         }
     }
     
@@ -96,7 +96,7 @@ open class OMAngle : CustomDebugStringConvertible {
         self.end   =  end.degreesToRadians();
         
         if(!valid()) {
-            print("WARNING(OMAngle): Angle overflow. \(self)")
+            print("WARNING(CPCAngle): Angle overflow. \(self)")
         }
     }
     
@@ -129,7 +129,7 @@ open class OMAngle : CustomDebugStringConvertible {
     public func add(_ len:Double){
         end += len;
         if(!valid()) {
-            print("WARNING(OMAngle): Angle overflow. \(self)")
+            print("WARNING(CPCAngle): Angle overflow. \(self)")
         }
     }
     
@@ -139,7 +139,7 @@ open class OMAngle : CustomDebugStringConvertible {
     public func sub(_ len:Double){
         end -= len;
         if(!valid()) {
-            print("WARNING(OMAngle): Angle underflow. \(self)")
+            print("WARNING(CPCAngle): Angle underflow. \(self)")
         }
     }
     
@@ -172,7 +172,7 @@ open class OMAngle : CustomDebugStringConvertible {
     
     public func valid() -> Bool {
         let len = length()
-        return len > 0.0 && len <= (M_PI * 2)
+        return len > 0.0 && len <= 𝜏
     }
     
     static func inRange(angle:Double) -> Bool {
@@ -189,20 +189,20 @@ open class OMAngle : CustomDebugStringConvertible {
         return self.start / 𝜏
     }
     
-    static func step(elements:Double) -> Double {
+    static func ratio(elements:Double) -> Double {
         return 𝜏 / elements
     }
     
     
     /**
-     * Aling angle to OMAngleAlign
+     * Aling angle to CPCAnglePosition
      *
-     * parameter align: angle align
-     * returns: angle anligned to .OMAngleAlign
+     * parameter position: position in angle
+     * returns: angle anligned to PositionInAngle
      */
     
-    public func align(_ align:OMAngleAlign) -> Double {
-        switch(align) {
+    public func angle(_ position:CPCAnglePosition) -> Double {
+        switch(position) {
         case .middle:
             return self.mid()
         case .start:
@@ -212,6 +212,18 @@ open class OMAngle : CustomDebugStringConvertible {
         }
     }
     
+    public class func point(_ angle:Double, center:CGPoint, radius: CGFloat) -> CGPoint {
+        
+        // Given a radius length r and an angle in radians and a circle's center (x,y),
+        // calculate the coordinates of a point on the circumference
+        
+        let theta = CGFloat( angle )
+        
+        // Cartesian angle to polar.
+        
+        return CGPoint(x: center.x + CGFloat(radius) * cos(theta), y: center.y + CGFloat(radius) * sin(theta))
+    }
+    
 
     // MARK: DebugPrintable protocol
     
@@ -219,6 +231,6 @@ open class OMAngle : CustomDebugStringConvertible {
         let sizeOfAngle = round(length().radiansToDegrees())
         let degreeS     = round(start.radiansToDegrees());
         let degreeE     = round(end.radiansToDegrees());
-        return "[\(degreeS)° - \(degreeE)°] : \(sizeOfAngle)°"
+        return "[\(degreeS)° \(degreeE)°] \(sizeOfAngle)°"
     }
 }
