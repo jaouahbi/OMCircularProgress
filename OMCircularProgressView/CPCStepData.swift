@@ -25,25 +25,21 @@
 
 import UIKit
 
-open class CPElement<T:CALayer> {
-    var radiusPosition : CPCRadiusAlignment = .border       // element position in radius. Default : .Border
+open class CPCElement<T:CALayer> {
+    var radiusPosition      : CPCRadiusAlignment = .border  // element position in radius. Default : .border
+    var anglePosition       : CPCAnglePosition   = .start   // element position in angle. Default : .start
     var orientationToAngle  : Bool = true                   // is the imagen oriented to the step angle. Default : true
-    var anglePosition : CPCAnglePosition = .start           // element position in angle. Default : .start
-    
     func correctedShadowOffsetForTransformRotationZ(_ angle:Double,offset:CGSize)-> CGSize {
-        let x = offset.height*CGFloat(sin(angle)) + offset.width*CGFloat(cos(angle));
-        let y = offset.height*CGFloat(cos(angle)) - offset.width*CGFloat(sin(angle));
-        return CGSize(width: x, height: y)
+        return CGSize(width :offset.height*CGFloat(sin(angle)) + offset.width*CGFloat(cos(angle)),
+                      height:offset.height*CGFloat(cos(angle)) - offset.width*CGFloat(sin(angle)))
     }
-    
     var shadow:Bool = false {
-        didSet(newValue) {
-            if (newValue) {
+        didSet {
+            if (shadow) {
                 layer.shadowOpacity = 1.0
                 layer.shadowRadius  = kDefaultElementShadowRadius
                 layer.shadowColor   = kDefaultElementShadowColor
                 layer.shadowOffset  = kDefaultElementShadowOffset
-                
                 if orientationToAngle {
                     let angle = layer.getTransformRotationZ()
                     layer.shadowOffset = correctedShadowOffsetForTransformRotationZ(angle, offset: layer.shadowOffset)
@@ -54,7 +50,6 @@ open class CPElement<T:CALayer> {
             }
         }
     }
-    
     internal var internalLayer:T? = nil                // layer for the text
     lazy var layer : T! = {
         if self.internalLayer  == nil {
@@ -78,65 +73,54 @@ open class CPStepData : CustomDebugStringConvertible {
     internal var shapeLayer:CAShapeLayer = CAShapeLayer()    // progress shape
     var maskLayer:CALayer? = nil                             // optional layer mask
     
-    // Optional step image
-    //internal var imageLayer : OMProgressImageLayer? = nil    // optional image layer
-    //lazy var image : OMProgressImageLayer! = {
-    //    if self.imageLayer  == nil {
-    //        self.imageLayer = OMProgressImageLayer()
-    //    }
-    //    return self.imageLayer!
-    //}()
+    // CPElements
     
-    //var imageAlign : OMAlign = .border                       // image align. Default : .Border
-    //var imageOrientationToAngle  : Bool = true               // is the imagen oriented to the step angle. Default : true
-    //var imageAngleAlign : PositionInAngle = .start              // image angle align. Default : .start
+    var ie:CPCElement<OMProgressImageLayer> = CPCElement<OMProgressImageLayer>()
+    var te:CPCElement<OMTextLayer>          = CPCElement<OMTextLayer>()
     
-    var ie:CPElement<OMProgressImageLayer> = CPElement<OMProgressImageLayer>()
-    var te:CPElement<OMTextLayer> = CPElement<OMTextLayer>()
-
-    /*
-    fileprivate func setUpStepLayerGeometry(element:CPElement<CALayer>, sizeOf:CGSize) {
-        print("DEBUG(\(element.layer.name ?? "")) : setUpStepLayerGeometry(\(self))")
-        if self.te.layer.string != nil {
-            // Reset the angle orientation before sets the new frame
-            self.te.layer.setTransformRotationZ(0.0)
-//            let sizeOf = self.te.layer.frameSize();
-            let angle:Double = self.angle.align(self.te.positionInAngle)
-            print("DEBUG(\(element.layer.name ?? "")): Angle \(round(angle.radiansToDegrees())) text aling:\(element.positionInAngle)")
-            let anglePoint = CPCAngle.point(angle:angle,
-                                           center:bounds.size.center(),
-                                           radius: CGFloat(alignInRadius(align: element.align, size: sizeOf)))
-            
-            
-            print("DEBUG(\(element.layer.name ?? "")): Position in angle \(anglePoint) Align:\(element.align)")
-            let positionInAngle = anglePoint.centerRect(sizeOf)
-            print("VERBOSE(\(element.layer.name ?? "")): Frame \(positionInAngle.integral) from the aligned step angle \(angle) and the text size \(sizeOf.integral()))")
-            self.te.layer.frame = positionInAngle
-            if self.te.orientationToAngle {
-                let rotationZ = (angle - startAngle)
-                print("VERBOSE(\(element.layer.name ?? "")): Image will be oriented to angle: \(round(rotationZ.radiansToDegrees()))")
-                element.layer.setTransformRotationZ( rotationZ )
-            }
+    
+    // CGFloat(alignInRadius(align: element.radiusPosition, size: sizeOf))
+    
+    func setUpStepLayerGeometry(element:CPCElement<CALayer>,
+                                      radius:CGFloat,
+                                      rect:CGRect,
+                                      sizeOf:CGSize,
+                                      startAngle:Double  = -90.0.degreesToRadians() ) {
+        
+        CPStepData.setUpStepLayerGeometry(element: element,
+                                          angle: self.angle,
+                                          radius:radius,
+                                          rect:rect,
+                                          sizeOf:sizeOf,
+                                          startAngle:startAngle );
+    
+    }
+    
+    class func setUpStepLayerGeometry(element:CPCElement<CALayer>,
+                                                  angle:CPCAngle,
+                                                  radius:CGFloat,
+                                                  rect:CGRect,
+                                                  sizeOf:CGSize,
+                                                  startAngle:Double  = -90.0.degreesToRadians() ) {
+        
+        let debugHeader = "DEBUG(\(element.layer.name ?? ""))"
+        print("\(debugHeader): setUpStepLayerGeometry(\(self))")
+        // Reset the angle orientation before sets the new frame
+        element.layer.setTransformRotationZ(0.0)
+        let angle:Double = angle.angle(element.anglePosition)
+        print("\(debugHeader) : Angle \(round(angle.radiansToDegrees())) position in angle :\(element.anglePosition)")
+        let anglePoint = CPCAngle.point(angle, center:rect.size.center(), radius: radius)
+        print("\(debugHeader) : Position in angle \(anglePoint) position in radius :\(element.radiusPosition)")
+        let positionInAngle = anglePoint.centerRect(sizeOf)
+        print("\(debugHeader) : Frame \(positionInAngle.integral) from the aligned step angle \(angle) and the text size \(sizeOf.integral()))")
+        element.layer.frame = positionInAngle
+        if element.orientationToAngle {
+            let rotationZ = (angle - startAngle)
+            print("\(debugHeader): Image will be oriented to angle: \(round(rotationZ.radiansToDegrees()))")
+            element.layer.setTransformRotationZ( rotationZ )
         }
     }
-    */
     
-    
-    /*
-     * Text
-     */
-    
-    /*var textAlign:OMAlign = .middle                          // text align. Default : .Middle
-    var textOrientationToAngle  : Bool = true                // is the text oriented to the step angle. Default : true
-    var textAngleAlign : PositionInAngle = .middle              // text angle align. Default : .middle
-    internal var textLayer:OMTextLayer? = nil                // layer for the text
-    lazy var text : OMTextLayer! = {
-        if self.textLayer  == nil {
-           self.textLayer = OMTextLayer()
-        }
-        return self.textLayer!
-    }()
-  */
     
     /*
      * Border
@@ -174,8 +158,8 @@ open class CPStepData : CustomDebugStringConvertible {
     
     required convenience public init(start:Double, percent:Double, color:UIColor!){
         self.init(start:start,
-            end: start + (𝜏 * percent),
-            color:color)
+                  end: start + (𝜏 * percent),
+                  color:color)
     }
     /**
      *
@@ -190,7 +174,7 @@ open class CPStepData : CustomDebugStringConvertible {
         let angle = CPCAngle(start:start, end:end)
         self.init(angle:angle, color:color)
     }
-
+    
     /**
      *
      * CPStepData constructor.
@@ -214,12 +198,17 @@ open class CPStepData : CustomDebugStringConvertible {
     var progress:Double = 0.0 {
         didSet(newValue) {
             shapeLayer.strokeEnd = CGFloat(newValue)
-            if let shapeLayerBorder = border {
+            // if exist border
+            if self.borderRatio > 0.0 {
                 // update the border layer too
-                shapeLayerBorder.strokeEnd = CGFloat(newValue)
+                border.strokeEnd = CGFloat(newValue)
             }
         }
     }
+    
+    /**
+     *  MARK : CustomDebugStringConvertible protocol
+     */
     
     public var debugDescription: String {
         let str = "[\(angle!) \(color.shortDescription) \(progress) \(borderRatio)]"

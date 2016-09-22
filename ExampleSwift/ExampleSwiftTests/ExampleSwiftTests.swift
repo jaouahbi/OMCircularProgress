@@ -48,7 +48,7 @@ class ExampleSwiftTests: XCTestCase {
         }
     }
 
-    func testAngle() {
+    func testCPCAngle() {
         let angel1 = CPCAngle(start: 0, end: M_PI * 2);
         let angel2 = CPCAngle(start: M_PI, length: M_PI * 2)
         
@@ -56,7 +56,7 @@ class ExampleSwiftTests: XCTestCase {
         let angel4 = CPCAngle(start: -M_PI, length: M_PI * 2)
         
         let radius10:CGFloat = 10
-        let radius1:CGFloat  = 1
+        let radius1 :CGFloat = 1
        
         XCTAssert(angel1.valid() && angel2.valid())
         XCTAssert(angel3.valid() && angel4.valid())
@@ -99,7 +99,7 @@ class ExampleSwiftTests: XCTestCase {
         XCTAssert(CPCAngle.inRange(angle: M_PI * 3)      == false)
         XCTAssert(CPCAngle.inRange(angle: M_PI * 3 * -1) == false)
         
-        XCTAssert(CPCAngle.ratio(elements: M_PI*2.0) == 1.0)
+        XCTAssert(CPCAngle.ratio(elements: M_PI * 2.0) == 1.0)
         
     }
     func testCircleAngle() {

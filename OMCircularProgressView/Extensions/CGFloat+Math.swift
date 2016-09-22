@@ -15,28 +15,28 @@
 //
 //
 
-//  Float+Math.swift
+//  CGFloat+Math.swift
 //
 //  Created by Jorge Ouahbi on 25/11/15.
-//  Copyright © 2015 Jorge Ouahbi. All rights reserved.
+//  Copyright d© 2015 Jorge Ouahbi. All rights reserved.
 //
 
 import UIKit
 
 /**
- *  Float Extension for conversion from/to degrees/radians and clamp
+ *  CGFloat Extension for conversion from/to degrees/radians and clamp
  */
 
-public extension Float {
+public extension CGFloat {
     
-    func degreesToRadians () -> Float {
-        return self * 0.01745329252
+    func degreesToRadians () -> CGFloat {
+        return self * CGFloat(0.01745329252)
     }
-    func radiansToDegrees () -> Float {
-        return self * 57.29577951
+    func radiansToDegrees () -> CGFloat {
+        return self * CGFloat(57.29577951)
     }
     
-    mutating func clamp(toLowerValue lowerValue: Float, upperValue: Float){
-        self = min(max(self, lowerValue), upperValue)
+    mutating func clamp(toLowerValue lowerValue: CGFloat, upperValue: CGFloat){
+        self = Swift.min(Swift.max(self, lowerValue), upperValue)
     }
 }

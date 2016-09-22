@@ -508,7 +508,7 @@ enum CPCRadiusAlignment : Int
      *
      * returns: return the start angle
      */
-    func getStartAngle() -> Double {
+    fileprivate func getStartAngle() -> Double {
         var startAngle = self.startAngle;
         if (dataSteps.count > 0) {
             // The new startAngle is the last endAngle
@@ -796,7 +796,6 @@ enum CPCRadiusAlignment : Int
             let theStep =  step as! CPStepData
             theStep.te.layer .name = "step \(index) text"
             containerLayer!.addSublayer(theStep.te.layer )
-            theStep.te.shadow = true
         }
     }
     
@@ -858,7 +857,13 @@ enum CPCRadiusAlignment : Int
             print("DEBUG(\(layer.name ?? "")): Position in angle \(anglePoint)  position in radius :\(step.te.radiusPosition)")
             let positionInAngle = anglePoint.centerRect(sizeOf)
             print("VERBOSE(\(layer.name ?? "")): Frame \(positionInAngle.integral) from the aligned step angle \(angle) and the text size \(sizeOf.integral()))")
+            
             step.te.layer.frame = positionInAngle
+            
+            if (step.te.layer.textRadius > 0) {
+                step.te.layer.frame = self.bounds
+            }
+            
             if step.te.orientationToAngle {
                 let rotationZ = (angle - startAngle)
                 print("VERBOSE(\(layer.name ?? "")): Image will be oriented to angle: \(round(rotationZ.radiansToDegrees()))")

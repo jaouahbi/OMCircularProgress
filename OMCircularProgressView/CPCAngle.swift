@@ -49,6 +49,14 @@ public enum CPCAnglePosition : Int
     }
 }
 
+func + (left: CPCAngle, right: CPCAngle) -> CPCAngle {
+    return CPCAngle(start:left.start,length:left.end+right.length())
+}
+
+func - (left: CPCAngle, right: CPCAngle) -> CPCAngle {
+    return CPCAngle(start:left.start,length:left.end-right.length())
+}
+
 /**
  * Object that encapsulate a angle
  */
@@ -172,7 +180,7 @@ open class CPCAngle : CustomDebugStringConvertible {
     
     public func valid() -> Bool {
         let len = length()
-        return len > 0.0 && len <= 𝜏
+        return len >= 0.0 && len <= 𝜏
     }
     
     static func inRange(angle:Double) -> Bool {

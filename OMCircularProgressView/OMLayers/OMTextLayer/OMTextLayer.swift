@@ -33,6 +33,10 @@
 //      Added font underline
 //  Versión 0.12 (6-9-2016)
 //      Updated to swift 3.0
+//  Versión 0.13 (22-9-2016)
+//      Added code so that the text can follow an angle with a certain radius
+
+
 
 
 #if os(iOS)
@@ -44,6 +48,7 @@
 import CoreGraphics
 import CoreText
 import CoreFoundation
+
 
 public enum OMVerticalAlignment {
     case top
@@ -57,15 +62,26 @@ public enum OMVerticalAlignment {
     
     fileprivate(set) var fontRef:CTFont = CTFontCreateWithName("Helvetica" as CFString, 12.0, nil);
     
+    var textAngle : CPCAngle? = nil {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
+    var textRadius : CGFloat = 0.0 {
+        didSet{
+            setNeedsDisplay()
+        }
+    }
+    
     var underlineColor : UIColor?
-    {
+        {
         didSet{
             setNeedsDisplay()
         }
     }
     
     var underlineStyle : CTUnderlineStyle = CTUnderlineStyle()
-    {
+        {
         didSet{
             setNeedsDisplay()
         }
@@ -74,9 +90,9 @@ public enum OMVerticalAlignment {
     //
     //  see 1: default ligatures, 0: no ligatures, 2: all ligatures
     //
-
+    
     var verticalAlignment : OMVerticalAlignment = .middle
-    {
+        {
         didSet{
             setNeedsDisplay()
         }
@@ -87,19 +103,19 @@ public enum OMVerticalAlignment {
     //
     
     var fontLigature:NSNumber   = NSNumber(value: 1 as Int32)
-    {
+        {
         didSet{
             setNeedsDisplay()
         }
     }
-
+    
     var fontStrokeColor:UIColor = UIColor.lightGray
-    {
+        {
         didSet{
             setNeedsDisplay()
         }
     }
-
+    
     var fontStrokeWidth:Float   = -3
         {
         didSet{
@@ -163,12 +179,12 @@ public enum OMVerticalAlignment {
         
         
         
-    //   self.borderWidth = 2    ;
-   //     self.borderColor = UIColor.red.cgColor
+        //   self.borderWidth = 2    ;
+        //   self.borderColor = UIColor.red.cgColor
         
         
-//        self.shouldRasterize = true
-//        self.rasterizationScale = UIScreen.main.scale
+        //        self.shouldRasterize = true
+        //        self.rasterizationScale = UIScreen.main.scale
         
     }
     
@@ -254,16 +270,15 @@ public enum OMVerticalAlignment {
             // Fallback on earlier versions
         };
         
-    
+        
         CFAttributedStringSetAttribute(newString,range,kCTFontAttributeName,fontRef)
         
-
         // TODO: add more CTParagraphStyleSetting
         // CTParagraph
         
         let setting = [CTParagraphStyleSetting(spec: .alignment, valueSize: MemoryLayout.size(ofValue: alignment), value: &alignment),
                        CTParagraphStyleSetting(spec: .lineBreakMode, valueSize: MemoryLayout.size(ofValue: lineBreakMode), value: &lineBreakMode)]
-      
+        
         CFAttributedStringSetAttribute(newString,
                                        range,
                                        kCTParagraphStyleAttributeName,
@@ -295,7 +310,7 @@ public enum OMVerticalAlignment {
                                            kCTUnderlineColorAttributeName,
                                            underlineColor.cgColor);
         }
-
+        
         // TODO: Add more attributes
         
         return newString!
@@ -346,7 +361,7 @@ public enum OMVerticalAlignment {
             alignment = CTTextAlignment.left
         }
     }
-
+    
     fileprivate func setFont(_ fontName:String!, fontSize:CGFloat, matrix: UnsafePointer<CGAffineTransform>? = nil) {
         
         assert(fontSize > 0,"Invalid font size (fontSize ≤ 0)")
@@ -356,7 +371,7 @@ public enum OMVerticalAlignment {
             fontRef = CTFontCreateWithName(fontName as CFString, fontSize, matrix)
         }
     }
-
+    
     fileprivate func setFont(_ font:UIFont, matrix: UnsafePointer<CGAffineTransform>? = nil) {
         setFont(font.fontName, fontSize: font.pointSize, matrix: matrix)
     }
@@ -378,171 +393,198 @@ public enum OMVerticalAlignment {
                 context.scaleBy(x: 1.0, y: -1.0);
             #endif
             
-            // Add the atributtes to the String
-            let attrStringWithAttributes = stringWithAttributes(string)
             
             // Create a path which bounds the area where you will be drawing text.
             // The path need not be rectangular.
             var rect:CGRect = bounds
             let path = CGMutablePath();
-           
+            
             /*// Calculate the rect
-            if (self.verticalAlignment == .middle) {
-                // Draw normally (top)
-            } else if (self.verticalAlignment == .top) {
-                let boundingBox = CTFontGetBoundingBox(fontRef);
-                //Get the position on the y axis (middle)
-                var midHeight = bounds.size.height * 0.5;
-                midHeight -= boundingBox.size.height  * 0.5;
-                rect  = CGRect(x:0, y:midHeight, width:bounds.size.width, height:boundingBox.size.height)
-            } else if (self.verticalAlignment == .bottom) {
-                let boundingBox = CTFontGetBoundingBox(fontRef);
-                rect  = CGRect(x:0, y:bounds.size.height-boundingBox.size.height, width:bounds.size.width, height:boundingBox.size.height)
+             if (self.verticalAlignment == .middle) {
+             // Draw normally (top)
+             } else if (self.verticalAlignment == .top) {
+             let boundingBox = CTFontGetBoundingBox(fontRef);
+             //Get the position on the y axis (middle)
+             var midHeight = bounds.size.height * 0.5;
+             midHeight -= boundingBox.size.height  * 0.5;
+             rect  = CGRect(x:0, y:midHeight, width:bounds.size.width, height:boundingBox.size.height)
+             } else if (self.verticalAlignment == .bottom) {
+             let boundingBox = CTFontGetBoundingBox(fontRef);
+             rect  = CGRect(x:0, y:bounds.size.height-boundingBox.size.height, width:bounds.size.width, height:boundingBox.size.height)
+             } else {
+             assertionFailure();
+             // Draw normally (top)
+             }*/
+            
+            if (textRadius == 0 || textAngle == nil) {
+                
+                // add the rect for the frame
+                path.addRect(rect);
+                
+                // Add the atributtes to the String
+                let attrStringWithAttributes = stringWithAttributes(string)
+                
+                // Create the framesetter with the attributed string.
+                let framesetter = CTFramesetterCreateWithAttributedString(attrStringWithAttributes);
+                
+                // Create a frame.
+                let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, nil);
+                
+                // Draw the specified frame in the given context.
+                CTFrameDraw(frame, context);
+                
+                //  context.flush()
+                
             } else {
-                assertionFailure();
-                // Draw normally (top)
-            }*/
-
-            // add the rect for the frame
-            path.addRect(rect);
-            
-            // Create the framesetter with the attributed string.
-            let framesetter = CTFramesetterCreateWithAttributedString(attrStringWithAttributes);
-            
-            // Create a frame.
-            let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, nil);
-            
-            // Draw the specified frame in the given context.
-            CTFrameDraw(frame, context);
-
-//            context.flush()
+                
+                drawWithArc(context: context, rect:rect)
+                
+            }
             
             context.restoreGState()
-    
+            
         }
-        
         
         super.draw(in: context)
-        
-        /*
-        let imgRef = context.makeImage();
-        
-        let img = UIImage(cgImage:imgRef!);
-        
-        print("\(img)");
-        */
-        
     }
 }
 
+struct GlyphArcInfo {
+    var width:CGFloat;
+    var angle:CGFloat;  // in radians
+};
 
-extension OMTextLayer
-{
-    func centreArcPerpendicular(text str: String, context: CGContext, radius r: CGFloat, angle theta: CGFloat, colour c: UIColor, font: UIFont, clockwise: Bool)
+
+extension OMTextLayer {
+    
+    func prepareGlyphArcInfo(line:CTLine, glyphCount:CFIndex, angle:CPCAngle) -> [GlyphArcInfo] {
+        let runArray = CTLineGetGlyphRuns(line) as Array
+        
+        var glyphArcInfo : [GlyphArcInfo] = []
+        
+        glyphArcInfo.reserveCapacity(glyphCount)
+        
+        // Examine each run in the line, updating glyphOffset to track how far along the run is in terms of glyphCount.
+        var glyphOffset:CFIndex = 0;
+        for run in runArray {
+            let runGlyphCount = CTRunGetGlyphCount(run as! CTRun);
+            
+            // Ask for the width of each glyph in turn.
+            for runGlyphIndex in 0 ..< runGlyphCount {
+                let i = runGlyphIndex + glyphOffset
+                let range = CFRangeMake(runGlyphIndex, 1)
+                let width = CGFloat(CTRunGetTypographicBounds(run as! CTRun, range, nil, nil, nil))
+                glyphArcInfo.insert( GlyphArcInfo(width:width,angle:0), at:i)
+            }
+            
+            glyphOffset += runGlyphCount;
+        }
+        
+        
+        let lineLength = CGFloat(CTLineGetTypographicBounds(line, nil, nil, nil))
+        
+        var info = glyphArcInfo.first!
+        
+        var prevHalfWidth:CGFloat = info.width / 2.0;
+        
+        info.angle = (prevHalfWidth / lineLength) * CGFloat(angle.length())
+        
+        var angleArc = info.angle
+        
+        // Divide the arc into slices such that each one covers the distance from one glyph's center to the next.
+        
+        for lineGlyphIndex:CFIndex in 1 ..< glyphCount {
+            
+            let halfWidth = glyphArcInfo[lineGlyphIndex].width / 2.0;
+            
+            let prevCenterToCenter:CGFloat = prevHalfWidth + halfWidth;
+            
+            let glyphAngle = (prevCenterToCenter / lineLength) * CGFloat(angle.length())
+            
+            angleArc += glyphAngle
+            
+            print("#\(lineGlyphIndex) angle :\(glyphAngle.radiansToDegrees())º arc length :\(angleArc.radiansToDegrees())")
+            
+            glyphArcInfo[lineGlyphIndex].angle = glyphAngle
+            
+            prevHalfWidth = halfWidth
+        }
+        
+        return  glyphArcInfo;
+    }
+    
+    
+    func drawWithArc(context:CGContext, rect:CGRect)
     {
-        // *******************************************************
-        // This draws the String str around an arc of radius r,
-        // with the text centred at polar angle theta
-        // *******************************************************
+        print("drawAttributedStringInArc(\(rect))")
         
-        let l = str.characters.count
-        let attributes = [NSFontAttributeName: font]
-        
-        let characters: [String] = str.characters.map { String($0) } // An array of single character strings, each character in str
-        var arcs: [CGFloat] = [] // This will be the arcs subtended by each character
-        var totalArc: CGFloat = 0 // ... and the total arc subtended by the string
-        
-        // Calculate the arc subtended by each letter and their total
-        for i in 0 ..< l {
-            arcs += [chordToArc(characters[i].size(attributes: attributes).width, radius: r)]
-            totalArc += arcs[i]
+        if let string = string {
+            let angle = self.textAngle!
+            let line  = CTLineCreateWithAttributedString(self.stringWithAttributes(string))
+            let glyphCount:CFIndex = CTLineGetGlyphCount(line);
+            if glyphCount == 0 {
+                return;
+            }
+            
+            let glyphArcInfo =  prepareGlyphArcInfo(line: line,glyphCount: glyphCount,angle: angle)
+            if glyphArcInfo.count > 0 {
+                
+                // Move the origin from the lower left of the view nearer to its center.
+                context.saveGState();
+                context.translateBy(x: rect.midX, y: rect.midY)
+                
+                // Rotate the context 90 degrees counterclockwise.
+                context.rotate(by: CGFloat(M_PI_2));
+                
+                /*
+                 Now for the actual drawing. The angle offset for each glyph relative to the previous glyph has already been calculated; with that information in hand, draw those glyphs overstruck and centered over one another, making sure to rotate the context after each glyph so the glyphs are spread along a semicircular path.
+                 */
+                var textPosition = CGPoint(x:0.0,y: self.textRadius);
+                
+                context.textPosition = textPosition
+                
+                let runArray = CTLineGetGlyphRuns(line);
+                let runCount = CFArrayGetCount(runArray);
+                
+                var glyphOffset:CFIndex = 0;
+                
+                for runIndex:CFIndex in 0 ..< runCount {
+                    let run = (runArray as NSArray)[runIndex]
+                    let runGlyphCount:CFIndex = CTRunGetGlyphCount(run as! CTRun);
+                    
+                    for runGlyphIndex:CFIndex in 0 ..< runGlyphCount {
+                        
+                        let glyphRange:CFRange = CFRangeMake(runGlyphIndex, 1);
+                        
+                        let angleRotation:CGFloat = -(glyphArcInfo[runGlyphIndex + glyphOffset].angle);
+                        
+                        print("run glyph#\(runGlyphIndex) angle rotation :\(angleRotation.radiansToDegrees())");
+                        
+                        context.rotate(by: angleRotation);
+                        
+                        // Center this glyph by moving left by half its width.
+                        let glyphWidth:CGFloat = glyphArcInfo[runGlyphIndex + glyphOffset].width;
+                        let halfGlyphWidth:CGFloat = glyphWidth / 2.0;
+                        let positionForThisGlyph:CGPoint = CGPoint(x:textPosition.x - halfGlyphWidth, y:textPosition.y);
+                        
+                        // Glyphs are positioned relative to the text position for the line, so offset text position leftwards by this glyph's width in preparation for the next glyph.
+                        
+                        textPosition.x -= glyphWidth;
+                        
+                        var textMatrix = CTRunGetTextMatrix(run as! CTRun)
+                        
+                        textMatrix.tx = positionForThisGlyph.x;
+                        textMatrix.ty = positionForThisGlyph.y;
+                        
+                        context.textMatrix = textMatrix;
+                        
+                        CTRunDraw(run as! CTRun, context, glyphRange);
+                    }
+                    glyphOffset += runGlyphCount;
+                }
+                context.restoreGState();
+            }
         }
-        
-        // Are we writing clockwise (right way up at 12 o'clock, upside down at 6 o'clock)
-        // or anti-clockwise (right way up at 6 o'clock)?
-        let direction: CGFloat = clockwise ? -1 : 1
-        let slantCorrection = clockwise ? -CGFloat(M_PI_2) : CGFloat(M_PI_2)
-        
-        // The centre of the first character will then be at
-        // thetaI = theta - totalArc / 2 + arcs[0] / 2
-        // But we add the last term inside the loop
-        
-        //
-        //In case you don't need the text to be centered, but start from the initial coordinate, change the line
-        //var thetaI = theta - direction * totalArc / 2 
-        //to var thetaI = theta;
-        var thetaI = theta - direction * totalArc / 2
-        
-        for i in 0 ..< l {
-            thetaI += direction * arcs[i] / 2
-            // Call centerText with each character in turn.
-            // Remember to add +/-90º to the slantAngle otherwise
-            // the characters will "stack" round the arc rather than "text flow"
-            centre(text: characters[i], context: context, radius: r, angle: thetaI, colour: c, font: font, slantAngle: thetaI + slantCorrection)
-            // The centre of the next character will then be at
-            // thetaI = thetaI + arcs[i] / 2 + arcs[i + 1] / 2
-            // but again we leave the last term to the start of the next loop...
-            thetaI += direction * arcs[i] / 2
-        }
     }
-    
-    func chordToArc(_ chord: CGFloat, radius: CGFloat) -> CGFloat {
-        // *******************************************************
-        // Simple geometry
-        // *******************************************************
-        return 2 * asin(chord / (2 * radius))
-    }
-    
-    func centre(text str: String, context: CGContext, radius r:CGFloat, angle theta: CGFloat, colour c: UIColor, font: UIFont, slantAngle: CGFloat) {
-        // *******************************************************
-        // This draws the String str centred at the position
-        // specified by the polar coordinates (r, theta)
-        // i.e. the x= r * cos(theta) y= r * sin(theta)
-        // and rotated by the angle slantAngle
-        // *******************************************************
-        
-        // Set the text attributes
-        let attributes = [NSForegroundColorAttributeName: c,
-                          NSFontAttributeName: font]
-        // Save the context
-        context.saveGState()
-        // Undo the inversion of the Y-axis (or the text goes backwards!)
-        context.scaleBy(x: 1, y: -1)
-        // Move the origin to the centre of the text (negating the y-axis manually)
-        context.translateBy(x: r * cos(theta), y: -(r * sin(theta)))
-        // Rotate the coordinate system
-        context.rotate(by: -slantAngle)
-        // Calculate the width of the text
-        let offset = str.size(attributes: attributes)
-        // Move the origin by half the size of the text
-        context.translateBy (x: -offset.width / 2, y: -offset.height / 2) // Move the origin to the centre of the text (negating the y-axis manually)
-        // Draw the text
-        str.draw(at: CGPoint(x: 0, y: 0), withAttributes: attributes)
-        // Restore the context
-        context.restoreGState()
-    }
-    
-    // *******************************************************
-    // Playground code to test
-    // *******************************************************
-    /*let size = CGSize(width: 256, height: 256)
-    
-    UIGraphicsBeginImageContextWithOptions(size, true, 0.0)
-    let context = UIGraphicsGetCurrentContext()!
-    // *******************************************************************
-    // Scale & translate the context to have 0,0
-    // at the centre of the screen maths convention
-    // Obviously change your origin to suit...
-    // *******************************************************************
-    context.translateBy (x: size.width / 2, y: size.height / 2)
-    context.scaleBy (x: 1, y: -1)
-    
-    centreArcPerpendicular(text: "Hello round world", context: context, radius: 100, angle: 0, colour: UIColor.red(), font: UIFont.systemFont(ofSize: 16), clockwise: true)
-    centreArcPerpendicular(text: "Anticlockwise", context: context, radius: 100, angle: CGFloat(-M_PI_2), colour: UIColor.red(), font: UIFont.systemFont(ofSize: 16), clockwise: false)
-    centre(text: "Hello flat world", context: context, radius: 0, angle: 0 , colour: UIColor.yellow(), font: UIFont.systemFont(ofSize: 16), slantAngle: CGFloat(M_PI_4))
-    
-    
-    let image = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()*/
-    
 }
+

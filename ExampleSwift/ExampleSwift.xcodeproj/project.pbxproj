@@ -20,6 +20,7 @@
 		353FAB271CBB1EA300D6964F /* OMCircularProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB0D1CBB1EA300D6964F /* OMCircularProgress.swift */; };
 		353FAB301CBB1EA300D6964F /* CPCStepData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353FAB161CBB1EA300D6964F /* CPCStepData.swift */; };
 		3585FD261D8BF72800ABE139 /* UIColor+Crayola.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3585FD251D8BF72800ABE139 /* UIColor+Crayola.swift */; };
+		359D5C5C1D9347810040D921 /* CGFloat+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359D5C5B1D9347810040D921 /* CGFloat+Math.swift */; };
 		35F32E021D867EAE00576BA1 /* BezierPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F32E011D867EAE00576BA1 /* BezierPolygon.swift */; };
 		35F32E041D867ED300576BA1 /* Compatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F32E031D867ED300576BA1 /* Compatibility.swift */; };
 		35F5DD691AEBDA1400F36353 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 35F5DD681AEBDA1400F36353 /* Default-568h@2x.png */; };
@@ -83,6 +84,7 @@
 		353FAB0D1CBB1EA300D6964F /* OMCircularProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCircularProgress.swift; sourceTree = "<group>"; };
 		353FAB161CBB1EA300D6964F /* CPCStepData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CPCStepData.swift; sourceTree = "<group>"; };
 		3585FD251D8BF72800ABE139 /* UIColor+Crayola.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Crayola.swift"; sourceTree = "<group>"; };
+		359D5C5B1D9347810040D921 /* CGFloat+Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Math.swift"; sourceTree = "<group>"; };
 		35F32E011D867EAE00576BA1 /* BezierPolygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BezierPolygon.swift; sourceTree = "<group>"; };
 		35F32E031D867ED300576BA1 /* Compatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compatibility.swift; sourceTree = "<group>"; };
 		35F5DD681AEBDA1400F36353 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 		35F6A7371D80386D0023CFF3 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				359D5C5B1D9347810040D921 /* CGFloat+Math.swift */,
 				3585FD251D8BF72800ABE139 /* UIColor+Crayola.swift */,
 				350BAE921D8AF86B0094540B /* Float+Math.swift */,
 				35F6A7381D80386D0023CFF3 /* CAShapeLayer+HitTest.swift */,
@@ -433,6 +436,7 @@
 				35F6A72F1D80379A0023CFF3 /* Interpolation.swift in Sources */,
 				352CB74D1A6D1FBB00863568 /* ViewController.swift in Sources */,
 				35F6A7291D80379A0023CFF3 /* OMGradientView.swift in Sources */,
+				359D5C5C1D9347810040D921 /* CGFloat+Math.swift in Sources */,
 				35F6A7451D80386D0023CFF3 /* CAShapeLayer+HitTest.swift in Sources */,
 				353FAB251CBB1EA300D6964F /* CPCAngle.swift in Sources */,
 				35F6A7991D80ADDD0023CFF3 /* OMNumberLayer.swift in Sources */,
