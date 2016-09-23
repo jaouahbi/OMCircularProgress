@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.license = 'APACHE'
   s.summary = 'Custom circular progress UIControl with steps, images, text and individual animations in Swift'
   s.homepage = 'https://github.com/jaouahbi/OMCircularProgressView'
-  s.social_media_url = 'http://twitter.com/j0rge0M'
+  s.social_media_url = 'https://twitter.com/a_c_r_a_t_a'
   s.authors = { 'Jorge Ouahbi' => 'jorgeouahbi@gmail.com' }
   s.source = { :git => 'https://github.com/jaouahbi/OMCircularProgressView.git', :tag => s.version }
 

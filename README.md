@@ -30,7 +30,11 @@ Open a issue.
 
 ## CocoaPods Installation
 
-> No, sorry
+> TODO
+
+## Carthage Installation
+
+> TODO
 
 * * *
 
