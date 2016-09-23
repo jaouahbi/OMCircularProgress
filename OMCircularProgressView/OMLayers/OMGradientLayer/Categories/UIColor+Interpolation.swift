@@ -34,6 +34,26 @@ extension UIColor {
     var colorSpace : CGColorSpace? {
         return self.cgColor.colorSpace
     }
+    
+    /// Returns an array of `CGFloat`s containing four elements with `self`'s:
+    /// * hue (index `0`)
+    /// * saturation (index `1`)
+    /// * brightness (index `2`)
+    /// * alpha (index `3`)
+    var hsbaComponents: [CGFloat] {
+        // Constructs the array in which to store the HSBA-components.
+        var components = [CGFloat](repeating: 0.0, count: 4)
+        
+        // Stores `self`'s HSBA-component values in `components`.
+        getHue(       &(components[0]),
+                      saturation: &(components[1]),
+                      brightness: &(components[2]),
+                      alpha:      &(components[3])
+        )
+        
+        return components
+    }
+    
     var shortDescription:String {
         
         if (numberOfComponents == 2) {
