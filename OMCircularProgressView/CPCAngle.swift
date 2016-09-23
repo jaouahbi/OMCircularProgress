@@ -220,7 +220,17 @@ open class CPCAngle : CustomDebugStringConvertible {
         }
     }
     
-    public class func point(_ angle:Double, center:CGPoint, radius: CGFloat) -> CGPoint {
+    
+    public class func rectOfAngle(_ angle:CPCAngle, center:CGPoint, radius: CGFloat) -> CGRect{
+        let p1  = CPCAngle.pointOfAngle(angle.start, center: center, radius: radius)
+        let p2  = CPCAngle.pointOfAngle(angle.end, center: center, radius: radius)
+        return CGRect(x:min(p1.x, p2.x),
+                      y:min(p1.y, p2.y),
+                      width:fabs(p1.x - p2.x),
+                      height:fabs(p1.y - p2.y));
+    }
+    
+    public class func pointOfAngle(_ angle:Double, center:CGPoint, radius: CGFloat) -> CGPoint {
         
         // Given a radius length r and an angle in radians and a circle's center (x,y),
         // calculate the coordinates of a point on the circumference

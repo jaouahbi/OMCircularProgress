@@ -16,7 +16,7 @@
 
 
 //
-//  UIBezierPath+Elements.swift
+//  UIBezierPath+Subpaths.swift
 //
 //  Created by Jorge Ouahbi on 22/9/16.
 //  Copyright © 2016 Jorge Ouahbi . All rights reserved.
@@ -25,15 +25,16 @@
 import UIKit
 
 extension CGPath {
+    
     func forEach( body: @convention(block) (CGPathElement) -> Void) {
         typealias Body = @convention(block) (CGPathElement) -> Void
-        func callback(info: UnsafeMutableRawPointer, element: UnsafePointer<CGPathElement>) {
+        func callback(info: UnsafeMutableRawPointer?, element: UnsafePointer<CGPathElement>) {
             let body = unsafeBitCast(info, to: Body.self)
             body(element.pointee)
         }
         print(MemoryLayout.size(ofValue: body))
         let unsafeBody = unsafeBitCast(body, to: UnsafeMutableRawPointer.self)
-        self.apply(info: unsafeBody, function: callback as! CGPathApplierFunction)
+        self.apply(info: unsafeBody, function: callback)
     }
 }
 
@@ -59,8 +60,7 @@ extension CGPathElement {
     }
 }
 
-extension UIBezierPath
-{
+extension UIBezierPath {
     func subpaths() -> NSArray? {
         let results = NSMutableArray()
         var current:UIBezierPath? = nil;

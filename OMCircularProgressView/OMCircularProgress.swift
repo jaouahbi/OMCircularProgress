@@ -737,10 +737,9 @@ enum CPCRadiusAlignment : Int
     }
     fileprivate func anglePoint(_ angle:Double, radius:CGFloat, align:CPCRadiusAlignment = .middle,size:CGSize = CGSize.zero) -> CGPoint {
         print("DEBUG(\(layer.name ?? "")): anglePoint(\(angle) \(radius) \(align) \(size))")
-        return CPCAngle.point(angle,center:bounds.size.center(),radius:radius)
+        return CPCAngle.pointOfAngle(angle,center:bounds.size.center(),radius:radius)
     }
-    
-    
+
     fileprivate func angleRect(_ angle:Double, align:CPCRadiusAlignment, size:CGSize = CGSize.zero) -> CGRect {
         print("DEBUG(\(layer.name ?? "")): anglePointCentered(\(angle) \(align) \(size))")
         return anglePoint(angle,align: align,size: size).centerRect(size)
@@ -748,7 +747,7 @@ enum CPCRadiusAlignment : Int
     }
     fileprivate func anglePoint(_ angle:Double, align:CPCRadiusAlignment, size:CGSize = CGSize.zero) -> CGPoint {
         print("DEBUG(\(layer.name ?? "")): anglePoint(\(angle) \(align) \(size))")
-        return CPCAngle.point(angle,center:bounds.size.center(),radius:CGFloat(alignInRadius(align:align ,size: size )))
+        return CPCAngle.pointOfAngle(angle,center:bounds.size.center(),radius:CGFloat(alignInRadius(align:align ,size: size )))
     }
     
     
@@ -821,7 +820,7 @@ enum CPCRadiusAlignment : Int
         step.ie.layer.setTransformRotationZ(0)
         let angle = step.angle.angle(step.ie.anglePosition)
         print("DEBUG(\(layer.name ?? "")): angle \(round(angle.radiansToDegrees())) text angle position :\(step.ie.anglePosition)")
-        let anglePoint = CPCAngle.point(angle,
+        let anglePoint = CPCAngle.pointOfAngle(angle,
                                        center:bounds.size.center(),
                                        radius: CGFloat(alignInRadius(align: step.ie.radiusPosition, size: sizeOf!)))
         print("DEBUG(\(layer.name ?? "")): Position in angle \(anglePoint)  position in radius :\(step.ie.radiusPosition)")
@@ -850,18 +849,17 @@ enum CPCRadiusAlignment : Int
             let sizeOf = step.te.layer.frameSize();
             let angle:Double = step.angle.angle(step.te.anglePosition)
             print("DEBUG(\(layer.name ?? "")): angle \(round(angle.radiansToDegrees())) text angle position :\(step.te.anglePosition)")
-            let anglePoint = CPCAngle.point(angle,
+            let anglePoint = CPCAngle.pointOfAngle(angle,
                                            center:bounds.size.center(),
                                            radius: CGFloat(alignInRadius(align: step.te.radiusPosition, size: sizeOf)))
-            
             print("DEBUG(\(layer.name ?? "")): Position in angle \(anglePoint)  position in radius :\(step.te.radiusPosition)")
-            let positionInAngle = anglePoint.centerRect(sizeOf)
-            print("VERBOSE(\(layer.name ?? "")): Frame \(positionInAngle.integral) from the aligned step angle \(angle) and the text size \(sizeOf.integral()))")
+            let frame = anglePoint.centerRect(sizeOf)
+            print("VERBOSE(\(layer.name ?? "")): Frame \(frame.integral) from the aligned step angle \(angle) and the text size \(sizeOf.integral()))")
             
-            step.te.layer.frame = positionInAngle
-            
-            if (step.te.layer.textRadius > 0) {
+            if (step.te.layer.radius > 0) {
                 step.te.layer.frame = self.bounds
+            } else {
+                step.te.layer.frame = frame
             }
             
             if step.te.orientationToAngle {

@@ -24,6 +24,7 @@ import UIKit
 
 class ProgressExampleViewController: UIViewController {
     
+    
     @IBOutlet weak var progressViewMood: OMCircularProgress!
     @IBOutlet weak var progressViewClockHours: OMCircularProgress!
     @IBOutlet weak var progressViewClockMinutes: OMCircularProgress!
@@ -67,7 +68,7 @@ class ProgressExampleViewController: UIViewController {
         // Setup the circular progress examples
         //
         
-    
+        
         // clock example
         
         setupClock()
@@ -167,7 +168,7 @@ class ProgressExampleViewController: UIViewController {
                                   colors[1],
                                   colors[0],
                                   color.lighterColor(percent: 0.1) ]
-
+            
             gradient.frame     = progress.bounds
             //gradient.function  = .exponential
             gradient.slopeFunction =  BounceEaseInOut
@@ -187,12 +188,13 @@ class ProgressExampleViewController: UIViewController {
         
         progress.image.image = UIImage(named: "8")
         progress.image.progress = 1.0
-
+        
     }
     
     func setupWithGradientMask(_ progress:OMCircularProgress)
     {
-        // Configure the animation
+        /// Configure the animation
+        
         progress.enableAnimations          = true;
         progress.animationDuration  = 10
         progress.thicknessRatio     = 0.5      // 50%
@@ -201,14 +203,13 @@ class ProgressExampleViewController: UIViewController {
         
         progress.percentText    = true
         
-        // Configure the font of text
+        /// Configure the font of text
         
         let textLayer = progress.number!
+
+        let fontMenlo = UIFont(name:"Menlo-Bold", size:CGFloat(UIDevice.current.userInterfaceIdiom == .pad ? 120 : 50))
         
-        let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 120 : 50
-        
-        textLayer.font = UIFont(name: "HelveticaNeue-Bold",size:CGFloat(fontSize))
-        
+        textLayer.font                = fontMenlo
         textLayer.foregroundColor     = UIColor.black
         textLayer.fontBackgroundColor = UIColor.clear
         textLayer.fontStrokeColor     = UIColor.white
@@ -232,7 +233,7 @@ class ProgressExampleViewController: UIViewController {
             gradient.frame     = progress.bounds
             gradient.colors    = [colors[i],UIColor(white:0,alpha: 0.8),colors[i]]
             
-            let points = gradient.gradientPointsToAngle(theStep!.angle.norm())
+            let points         = OMGradientLayer.pointsFromNormalizedAngle(theStep!.angle.norm())
             
             // axial gradient
             gradient.startPoint = points.0
@@ -270,10 +271,10 @@ class ProgressExampleViewController: UIViewController {
             gradient.function  = .exponential
             gradient.frame     = progress.bounds
             gradient.colors    = [color,
-                                       UIColor(white:0,alpha: 0.8),
-                                       color]
+                                  UIColor(white:0,alpha: 0.8),
+                                  color]
             // Axial gradient
-            let points = gradient.gradientPointsToAngle(step!.angle.norm())
+            let points = OMGradientLayer.pointsFromNormalizedAngle(step!.angle.norm())
             gradient.startPoint = points.0
             gradient.endPoint   = points.1
             
@@ -295,8 +296,8 @@ class ProgressExampleViewController: UIViewController {
         gradient.frame     = progress.bounds
         
         gradient.colors    = [color.darkerColor(percent: 0.65),
-                             color.lighterColor(percent: 1.0),
-                             color.darkerColor(percent: 0.35)]
+                              color.lighterColor(percent: 1.0),
+                              color.darkerColor(percent: 0.35)]
         
         gradient.startRadius   = progress.innerRadius
         gradient.endRadius     = progress.outerRadius
@@ -310,7 +311,7 @@ class ProgressExampleViewController: UIViewController {
         
         gradient.function  = .linear
         gradient.frame     = progress.bounds
-
+        
         
         gradient.colors    = [color.lighterColor(percent: 0.65),
                               color.darkerColor(percent: 0.65),
@@ -334,14 +335,14 @@ class ProgressExampleViewController: UIViewController {
         for i in 0 ..< colors.count  {
             
             let theStep = progress.addStep(stepAngle,color:colors[i])!
-        
+            
             if  (i % 4 == 0)  {
                 theStep.ie.layer.image = UIImage(named: "satellite")
                 theStep.ie.orientationToAngle = true
             }
-
+            
             let color = colors[i]
-       
+            
             theStep.borderRatio            = 0.1
             theStep.border.strokeColor     = color.darkerColor(percent: 0.6).cgColor
             theStep.ie.radiusPosition      = .middle
@@ -351,10 +352,10 @@ class ProgressExampleViewController: UIViewController {
             
             gradient.function  = .linear
             gradient.frame     = progress.bounds
-        
+            
             gradient.colors    = [color.darkerColor(percent: 0.65),
-                                       color.lighterColor(percent: 1.0),
-                                       color.darkerColor(percent: 0.35)]
+                                  color.lighterColor(percent: 1.0),
+                                  color.darkerColor(percent: 0.35)]
             
             gradient.startRadius   = progress.innerRadius
             gradient.endRadius     = progress.outerRadius
@@ -386,18 +387,16 @@ class ProgressExampleViewController: UIViewController {
         
         let strings : [String] = ["Grumpy",
                                   "Normal",
-                                  "Happy",
-                                  "Very Happy"]
+                                  "Very Happy",
+                                  "Happy"]
         
         let images  : [String] = ["6","6","6","6"]
         
         let stepAngle = CPCAngle.ratio(elements:Double(strings.count))
         
-        let centerColor = UIColor(white:0,alpha: 0.8)
+        let centerColor = UIColor(white:0, alpha: 0.8)
         
-        let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 28 :13
-        
-        let font = UIFont(name:"Menlo-Regular", size:CGFloat(fontSize))
+        let fontCourier = UIFont(name:"Courier", size:CGFloat(UIDevice.current.userInterfaceIdiom == .pad ? 32 : 16))
         
         for i in 0 ..< strings.count {
             
@@ -405,33 +404,72 @@ class ProgressExampleViewController: UIViewController {
             
             let theStep = progress.addStep(stepAngle, color:colorsFrom[i])!
             
-            // step text
-        
-            theStep.te.layer.string             = strings[i]
-            theStep.te.layer.textRadius         = progress.midRadius
-            theStep.te.layer.textAngle          = theStep.angle
-            theStep.te.orientationToAngle       = true;
+            theStep.te.layer.string = strings[i]
             
-            theStep.te.layer.font                   = font
-            theStep.te.layer.foregroundColor        = UIColor.black
-            theStep.te.layer.fontBackgroundColor    = UIColor.clear
-            theStep.te.layer.fontStrokeColor        = UIColor.white
-            theStep.te.layer.fontStrokeWidth        = -3
-            theStep.te.shadow                       = false
+            if (i == 0) {
+                
+                theStep.te.layer.radius         = progress.radius
+                theStep.te.layer.angle          = theStep.angle
+                theStep.te.orientationToAngle   = true;
+                
+                theStep.te.layer.font                   = fontCourier
+                theStep.te.layer.foregroundColor        = UIColor.crayolaOnyxColor
+                theStep.te.layer.fontBackgroundColor    = UIColor.clear
+                //theStep.te.layer.fontStrokeColor        = UIColor.white
+                theStep.te.layer.fontStrokeWidth        = -3
+                theStep.te.shadow                       = false
+            }
+            else if(i == 1)
+            {
+                theStep.te.layer.radius                 = progress.radius / 1.5
+                theStep.te.layer.angle                  = theStep.angle
+                theStep.te.orientationToAngle           = true;
+                
+                theStep.te.layer.font                   = fontCourier
+                theStep.te.layer.foregroundColor        = UIColor.crayolaOnyxColor
+                theStep.te.layer.fontBackgroundColor    = UIColor.clear
+                theStep.te.layer.fontStrokeColor        = UIColor.white
+                theStep.te.layer.fontStrokeWidth        = -3
+                theStep.te.shadow                       = false
+            } else if(i == 2) {
+                theStep.te.layer.radius                 = progress.radius
+                theStep.te.layer.angle                  = theStep.angle
+                theStep.te.orientationToAngle           = true;
+                theStep.te.layer.font                   = fontCourier
+                theStep.te.layer.foregroundColor        = UIColor.crayolaOnyxColor
+                theStep.te.layer.fontBackgroundColor    = UIColor.clear
+                //theStep.te.layer.fontStrokeColor        = UIColor.white
+                theStep.te.layer.fontStrokeWidth        = -3
+                theStep.te.shadow                       = false
+                
+            } else {
+                
+                theStep.te.layer.font                   = fontCourier
+                theStep.te.layer.foregroundColor        =  UIColor.crayolaOnyxColor
+                theStep.te.layer.fontBackgroundColor    = UIColor.clear
+                theStep.te.layer.fontStrokeColor        = UIColor.white
+                theStep.te.layer.fontStrokeWidth        = -3
+                
+                theStep.te.layer.radius                 = progress.radius / 1.5
+                theStep.te.layer.angle                  = theStep.angle
+                theStep.te.orientationToAngle           = true
+                theStep.te.shadow                       = false
+
+            }
             
-          // configure the gradient
+            // configure the gradient
             let gradient       = OMShadingGradientLayer(type:.axial)
             
             gradient.function  = .exponential
             gradient.frame     = progress.bounds
             gradient.colors    = [colorsFrom[i],centerColor,colorsTo[i]]
             
-            let points =  gradient.gradientPointsToAngle(theStep.angle.norm())
+            let points =  OMGradientLayer.pointsFromNormalizedAngle(theStep.angle.norm())
             
             // axial gradient
             gradient.startPoint = points.0
             gradient.endPoint   = points.1
-
+            
             // mask it
             theStep.maskLayer   = gradient
             
@@ -454,12 +492,10 @@ class ProgressExampleViewController: UIViewController {
     
     
     func setupClockHours(_ progress:OMCircularProgress) {
-
-        
+    
         progress.enableAnimations = false
-        progress.thicknessRatio = 0.33   // 33.3 %
+        progress.thicknessRatio   = 0.33   // 33.3 %
         progress.options          = [];
-        
         
         /// Unicode roman numbers.
         let romanNumbers : [String] = ["Ⅰ",
@@ -480,7 +516,7 @@ class ProgressExampleViewController: UIViewController {
         let clockAngle = CPCAngle.ratio(elements: Double(romanNumbers.count))
         
         let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 22 : 11
-        let font =  UIFont(name:"HelveticaNeue",size:CGFloat(fontSize))
+        let font =  UIFont(name:"HelveticaNeue", size:CGFloat(fontSize))
         
         for i in 0 ..< romanNumbers.count  {
             
@@ -490,7 +526,6 @@ class ProgressExampleViewController: UIViewController {
             
             // Configure the step
             
-            
             step.te.layer.string                 = romanNumbers[i]
             step.te.layer.font                   = font
             step.te.layer.foregroundColor        = UIColor.black
@@ -498,9 +533,9 @@ class ProgressExampleViewController: UIViewController {
             step.te.layer.fontStrokeColor        = UIColor.white
             step.te.layer.fontStrokeWidth        = -4
             
-            step.te.radiusPosition                         = .middle
+            step.te.radiusPosition                = .middle
             step.te.orientationToAngle            = true
-            step.te.anglePosition               = .end
+            step.te.anglePosition                 = .end
             
             // configure the gradient
             let gradient       = OMShadingGradientLayer(type:.radial)
@@ -515,7 +550,7 @@ class ProgressExampleViewController: UIViewController {
             
             gradient.startRadius   = progress.innerRadius
             gradient.endRadius     = progress.outerRadius
-
+            
             // Mask it
             step.maskLayer      = gradient
             
@@ -540,8 +575,8 @@ class ProgressExampleViewController: UIViewController {
         let clockAngle = CPCAngle.ratio(elements: Double(minutesPerHour))
         
         let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 16 : 8
-        
-        let font = UIFont(name:"HelveticaNeue",size:CGFloat(fontSize))
+    
+        let fontMenlo = UIFont(name:"Menlo", size:CGFloat(fontSize))
         
         for i in 0 ..< minutesPerHour   {
             
@@ -551,22 +586,19 @@ class ProgressExampleViewController: UIViewController {
             
             // Configure the quarter
             
-            if((i % quarter) == 0) {
-                
+            if ((i % quarter) == 0) {
                 
                 step.te.layer.string                 = "\(i)"
-                step.te.layer.font                   = font
-            
+                step.te.layer.font                   = fontMenlo
+                
                 step.te.layer.foregroundColor        = UIColor.black
                 step.te.layer.fontBackgroundColor    = UIColor.clear
                 step.te.layer.fontStrokeColor        = UIColor.white
                 step.te.layer.fontStrokeWidth        = -2
                 
-                
-                step.te.radiusPosition                         = .middle
-                step.te.orientationToAngle            = true
-                step.te.anglePosition               = .end
-                
+                step.te.radiusPosition               = .middle
+                step.te.orientationToAngle           = true
+                step.te.anglePosition                = .end
             }
             
             // configure the gradient
@@ -575,16 +607,15 @@ class ProgressExampleViewController: UIViewController {
             gradient.function  = .linear
             gradient.frame     = progress.bounds
             gradient.colors    = [color.darkerColor(percent: 0.65),
-                                      color.lighterColor(percent: 0.81),
-                                      color.darkerColor(percent: 0.35)]
+                                  color.lighterColor(percent: 0.81),
+                                  color.darkerColor(percent: 0.35)]
             
             
             gradient.startRadius   = progress.innerRadius
             gradient.endRadius     = progress.outerRadius
-
+            
             // mask it
             step.maskLayer        = gradient
-            
         }
     }
     
@@ -593,9 +624,8 @@ class ProgressExampleViewController: UIViewController {
     {
         // Configure the animation
         progress.enableAnimations      = false
-        progress.thicknessRatio = 0.5    // 50%
-        progress.options          = [];
-        
+        progress.thicknessRatio        = 0.5    // 50%
+        progress.options               = [];
         
         let minutesPerHour  = 60
         
@@ -604,19 +634,21 @@ class ProgressExampleViewController: UIViewController {
         let clockAngle = CPCAngle.ratio(elements: Double(minutesPerHour))
         
         let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 18 : 9
-        let font = UIFont(name:"HelveticaNeue",size:CGFloat(fontSize))
+        
+        let fontMenlo = UIFont(name:"Menlo", size:CGFloat(fontSize))
         
         for i in 0 ..< minutesPerHour {
             
             // Create one step for each minute
+            
             let step = progress.addStep(clockAngle, color:color)!
             
             if((i % 5) == 0) {
-            
+                
                 // Configure the text layer
                 
                 step.te.layer.string                 = "\(i)"
-                step.te.layer.font                   = font
+                step.te.layer.font                   = fontMenlo
                 step.te.layer.foregroundColor        = UIColor.black
                 step.te.layer.fontBackgroundColor    = UIColor.clear
                 step.te.layer.fontStrokeColor        = UIColor.white
@@ -637,8 +669,8 @@ class ProgressExampleViewController: UIViewController {
                                   color.lighterColor(percent:  0.81),
                                   color.darkerColor(percent: 0.35)]
             
-            gradient.startRadius   = progress.innerRadius
-            gradient.endRadius     = progress.outerRadius
+            gradient.startRadius  = progress.innerRadius
+            gradient.endRadius    = progress.outerRadius
             
             // mask it
             step.maskLayer        = gradient

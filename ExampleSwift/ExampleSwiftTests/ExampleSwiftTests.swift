@@ -48,6 +48,16 @@ class ExampleSwiftTests: XCTestCase {
         }
     }
 
+    func testSubpaths() {
+        let path = Bezier.polygon(sides: 16, radius: 40, startAngle: 0, style: .curvetruple, percentInflection: 0.5)
+        
+        print("\(path)")
+        
+        let subpaths = path.subpaths()
+        
+        print("\(subpaths)")
+        
+    }
     func testCPCAngle() {
         let angel1 = CPCAngle(start: 0, end: M_PI * 2);
         let angel2 = CPCAngle(start: M_PI, length: M_PI * 2)

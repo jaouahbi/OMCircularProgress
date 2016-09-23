@@ -96,7 +96,6 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     }
     
     // MARK: - OMRadialGradientLayerProtocol
-    
     open var startRadius: CGFloat = 0 {
         didSet {
             self.setNeedsDisplay();
@@ -141,8 +140,8 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     //  from: http://stackoverflow.com/a/29168654/6387073
     
 
-    func gradientPointsToAngle(_ normalizedAngle:Double) -> (CGPoint,CGPoint)
-    {
+    public class func pointsFromNormalizedAngle(_ normalizedAngle:Double) -> (CGPoint,CGPoint) {
+        
         //x is between 0 and 1, eg. from a slider, representing 0 - 360 degrees
         //colour A starts on top, with colour B below
         //rotations move anti-clockwise
@@ -232,7 +231,6 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
         return (startPoint,endPoint)
     }
     
-    
     // MARK: - Object constructors
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder:aDecoder)
@@ -254,11 +252,13 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     
     override public  init(layer: Any) {
         super.init(layer: layer)
+        
         if let other = layer as? OMGradientLayer {
+            
             // common
-            self.colors      = other.colors
-            self.locations   = other.locations
-            self.gradientType        = other.gradientType
+            self.colors             = other.colors
+            self.locations          = other.locations
+            self.gradientType       = other.gradientType
             
             // axial gradient properties
             self.startPoint         = other.startPoint
@@ -267,8 +267,8 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
             self.extendsPastEnd     = other.extendsPastEnd
             
             // radial gradient properties
-            self.startRadius  = other.startRadius
-            self.endRadius = other.endRadius
+            self.startRadius        = other.startRadius
+            self.endRadius          = other.endRadius
         }
     }
     

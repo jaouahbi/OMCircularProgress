@@ -109,7 +109,7 @@ open class CPStepData : CustomDebugStringConvertible {
         element.layer.setTransformRotationZ(0.0)
         let angle:Double = angle.angle(element.anglePosition)
         print("\(debugHeader) : Angle \(round(angle.radiansToDegrees())) position in angle :\(element.anglePosition)")
-        let anglePoint = CPCAngle.point(angle, center:rect.size.center(), radius: radius)
+        let anglePoint = CPCAngle.pointOfAngle(angle, center:rect.size.center(), radius: radius)
         print("\(debugHeader) : Position in angle \(anglePoint) position in radius :\(element.radiusPosition)")
         let positionInAngle = anglePoint.centerRect(sizeOf)
         print("\(debugHeader) : Frame \(positionInAngle.integral) from the aligned step angle \(angle) and the text size \(sizeOf.integral()))")

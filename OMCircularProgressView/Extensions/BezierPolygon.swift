@@ -1,10 +1,12 @@
 //
 //  BezierPolygon.swift
-//  ExampleSwift
 //
-//  Created by Jorge on 12/9/16.
-//  Copyright © 2016 none. All rights reserved.
+//  Created by Jorge Ouahbi on 12/9/16.
+//  Copyright © 2016 Jorge Ouahbi. All rights reserved.
 //
+
+// Based on Erica Sadun code
+// https://gist.github.com/erica/c54826fd3411d6db053bfdfe1f64ab54
 
 import UIKit
 
