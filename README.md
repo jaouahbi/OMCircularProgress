@@ -4,6 +4,7 @@ Custom circular progress UIControl with steps, images, text and individual anima
 
 [![Build Status](https://travis-ci.org/jaouahbi/OMCircularProgressView.svg?branch=master)](https://travis-ci.org/jaouahbi/OMCircularProgressView)
 
+![](https://github.com/jaouahbi/OMCircularProgressView/blob/master/ScreenShot/ScreenShot_1.png)
 
 ## Features
 
@@ -40,5 +41,3 @@ OMCircularProgressView is owned and maintained by the [Jorge Ouahbi](https://git
 ## License
 
 OMCircularProgressView is released under the APACHE 2.0 license. See LICENSE for details.
-
-![](https://github.com/jaouahbi/OMCircularProgressView/blob/master/ScreenShot/ScreenShot_1.png)
