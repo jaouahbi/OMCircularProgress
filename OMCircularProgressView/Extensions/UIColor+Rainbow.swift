@@ -25,7 +25,15 @@ import UIKit
 
 extension UIColor
 {
-    class func rainbow(_ numberOfSteps:Int,hue:Double = 0.0) -> [UIColor]!{
+    /**
+     Returns a array of the complete hue color spectre (0 - 360)
+     
+     :param: number of hue UIColor steps
+     :param: start UIColor hue
+     :returns: UIColor array
+     */
+    
+    class func rainbow(_ numberOfSteps:Int, hue:Double = 0.0) -> [UIColor]!{
         
         var colors:[UIColor] = []
         

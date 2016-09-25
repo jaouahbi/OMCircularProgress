@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "karma_2_color@2x.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "karma_4_color@2x.png",
       "scale" : "2x"
     },
     {

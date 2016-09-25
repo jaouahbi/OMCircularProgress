@@ -26,7 +26,7 @@
 import UIKit
 
 open class CPCElement<T:CALayer> {
-    var radiusPosition      : CPCRadiusAlignment = .border  // element position in radius. Default : .border
+    var radiusPosition      : CPCRadiusPosition  = .border  // element position in radius. Default : .border
     var anglePosition       : CPCAnglePosition   = .start   // element position in angle. Default : .start
     var orientationToAngle  : Bool = true                   // is the imagen oriented to the step angle. Default : true
     func correctedShadowOffsetForTransformRotationZ(_ angle:Double,offset:CGSize)-> CGSize {
@@ -43,7 +43,7 @@ open class CPCElement<T:CALayer> {
                 if orientationToAngle {
                     let angle = layer.getTransformRotationZ()
                     layer.shadowOffset = correctedShadowOffsetForTransformRotationZ(angle, offset: layer.shadowOffset)
-                    print("DEBUG(\(layer.name ?? "")):shadowOffset: \(layer.shadowOffset) angle:\(round((angle).radiansToDegrees())))")
+                    OMLog.printd("\(layer.name ?? "")):shadowOffset: \(layer.shadowOffset) angle:\(round((angle).radiansToDegrees())))")
                 }
             } else {
                 layer.shadowOpacity = 0
@@ -68,7 +68,7 @@ open class CPCElement<T:CALayer> {
 
 open class CPStepData : CustomDebugStringConvertible {
     /// Basic step data
-    var angle:CPCAngle!                                       // step angle
+    var angle:CPCAngle!                                      // step angle
     var color:UIColor!                                       // step color
     internal var shapeLayer:CAShapeLayer = CAShapeLayer()    // progress shape
     var maskLayer:CALayer? = nil                             // optional layer mask
@@ -103,20 +103,20 @@ open class CPStepData : CustomDebugStringConvertible {
                                                   sizeOf:CGSize,
                                                   startAngle:Double  = -90.0.degreesToRadians() ) {
         
-        let debugHeader = "DEBUG(\(element.layer.name ?? ""))"
-        print("\(debugHeader): setUpStepLayerGeometry(\(self))")
+        
+        OMLog.printd("\(element.layer.name ?? "") : setUpStepLayerGeometry(\(self))")
         // Reset the angle orientation before sets the new frame
         element.layer.setTransformRotationZ(0.0)
         let angle:Double = angle.angle(element.anglePosition)
-        print("\(debugHeader) : Angle \(round(angle.radiansToDegrees())) position in angle :\(element.anglePosition)")
+        OMLog.printd("\(element.layer.name ?? "") : Angle \(round(angle.radiansToDegrees())) position in angle :\(element.anglePosition)")
         let anglePoint = CPCAngle.pointOfAngle(angle, center:rect.size.center(), radius: radius)
-        print("\(debugHeader) : Position in angle \(anglePoint) position in radius :\(element.radiusPosition)")
+        OMLog.printd("\(element.layer.name ?? "") : Position in angle \(anglePoint) position in radius :\(element.radiusPosition)")
         let positionInAngle = anglePoint.centerRect(sizeOf)
-        print("\(debugHeader) : Frame \(positionInAngle.integral) from the aligned step angle \(angle) and the text size \(sizeOf.integral()))")
+        OMLog.printd("\(element.layer.name ?? "") : Frame \(positionInAngle.integral) from the aligned step angle \(angle) and the text size \(sizeOf.integral()))")
         element.layer.frame = positionInAngle
         if element.orientationToAngle {
             let rotationZ = (angle - startAngle)
-            print("\(debugHeader): Image will be oriented to angle: \(round(rotationZ.radiansToDegrees()))")
+            OMLog.printd("\(element.layer.name ?? "") : Image will be oriented to angle: \(round(rotationZ.radiansToDegrees()))")
             element.layer.setTransformRotationZ( rotationZ )
         }
     }
@@ -126,7 +126,7 @@ open class CPStepData : CustomDebugStringConvertible {
      * Border
      */
     var borderRatio:Double  = 0.0                            // border layer ratio. Default: 0%
-    var borderShadow:Bool  = true                            // border layer shadow. Default: true
+    var borderShadow:Bool   = true                           // border layer shadow. Default: true
     internal var shapeLayerBorder:CAShapeLayer? = nil        // layer for the border
     lazy var border : CAShapeLayer! = {
         if self.shapeLayerBorder == nil {

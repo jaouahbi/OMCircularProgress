@@ -70,7 +70,7 @@ open class OMShadingGradientLayer : OMGradientLayer {
     
         if let player = player {
             
-            print("VERBOSE(\(self.name ?? "")) drawing presentationLayer \(player)")
+            OMLog.printv("\(self.name ?? "") drawing presentationLayer \(player)")
             
             colors       = player.colors
             locations    = player.locations
@@ -80,7 +80,7 @@ open class OMShadingGradientLayer : OMGradientLayer {
             endRadius    = player.endRadius
             
         } else {
-           print("VERBOSE(\(self.name ?? "")) drawing modelLayer \(self)")
+           OMLog.printv("\(self.name ?? "") drawing modelLayer \(self)")
         }
         
         if (isDrawable()) {
@@ -108,7 +108,7 @@ open class OMShadingGradientLayer : OMGradientLayer {
                 }
                 
                 ctx.scaleBy(x: self.bounds.size.width,
-                                  y: self.bounds.size.height );
+                            y: self.bounds.size.height );
                 
                 start  = start / self.bounds.size
                 end    = end   / self.bounds.size
@@ -125,9 +125,9 @@ open class OMShadingGradientLayer : OMGradientLayer {
             var shading:OMShadingGradient = OMShadingGradient(colors: colors,
                                                               locations: locations,
                                                               startPoint: start ,
-                                                              startRadius: startRadius,
+                                                              startRadius: startRadius * minRadius(self.bounds.size),
                                                               endPoint:end ,
-                                                              endRadius: endRadius,
+                                                              endRadius: endRadius * minRadius(self.bounds.size),
                                                               extendStart: self.extendsBeforeStart,
                                                               extendEnd: self.extendsPastEnd,
                                                               gradientType: self.gradientType,

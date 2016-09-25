@@ -32,7 +32,7 @@ extension CGPath {
             let body = unsafeBitCast(info, to: Body.self)
             body(element.pointee)
         }
-        print(MemoryLayout.size(ofValue: body))
+        OMLog.printi("Memory layout \(MemoryLayout.size(ofValue: body))")
         let unsafeBody = unsafeBitCast(body, to: UnsafeMutableRawPointer.self)
         self.apply(info: unsafeBody, function: callback)
     }

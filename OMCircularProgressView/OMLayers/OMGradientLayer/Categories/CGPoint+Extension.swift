@@ -56,13 +56,15 @@ extension CGPoint : Hashable  {
         return CGFloat(sqrtf(Float(diff.x*diff.x + diff.y*diff.y)));
     }
     
+    
     func projectLine( _ point:CGPoint, length:CGFloat) -> CGPoint  {
+        
         var newPoint = CGPoint(x: point.x, y: point.y)
         let x = (point.x - self.x);
         let y = (point.y - self.y);
-        if (x == 0 || x == -0) {
+        if (x.floatingPointClass == FloatingPointClassification.negativeZero) {
             newPoint.y += length;
-        } else if (y == 0 || y == -0) {
+        } else if (y.floatingPointClass == FloatingPointClassification.negativeZero) {
             newPoint.x += length;
         } else {
             #if CGFLOAT_IS_DOUBLE

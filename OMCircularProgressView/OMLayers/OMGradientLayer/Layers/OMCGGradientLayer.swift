@@ -106,7 +106,7 @@ open class OMCGGradientLayer : OMGradientLayer {
         let player = self.presentation()
         
         if let player = player {
-            print("VERBOSE(\(self.name ?? "")) drawing presentationLayer\n\(player)")
+            OMLog.printv("\(self.name ?? "") drawing presentationLayer\n\(player)")
             
             colors       = player.colors
             locations    = player.locations
@@ -116,7 +116,7 @@ open class OMCGGradientLayer : OMGradientLayer {
             endRadius    = player.endRadius
             
         } else {
-            print("VERBOSE(\(self.name ?? "")) drawing modelLayer\n\(self)")
+            OMLog.printv("\(self.name ?? "") drawing modelLayer\n\(self)")
         }
     
         if (isDrawable()) {
@@ -135,13 +135,13 @@ open class OMCGGradientLayer : OMGradientLayer {
                     let endCenter   = endPoint   * self.bounds.size
                     ctx.drawRadialGradient(gradient,
                                                 startCenter: startCenter,
-                                                startRadius: startRadius ,
+                                                startRadius: startRadius  * minRadius(self.bounds.size) ,
                                                 endCenter: endCenter,
-                                                endRadius: endRadius ,
+                                                endRadius: endRadius  * minRadius(self.bounds.size) ,
                                                 options: self.options );
                 } else {
                     ctx.scaleBy(x: self.bounds.size.width,
-                                      y: self.bounds.size.height );
+                                y: self.bounds.size.height );
                     
                     ctx.drawLinearGradient(gradient,
                                                 start: startPoint,

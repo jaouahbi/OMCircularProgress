@@ -57,6 +57,11 @@ func - (left: CPCAngle, right: CPCAngle) -> CPCAngle {
     return CPCAngle(start:left.start,length:left.end-right.length())
 }
 
+func == (left: CPCAngle, right: CPCAngle) -> Bool {
+    return left.start ==  right.start &&  left.end ==  right.end
+}
+
+
 /**
  * Object that encapsulate a angle
  */
@@ -90,7 +95,7 @@ open class CPCAngle : CustomDebugStringConvertible {
         self.end   = endDegree.degreesToRadians()
         
         if(!valid()) {
-            print("WARNING(CPCAngle): Angle overflow. \(self)")
+            OMLog.printw("CPCAngle): Angle overflow. \(self)")
         }
     }
     
@@ -104,7 +109,7 @@ open class CPCAngle : CustomDebugStringConvertible {
         self.end   =  end.degreesToRadians();
         
         if(!valid()) {
-            print("WARNING(CPCAngle): Angle overflow. \(self)")
+            OMLog.printw("CPCAngle): Angle overflow. \(self)")
         }
     }
     
@@ -137,7 +142,7 @@ open class CPCAngle : CustomDebugStringConvertible {
     public func add(_ len:Double){
         end += len;
         if(!valid()) {
-            print("WARNING(CPCAngle): Angle overflow. \(self)")
+            OMLog.printw("CPCAngle): Angle overflow. \(self)")
         }
     }
     
@@ -147,7 +152,7 @@ open class CPCAngle : CustomDebugStringConvertible {
     public func sub(_ len:Double){
         end -= len;
         if(!valid()) {
-            print("WARNING(CPCAngle): Angle underflow. \(self)")
+            OMLog.printw("CPCAngle): Angle underflow. \(self)")
         }
     }
     

@@ -98,11 +98,13 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     // MARK: - OMRadialGradientLayerProtocol
     open var startRadius: CGFloat = 0 {
         didSet {
+            startRadius = clamp(startRadius, lower: 0, upper: 1.0)
             self.setNeedsDisplay();
         }
     }
     open var endRadius: CGFloat = 0 {
         didSet {
+            endRadius = clamp(endRadius, lower: 0, upper: 1.0)
             self.setNeedsDisplay();
         }
     }
@@ -147,88 +149,14 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
         //rotations move anti-clockwise
         
         //create coordinates
-        let a = pow(sin((2*M_PI*((normalizedAngle+0.75)/2))),2);
-        let b = pow(sin((2*M_PI*((normalizedAngle+0.0)/2))),2);
-        let c = pow(sin((2*M_PI*((normalizedAngle+0.25)/2))),2);
-        let d = pow(sin((2*M_PI*((normalizedAngle+0.5)/2))),2);
+        let r = 2*M_PI
+        let a = pow(sin((r*((normalizedAngle+0.75)/2))),2);
+        let b = pow(sin((r*((normalizedAngle+0.0)/2))),2);
+        let c = pow(sin((r*((normalizedAngle+0.25)/2))),2);
+        let d = pow(sin((r*((normalizedAngle+0.5)/2))),2);
         
         //set the gradient direction
         return (CGPoint(x: a, y: b),CGPoint(x: c, y: d))
-    }
-    
-    //
-    //  from KAGradient
-    //
-    //  Created by Edward.Chen on 11/11/09.
-    //
-    
-    func gardientPointsFromAngle(angle: Double) ->  (CGPoint,CGPoint)
-    {
-        //First Calculate where the beginning and ending points should be
-        
-        var startPoint:CGPoint
-        var endPoint  :CGPoint
-        
-        if(angle == 0)              // screw the calculations - we know the answer
-        {
-            startPoint = CGPoint(x:self.bounds.minX,y:self.bounds.minY);	//right of rect
-            endPoint   = CGPoint(x:self.bounds.maxX,y:self.bounds.minY);	//left  of rect
-        }
-        else if(angle == 90)        // same as above
-        {
-            startPoint = CGPoint(x:self.bounds.minX, y:self.bounds.minY);	//bottom of rect
-            endPoint   = CGPoint(x:self.bounds.minX, y:self.bounds.maxY);	//top    of rect
-        }
-        else						// ok, we'll do the calculations now
-        {
-            var x:CGFloat
-            var y:CGFloat;
-            var sina:CGFloat
-            var cosa:CGFloat
-            var tana:CGFloat;
-            
-            var length:CGFloat
-            var deltax:CGFloat
-            var deltay:CGFloat
-            
-            let rangle:CGFloat = CGFloat(angle.degreesToRadians())	//convert the angle to radians
-            
-            if(CGFloat.abs(tan(rangle)) <= 1)	//for range [-45,45], [135,225]
-            {
-                x = bounds.width;
-                y = bounds.height;
-                
-                sina = sin(rangle);
-                cosa = cos(rangle);
-                tana = tan(rangle);
-                
-                length = x/CGFloat.abs(cosa)+(y-x*CGFloat.abs(tana))*CGFloat.abs(sina)
-                
-                deltax = length * (cosa * CGFloat(0.5))
-                deltay = length * (sina * CGFloat(0.5))
-            }
-            else						//for range [45,135], [225,315]
-            {
-                x =  bounds.height
-                y =  bounds.width
-                
-                let quarter:CGFloat = CGFloat(90.degreesToRadians())
-                
-                sina = sin(rangle - quarter);
-                cosa = cos(rangle - quarter);
-                tana = tan(rangle - quarter);
-                
-                length = x/CGFloat.abs(cosa)+(y-x*CGFloat.abs(tana)*CGFloat.abs(sina))
-                
-                deltax = -length * (sina * CGFloat(0.5))
-                deltay =  length * (cosa * CGFloat(0.5))
-            }
-            
-            startPoint = CGPoint(x:bounds.midX-deltax, y:bounds.midY-deltay)
-            endPoint   = CGPoint(x:bounds.midX+deltax, y:bounds.midY+deltay)
-        }
-        
-        return (startPoint,endPoint)
     }
     
     // MARK: - Object constructors
@@ -320,17 +248,17 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     func isDrawable() -> Bool {
         if (colors.count == 0) {
             // nothing to do
-            print("VERBOSE(\(self.name ?? "")) Unable to do the shading without colors.")
+            OMLog.printv("\(self.name ?? "")) Unable to do the shading without colors.")
             return false
         }
         if (startPoint.isZero && endPoint.isZero) {
             // nothing to do
-            print("VERBOSE(\(self.name ?? "")) Start point and end point are {x:0, y:0}.")
+            OMLog.printv("\(self.name ?? "")) Start point and end point are {x:0, y:0}.")
             return false
         }
         if (startRadius == endRadius && self.isRadial) {
             // nothing to do
-            print("VERBOSE(\(self.name ?? "")) Start radius and end radius are equal. \(startRadius) \(endRadius)")
+            OMLog.printv("\(self.name ?? "")) Start radius and end radius are equal. \(startRadius) \(endRadius)")
             return false
         }
         return true;

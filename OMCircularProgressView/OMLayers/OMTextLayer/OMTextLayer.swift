@@ -35,6 +35,8 @@
 //      Updated to swift 3.0
 //  Versión 0.13 (22-9-2016)
 //      Added code so that the text can follow an angle with a certain radius
+//  Versión 0.14 (25-9-2016)
+//      Added text to path helper function
 
 
 
@@ -57,26 +59,27 @@ import CoreFoundation
     fileprivate(set) var fontRef:CTFont = CTFontCreateWithName("Helvetica" as CFString, 12.0, nil);
     
     var angle : CPCAngle? = nil {
-        didSet{
+        didSet {
             setNeedsDisplay()
         }
     }
-    var radius : CGFloat = 0.0 {
-        didSet{
+    var radiusRatio : CGFloat = 0.0 {
+        didSet {
+            radiusRatio = clamp(radiusRatio, lower: 0, upper: 1.0)
             setNeedsDisplay()
         }
     }
     
     var underlineColor : UIColor?
-        {
-        didSet{
+    {
+        didSet {
             setNeedsDisplay()
         }
     }
     
     var underlineStyle : CTUnderlineStyle = CTUnderlineStyle()
-        {
-        didSet{
+    {
+        didSet {
             setNeedsDisplay()
         }
     }
@@ -87,34 +90,34 @@ import CoreFoundation
     //
     
     var fontLigature:NSNumber   = NSNumber(value: 1 as Int32)
-        {
-        didSet{
+    {
+        didSet {
             setNeedsDisplay()
         }
     }
     
     var fontStrokeColor:UIColor = UIColor.lightGray
-        {
-        didSet{
+    {
+        didSet {
             setNeedsDisplay()
         }
     }
     
     var fontStrokeWidth:Float   = -3
-        {
-        didSet{
+    {
+        didSet {
             setNeedsDisplay()
         }
     }
     
     var string : String? = nil {
-        didSet{
+        didSet {
             setNeedsDisplay()
         }
     }
     
     var foregroundColor:UIColor = UIColor.black {
-        didSet{
+        didSet {
             setNeedsDisplay()
         }
     }
@@ -158,17 +161,9 @@ import CoreFoundation
         // https://github.com/danielamitay/iOS-App-Performance-Cheatsheet/blob/master/QuartzCore.md
         
         //self.shouldRasterize = true
+        //self.rasterizationScale = UIScreen.main.scale
         self.drawsAsynchronously = true
         self.allowsGroupOpacity  = false
-        
-        
-        
-        //   self.borderWidth = 2    ;
-        //   self.borderColor = UIColor.red.cgColor
-        
-        
-        //        self.shouldRasterize = true
-        //        self.rasterizationScale = UIScreen.main.scale
         
     }
     
@@ -376,16 +371,15 @@ import CoreFoundation
                 context.scaleBy(x: 1.0, y: -1.0);
             #endif
             
-            var rect:CGRect = bounds
+            let rect:CGRect = bounds
             
-            if (radius == 0 && angle == nil) {
+            if (radiusRatio == 0 && angle == nil) {
                 
                 // Create a path which bounds the area where you will be drawing text.
                 // The path need not be rectangular.
                 
                 let path = CGMutablePath();
 
-                
                 // add the rect for the frame
                 path.addRect(rect);
                 
@@ -440,7 +434,7 @@ extension OMTextLayer
     
     func createPathFromStringWithAttributes() -> UIBezierPath? {
         
-        print("DEBUG(\(self.name ?? "")): createPathFromStringWithAttributes()")
+        OMLog.printd("\(self.name ?? ""): createPathFromStringWithAttributes()")
         
         if let line = createLine() {
             
@@ -530,7 +524,7 @@ extension OMTextLayer {
             
             angleArc += glyphAngle
             
-            print("DEBUG(\(self.name ?? "")): #\(lineGlyphIndex) angle :\(round(glyphAngle.radiansToDegrees()))º arc length :\(round(angleArc.radiansToDegrees()))")
+            OMLog.printd("\(self.name ?? ""): #\(lineGlyphIndex) angle :\(round(glyphAngle.radiansToDegrees()))º arc length :\(round(angleArc.radiansToDegrees()))")
             
             glyphArcInfo[lineGlyphIndex].angle = glyphAngle
             
@@ -543,7 +537,7 @@ extension OMTextLayer {
     
     func drawWithArc(context:CGContext, rect:CGRect)
     {
-        print("DEBUG(\(self.name ?? "")): drawWithArc(\(rect))")
+        OMLog.printd("\(self.name ?? ""): drawWithArc(\(rect))")
         
         if let string = string {
             let angle = self.angle!
@@ -553,7 +547,7 @@ extension OMTextLayer {
                 return;
             }
             
-            let glyphArcInfo =  prepareGlyphArcInfo(line: line,glyphCount: glyphCount,angle: angle)
+            let glyphArcInfo = prepareGlyphArcInfo(line: line,glyphCount: glyphCount,angle: angle)
             if glyphArcInfo.count > 0 {
                 
                 // Move the origin from the lower left of the view nearer to its center.
@@ -566,7 +560,7 @@ extension OMTextLayer {
                 /*
                  Now for the actual drawing. The angle offset for each glyph relative to the previous glyph has already been calculated; with that information in hand, draw those glyphs overstruck and centered over one another, making sure to rotate the context after each glyph so the glyphs are spread along a semicircular path.
                  */
-                var textPosition = CGPoint(x:0.0,y: self.radius);
+                var textPosition = CGPoint(x:0.0,y: self.radiusRatio * minRadius(rect.size));
                 
                 context.textPosition = textPosition
                 
@@ -585,7 +579,7 @@ extension OMTextLayer {
                         
                         let angleRotation:CGFloat = -(glyphArcInfo[runGlyphIndex + glyphOffset].angle);
                         
-                        print("DEBUG(\(self.name ?? "")): run glyph#\(runGlyphIndex) angle rotation :\(angleRotation.radiansToDegrees())");
+                        OMLog.printd("\(self.name ?? ""): run glyph#\(runGlyphIndex) angle rotation :\(angleRotation.radiansToDegrees())");
                         
                         context.rotate(by: angleRotation);
                         
@@ -607,6 +601,7 @@ extension OMTextLayer {
                         
                         CTRunDraw(run as! CTRun, context, glyphRange);
                     }
+                    
                     glyphOffset += runGlyphCount;
                 }
                 context.restoreGState();

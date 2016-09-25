@@ -51,11 +51,11 @@ class ExampleSwiftTests: XCTestCase {
     func testSubpaths() {
         let path = Bezier.polygon(sides: 16, radius: 40, startAngle: 0, style: .curvetruple, percentInflection: 0.5)
         
-        print("\(path)")
+        OMLog.print("\(path)")
         
         let subpaths = path.subpaths()
         
-        print("\(subpaths)")
+        OMLog.print("\(subpaths)")
         
     }
     func testCPCAngle() {

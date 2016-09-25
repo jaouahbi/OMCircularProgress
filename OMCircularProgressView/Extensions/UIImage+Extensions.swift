@@ -16,16 +16,164 @@
 
 
 //
-//  UIImage.swift
+//  UIImage+Extensions.swift
 //
 //  Created by Jorge Ouahbi on 28/3/15.
 //
 //  0.1  Added alpha parameter to blendImage func (29-03-2015)
 //  0.11 Added addOutterShadow func (22-04-2015)
 //  0.12 Remplazed the CoreGraphics resize code by UIKit resize code  (28-04-2015)
+//  0.13 Merged with other projects UIImage extensions (24-09-2016)
+//
 //
 
 import UIKit
+
+
+extension UIImage
+{
+    func cornerRadius(_ radius:CGFloat) -> UIImage
+    {
+        //create drawing context
+        UIGraphicsBeginImageContextWithOptions(self.size, false, 0.0);
+        
+        //clip image
+        UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height),cornerRadius:radius).addClip()
+        
+        //draw image
+        self.draw(at: CGPoint.zero);
+        
+        //capture resultant image
+        let image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext()
+        
+        return image!
+    }
+    
+    
+    func resize( _ newSize:CGSize ) -> UIImage {
+        return resizedImage(newSize, interpolationQuality: CGInterpolationQuality.default )
+    }
+    
+    func rotatedImage(_ radians:CGFloat) -> UIImage
+    {
+        // Create the bitmap context
+        UIGraphicsBeginImageContextWithOptions(self.size,false,0.0);
+        
+        let bitmap = UIGraphicsGetCurrentContext()
+        
+        // Move the origin to the middle of the image so we will rotate and scale around the center.
+        bitmap?.translateBy(x: size.width/2, y: size.height/2);
+        
+        //   // Rotate the image context
+        bitmap?.rotate(by: radians);
+        
+        // Now, draw the rotated/scaled image into the context
+        bitmap?.scaleBy(x: 1.0, y: -1.0);
+        bitmap?.draw(self.cgImage!, in: CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height));
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return newImage!;
+        
+    }
+    
+    
+    // Returns an affine transform that takes into account the image orientation when drawing a scaled image
+    func transformForOrientation(_ newSize:CGSize) -> CGAffineTransform
+    {
+        var transform:CGAffineTransform = CGAffineTransform.identity;
+        
+        switch (self.imageOrientation) {
+        case .up, .upMirrored:
+            break;
+            
+        case .down, .downMirrored:
+            transform = transform.translatedBy(x: newSize.width, y: newSize.height);
+            transform = transform.rotated(by: CGFloat(M_PI));
+            break;
+            
+        case .left, .leftMirrored:
+            transform = transform.translatedBy(x: newSize.width, y: 0);
+            transform = transform.rotated(by: CGFloat(M_PI_2));
+            break;
+            
+        case .right,.rightMirrored:
+            transform = transform.translatedBy(x: 0, y: newSize.height);
+            transform = transform.rotated(by: CGFloat(-M_PI_2));
+            break;
+        }
+        
+        switch (self.imageOrientation) {
+        case .upMirrored, .downMirrored:
+            transform = transform.translatedBy(x: newSize.width, y: 0);
+            transform = transform.scaledBy(x: -1, y: 1);
+            break;
+            
+        case .leftMirrored , .rightMirrored:
+            transform = transform.translatedBy(x: newSize.height, y: 0);
+            transform = transform.scaledBy(x: -1, y: 1);
+            break;
+            
+        case .down, .up ,.right, .left:
+            break;
+        }
+        
+        return transform;
+    }
+    
+    // Returns a copy of the image that has been transformed using the given affine transform and scaled to the new size
+    // The new image's orientation will be UIImageOrientationUp, regardless of the current image's orientation
+    // If the new size is not integral, it will be rounded up
+    func resizedImage( _ newSize:CGSize, transform:CGAffineTransform, transpose:Bool,
+                       interpolationQuality:CGInterpolationQuality)-> UIImage!
+    {
+        let newRect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height).integral;
+        let transposedRect = CGRect(x: 0, y: 0, width: newRect.size.height, height: newRect.size.width);
+        let imageRef = self.cgImage;
+        
+        // Build a context that's the same dimensions as the new size
+        let bitmap = CGContext(data: nil,
+                               width: Int(newRect.size.width),
+                               height: Int(newRect.size.height),
+                               bitsPerComponent: (imageRef?.bitsPerComponent)!,
+                               bytesPerRow: 0,
+                               space: (imageRef?.colorSpace!)!,
+                               bitmapInfo: (imageRef?.bitmapInfo.rawValue)!);
+        
+        // Rotate and/or flip the image if required by its orientation
+        bitmap?.concatenate(transform);
+        
+        // Set the quality level to use when rescaling
+        bitmap!.interpolationQuality = interpolationQuality;
+        
+        // Draw into the context; this scales the image
+        bitmap?.draw(imageRef!, in: transpose ? transposedRect : newRect);
+        
+        // Get the resized image from the context and a UIImage
+        let newImageRef = bitmap?.makeImage();
+        
+        return UIImage(cgImage:newImageRef!)
+    }
+    
+    
+    func resizedImage(_ newSize:CGSize,interpolationQuality:CGInterpolationQuality ) -> UIImage! {
+        var drawTransposed:Bool;
+        
+        switch (self.imageOrientation) {
+        case .left, .leftMirrored ,.right, .rightMirrored:
+            drawTransposed = true;
+        default:
+            drawTransposed = false;
+        }
+        
+        return self.resizedImage(newSize,
+                                 transform:self.transformForOrientation(newSize),
+                                 transpose:drawTransposed,
+                                 interpolationQuality:interpolationQuality);
+    }
+    
+}
 
 
 extension UIImage
@@ -34,7 +182,7 @@ extension UIImage
     {
         //  avoid redundant drawing
         
-        if (self.size.equalTo(newSize)){
+        if (self.size == newSize) {
             return self;
         }
         
@@ -56,15 +204,15 @@ extension UIImage
     {
         //create drawing context
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
-    
+        
         //draw
         self.draw(at: CGPoint(x: -rect.origin.x, y: -rect.origin.y))
-    
+        
         //capture resultant image
         let image = UIGraphicsGetImageFromCurrentImageContext()
         
         UIGraphicsEndImageContext();
-    
+        
         //return image
         return image!
     }
@@ -128,6 +276,56 @@ extension UIImage
 
 extension UIImage
 {
+    
+    // Transform the image in grayscale.
+    func grayScaleWithAlphaImage() -> UIImage
+    {
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale);
+        let imageRect = CGRect(x: 0.0, y: 0.0, width: self.size.width, height: self.size.height);
+        
+        let ctx = UIGraphicsGetCurrentContext();
+        
+        // Draw a white background
+        ctx?.setFillColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0);
+        ctx?.fill(imageRect);
+        
+        // Draw the luminosity on top of the white background to get grayscale
+        self.draw(in: imageRect,blendMode:CGBlendMode.luminosity,alpha:1.0);
+        
+        // Apply the source image's alpha
+        self.draw(in: imageRect,blendMode:CGBlendMode.destinationIn,alpha:1.0);
+        
+        let grayscaleImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return grayscaleImage!
+    }
+    
+    func blendImage(_ other:UIImage, alpha:CGFloat = 1.0) -> UIImage
+    {
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale);
+        
+        self.draw(at: CGPoint.zero)
+        other.draw(at: CGPoint.zero, blendMode:CGBlendMode.normal, alpha:alpha)
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        return newImage!
+    }
+    
+    func maskImage(_ path:UIBezierPath) -> UIImage
+    {
+        UIGraphicsBeginImageContextWithOptions(self.size, false, 0)
+        
+        path.addClip()
+        self.draw(at: CGPoint.zero)
+        
+        
+        let maskedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return maskedImage!;
+    }
+    
     class func gradientMask() -> CGImage
     {
         //create gradient mask
@@ -142,9 +340,9 @@ extension UIImage
         let gradientEndPoint = CGPoint(x: 0, y: 256);
         
         gradientContext?.drawLinearGradient(gradient!,
-            start: gradientStartPoint,
-            end: gradientEndPoint,
-            options: CGGradientDrawingOptions.drawsAfterEndLocation);
+                                            start: gradientStartPoint,
+                                            end: gradientEndPoint,
+                                            options: CGGradientDrawingOptions.drawsAfterEndLocation);
         
         let sharedMask = gradientContext?.makeImage();
         
@@ -206,15 +404,13 @@ extension UIImage
 
 extension UIImage {
     
-    
-    
     func addShadowColor(_ offset:CGSize, color:UIColor = UIColor.darkGray, blur:CGFloat = 6.0) -> UIImage
     {
         //get size
         let border = CGSize(width: fabs(offset.width) + blur, height: fabs(offset.height) + blur);
         
         let size = CGSize(width: self.size.width + border.width * 2.0,
-                              height: self.size.height + border.height * 2.0);
+                          height: self.size.height + border.height * 2.0);
         
         //create drawing context
         UIGraphicsBeginImageContextWithOptions(size, false, 0.0);
@@ -235,119 +431,29 @@ extension UIImage {
     }
     
     func addOutterShadowColor(_ color:UIColor = UIColor.darkGray,blurSize: CGFloat = 6.0) -> UIImage? {
-
+        
         let offset = CGSize(width: blurSize*0.5,height: -blurSize*0.5)
         let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue).rawValue
         
         let shadowContext : CGContext = CGContext( data: nil,
-            width: Int(self.size.width * scale + blurSize),
-            height: Int(self.size.height * scale + blurSize),
-            bitsPerComponent: self.cgImage!.bitsPerComponent,
-            bytesPerRow: 0,
-            space: self.cgImage!.colorSpace!,
-            bitmapInfo: bitmapInfo)!
+                                                   width: Int(self.size.width * scale + blurSize),
+                                                   height: Int(self.size.height * scale + blurSize),
+                                                   bitsPerComponent: self.cgImage!.bitsPerComponent,
+                                                   bytesPerRow: 0,
+                                                   space: self.cgImage!.colorSpace!,
+                                                   bitmapInfo: bitmapInfo)!
         
         shadowContext.setShadow(offset: offset,
-            blur: blurSize*0.5,
-            color: color.cgColor)
+                                blur: blurSize*0.5,
+                                color: color.cgColor)
         
         shadowContext.draw(self.cgImage!, in: CGRect(x: 0, y: 0, width: self.size.width * scale , height: self.size.height * scale))
         
         return UIImage(cgImage: shadowContext.makeImage()!, scale:scale, orientation: imageOrientation)
     }
-}
-
-
-extension UIImage
-{
     
-    func rotatedImage(_ radians:CGFloat) -> UIImage
-    {
-        // Create the bitmap context
-        UIGraphicsBeginImageContextWithOptions(self.size,false,0.0);
-        
-        let bitmap = UIGraphicsGetCurrentContext()
-        
-        // Move the origin to the middle of the image so we will rotate and scale around the center.
-        bitmap?.translateBy(x: size.width/2, y: size.height/2);
-        
-        //   // Rotate the image context
-        bitmap?.rotate(by: radians);
-        
-        // Now, draw the rotated/scaled image into the context
-        bitmap?.scaleBy(x: 1.0, y: -1.0);
-        bitmap?.draw(self.cgImage!, in: CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height));
-        
-        let newImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        return newImage!;
-        
+    func addInnerShadow() {
+        //TODO:
     }
     
-    // Transform the image in grayscale.
-    
-    func grayScaleWithAlphaImage() -> UIImage
-    {
-        UIGraphicsBeginImageContextWithOptions(self.size, false, 0.0);
-        let imageRect = CGRect(x: 0.0, y: 0.0, width: self.size.width, height: self.size.height);
-        
-        let ctx = UIGraphicsGetCurrentContext();
-        
-        // Draw a white background
-        ctx?.setFillColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0);
-        ctx?.fill(imageRect);
-        
-        // Draw the luminosity on top of the white background to get grayscale
-        self.draw(in: imageRect,blendMode:CGBlendMode.luminosity,alpha:1.0);
-        
-        // Apply the source image's alpha
-        self.draw(in: imageRect,blendMode:CGBlendMode.destinationIn,alpha:1.0);
-        
-        let grayscaleImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        return grayscaleImage!
-    }
-    
-    func blendImage(_ other:UIImage, alpha:CGFloat = 1.0) -> UIImage
-    {
-        UIGraphicsBeginImageContextWithOptions(self.size, false, 0.0);
-        
-        self.draw(at: CGPoint.zero)
-        other.draw(at: CGPoint.zero, blendMode:CGBlendMode.normal, alpha:alpha)
-        
-        let newImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
-        return newImage!
-    }
-    
-    func maskImage(_ path:UIBezierPath) -> UIImage
-    {
-        UIGraphicsBeginImageContextWithOptions(self.size, false, 0.0)
-        
-        path.addClip()
-        self.draw(at: CGPoint.zero)
-        
-        let maskedImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return maskedImage!;
-    }
-    
-    func cornerRadius(_ radius:CGFloat) -> UIImage
-    {
-        //create drawing context
-        UIGraphicsBeginImageContextWithOptions(self.size, false, 0.0);
-        
-        //clip image
-        UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height),cornerRadius:radius).addClip()
-        
-        //draw image
-        self.draw(at: CGPoint.zero);
-        
-        //capture resultant image
-        let image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext()
-        
-        return image!
-    }
 }

@@ -72,9 +72,9 @@ struct OMGradient {
                 numberOfLocations = self.colors.count
             }
             
-            print("VERBOSE(OMGradient): \(numberOfLocations) locations")
+            OMLog.printv("(OMGradient): \(numberOfLocations) locations")
             if self.locations != nil {
-                print("VERBOSE(OMGradient): \(self.locations!)")
+                OMLog.printv("(OMGradient): \(self.locations!)")
             }
             
             if (numberOfLocations > 0) {

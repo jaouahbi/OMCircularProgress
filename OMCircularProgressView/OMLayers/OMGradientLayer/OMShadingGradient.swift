@@ -39,35 +39,6 @@ public enum GradientFunction {
     case cosine
 }
 
-/*
- let x  = ShineGradient()
- 
- let c = UIColor(red:x.0[0],green:x.0[1],blue:x.0[2],alpha:x.0[3])
- let d = UIColor(red:x.1[0],green:x.1[1],blue:x.1[2],alpha:x.1[3])
- gradientLayer.colors = [c,d]
- 
- */
-
-func InsetGradient() -> ([CGFloat],[CGFloat]) {
-    return  ([0 / 255.0, 0 / 255.0, 0 / 255.0, 0 ],[ 0 / 255.0, 0 / 255.0, 0 / 255.0, 0.2 ])
-}
-
-func ShineGradient() -> ([CGFloat],[CGFloat]) {
-     return  ([ 1, 1, 1, 0],[1, 1, 1, 0.8 ])
-}
-
-func ShadeGradient() -> ([CGFloat],[CGFloat]) {
-   return ([ 252 / 255.0, 252 / 255.0, 252 / 255.0, 0.65],[ 178 / 255.0, 178 / 255.0, 178 / 255.0, 0.65 ])
-}
-
-func ConvexGradient() -> ([CGFloat],[CGFloat]) {
-    return ([ 255 / 255.0, 255 / 255.0, 255 / 255.0, 0.43],[ 255 / 255.0, 255 / 255.0, 255 / 255.0, 0.05 ])
-}
-
-func ConcaveGradient()  -> ([CGFloat],[CGFloat]) {
-    return  ([ 255 / 255.0, 255 / 255.0, 255 / 255.0, 0 ],[255 / 255.0, 255 / 255.0, 255 / 255.0, 0.46])
-}
-
 func ShadingFunctionCreate(_ colors : [UIColor],
                             locations : [CGFloat],
                             slopeFunction: @escaping GradientSlopeFunction,
@@ -111,7 +82,7 @@ func ShadingFunctionCreate(_ colors : [UIColor],
         
         if (alpha <= stop1Position) {
             // if we are less than our lowest position, return our first color
-            //print("VERBOSE(\(layer.name ?? ""))alpha:\(String(format:"%.1f",alpha)) <= position \(String(format:"%.1f",stop1Position)) color \(stop1Color.shortDescription)")
+            //OMLog.printv("\(layer.name ?? ""))alpha:\(String(format:"%.1f",alpha)) <= position \(String(format:"%.1f",stop1Position)) color \(stop1Color.shortDescription)")
             outData[0] = (stop1Color.components?[0])!
             outData[1] = (stop1Color.components?[1])!
             outData[2] = (stop1Color.components?[2])!
@@ -119,7 +90,7 @@ func ShadingFunctionCreate(_ colors : [UIColor],
             
         } else if (alpha >= stop2Position) {
             // likewise if we are greater than our highest position, return the last color
-            //print("VERBOSE(\(layer.name ?? ""))alpha:\(String(format:"%.1f",alpha)) >= position \(String(format:"%.1f",stop2Position)) color \(stop1Color.shortDescription)")
+            //OMLog.printv("\(layer.name ?? ""))alpha:\(String(format:"%.1f",alpha)) >= position \(String(format:"%.1f",stop2Position)) color \(stop1Color.shortDescription)")
             outData[0] = (stop2Color.components?[0])!
             outData[1] = (stop2Color.components?[1])!
             outData[2] = (stop2Color.components?[2])!
@@ -132,11 +103,13 @@ func ShadingFunctionCreate(_ colors : [UIColor],
             
             let newColor : UIColor = interpolationFunction(stop1Color, stop2Color, newPosition)
             
-            //print("VERBOSE(\(layer.name ?? ""))alpha:\(String(format:"%.1f",alpha)) position \(String(format:"%.1f",newPosition)) color \(newColor.shortDescription)")
+            //OMLog.printv("\(layer.name ?? ""))alpha:\(String(format:"%.1f",alpha)) position \(String(format:"%.1f",newPosition)) color \(newColor.shortDescription)")
             
             for componentIndex in 0 ..< 3 {
                 outData[componentIndex] = (newColor.components?[componentIndex])!
             }
+            
+            //Premultiply the color by the alpha.?
             
             // The alpha component is always 1, the shading is always opaque.
             outData[3] = 1.0
@@ -257,7 +230,7 @@ public struct OMShadingGradient {
                 assert(color.colorSpace?.model == .rgb,"unexpected color space model \(color.colorSpace?.model.name)")
                 if(color.colorSpace?.model != .rgb) {
                     //TODO: handle different color spaces
-                    print("WARNING : Unsupported color space. model: \(color.colorSpace?.model.name)")
+                    OMLog.printw("(OMShadingGradient) : Unsupported color space. model: \(color.colorSpace?.model.name)")
                 }
             }
         }
@@ -281,8 +254,8 @@ public struct OMShadingGradient {
             monotonicLocations = monotonic(colors.count)
         }
         
-        print("VERBOSE(OMShadingGradient): \(monotonicLocations.count) monotonic locations")
-        print("VERBOSE(OMShadingGradient): \(monotonicLocations)")
+        OMLog.printv("(OMShadingGradient): \(monotonicLocations.count) monotonic locations")
+        OMLog.printv("(OMShadingGradient): \(monotonicLocations)")
     }
     
     lazy var shadingFunction : (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void = {

@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "karma_2_color@2x.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "karma_1_color@2x.png"
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
