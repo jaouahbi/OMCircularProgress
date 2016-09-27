@@ -100,9 +100,9 @@ class ProgressExampleViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: time) {
             
-            // diferents progress for each step
-            let stepProgress =  [0.1, 0.9, 0.9]
-            for i:Int in 0 ..< self.progressViewSimple.numberOfSteps {
+            let numberOfSteps  = self.progressViewSimple.numberOfSteps
+            let stepProgress =  [Double](repeating: 0.9, count: numberOfSteps)
+            for i:Int in 0 ..< numberOfSteps {
                 self.progressViewSimple.setStepProgress(i, stepProgress: stepProgress[i])
             }
             
@@ -120,10 +120,8 @@ class ProgressExampleViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        
     }
-    
-    
+
     func timerProc()
     {
         let seconds = (calendar as NSCalendar).components(.second, from:Date()).second
@@ -160,20 +158,22 @@ class ProgressExampleViewController: UIViewController {
                                   UIColor.crayolaCeruleanColor,
                                   UIColor.crayolaSeaSerpentColor]
         
-        let stepAngle = CPCAngle.ratio(elements: Double(colors.count))
+        let numberOfSteps = 20
+        let stepAngle     = CPCAngle.ratio(elements: Double(numberOfSteps))
         
-        for i in 0 ..< colors.count  {
+        let color   = UIColor.crayolaCeruleanColor
+        
+        for i in 0 ..< numberOfSteps  {
             
             // Create the step.
-            
-            let color   = colors[i]
+
             let theStep:CPStepData?
             
             // If the step exist, only update the step data
             if progress.dataSteps.count > i {
                 theStep = progress[i]
             } else {
-                theStep = progress.addStep(stepAngle, color:color)
+                theStep = progress.addStep(stepAngle, color:UIColor.clear)
             }
             
             if let theStep = theStep {
@@ -196,10 +196,8 @@ class ProgressExampleViewController: UIViewController {
                 
                 gradient.startRadius   = progress.innerRadius / minRadius(progress.bounds.size)
                 gradient.endRadius     = progress.outerRadius / minRadius(progress.bounds.size)
-                
-                gradient.extendsPastEnd  = true
-                gradient.extendsBeforeStart     = false
-                gradient.slopeFunction  = Linear
+
+                gradient.slopeFunction = Linear
                 
                 // mask it
                 theStep.maskLayer        = gradient
@@ -423,23 +421,17 @@ class ProgressExampleViewController: UIViewController {
         progress.animationDuration  = 10
         progress.thicknessRatio     = 0.70
         
-        // from https://github.com/CaptainRedmuff/UIColor-Crayola
+        let colorsFrom : [UIColor] = [UIColor.crayolaCeriseColor,
+                                      UIColor.crayolaEucalyptusColor,
+                                      UIColor.crayolaRazzleDazzleRoseColor,
+                                      UIColor.crayolaElectricLimeColor]
         
-        let colorsFrom : [UIColor] = [UIColor(red:0.867 ,green:0.267, blue:0.573, alpha:1.0),
-                                      UIColor(red:0.267, green:0.843, blue:0.659, alpha:1.0),
-                                      UIColor(red:1.000, green:0.282, blue:0.816, alpha:1.0),
-                                      UIColor(red:0.808, green:1.000 ,blue:0.114, alpha:1.0)]
+        let colorsTo : [UIColor] = [UIColor.crayolaPeriwinkleColor,
+                                    UIColor.crayolaCeruleanColor,
+                                    UIColor.crayolaSeaSerpentColor,
+                                    UIColor.crayolaFreshAirColor]
         
-        let colorsTo : [UIColor] = [UIColor(red:0.773, green:0.816, blue:0.902, alpha:1.0),
-                                    UIColor(red:0.114, green:0.675, blue:0.839, alpha:1.0),
-                                    UIColor(red:0.294, green:0.780, blue:0.812, alpha:1.0),
-                                    UIColor(red:0.651, green:0.906, blue:1.000, alpha:1.0)]
-        
-        let strings : [String] = ["Very Happy",
-                                  "Normal",
-                                  "Grumpy",
-                                  "Happy"
-                                  ]
+        let strings : [String] = ["Angry","Shocked","Cool","Crying"]
         
         let images  : [String] = ["0","1","2","3"]
         
@@ -479,8 +471,7 @@ class ProgressExampleViewController: UIViewController {
                     theStep.te.layer.fontStrokeColor        = UIColor.crayolaOnyxColor
                     theStep.te.layer.fontStrokeWidth        = -3
                     theStep.te.shadow                       = false
-                }
-                else if(i == 1) {
+                } else if(i == 1) {
                     theStep.te.layer.radiusRatio            = 0.40
                     theStep.te.layer.angle                  = theStep.angle
                     theStep.te.orientationToAngle           = true;
@@ -514,7 +505,7 @@ class ProgressExampleViewController: UIViewController {
                     theStep.te.shadow                       = false
                 }
                 
-                // tghe images
+                // the images
                 theStep.ie.layer.image = UIImage(named: images[i])
                 //theStep.ie.orientationToAngle = true
                 theStep.ie.radiusPosition = .middle

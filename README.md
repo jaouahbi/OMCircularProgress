@@ -1,10 +1,10 @@
-# OMCircularProgressView
+# OMCircularProgress
 
 Custom circular progress UIControl with steps, images, text and individual animations in Swift
 
-[![Build Status](https://travis-ci.org/jaouahbi/OMCircularProgressView.svg?branch=master)](https://travis-ci.org/jaouahbi/OMCircularProgressView)
+[![Build Status](https://travis-ci.org/jaouahbi/OMCircularProgress.svg?branch=master)](https://travis-ci.org/jaouahbi/OMCircularProgressView)
 
-![](https://github.com/jaouahbi/OMCircularProgressView/blob/master/ScreenShot/ScreenShot_1.png)
+![](https://github.com/jaouahbi/OMCircularProgress/blob/master/ScreenShot/ScreenShot_1.png)
 
 ## Features
 

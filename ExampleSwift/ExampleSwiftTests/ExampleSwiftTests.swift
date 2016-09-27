@@ -36,26 +36,23 @@ class ExampleSwiftTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure() {
-            // Put the code you want to measure the time of here.
-        }
-    }
 
     func testSubpaths() {
-        let path = Bezier.polygon(sides: 16, radius: 40, startAngle: 0, style: .curvetruple, percentInflection: 0.5)
+        let paths = [UIBezierPath.polygon(sides: 32, radius: 40, startAngle: 0, style: .curvetruple, percentInflection: 1.0),
+                     UIBezierPath.polygon(sides: 16, radius: 30, startAngle: 0, style: .curvedouble, percentInflection: 0.25),
+                     UIBezierPath.polygon(sides: 8, radius: 20, startAngle: 0, style: .curvesingle, percentInflection: 0.75),
+                     UIBezierPath.polygon(sides: 2, radius: 10, startAngle: 0, style: .curvetruple, percentInflection: 0.1)];
         
-        OMLog.print("\(path)")
+        let pathWithSubpaths = UIBezierPath()
         
-        let subpaths = path.subpaths()
+        for path in paths {
+            pathWithSubpaths.append(path)
+        }
+        print("\(pathWithSubpaths)")
         
-        OMLog.print("\(subpaths)")
+        let subpaths = pathWithSubpaths.subpaths()
+        
+        print("\(subpaths)")
         
     }
     func testCPCAngle() {
@@ -110,6 +107,32 @@ class ExampleSwiftTests: XCTestCase {
         XCTAssert(CPCAngle.inRange(angle: M_PI * 3 * -1) == false)
         
         XCTAssert(CPCAngle.ratio(elements: M_PI * 2.0) == 1.0)
+        
+        let a180    = CPCAngle(start:0, length: Double.pi)
+        let a180_2 = CPCAngle(start:Double.pi, length: Double.pi)
+        
+        let a3 = a180 + a180_2;
+        
+        let a4 = (a180 + a180_2) - a3;
+        
+        XCTAssert(a4.length() == 0)
+        
+    }
+    
+    func testMath() {
+        let size100x30 = CGSize(width:100,height:30);
+        let m  = minRadius(size100x30)
+        let mx = maxRadius(size100x30)
+        let mm = monotonic(100)
+        
+        XCTAssert(between(1,lower: 0,upper: 2))
+        XCTAssert(!between(1,lower: 0,upper: 1, include:false))
+        
+        XCTAssert(mm.count == 100)
+        XCTAssert(mm.first == 0 && mm.last == 1)
+        
+        XCTAssert(m == 15);
+        XCTAssert(mx == 0.5 * sqrt(size100x30.width * size100x30.width + size100x30.height * size100x30.height))
         
     }
     func testCircleAngle() {
