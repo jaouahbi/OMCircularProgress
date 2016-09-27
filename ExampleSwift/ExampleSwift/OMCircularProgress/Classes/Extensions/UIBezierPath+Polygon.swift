@@ -100,7 +100,8 @@ public struct Bezier {
 }
 
 extension UIBezierPath {
-    func polygon(sides: Int = 5,
+    
+    public class func polygon(sides: Int = 5,
                  radius: CGFloat = 50.0,
                  startAngle : CGFloat =  0.0,
                  style: PolygonStyle = .curvesingle,

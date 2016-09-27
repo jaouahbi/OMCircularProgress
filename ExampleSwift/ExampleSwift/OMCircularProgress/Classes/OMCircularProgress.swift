@@ -1040,22 +1040,19 @@ extension OMCircularProgress
         return  addStep( lastAngle, end:lastAngle + angle, color:color );
     }
     
-    /**
-     * Create a new step progress.
-     *
-     * parameter startAngle: step start angle
-     * parameter percent:    step end angle expresed as percent of complete circle.
-     * parameter color:      step color
-     *
-     * returns: return a CPStepData object.
-     */
-    
+    /// Create a new step progress.
+    ///
+    /// - parameter start:   step start angle
+    /// - parameter percent: step end angle expresed as percent of complete circle.
+    /// - parameter color:   step color
+    ///
+    /// - returns: the new step data
     func addStepWithPercent(_ start:Double, percent:Double, color:UIColor!) -> CPStepData? {
         
+        // validate angle
         let inRange = CPCAngle.inRange(angle: start)
         assert(inRange,
                "Invalid start angle:\(startAngle). Range in radians: -(2*PI)/+(2*PI)")
-    
         if(!inRange){
             OMLog.printw("\(layer.name ?? ""): Invalid start angle: \(CPCAngle.format(start))")
             return nil;
@@ -1075,14 +1072,12 @@ extension OMCircularProgress
         return step
     }
     
-    /**
-     * Create a new step progress.
-     *
-     * parameter percent:   step angle expresed as percent of complete circle.
-     * parameter color:     step color
-     *
-     * returns: return a CPStepData object.
-     */
+    /// Create a new step progress.
+    ///
+    /// - parameter percent: step angle expresed as percent of complete circle.
+    /// - parameter color:   step color
+    ///
+    /// - returns: optional new step data
     
     func addStepWithPercent(_ percent:Double, color:UIColor!) -> CPStepData? {
         return addStepWithPercent(getLastAngle(), percent: percent, color: color);
@@ -1103,12 +1098,10 @@ extension OMCircularProgress
         }
     }
     
-    /**
-     * Debug print all layers
-     *
-     * parameter level: recursion level
-     * parameter layer: layer to debug print
-     */
+    /// Debug print all layers
+    ///
+    /// - parameter level: recursion level
+    /// - parameter layer: layer to debug print
     
     func dumpLayers(_ level:UInt, layer:CALayer) {
         if (layer.sublayers != nil) {
@@ -1156,9 +1149,10 @@ extension OMCircularProgress : CAAnimationDelegate
         }
     }
     
-    //
-    // Animate the shapeLayer and the image for the step
-    //
+    /// Animate the shapeLayer and the image for the step
+    ///
+    /// - parameter step:     step data
+    /// - parameter progress: progress
     
     func stepAnimation(_ step:CPStepData, progress:Double) {
         

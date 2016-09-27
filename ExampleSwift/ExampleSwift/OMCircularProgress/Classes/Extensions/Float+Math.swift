@@ -28,14 +28,12 @@ import UIKit
  */
 
 public extension Float {
-    
     func degreesToRadians () -> Float {
         return self * 0.01745329252
     }
     func radiansToDegrees () -> Float {
         return self * 57.29577951
     }
-    
     mutating func clamp(toLowerValue lowerValue: Float, upperValue: Float){
         self = min(max(self, lowerValue), upperValue)
     }

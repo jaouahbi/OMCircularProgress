@@ -52,6 +52,8 @@ class ExampleSwiftTests: XCTestCase {
         
         let subpaths = pathWithSubpaths.subpaths()
         
+        XCTAssert(subpaths?.count == 4)
+        
         print("\(subpaths)")
         
     }

@@ -23,6 +23,9 @@
 
 import Foundation
 
+
+// DISABLE_LOG
+
 // Based on : https://github.com/kostiakoval/SpeedLog
 
 ///LogLevel type. Specify what level of details should be included to the log
@@ -60,45 +63,37 @@ public struct OMLog {
      * parameter level:      log level
      */
     
-    public static func printd(_ items: Any..., level:LogLevel = .Debug) {
+    public static func print(_ items: Any..., level:LogLevel) {
         #if !DISABLE_LOG
             let stringItem = items.map {"\($0)"}.joined(separator: " ")
             if (OMLog.level.contains(level)) {
-                Swift.print("[DEBUG] \(stringItem)", terminator: "\n")
+                Swift.print("\(level) \(stringItem)", terminator: "\n")
             }
+        #endif
+    }
+    public static func printd(_ items: Any..., level:LogLevel = .Debug) {
+        #if !DISABLE_LOG
+            print(items,level:level);
         #endif
     }
     public static func printw(_ items: Any..., level:LogLevel = .Warning) {
         #if !DISABLE_LOG
-            let stringItem = items.map {"\($0)"}.joined(separator: " ")
-            if (OMLog.level.contains(level)) {
-                Swift.print("[WARNING] \(stringItem)", terminator: "\n")
-            }
+            print(items,level:level);
         #endif
     }
     public static func printi(_ items: Any..., level:LogLevel = .Info) {
         #if !DISABLE_LOG
-            let stringItem = items.map {"\($0)"}.joined(separator: " ")
-            if (OMLog.level.contains(level)) {
-                Swift.print("[INFO] \(stringItem)", terminator: "\n")
-            }
+            print(items,level:level);
         #endif
     }
     public static func printe(_ items: Any..., level:LogLevel = .Error) {
         #if !DISABLE_LOG
-            let stringItem = items.map {"\($0)"}.joined(separator: " ")
-            if (OMLog.level.contains(level)) {
-                Swift.print("[ERROR] \(stringItem)", terminator: "\n")
-            }
+            print(items,level:level);
         #endif
     }
     public static func printv(_ items: Any..., level:LogLevel = .Verbose) {
         #if !DISABLE_LOG
-            let stringItem = items.map {"\($0)"}.joined(separator: " ")
-            if (OMLog.level.contains(level)) {
-                Swift.print("[VERBOSE] \(stringItem)", terminator: "\n")
-            }
+            print(items,level:level);
         #endif
     }
-    
 }
