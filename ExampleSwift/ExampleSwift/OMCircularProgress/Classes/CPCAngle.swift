@@ -49,14 +49,32 @@ public enum CPCAnglePosition : Int
     }
 }
 
+/// <#Description#>
+///
+/// - parameter left:  <#left description#>
+/// - parameter right: <#right description#>
+///
+/// - returns: <#return value description#>
 func + (left: CPCAngle, right: CPCAngle) -> CPCAngle {
     return CPCAngle(start:left.start,length:left.end+right.length())
 }
 
+/// <#Description#>
+///
+/// - parameter left:  <#left description#>
+/// - parameter right: <#right description#>
+///
+/// - returns: <#return value description#>
 func - (left: CPCAngle, right: CPCAngle) -> CPCAngle {
     return CPCAngle(start:left.start,length:left.end-right.length())
 }
 
+/// <#Description#>
+///
+/// - parameter left:  <#left description#>
+/// - parameter right: <#right description#>
+///
+/// - returns: <#return value description#>
 func == (left: CPCAngle, right: CPCAngle) -> Bool {
     return left.start ==  right.start &&  left.end ==  right.end
 }
@@ -73,6 +91,12 @@ open class CPCAngle : CustomDebugStringConvertible {
     
     // MARK: Contructors
     
+    /// <#Description#>
+    ///
+    /// - parameter start: <#start description#>
+    /// - parameter end:   <#end description#>
+    ///
+    /// - returns: <#return value description#>
     convenience init(start:Double, end:Double){
         self.init()
         self.start = start
@@ -81,6 +105,12 @@ open class CPCAngle : CustomDebugStringConvertible {
         assert(valid())
     }
     
+    /// <#Description#>
+    ///
+    /// - parameter start:  <#start description#>
+    /// - parameter length: <#length description#>
+    ///
+    /// - returns: <#return value description#>
     convenience init(start:Double, length:Double){
         self.init()
         self.start = start
@@ -89,6 +119,12 @@ open class CPCAngle : CustomDebugStringConvertible {
         assert(valid())
     }
 
+    /// <#Description#>
+    ///
+    /// - parameter startDegree: <#startDegree description#>
+    /// - parameter endDegree:   <#endDegree description#>
+    ///
+    /// - returns: <#return value description#>
     convenience init(startDegree:Double, endDegree:Double){
         self.init()
         self.start = startDegree.degreesToRadians()
@@ -99,6 +135,12 @@ open class CPCAngle : CustomDebugStringConvertible {
         }
     }
     
+    /// <#Description#>
+    ///
+    /// - parameter startDegree:  <#startDegree description#>
+    /// - parameter lengthDegree: <#lengthDegree description#>
+    ///
+    /// - returns: <#return value description#>
     convenience init(startDegree:Double, lengthDegree:Double){
         self.init()
         let start = startDegree
@@ -134,7 +176,6 @@ open class CPCAngle : CustomDebugStringConvertible {
     public func arcLength(_ radius:CGFloat) -> Double {
         return length() * Double(radius)
     }
-    
     
     /**
      * Add radians to the angle
@@ -188,6 +229,11 @@ open class CPCAngle : CustomDebugStringConvertible {
         return len >= 0.0 && len <= 𝜏
     }
     
+    /// <#Description#>
+    ///
+    /// - parameter angle: <#angle description#>
+    ///
+    /// - returns: <#return value description#>
     static func inRange(angle:Double) -> Bool {
         return (angle > 𝜏 || angle < -𝜏) == false
     }
@@ -202,18 +248,20 @@ open class CPCAngle : CustomDebugStringConvertible {
         return self.start / 𝜏
     }
     
+    /// <#Description#>
+    ///
+    /// - parameter elements: <#elements description#>
+    ///
+    /// - returns: <#return value description#>
     static func ratio(elements:Double) -> Double {
         return 𝜏 / elements
     }
     
-    
-    /**
-     * Aling angle to CPCAnglePosition
-     *
-     * parameter position: position in angle
-     * returns: angle anligned to PositionInAngle
-     */
-    
+    /// Aling angle to CPCAnglePosition
+    ///
+    /// - parameter position: position in angle
+    ///
+    /// - returns: angle anligned to PositionInAngle
     public func angle(_ position:CPCAnglePosition) -> Double {
         switch(position) {
         case .middle:
@@ -225,11 +273,23 @@ open class CPCAngle : CustomDebugStringConvertible {
         }
     }
     
+    /// <#Description#>
+    ///
+    /// - parameter angle: <#angle description#>
+    ///
+    /// - returns: <#return value description#>
     public class func format(_ angle:Double) -> String {
         return "\(round(angle.radiansToDegrees()))°"
     }
     
     
+    /// <#Description#>
+    ///
+    /// - parameter angle:  <#angle description#>
+    /// - parameter center: <#center description#>
+    /// - parameter radius: <#radius description#>
+    ///
+    /// - returns: <#return value description#>
     public class func rectOfAngle(_ angle:CPCAngle, center:CGPoint, radius: CGFloat) -> CGRect{
         let p1  = CPCAngle.pointOfAngle(angle.start, center: center, radius: radius)
         let p2  = CPCAngle.pointOfAngle(angle.end, center: center, radius: radius)
@@ -239,6 +299,13 @@ open class CPCAngle : CustomDebugStringConvertible {
                       height:fabs(p1.y - p2.y));
     }
     
+    /// <#Description#>
+    ///
+    /// - parameter angle:  <#angle description#>
+    /// - parameter center: <#center description#>
+    /// - parameter radius: <#radius description#>
+    ///
+    /// - returns: <#return value description#>
     public class func pointOfAngle(_ angle:Double, center:CGPoint, radius: CGFloat) -> CGPoint {
         
         // Given a radius length r and an angle in radians and a circle's center (x,y),
@@ -250,7 +317,6 @@ open class CPCAngle : CustomDebugStringConvertible {
         
         return CGPoint(x: center.x + CGFloat(radius) * cos(theta), y: center.y + CGFloat(radius) * sin(theta))
     }
-    
 
     // MARK: DebugPrintable protocol
     

@@ -38,10 +38,12 @@ class ExampleSwiftTests: XCTestCase {
     
 
     func testSubpaths() {
-        let paths = [UIBezierPath.polygon(sides: 32, radius: 40, startAngle: 0, style: .curvetruple, percentInflection: 1.0),
-                     UIBezierPath.polygon(sides: 16, radius: 30, startAngle: 0, style: .curvedouble, percentInflection: 0.25),
-                     UIBezierPath.polygon(sides: 8, radius: 20, startAngle: 0, style: .curvesingle, percentInflection: 0.75),
-                     UIBezierPath.polygon(sides: 2, radius: 10, startAngle: 0, style: .curvetruple, percentInflection: 0.1)];
+        
+        let paths = [
+            UIBezierPath.polygon(sides: 32, radius: 40, startAngle: 0, style: .curvetruple, percentInflection: 1.0),
+            UIBezierPath.polygon(sides: 16, radius: 30, startAngle: 0, style: .curvedouble, percentInflection: 0.25),
+            UIBezierPath.polygon(sides: 8, radius: 20, startAngle: 0, style: .curvesingle, percentInflection: 0.75),
+            UIBezierPath.polygon(sides: 2, radius: 10, startAngle: 0, style: .curvetruple, percentInflection: 0.1)];
         
         let pathWithSubpaths = UIBezierPath()
         

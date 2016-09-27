@@ -253,10 +253,10 @@
 		359E8B451D9AA78600F94622 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				359E8B461D9AA78600F94622 /* CPCAngle.swift */,
-				359E8B471D9AA78600F94622 /* CPCStepData.swift */,
 				359E8B481D9AA78600F94622 /* Extensions */,
+				359E8B461D9AA78600F94622 /* CPCAngle.swift */,
 				359E8B5C1D9AA78600F94622 /* OMCircularProgress.swift */,
+				359E8B471D9AA78600F94622 /* CPCStepData.swift */,
 				359E8B5D1D9AA78600F94622 /* OMLayers */,
 				359E8B7A1D9AA78600F94622 /* OMLog.swift */,
 			);

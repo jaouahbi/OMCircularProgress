@@ -35,7 +35,6 @@ public extension Double {
     func radiansToDegrees () -> Double {
         return self * 57.29577951
     }
-    
     mutating func clamp(toLowerValue lowerValue: Double, upperValue: Double){
         self = min(max(self, lowerValue), upperValue)
     }
