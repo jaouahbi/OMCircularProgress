@@ -52,7 +52,7 @@ public struct LogLevel : OptionSet {
 ///OMLog Type
 public struct OMLog {
     /// Log Mode
-    public static var level: LogLevel = .DevOptions
+    public static var level: LogLevel = .NormalOptions
     
     /**
      * print items to the console
