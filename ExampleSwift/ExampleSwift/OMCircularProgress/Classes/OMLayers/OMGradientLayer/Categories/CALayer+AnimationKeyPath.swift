@@ -26,7 +26,7 @@
 import UIKit
 
 public extension CALayer {
-
+    
     // MARK: - CALayer Animation Helpers
     
     public func animationActionForKey(_ event:String!) -> CABasicAnimation! {
@@ -37,11 +37,11 @@ public extension CALayer {
     }
     
     public func animateKeyPath(_ keyPath : String,
-                        fromValue : AnyObject?,
-                        toValue:AnyObject?,
-                        beginTime:TimeInterval,
-                        duration:TimeInterval,
-                        delegate:AnyObject?)
+                               fromValue : AnyObject?,
+                               toValue:AnyObject?,
+                               beginTime:TimeInterval,
+                               duration:TimeInterval,
+                               delegate:AnyObject?)
     {
         let animation = CABasicAnimation(keyPath:keyPath);
         

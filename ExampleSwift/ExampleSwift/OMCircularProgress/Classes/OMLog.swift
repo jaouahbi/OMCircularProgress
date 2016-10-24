@@ -23,7 +23,6 @@
 
 import Foundation
 
-
 // DISABLE_LOG
 
 // Based on : https://github.com/kostiakoval/SpeedLog
@@ -49,6 +48,8 @@ public struct LogLevel : OptionSet {
     public static let DevOptions: LogLevel = [Verbose, Info, Warning, Error]
     /// QAOptions - Enable QA options, [Debug, Verbose, Info, Warning, Error]
     public static let DebugOptions: LogLevel = AllOptions
+    
+
 }
 
 
@@ -57,17 +58,34 @@ public struct OMLog {
     /// Log Mode
     public static var level: LogLevel = .NormalOptions
     
-    /**
-     * print items to the console
-     * parameter items:      items to print
-     * parameter level:      log level
-     */
+    private static func levelName(level:LogLevel) -> String {
+        switch level {
+        case LogLevel.Debug:
+            return "DEBUG"
+        case LogLevel.Verbose:
+            return "VERBOSE"
+        case LogLevel.Info:
+            return "INFO"
+        case LogLevel.Warning:
+            return "WARNING"
+        case LogLevel.Error:
+            return "ERROR"
+        default:
+            assertionFailure()
+            return "UNKNOWN"
+        }
+    }
+    
+    /// print items to the console
+    ///
+    /// - parameter items: items to print
+    /// - parameter level: log level
     
     public static func print(_ items: Any..., level:LogLevel) {
         #if !DISABLE_LOG
             let stringItem = items.map {"\($0)"}.joined(separator: " ")
             if (OMLog.level.contains(level)) {
-                Swift.print("\(level) \(stringItem)", terminator: "\n")
+                Swift.print("\(levelName(level: level)):\(stringItem)", terminator: "\n")
             }
         #endif
     }

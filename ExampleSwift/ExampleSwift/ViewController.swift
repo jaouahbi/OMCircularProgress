@@ -159,7 +159,7 @@ class ProgressExampleViewController: UIViewController {
                                   UIColor.crayolaSeaSerpentColor]
         
         let numberOfSteps = 20
-        let stepAngle     = CPCAngle.ratio(elements: Double(numberOfSteps))
+        let stepAngle     = OMAngle.ratio(elements: Double(numberOfSteps))
         
         let color   = UIColor.crayolaCeruleanColor
         
@@ -236,7 +236,7 @@ class ProgressExampleViewController: UIViewController {
         
         let colors : [UIColor] = UIColor.rainbow(2, hue: 0)
         
-        let stepAngle = CPCAngle.ratio(elements: Double(colors.count))
+        let stepAngle = OMAngle.ratio(elements: Double(colors.count))
         
         for i in 0 ..< colors.count  {
             
@@ -285,7 +285,7 @@ class ProgressExampleViewController: UIViewController {
         
         let colors : [UIColor] = UIColor.rainbow(25, hue: 0)
         
-        let stepAngle = CPCAngle.ratio(elements: Double(colors.count))
+        let stepAngle = OMAngle.ratio(elements: Double(colors.count))
         
         for i in 0 ..< colors.count  {
             
@@ -435,7 +435,7 @@ class ProgressExampleViewController: UIViewController {
         
         let images  : [String] = ["0","1","2","3"]
         
-        let stepAngle = CPCAngle.ratio(elements:Double(strings.count))
+        let stepAngle = OMAngle.ratio(elements:Double(strings.count))
         
         let centerColor = UIColor(white:0, alpha: 0.8)
         
@@ -462,7 +462,7 @@ class ProgressExampleViewController: UIViewController {
                 if (i == 0) {
             
                     theStep.te.layer.radiusRatio            = 0.80
-                    theStep.te.layer.angle                  = theStep.angle
+                    theStep.te.layer.angleLength            = theStep.angle.length()
                     theStep.te.orientationToAngle           = true;
                     
                     theStep.te.layer.font                   = fontCourier
@@ -473,7 +473,7 @@ class ProgressExampleViewController: UIViewController {
                     theStep.te.shadow                       = false
                 } else if(i == 1) {
                     theStep.te.layer.radiusRatio            = 0.40
-                    theStep.te.layer.angle                  = theStep.angle
+                    theStep.te.layer.angleLength            = theStep.angle.length()
                     theStep.te.orientationToAngle           = true;
                     
                     theStep.te.layer.font                   = fontCourier
@@ -484,7 +484,7 @@ class ProgressExampleViewController: UIViewController {
                     theStep.te.shadow                       = false
                 } else if(i == 2) {
                     theStep.te.layer.radiusRatio            = 0.80
-                    theStep.te.layer.angle                  = theStep.angle
+                    theStep.te.layer.angleLength                  = theStep.angle.length()
                     theStep.te.orientationToAngle           = true;
                     theStep.te.layer.font                   = fontCourier
                     theStep.te.layer.foregroundColor        = UIColor.white
@@ -500,7 +500,7 @@ class ProgressExampleViewController: UIViewController {
                     theStep.te.layer.fontStrokeWidth        = -3
                     
                     theStep.te.layer.radiusRatio            = 0.40
-                    theStep.te.layer.angle                  = theStep.angle
+                    theStep.te.layer.angleLength            = theStep.angle.length()
                     theStep.te.orientationToAngle           = true
                     theStep.te.shadow                       = false
                 }
@@ -566,7 +566,7 @@ class ProgressExampleViewController: UIViewController {
         
         let color : UIColor = UIColor.crayolaQuickSilverColor
         
-        let clockAngle = CPCAngle.ratio(elements: Double(romanNumbers.count))
+        let clockAngle = OMAngle.ratio(elements: Double(romanNumbers.count))
         
         let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 22 : 11
         let font =  UIFont(name:"HelveticaNeue", size:CGFloat(fontSize))
@@ -626,7 +626,7 @@ class ProgressExampleViewController: UIViewController {
         
         let color =   UIColor.crayolaQuickSilverColor
         
-        let clockAngle = CPCAngle.ratio(elements: Double(minutesPerHour))
+        let clockAngle = OMAngle.ratio(elements: Double(minutesPerHour))
         
         let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 16 : 8
         
@@ -694,7 +694,7 @@ class ProgressExampleViewController: UIViewController {
         
         let color =  UIColor.crayolaQuickSilverColor
         
-        let clockAngle = CPCAngle.ratio(elements: Double(minutesPerHour))
+        let clockAngle = OMAngle.ratio(elements: Double(minutesPerHour))
         
         let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 18 : 9
         

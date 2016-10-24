@@ -22,6 +22,8 @@
 //  Copyright © 2016 Jorge Ouahbi. All rights reserved.
 //
 
+// v1.0
+
 import UIKit
 
 
@@ -42,10 +44,10 @@ public func /(lhs: CGPoint, rhs: CGSize) -> CGPoint {
 
 
 extension CGPoint : Hashable  {
-
+    
     public var hashValue: Int {
         return self.x.hashValue << MemoryLayout<CGFloat>.size ^ self.y.hashValue
-
+        
     }
     var isZero : Bool {
         return self == CGPoint.zero

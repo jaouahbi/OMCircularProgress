@@ -120,6 +120,8 @@ open class OMShadingGradientLayer : OMGradientLayer {
                 // circle has radius `endRadius' and is centered at `end', specified in the
                 // shading's target coordinate space.
                 
+                // CHE¿Scale the context 1:1?
+                
             }
             
             var shading:OMShadingGradient = OMShadingGradient(colors: colors,
@@ -148,6 +150,7 @@ open class OMShadingGradientLayer : OMGradientLayer {
             } else if(self.function == .cosine) {
                 currentDescription += " cosine interpolation"
             }
+            
             //currentDescription += " \(self.slopeFunction.1)"
             return currentDescription
         }

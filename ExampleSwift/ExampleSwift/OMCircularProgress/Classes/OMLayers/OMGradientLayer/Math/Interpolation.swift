@@ -57,7 +57,7 @@ class Interpolation
         return(a0*t*t2+a1*t2+a2*t+a3);
     }
     class func eerp(_ y0:CGFloat,y1:CGFloat,t:CGFloat) -> CGFloat {
-        assert(t >= 0.0 && t <= 1.0);
+        //assert(t >= 0.0 && t <= 1.0);
         let end    = log(max(Double(y0), 0.01))
         let start  = log(max(Double(y1), 0.01))
         return   CGFloat(exp(start - (end + start) * Double(t)))
@@ -72,14 +72,14 @@ class Interpolation
     // (1-t)*v0 + t*v1;
     
     class func lerp(_ y0:CGFloat,y1:CGFloat,t:CGFloat) -> CGFloat {
-        assert(t >= 0.0 && t <= 1.0);
+        //assert(t >= 0.0 && t <= 1.0);
         let inverse = 1.0 - t;
         return inverse * y0 + t * y1
     }
     
     class func bilerp(_ y00:CGFloat,y01:CGFloat,t1:CGFloat,y10:CGFloat,y11:CGFloat,t2:CGFloat) -> CGFloat {
-        assert(t1 >= 0.0 && t1 <= 1.0);
-         assert(t2 >= 0.0 && t2 <= 1.0);
+        //assert(t1 >= 0.0 && t1 <= 1.0);
+        //assert(t2 >= 0.0 && t2 <= 1.0);
 
         let x = lerp(y00, y1: y01, t: t1)
         let y = lerp(y10, y1: y11, t: t2)
@@ -88,9 +88,8 @@ class Interpolation
     }
     
     
-    
     class func coserp(_ y0:CGFloat,y1:CGFloat,t:CGFloat) -> CGFloat {
-        assert(t >= 0.0 && t <= 1.0);
+        //assert(t >= 0.0 && t <= 1.0);
         let mu2 = CGFloat(1.0-cos(Double(t)*M_PI))/2;
         return (y0*(1.0-mu2)+y1*mu2);
     }

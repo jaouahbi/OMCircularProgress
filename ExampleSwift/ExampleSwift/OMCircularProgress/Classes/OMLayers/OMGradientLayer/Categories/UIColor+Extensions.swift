@@ -1,3 +1,4 @@
+
 //
 //    Copyright 2015 - Jorge Ouahbi
 //
@@ -21,6 +22,54 @@
 //  Created by Jorge Ouahbi on 27/4/16.
 //  Copyright © 2016 Jorge Ouahbi. All rights reserved.
 //
+
+
+import UIKit
+
+//
+//  Attributes
+//
+let kLuminanceDarkCutoff:CGFloat = 0.6;
+
+extension UIColor
+{
+    var croma : CGFloat {
+        // calculate chroma
+        let min1  = min((components?[1])!, (components?[2])!)
+        let max1  = max((components?[1])!, (components?[2])!)
+        return max(components![0], max1) - min(components![0], min1);
+        
+    }
+    // luma RGB
+    var luma : CGFloat {
+        
+        let lumaRed   = 0.2126 * Float((components?[0])!)
+        let lumaGreen = 0.7152 * Float((components?[1])!)
+        let lumaBlue  = 0.0722 * Float((components?[2])!)
+        let luma      = Float(lumaRed + lumaGreen + lumaBlue)
+        
+        return CGFloat(luma * Float(components![3]))
+    }
+    
+    var luminance : CGFloat
+    {
+        let fmin = min(min((components?[0])!, (components?[1])!), (components?[2])!);
+        let fmax = max(max((components?[0])!, (components?[1])!), (components?[2])!);
+        return (fmax + fmin) / 2.0;
+    }
+    
+    // WebKit
+    // luma = (r * 0.2125 + g * 0.7154 + b * 0.0721) * ((double)a / 255.0);
+    
+    var isLight : Bool {
+        return self.luma >= kLuminanceDarkCutoff
+    }
+    
+    var isDark : Bool {
+        return self.luma < kLuminanceDarkCutoff;
+    }
+}
+
 
 import UIKit
 
@@ -166,6 +215,9 @@ extension UIColor
                        alpha: a)
         
     }
+    
+    
+    
     // bilinear interpolation
     public class func bilerp(_ start:[UIColor], end:[UIColor], t:[CGFloat]) -> UIColor {
         let srgba0 = start[0].components
@@ -181,3 +233,4 @@ extension UIColor
         
     }
 }
+
