@@ -4,7 +4,7 @@ Custom circular progress UIControl with steps, images, text and individual anima
 
 [![Build Status](https://travis-ci.org/jaouahbi/OMCircularProgress.svg?branch=master)](https://travis-ci.org/jaouahbi/OMCircularProgress)
 
-> History
+## History
 
 About 2013, I was working for a client with specialized applications for health and fitnesst.
 I had to write a application that will show the progress of each health and fitnesst stage of the day.
@@ -23,6 +23,7 @@ control for rendering and visualization subtasks of tasks.
 - [x] Text for each step
 - [x] Image for each step
 - [x] Mask layer for each step
+- [x] Center Text and Image
 - [x] CoreText layers
 - [x] Progress images
 
