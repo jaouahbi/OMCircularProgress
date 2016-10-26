@@ -4,7 +4,7 @@ Custom circular progress UIControl with steps, images, text and individual anima
 
 [![Build Status](https://travis-ci.org/jaouahbi/OMCircularProgress.svg?branch=master)](https://travis-ci.org/jaouahbi/OMCircularProgress)
 
-![](https://github.com/jaouahbi/OMCircularProgress/blob/master/ScreenShot/ScreenShot_1.gif)
+![](https://github.com/jaouahbi/OMCircularProgress/blob/master/ScreenShot/ScreenShot_1.png)
 
 ## Features
 
