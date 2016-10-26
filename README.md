@@ -2,7 +2,10 @@
 
 Custom circular progress UIControl with steps, images, text and individual animations in Swift
 
+[![Version](https://img.shields.io/cocoapods/v/OMCircularProgress.svg?style=flat)](http://cocoadocs.org/docsets/OMCircularProgress)
 [![Build Status](https://travis-ci.org/jaouahbi/OMCircularProgress.svg?branch=master)](https://travis-ci.org/jaouahbi/OMCircularProgress)
+
+
 
 ## History
 
@@ -42,7 +45,7 @@ Open a issue.
 
 ## CocoaPods Installation
 
-> TODO
+> pod install
 
 ## Carthage Installation
 
