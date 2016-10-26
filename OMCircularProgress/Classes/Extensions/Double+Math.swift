@@ -27,6 +27,11 @@ import UIKit
  *  Double Extension for conversion from/to degrees/radians and clamp
  */
 
+
+public func clamp(_ value:Double,lowerValue: Double, upperValue: Double) -> Double{
+    return Swift.min(Swift.max(value, lowerValue), upperValue)
+}
+
 public extension Double {
     
     func degreesToRadians () -> Double {
@@ -35,7 +40,6 @@ public extension Double {
     func radiansToDegrees () -> Double {
         return self * 57.29577951
     }
-    
     mutating func clamp(toLowerValue lowerValue: Double, upperValue: Double){
         self = min(max(self, lowerValue), upperValue)
     }
