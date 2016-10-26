@@ -25,67 +25,60 @@
 import UIKit
 
 
-extension UIColor
+/**
+*  UIColor Extension that generate next UIColor
+*
+*/
+
+extension UIColor : IteratorProtocol
 {
     var alpha : CGFloat {
         return self.cgColor.alpha
     }
-    
+
     var hue: CGFloat {
-        
+
         var hue : CGFloat = 0
         var saturation : CGFloat = 0
         var brightness : CGFloat = 0
         var alpha : CGFloat = 0
-        
+
         if ( getHue(&hue, saturation:&saturation, brightness:&brightness, alpha:&alpha)) {
             return hue
         }
-        
+
         return 1.0;
     }
-    
-    
+
+
     var saturation: CGFloat {
-        
+
         var hue : CGFloat = 0
         var saturation : CGFloat = 0
         var brightness : CGFloat = 0
         var alpha : CGFloat = 0
-        
+
         if ( getHue(&hue, saturation:&saturation, brightness:&brightness, alpha:&alpha)) {
             return saturation
         }
-        
+
         return 1.0;
     }
-    
+
     var brightness: CGFloat {
-        
+
         var hue : CGFloat = 0
         var saturation : CGFloat = 0
         var brightness : CGFloat = 0
         var alpha : CGFloat = 0
-        
+
         if ( getHue(&hue, saturation:&saturation, brightness:&brightness, alpha:&alpha)) {
             return brightness
         }
-        
+
         return 1.0;
     }
-}
 
-
-/**
- *  UIColor Extension that generate next UIColor
- *
- */
-
-let kHueStep:Double = 7
-
-extension UIColor : IteratorProtocol
-{
-    
     // Required to adopt `GeneratorType`
 
     public typealias Element = UIColor
@@ -94,7 +87,7 @@ extension UIColor : IteratorProtocol
 
     public func next() -> UIColor?
     {
-        let increment = 360.0 / kHueStep
+        let increment = 360.0 / 7
 
         let hue = (Double(self.hue) * 360.0)
 
@@ -111,7 +104,7 @@ extension UIColor : IteratorProtocol
     
     public func prev() -> UIColor?
     {
-        let increment = 360.0 / kHueStep
+        let increment = 360.0 / 7
         
         let hue = (Double(self.hue) * 360.0)
         

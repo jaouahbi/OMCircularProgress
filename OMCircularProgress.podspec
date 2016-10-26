@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'OMCircularProgress'
   s.version          = '0.4.0'
-  s.summary          = 'Circular progress UIControl with steps, images, text and individual animations.'
+  s.summary          = 'Custom circular progress UIControl with steps, images, text and individual animations.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.description     = 'Custom circular progress UIControl with steps, images, text and individual animations.'
 
   s.homepage         = 'https://github.com/jaouahbi/OMCircularProgress'
-  #s.screenshots      = 'https://github.com/jaouahbi/OMCircularProgress/blob/master/ScreenShot/ScreenShot_1.png'
+  s.screenshots     = 'https://github.com/jaouahbi/OMCircularProgress/blob/master/ScreenShot/ScreenShot_1.png'
   s.license          = { :type => 'APACHE 2.0', :file => 'LICENSE' }
   s.author           = { 'Jorge Ouahbi' => 'jorgeouahbi@gmail.com' }
   s.source           = { :git => 'https://github.com/jaouahbi/OMCircularProgress.git', :tag => s.version.to_s }

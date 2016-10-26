@@ -107,8 +107,8 @@ extension UIColor {
         
         if (numberOfComponents == 2) {
             
-            let w =  String(format: "%.1f", (self.components?[0])!)
-            let a =  String(format: "%.1f", (self.components?[1])!)
+            let w = (self.components?[0])!.format(true)
+            let a = (self.components?[1])!.format(true)
             
             if let colorSpace = self.colorSpace {
                 return "<\(colorSpace.model.name):\(w) \(a)>";
@@ -118,10 +118,10 @@ extension UIColor {
         } else {
             
             assert(numberOfComponents == 4)
-            let r =  String(format: "%.1f", (self.components?[0])!)
-            let g =  String(format: "%.1f", (self.components?[1])!)
-            let b =  String(format: "%.1f", (self.components?[2])!)
-            let a =  String(format: "%.1f", (self.components?[3])!)
+            let r = (self.components?[0])!.format(true)
+            let g = (self.components?[1])!.format(true)
+            let b = (self.components?[2])!.format(true)
+            let a = (self.components?[3])!.format(true)
             
             if let colorSpace = self.colorSpace {
                 return "<\(colorSpace.model.name):\(r) \(g) \(b) \(a)>";

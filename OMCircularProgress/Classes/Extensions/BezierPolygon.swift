@@ -10,10 +10,8 @@
 
 import UIKit
 
-public enum PolygonStyle { case flatsingle, flatdouble, curvesingle, curvedouble, flattruple, curvetruple }
-
 public struct Bezier {
-
+    public enum PolygonStyle { case flatsingle, flatdouble, curvesingle, curvedouble, flattruple, curvetruple }
     static func polygon(
         sides sideCount: Int = 5,
         radius: CGFloat = 50.0,
@@ -96,22 +94,5 @@ public struct Bezier {
         
         path.close()
         return path
-    }
-}
-
-extension UIBezierPath {
-    
-    public class func polygon(sides: Int = 5,
-                 radius: CGFloat = 50.0,
-                 startAngle : CGFloat =  0.0,
-                 style: PolygonStyle = .curvesingle,
-                 percentInflection: CGFloat = 0.0) -> UIBezierPath
-    {
-        return Bezier.polygon(
-            sides:sides,
-            radius:radius,
-            startAngle:startAngle,
-            style: style,
-            percentInflection:percentInflection)
     }
 }

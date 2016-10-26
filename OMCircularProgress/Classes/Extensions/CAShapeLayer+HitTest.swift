@@ -28,14 +28,16 @@ import CoreGraphics
 extension CAShapeLayer {
     override open func contains(_ p:CGPoint) -> Bool {
         let eoFill:Bool = (self.fillRule == "even-odd")
-        guard let path = self.path
-        else { return false }
-        return path.contains(p, using: eoFill ? .evenOdd : .winding)
+        if((self.path != nil)){
+            return self.path!.contains(p, using: eoFill ? .evenOdd : .winding)
+        }
+        return false
     }
     
     func pathBoundingBox() -> CGRect {
-        guard let path = self.path
-        else { return CGRect.zero }
-        return path.boundingBox
+        if((self.path != nil)){
+            return self.path!.boundingBox
+        }
+        return CGRect.zero
     }
 }
