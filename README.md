@@ -33,7 +33,7 @@ control for rendering and visualization subtasks of tasks.
 ## Requirements
 
 - iOS 8.0+
-- Xcode 7.3
+- Xcode 8.0
 
 ## Communication
 

@@ -127,7 +127,7 @@ func ShadingFunctionCreate(_ colors : [UIColor],
             }
             
             // Premultiply the color by the alpha.
-            // or
+            
             // The alpha component is always 1, the shading is always opaque.
             // outData[3] = 1.0
         }
