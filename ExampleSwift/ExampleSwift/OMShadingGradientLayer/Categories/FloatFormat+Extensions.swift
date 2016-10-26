@@ -18,3 +18,9 @@ extension CGFloat {
         }
     }
 }
+
+extension Float {
+    func format(_ short:Bool)->String {
+        return CGFloat(self).format(short)
+    }
+}

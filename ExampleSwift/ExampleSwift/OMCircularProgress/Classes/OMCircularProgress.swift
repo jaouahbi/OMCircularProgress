@@ -781,7 +781,7 @@ open class OMCPStepData : CustomDebugStringConvertible {
         
         assert(progress <= Double(numberOfSteps),"Unexpected progress \(progress) max \(numberOfSteps) ")
         
-        let clmprogress:Double = clamp(progress, lower: 0.0,upper: Double(numberOfSteps))
+        let clmprogress:Double = clamp(progress, lowerValue: 0.0,upperValue: Double(numberOfSteps))
         
         let stepsDone   = Int(clmprogress);
         let curStep     = clmprogress - floor(clmprogress);
@@ -800,7 +800,7 @@ open class OMCPStepData : CustomDebugStringConvertible {
         }
         
         let duration        = (animationDuration / Double(numberOfSteps)) * clmprogress
-        let toValue:Double  = clamp((progress / Double(numberOfSteps)),lower: 0.0,upper: 1.0)
+        let toValue:Double  = clamp((progress / Double(numberOfSteps)),lowerValue: 0.0,upperValue: 1.0)
         
         weak var delegate = self
         
@@ -1482,7 +1482,7 @@ extension OMCircularProgress {
             return nil;
         }
         // clap the percent.
-        let  clampedPercent = clamp(percent, lower: 0.0,upper: 1.0)
+        let  clampedPercent = clamp(percent, lowerValue: 0.0,upperValue: 1.0)
 
         let step = OMCPStepData(start:start,
                               percent:clampedPercent,

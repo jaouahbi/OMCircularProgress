@@ -62,7 +62,7 @@ import CoreFoundation
     }
     var radiusRatio : CGFloat = 0.0 {
         didSet {
-            radiusRatio = clamp(radiusRatio, lower: 0, upper: 1.0)
+            radiusRatio = clamp(radiusRatio, lowerValue: 0, upperValue: 1.0)
             setNeedsDisplay()
         }
     }
@@ -551,7 +551,7 @@ extension OMTextLayer {
                 // Now for the actual drawing. The angle offset for each glyph relative to the previous glyph has already been
                 // calculated; with that information in hand, draw those glyphs overstruck and centered over one another, making sure
                 // to rotate the context after each glyph so the glyphs are spread along a semicircular path.
-                var textPosition = CGPoint(x:0.0,y: self.radiusRatio * minRadius(rect.size));
+                var textPosition = CGPoint(x:0.0,y: self.radiusRatio * rect.size.min() * 0.5);
                 
                 context.textPosition = textPosition
                 
