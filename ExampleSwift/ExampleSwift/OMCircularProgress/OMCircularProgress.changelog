@@ -1,0 +1,26 @@
+//
+//  OMCircularProgress.swift
+//
+//  Created by Jorge Ouahbi on 19/1/15.
+//
+//
+//  0.1 (29-3-2015)
+//      Dynamic calculation of the maximun size of the images.
+//      Image and text orientation to angle option
+//      Change center numerical text layer to CFNumberFormatterStyle.NoStyle style by default
+//
+//      (31-03-2015)
+//      Renamed component
+//      Remove the use of UIView.center because some times got bad values.
+//      Added angle align to step text and image
+
+//  0.1.1 (14-04-2015)
+//      Individual gradient for each progress step. For example:
+//      now its posible to set the step one to axial gradient and the step two to radial gradient, and so...
+//      Font settings added for each progress step.
+//      The layers are created only one time. The next layer layouts only are reconfigured if needed
+
+//  0.1.2 (10-05-2015)
+//      Remove the gradients.
+//      Added the layerMask.
+//      Added the setter for the radius.

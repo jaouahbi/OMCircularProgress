@@ -24,9 +24,6 @@
 import UIKit
 
 
-/**
-*  @brief  GPoint Extension
-*/
 extension CGPoint
 {
     public func center(_ size:CGSize) -> CGPoint {

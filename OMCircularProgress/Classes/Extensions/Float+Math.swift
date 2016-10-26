@@ -27,15 +27,17 @@ import UIKit
  *  Float Extension for conversion from/to degrees/radians and clamp
  */
 
+public func clamp(_ value:Float,lowerValue: Float, upperValue: Float) -> Float{
+    return Swift.min(Swift.max(value, lowerValue), upperValue)
+}
+
 public extension Float {
-    
     func degreesToRadians () -> Float {
         return self * 0.01745329252
     }
     func radiansToDegrees () -> Float {
         return self * 57.29577951
     }
-    
     mutating func clamp(toLowerValue lowerValue: Float, upperValue: Float){
         self = min(max(self, lowerValue), upperValue)
     }

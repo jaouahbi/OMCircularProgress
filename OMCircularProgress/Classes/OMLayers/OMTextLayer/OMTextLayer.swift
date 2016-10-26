@@ -49,21 +49,20 @@ import CoreGraphics
 import CoreText
 import CoreFoundation
 
-
 @objc class OMTextLayer : CALayer
 {
     // MARK: properties
     
     fileprivate(set) var fontRef:CTFont = CTFontCreateWithName("Helvetica" as CFString, 12.0, nil);
     
-    var angle : CPCAngle? = nil {
+    var angleLength : Double? {
         didSet {
             setNeedsDisplay()
         }
     }
     var radiusRatio : CGFloat = 0.0 {
         didSet {
-            radiusRatio = clamp(radiusRatio, lower: 0, upper: 1.0)
+            radiusRatio = clamp(radiusRatio, lowerValue: 0, upperValue: 1.0)
             setNeedsDisplay()
         }
     }
@@ -365,13 +364,13 @@ import CoreFoundation
             
             let rect:CGRect = bounds
             
-            if (radiusRatio == 0 && angle == nil) {
+            if (radiusRatio == 0 && angleLength == nil) {
                 
                 // Create a path which bounds the area where you will be drawing text.
                 // The path need not be rectangular.
                 
                 let path = CGMutablePath();
-
+                
                 // add the rect for the frame
                 path.addRect(rect);
                 
@@ -468,7 +467,7 @@ extension OMTextLayer
 
 extension OMTextLayer {
     
-    func prepareGlyphArcInfo(line:CTLine, glyphCount:CFIndex, angle:CPCAngle) -> [GlyphArcInfo] {
+    func prepareGlyphArcInfo(line:CTLine, glyphCount:CFIndex, angle:Double) -> [GlyphArcInfo] {
         assert(glyphCount > 0);
         
         let runArray = CTLineGetGlyphRuns(line) as Array
@@ -497,10 +496,9 @@ extension OMTextLayer {
         let lineLength = CGFloat(CTLineGetTypographicBounds(line, nil, nil, nil))
         
         var info = glyphArcInfo.first!
-        let angleLength  = CGFloat(angle.length())
         var prevHalfWidth:CGFloat = info.width / 2.0;
         
-        info.angle = (prevHalfWidth / lineLength) * angleLength
+        info.angle = (prevHalfWidth / lineLength) * CGFloat(angleLength!)
         
         var angleArc = info.angle
         
@@ -512,11 +510,11 @@ extension OMTextLayer {
             
             let prevCenterToCenter:CGFloat = prevHalfWidth + halfWidth;
             
-            let glyphAngle = (prevCenterToCenter / lineLength) * angleLength
+            let glyphAngle = (prevCenterToCenter / lineLength) * CGFloat(angleLength!)
             
             angleArc += glyphAngle
             
-            OMLog.printd("\(self.name ?? ""): #\(lineGlyphIndex) angle : \(CPCAngle.format(Double(glyphAngle))) arc length :\(CPCAngle.format(Double(angleArc)))")
+            //OMLog.printd("\(self.name ?? ""): #\(lineGlyphIndex) angle : \(OMAngle.format(Double(glyphAngle))) arc length :\(OMAngle.format(Double(angleArc)))")
             
             glyphArcInfo[lineGlyphIndex].angle = glyphAngle
             
@@ -527,15 +525,16 @@ extension OMTextLayer {
     }
     
     
-    func drawWithArc(context:CGContext, rect:CGRect)
-    {
+    func drawWithArc(context:CGContext, rect:CGRect) {
         OMLog.printd("\(self.name ?? ""): drawWithArc(\(rect))")
         
-        if let string = string {
-            let angle = self.angle!
-            let line  = CTLineCreateWithAttributedString(self.stringWithAttributes(string))
+        if let string = string, let angle = self.angleLength {
+            
+            let attributeString = self.stringWithAttributes(string)
+            let line  = CTLineCreateWithAttributedString(attributeString)
             let glyphCount:CFIndex = CTLineGetGlyphCount(line);
             if glyphCount == 0 {
+                OMLog.printw("\(self.name ?? ""): 0 glyphs \(attributeString))")
                 return;
             }
             
@@ -549,10 +548,10 @@ extension OMTextLayer {
                 // Rotate the context 90 degrees counterclockwise.
                 context.rotate(by: CGFloat(M_PI_2));
                 
-                /*
-                 Now for the actual drawing. The angle offset for each glyph relative to the previous glyph has already been calculated; with that information in hand, draw those glyphs overstruck and centered over one another, making sure to rotate the context after each glyph so the glyphs are spread along a semicircular path.
-                 */
-                var textPosition = CGPoint(x:0.0,y: self.radiusRatio * minRadius(rect.size));
+                // Now for the actual drawing. The angle offset for each glyph relative to the previous glyph has already been
+                // calculated; with that information in hand, draw those glyphs overstruck and centered over one another, making sure
+                // to rotate the context after each glyph so the glyphs are spread along a semicircular path.
+                var textPosition = CGPoint(x:0.0,y: self.radiusRatio * rect.size.min() * 0.5);
                 
                 context.textPosition = textPosition
                 
@@ -571,7 +570,7 @@ extension OMTextLayer {
                         
                         let angleRotation:CGFloat = -(glyphArcInfo[runGlyphIndex + glyphOffset].angle);
                         
-                        OMLog.printd("\(self.name ?? ""): run glyph#\(runGlyphIndex) angle rotation : \(CPCAngle.format(Double(angleRotation)))");
+                        //OMLog.printd("\(self.name ?? ""): run glyph#\(runGlyphIndex) angle rotation : \(OMAngle.format(Double(angleRotation)))");
                         
                         context.rotate(by: angleRotation);
                         
@@ -581,10 +580,8 @@ extension OMTextLayer {
                         let halfGlyphWidth:CGFloat = glyphWidth / 2.0;
                         let positionForThisGlyph:CGPoint = CGPoint(x:textPosition.x - halfGlyphWidth, y:textPosition.y);
                         
-                        //
-                        // Glyphs are positioned relative to the text position for the line, 
+                        // Glyphs are positioned relative to the text position for the line,
                         // so offset text position leftwards by this glyph's width in preparation for the next glyph.
-                        //
                         
                         textPosition.x -= glyphWidth;
                         

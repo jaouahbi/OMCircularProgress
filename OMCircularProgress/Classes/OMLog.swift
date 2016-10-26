@@ -23,6 +23,8 @@
 
 import Foundation
 
+// DISABLE_LOG
+
 // Based on : https://github.com/kostiakoval/SpeedLog
 
 ///LogLevel type. Specify what level of details should be included to the log
@@ -48,57 +50,62 @@ public struct LogLevel : OptionSet {
     public static let DebugOptions: LogLevel = AllOptions
 }
 
-
 ///OMLog Type
 public struct OMLog {
     /// Log Mode
-    public static var level: LogLevel = .DevOptions
+    public static var level: LogLevel = .NormalOptions
+    private static func levelName(level:LogLevel) -> String {
+        switch level {
+        case LogLevel.Debug: return "DEBUG"
+        case LogLevel.Verbose: return "VERBOSE"
+        case LogLevel.Info: return "INFO"
+        case LogLevel.Warning:return "WARNING"
+        case LogLevel.Error:return "ERROR"
+        default:
+            assertionFailure()
+            return "UNKNOWN"
+        }
+    }
     
-    /**
-     * print items to the console
-     * parameter items:      items to print
-     * parameter level:      log level
-     */
+    /// print items to the console
+    ///
+    /// - parameter items: items to print
+    /// - parameter level: log level
     
-    public static func printd(_ items: Any..., level:LogLevel = .Debug) {
+    public static func print(_ items: Any..., level:LogLevel) {
         #if !DISABLE_LOG
             let stringItem = items.map {"\($0)"}.joined(separator: " ")
             if (OMLog.level.contains(level)) {
-                Swift.print("[DEBUG] \(stringItem)", terminator: "\n")
+                /// Name of the level
+                let nameOfLevel = levelName(level: level)
+                /// Print it out
+                Swift.print("\(nameOfLevel):\(stringItem)", terminator: "\n")
             }
+        #endif
+    }
+    public static func printd(_ items: Any..., level:LogLevel = .Debug) {
+        #if !DISABLE_LOG
+            print(items,level:level);
         #endif
     }
     public static func printw(_ items: Any..., level:LogLevel = .Warning) {
         #if !DISABLE_LOG
-            let stringItem = items.map {"\($0)"}.joined(separator: " ")
-            if (OMLog.level.contains(level)) {
-                Swift.print("[WARNING] \(stringItem)", terminator: "\n")
-            }
+            print(items,level:level);
         #endif
     }
     public static func printi(_ items: Any..., level:LogLevel = .Info) {
         #if !DISABLE_LOG
-            let stringItem = items.map {"\($0)"}.joined(separator: " ")
-            if (OMLog.level.contains(level)) {
-                Swift.print("[INFO] \(stringItem)", terminator: "\n")
-            }
+            print(items,level:level);
         #endif
     }
     public static func printe(_ items: Any..., level:LogLevel = .Error) {
         #if !DISABLE_LOG
-            let stringItem = items.map {"\($0)"}.joined(separator: " ")
-            if (OMLog.level.contains(level)) {
-                Swift.print("[ERROR] \(stringItem)", terminator: "\n")
-            }
+            print(items,level:level);
         #endif
     }
     public static func printv(_ items: Any..., level:LogLevel = .Verbose) {
         #if !DISABLE_LOG
-            let stringItem = items.map {"\($0)"}.joined(separator: " ")
-            if (OMLog.level.contains(level)) {
-                Swift.print("[VERBOSE] \(stringItem)", terminator: "\n")
-            }
+            print(items,level:level);
         #endif
     }
-    
 }
