@@ -12,6 +12,7 @@ About 2013, I was working for a specialized client applications for health.
 I had to write a method for final application will show the progress of each stage of the day healthy.
 I had the idea of how to represent subtasks of tasks.
 ![](https://media.licdn.com/media/p/4/005/02b/387/0b44677.png)
+
 Later I realized that the representation of the progress was very simple, so I decided to write a complete control for rendering and visualization subtasks of tasks.
 
 ## Features
