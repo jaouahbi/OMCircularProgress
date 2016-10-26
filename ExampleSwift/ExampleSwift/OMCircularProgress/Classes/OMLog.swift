@@ -48,28 +48,19 @@ public struct LogLevel : OptionSet {
     public static let DevOptions: LogLevel = [Verbose, Info, Warning, Error]
     /// QAOptions - Enable QA options, [Debug, Verbose, Info, Warning, Error]
     public static let DebugOptions: LogLevel = AllOptions
-    
-
 }
-
 
 ///OMLog Type
 public struct OMLog {
     /// Log Mode
     public static var level: LogLevel = .NormalOptions
-    
     private static func levelName(level:LogLevel) -> String {
         switch level {
-        case LogLevel.Debug:
-            return "DEBUG"
-        case LogLevel.Verbose:
-            return "VERBOSE"
-        case LogLevel.Info:
-            return "INFO"
-        case LogLevel.Warning:
-            return "WARNING"
-        case LogLevel.Error:
-            return "ERROR"
+        case LogLevel.Debug: return "DEBUG"
+        case LogLevel.Verbose: return "VERBOSE"
+        case LogLevel.Info: return "INFO"
+        case LogLevel.Warning:return "WARNING"
+        case LogLevel.Error:return "ERROR"
         default:
             assertionFailure()
             return "UNKNOWN"

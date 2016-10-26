@@ -1,18 +1,26 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
-      "filename" : "twitter.png",
+      "idiom" : "iphone",
       "scale" : "1x"
     },
     {
-      "idiom" : "universal",
-      "filename" : "twitter@2x.png",
+      "idiom" : "iphone",
+      "filename" : "twitter.png",
       "scale" : "2x"
     },
     {
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "scale" : "3x"
+    },
+    {
+      "idiom" : "ipad",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "twitter@2x.png",
+      "scale" : "2x"
     }
   ],
   "info" : {
