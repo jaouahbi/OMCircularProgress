@@ -167,7 +167,7 @@ class ProgressExampleViewController: UIViewController {
             
             // Create the step.
 
-            let theStep:CPStepData?
+            let theStep:OMCPStepData?
             
             // If the step exist, only update the step data
             if progress.dataSteps.count > i {
@@ -242,7 +242,7 @@ class ProgressExampleViewController: UIViewController {
             
             // Create the step.
             
-            let theStep:CPStepData?
+            let theStep:OMCPStepData?
             
             // If the step exist, only update the step data
             
@@ -291,7 +291,7 @@ class ProgressExampleViewController: UIViewController {
             
             let color = colors[i]
             // Create the step.
-            let theStep:CPStepData?
+            let theStep:OMCPStepData?
             
             // If the step exist, only update the step data
             
@@ -371,7 +371,7 @@ class ProgressExampleViewController: UIViewController {
         let stepAngle = (M_PI * 2.0) / Double(colors.count)
         
         for i in 0 ..< colors.count  {
-            let theStep:CPStepData?
+            let theStep:OMCPStepData?
             
             // If the step exist, only update the step data
             
@@ -445,7 +445,7 @@ class ProgressExampleViewController: UIViewController {
             
             // Create and configure the step
             
-            let theStep:CPStepData?
+            let theStep:OMCPStepData?
             
             // If the step exist, only update the step data
             
@@ -636,7 +636,7 @@ class ProgressExampleViewController: UIViewController {
             
             // Create the step.
             
-            let theStep:CPStepData?
+            let theStep:OMCPStepData?
             
             if progress.dataSteps.count > i {
                 theStep = progress[i]
@@ -704,7 +704,7 @@ class ProgressExampleViewController: UIViewController {
             
             // Create one step for each minute
             
-            let theStep:CPStepData?
+            let theStep:OMCPStepData?
             
             if progress.dataSteps.count > i {
                 theStep = progress[i]

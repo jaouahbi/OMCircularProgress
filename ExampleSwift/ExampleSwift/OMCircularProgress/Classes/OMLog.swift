@@ -76,7 +76,10 @@ public struct OMLog {
         #if !DISABLE_LOG
             let stringItem = items.map {"\($0)"}.joined(separator: " ")
             if (OMLog.level.contains(level)) {
-                Swift.print("\(levelName(level: level)):\(stringItem)", terminator: "\n")
+                /// Name of the level
+                let nameOfLevel = levelName(level: level)
+                /// Print it out
+                Swift.print("\(nameOfLevel):\(stringItem)", terminator: "\n")
             }
         #endif
     }
