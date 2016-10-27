@@ -9,14 +9,13 @@ Custom circular progress UIControl with steps, images, text and individual anima
 
 ## History
 
-About 2013, I was working for a client with specialized applications for health and fitnesst.
-I had to write a application that will show the progress of each health and fitnesst stage of the day.
-I had the idea of how to represent subtasks of tasks.
+In the year 2013, I was working for a client specialized in health and fitnesst.
+I had to develop a application that will show the progress of each health stage in the day.
+I had an idea of how to represent each stage of task.
 
 ![](https://media.licdn.com/media/p/4/005/02b/387/0b44677.png)
 
-Later I realized that the representation of the progress was very simple, so I decided to write a complete 
-control for rendering and visualization subtasks of tasks.
+Later I realized that the representation of the progress was very simple and limited, so I decided to write a complete UIControl for rendering and visualization each stage of task.
 
 ![](https://github.com/jaouahbi/OMCircularProgress/blob/master/ScreenShot/ScreenShot_1.png)
 
