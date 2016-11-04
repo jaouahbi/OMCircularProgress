@@ -156,9 +156,7 @@ class ProgressExampleViewController: UIViewController {
                 theStep.border.strokeColor     = color.cgColor
                 
                 // configure the gradient
-                
                 let gradient       = OMShadingGradientLayer(type:.radial)
-                
                 gradient.colors    = [colors[2].darkerColor(percent: 0.4),
                                       colors[1],
                                       colors[0].lighterColor(percent: 0.3),
