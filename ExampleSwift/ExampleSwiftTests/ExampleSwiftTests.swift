@@ -87,30 +87,15 @@ class ExampleSwiftTests: XCTestCase {
         
         // add one degree
         let oneDegree = 1.0.degreesToRadians()
-        angel1.add(oneDegree)
-        angel2.add(oneDegree)
-        angel3.add(oneDegree)
-        angel4.add(oneDegree)
         
-        XCTAssert(angel1.valid() == false &&
-                  angel2.valid() == false &&
-                  angel3.valid() == false &&
-                  angel4.valid() == false)
+        XCTAssert((angel1 + oneDegree).valid() == false)
+ 
         
-        angel1.sub(oneDegree)
-        angel2.sub(oneDegree)
-        angel3.sub(oneDegree)
-        angel4.sub(oneDegree)
-        
-        XCTAssert(angel1.valid() &&
-                  angel2.valid() &&
-                  angel3.valid() &&
-                  angel4.valid())
+        XCTAssert( (angel1 - oneDegree).valid())
         
         XCTAssert(OMAngle.inRange(angle: M_PI * 3)      == false)
         XCTAssert(OMAngle.inRange(angle: M_PI * 3 * -1) == false)
-        
-        XCTAssert(OMAngle.ratio(elements: M_PI * 2.0) == 1.0)
+
         
         let a180    = OMAngle(start:0, length: Double.pi)
         let a180_2 = OMAngle(start:Double.pi, length: Double.pi)

@@ -149,6 +149,28 @@ func + (left: OMAngle, right: OMAngle) -> OMAngle {
     return OMAngle(start:left.start,length:left.end+right.length())
 }
 
+/// + OMAngle operator
+///
+/// - parameter left:  left OMAngle
+/// - parameter right: right Double
+///
+/// - returns: return left + right
+func + (left: OMAngle, right: Double) -> OMAngle {
+    return OMAngle(start:left.start,length:left.end+right)
+}
+
+
+/// - OMAngle operator
+///
+/// - parameter left:  left OMAngle
+/// - parameter right: right Double
+///
+/// - returns: return left + right
+func - (left: OMAngle, right: Double) -> OMAngle {
+    return OMAngle(start:left.start,length:left.end-right)
+}
+
+
 /// - OMAngle operator
 ///
 /// - parameter left:  left OMAngle
@@ -312,14 +334,6 @@ open class OMAngle : CustomDebugStringConvertible {
         return self.start / 𝜏
     }
     
-    /// Get the angle ratio
-    ///
-    /// - parameter elements: <#elements description#>
-    ///
-    /// - returns: 0.0 - 1.0
-    static func ratio(elements:Double) -> Double {
-        return 𝜏 / elements
-    }
     
     /// Aling angle to CPCAnglePosition
     ///

@@ -19,11 +19,13 @@
 //
 //  Created by Jorge Ouahbi on 19/1/15.
 //
+//  TODO: appearance
 
 import UIKit
 
+
+
 class ProgressExampleViewController: UIViewController {
-    
     
     @IBOutlet weak var progressViewMood: OMCircularProgress!
     @IBOutlet weak var progressViewClockHours: OMCircularProgress!
@@ -41,10 +43,8 @@ class ProgressExampleViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(animated);
-        
-        // TODO:
-        // OMCircularProgressView.appearance()
-        //var pogressViewAppearance = OMCircularProgress.appearance()
+
+        // DBG
         
         self.progressViewMood.layer.name = "Mood"
         self.progressViewClockHours.layer.name = "Clock Hours"
@@ -54,26 +54,12 @@ class ProgressExampleViewController: UIViewController {
         self.progressViewSimple.layer.name = "Direct"
         self.progressViewGradientMask.layer.name = "GradientMask"
         self.progressViewFlower.layer.name = "Flower"
-        
-        //self.progressViewMood.layer.borderWidth = 1;
-        //self.progressViewClockHours.layer.borderWidth = 1;
-        //self.progressViewClockMinutes.layer.borderWidth = 1;
-        //self.progressViewClockSeconds.layer.borderWidth = 1;
-        //self.progressViewImagesWithDifferentsSize.layer.borderWidth = 1;
-        //self.progressViewSimple.layer.borderWidth = 1;
-        //self.progressViewGradientMask.layer.borderWidth = 1;
-        //self.progressViewFlower.layer.borderWidth = 1;
-        
-        //self.view.layoutIfNeeded()
-        
-        //
+    
         // Setup the circular progress examples
-        //
-        
         
         setUpExamples()
         
-        // clock timer
+        // Clock timer
         Timer.scheduledTimer(timeInterval: 1.0,
                              target: self,
                              selector: #selector(ProgressExampleViewController.timerProc),
@@ -100,6 +86,7 @@ class ProgressExampleViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: time) {
             
+            // direct progress
             let numberOfSteps  = self.progressViewSimple.numberOfSteps
             let stepProgress =  [Double](repeating: 0.9, count: numberOfSteps)
             for i:Int in 0 ..< numberOfSteps {
@@ -114,13 +101,6 @@ class ProgressExampleViewController: UIViewController {
         }
         
     }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-    }
 
     func timerProc()
     {
@@ -134,11 +114,8 @@ class ProgressExampleViewController: UIViewController {
         }
         
         self.progressViewClockHours.progress = Double(hour!)
-        
         self.progressViewClockMinutes.progress = Double(minutes!)
-        
         self.progressViewClockSeconds.progress = Double(seconds!)
-        
         
         // DBG
         // println("\(hour) : \(minutes) : \(seconds)")
@@ -151,7 +128,7 @@ class ProgressExampleViewController: UIViewController {
         
         // Configure the animation
         
-        progress.animationDuration  = 20.0
+        progress.animationDuration  = 40.0
         progress.thicknessRatio     = 1.0      // 100%
         
         let colors : [UIColor] = [UIColor.crayolaSeaSerpentColor,
@@ -159,16 +136,13 @@ class ProgressExampleViewController: UIViewController {
                                   UIColor.crayolaSeaSerpentColor]
         
         let numberOfSteps = 20
-        let stepAngle     = OMAngle.ratio(elements: Double(numberOfSteps))
-        
-        let color   = UIColor.crayolaCeruleanColor
+        let stepAngle     = 𝜏 / Double(numberOfSteps)
+        let color         = UIColor.crayolaCeruleanColor
         
         for i in 0 ..< numberOfSteps  {
             
             // Create the step.
-
             let theStep:OMCPStepData?
-            
             // If the step exist, only update the step data
             if progress.dataSteps.count > i {
                 theStep = progress[i]
@@ -182,22 +156,19 @@ class ProgressExampleViewController: UIViewController {
                 theStep.border.strokeColor     = color.cgColor
                 
                 // configure the gradient
+                
                 let gradient       = OMShadingGradientLayer(type:.radial)
                 
                 gradient.colors    = [colors[2].darkerColor(percent: 0.4),
                                       colors[1],
-                                      colors[0],
+                                      colors[0].lighterColor(percent: 0.3),
                                       color.lighterColor(percent: 0.1) ]
                 
-                gradient.frame     = progress.bounds
-                //gradient.function  = .exponential
-                gradient.slopeFunction =  BounceEaseInOut
-                
+                gradient.frame         = progress.bounds
+                gradient.slopeFunction = Linear
                 
                 gradient.startRadius   = progress.innerRadius / minRadius(progress.bounds.size)
                 gradient.endRadius     = progress.outerRadius / minRadius(progress.bounds.size)
-
-                gradient.slopeFunction = Linear
                 
                 // mask it
                 theStep.maskLayer        = gradient
@@ -213,7 +184,6 @@ class ProgressExampleViewController: UIViewController {
     {
         /// Configure the animation
         
-        progress.enableAnimations          = true;
         progress.animationDuration  = 10
         progress.thicknessRatio     = 0.5      // 50%
         
@@ -236,7 +206,7 @@ class ProgressExampleViewController: UIViewController {
         
         let colors : [UIColor] = UIColor.rainbow(2, hue: 0)
         
-        let stepAngle = OMAngle.ratio(elements: Double(colors.count))
+        let stepAngle = 𝜏 /  Double(colors.count)
         
         for i in 0 ..< colors.count  {
             
@@ -285,7 +255,7 @@ class ProgressExampleViewController: UIViewController {
         
         let colors : [UIColor] = UIColor.rainbow(25, hue: 0)
         
-        let stepAngle = OMAngle.ratio(elements: Double(colors.count))
+        let stepAngle = 𝜏 /  Double(colors.count)
         
         for i in 0 ..< colors.count  {
             
@@ -435,7 +405,7 @@ class ProgressExampleViewController: UIViewController {
         
         let images  : [String] = ["0","1","2","3"]
         
-        let stepAngle = OMAngle.ratio(elements:Double(strings.count))
+        let stepAngle = 𝜏 /  Double(strings.count)
         
         let centerColor = UIColor(white:0, alpha: 0.8)
         
@@ -566,7 +536,7 @@ class ProgressExampleViewController: UIViewController {
         
         let color : UIColor = UIColor.crayolaQuickSilverColor
         
-        let clockAngle = OMAngle.ratio(elements: Double(romanNumbers.count))
+        let clockAngle = 𝜏 / Double(romanNumbers.count)
         
         let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 22 : 11
         let font =  UIFont(name:"HelveticaNeue", size:CGFloat(fontSize))
@@ -616,9 +586,9 @@ class ProgressExampleViewController: UIViewController {
     {
         // Configure the animation
         
-        progress.enableAnimations      = false
-        progress.thicknessRatio = 1.0      // 100%
-        progress.options          = [];
+        progress.enableAnimations   = false
+        progress.thicknessRatio     = 1.0      // 100%
+        progress.options            = [];
         
         let minutesPerHour  = 60
         let quartersPerHour = 4
@@ -626,7 +596,7 @@ class ProgressExampleViewController: UIViewController {
         
         let color =   UIColor.crayolaQuickSilverColor
         
-        let clockAngle = OMAngle.ratio(elements: Double(minutesPerHour))
+        let clockAngle = 𝜏 / Double(minutesPerHour)
         
         let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 16 : 8
         
@@ -694,7 +664,7 @@ class ProgressExampleViewController: UIViewController {
         
         let color =  UIColor.crayolaQuickSilverColor
         
-        let clockAngle = OMAngle.ratio(elements: Double(minutesPerHour))
+        let clockAngle = 𝜏 /  Double(minutesPerHour)
         
         let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 18 : 9
         
@@ -755,6 +725,5 @@ class ProgressExampleViewController: UIViewController {
         setupClockMinute(self.progressViewClockMinutes)
         setupClockSeconds(self.progressViewClockSeconds)
     }
-    
 }
 
