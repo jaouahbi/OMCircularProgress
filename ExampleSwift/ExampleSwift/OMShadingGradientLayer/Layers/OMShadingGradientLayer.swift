@@ -120,16 +120,15 @@ open class OMShadingGradientLayer : OMGradientLayer {
                 // circle has radius `endRadius' and is centered at `end', specified in the
                 // shading's target coordinate space.
                 
-                // CHE¿Scale the context 1:1?
                 
             }
             
             var shading:OMShadingGradient = OMShadingGradient(colors: colors,
                                                               locations: locations,
                                                               startPoint: start ,
-                                                              startRadius: startRadius * minRadius(self.bounds.size),
+                                                              startRadius: startRadius * self.bounds.minRadius,
                                                               endPoint:end ,
-                                                              endRadius: endRadius * minRadius(self.bounds.size),
+                                                              endRadius: endRadius * self.bounds.minRadius,
                                                               extendStart: self.extendsBeforeStart,
                                                               extendEnd: self.extendsPastEnd,
                                                               gradientType: self.gradientType,

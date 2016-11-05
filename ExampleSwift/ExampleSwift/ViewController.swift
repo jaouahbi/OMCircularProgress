@@ -165,8 +165,8 @@ class ProgressExampleViewController: UIViewController {
                 gradient.frame         = progress.bounds
                 gradient.slopeFunction = Linear
                 
-                gradient.startRadius   = progress.innerRadius / minRadius(progress.bounds.size)
-                gradient.endRadius     = progress.outerRadius / minRadius(progress.bounds.size)
+                gradient.startRadius   = progress.innerRadius / progress.bounds.minRadius
+                gradient.endRadius     = progress.outerRadius / progress.bounds.minRadius
                 
                 // mask it
                 theStep.maskLayer        = gradient
@@ -305,8 +305,8 @@ class ProgressExampleViewController: UIViewController {
                               color.lighterColor(percent: 1.0),
                               color.darkerColor(percent: 0.35)]
         
-        gradient.startRadius   = progress.innerRadius / minRadius(progress.bounds.size)
-        gradient.endRadius     = progress.outerRadius  / minRadius(progress.bounds.size)
+        gradient.startRadius   = progress.innerRadius / progress.bounds.minRadius
+        gradient.endRadius     = progress.outerRadius / progress.bounds.minRadius
         
         return gradient;
     }
@@ -323,8 +323,8 @@ class ProgressExampleViewController: UIViewController {
                               color.darkerColor(percent: 0.65),
                               color.lighterColor(percent: 0.85)]
         
-        gradient.startRadius   = progress.innerRadius / minRadius(progress.bounds.size)
-        gradient.endRadius     = progress.outerRadius / minRadius(progress.bounds.size)
+        gradient.startRadius   = progress.innerRadius / progress.bounds.minRadius
+        gradient.endRadius     = progress.outerRadius / progress.bounds.minRadius
         
         return gradient;
     }
@@ -372,8 +372,8 @@ class ProgressExampleViewController: UIViewController {
                                       color.lighterColor(percent: 1.0),
                                       color.darkerColor(percent: 0.35)]
                 
-                gradient.startRadius   = progress.innerRadius   / minRadius(progress.bounds.size)
-                gradient.endRadius     = progress.outerRadius  / minRadius(progress.bounds.size)
+                gradient.startRadius   = progress.innerRadius / progress.bounds.minRadius
+                gradient.endRadius     = progress.outerRadius / progress.bounds.minRadius
                 
                 // mask it
                 theStep.maskLayer        = gradient
@@ -569,8 +569,8 @@ class ProgressExampleViewController: UIViewController {
                                       color.lighterColor(percent:  0.81),
                                       color.darkerColor(percent: 0.35)]
                 
-                gradient.startRadius   = progress.innerRadius / minRadius(progress.bounds.size)
-                gradient.endRadius     = progress.outerRadius  / minRadius(progress.bounds.size)
+                gradient.startRadius   = progress.innerRadius / progress.bounds.minRadius
+                gradient.endRadius     = progress.outerRadius / progress.bounds.minRadius
                 
                 // Mask it
                 step.maskLayer      = gradient
@@ -640,9 +640,8 @@ class ProgressExampleViewController: UIViewController {
                                       color.lighterColor(percent: 0.81),
                                       color.darkerColor(percent: 0.35)]
                 
-                
-                gradient.startRadius   = progress.innerRadius  / minRadius(progress.bounds.size)
-                gradient.endRadius     = progress.outerRadius  / minRadius(progress.bounds.size)
+                gradient.startRadius   = progress.innerRadius / progress.bounds.minRadius
+                gradient.endRadius     = progress.outerRadius / progress.bounds.minRadius
                 
                 // mask it
                 step.maskLayer        = gradient
@@ -708,8 +707,8 @@ class ProgressExampleViewController: UIViewController {
                                       color.lighterColor(percent:  0.81),
                                       color.darkerColor(percent: 0.35)]
                 
-                gradient.startRadius  = progress.innerRadius  / minRadius(progress.bounds.size)
-                gradient.endRadius    = progress.outerRadius / minRadius(progress.bounds.size)
+                gradient.startRadius   = progress.innerRadius / progress.bounds.minRadius
+                gradient.endRadius     = progress.outerRadius / progress.bounds.minRadius
                 
                 // mask it
                 step.maskLayer        = gradient
