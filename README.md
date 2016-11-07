@@ -13,11 +13,9 @@ In the year 2013, I was working for a client specialized in health and fitnesst.
 I had to develop a application that will show the progress of each health stage in the day.
 I had an idea of how to represent each stage of task.
 
-![](https://media.licdn.com/media/p/4/005/02b/387/0b44677.png)
-
 Later I realized that the representation of the progress was very simple and limited, so I decided to write a complete UIControl for rendering and visualization each stage of task.
 
-![](https://github.com/jaouahbi/OMCircularProgress/blob/master/ScreenShot/ScreenShot_1.png)
+![](https://github.com/jaouahbi/OMCircularProgress/blob/master/ScreenShot/ScreenShot.png)
 
 ## Features
 
