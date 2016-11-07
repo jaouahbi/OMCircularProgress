@@ -202,7 +202,7 @@ class ProgressExampleViewController: UIViewController {
         
         // Colors, angles and other steps configurations.
         
-        let colors : [UIColor] = UIColor.rainbow(2, hue: 0)
+        let colors : [UIColor] = UIColor.rainbow(6, hue: 0)
         
         let stepAngle = 𝜏 /  Double(colors.count)
         
@@ -223,7 +223,7 @@ class ProgressExampleViewController: UIViewController {
             if let theStep = theStep {
                 
                 // configure the gradient
-                let gradient       = OMShadingGradientLayer(type:.axial)
+                let gradient       = OMShadingGradientLayer(type:.radial)
                 
                 gradient.function  = .exponential
                 gradient.frame     = progress.bounds
@@ -237,6 +237,10 @@ class ProgressExampleViewController: UIViewController {
                 
                 // mask it
                 theStep.maskLayer  = gradient
+                
+                
+                gradient.startRadius   = progress.innerRadius / progress.bounds.minRadius
+                gradient.endRadius     = progress.outerRadius / progress.bounds.minRadius
                 
                 theStep.borderRatio            = 0.1
                 theStep.border.strokeColor     = colors[i].darkerColor(percent: 0.6).cgColor

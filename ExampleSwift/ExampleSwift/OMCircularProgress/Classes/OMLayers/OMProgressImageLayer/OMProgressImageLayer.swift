@@ -117,9 +117,10 @@ class OMProgressImageLayer : CALayer
         
         // https://github.com/danielamitay/iOS-App-Performance-Cheatsheet/blob/master/QuartzCore.md
         
-        //self.shouldRasterize = true
+        self.shouldRasterize = true
+        self.rasterizationScale = UIScreen.main.scale
         self.drawsAsynchronously = true
-        self.allowsGroupOpacity  = false
+        self.allowsGroupOpacity  = true
         //self.contentsGravity = "resizeAspect"
     }
     

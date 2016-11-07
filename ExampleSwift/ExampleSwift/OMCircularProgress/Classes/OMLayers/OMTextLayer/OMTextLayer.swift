@@ -150,10 +150,10 @@ import CoreFoundation
         
         // https://github.com/danielamitay/iOS-App-Performance-Cheatsheet/blob/master/QuartzCore.md
         
-        //self.shouldRasterize = true
-        //self.rasterizationScale = UIScreen.main.scale
+        self.shouldRasterize = true
+        self.rasterizationScale = self.contentsScale
         self.drawsAsynchronously = true
-        self.allowsGroupOpacity  = false
+        self.allowsGroupOpacity  = true
         
     }
     

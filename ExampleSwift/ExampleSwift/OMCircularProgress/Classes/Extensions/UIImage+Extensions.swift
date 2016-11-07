@@ -273,12 +273,14 @@ extension UIImage
     
 }
 
+
 //
 // Transform and blend extension
 //
 
 extension UIImage
 {
+    
     /// Transform the image in grayscale.
     ///
     /// - returns: UIImage
