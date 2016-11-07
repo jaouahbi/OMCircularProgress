@@ -225,7 +225,7 @@ class ProgressExampleViewController: UIViewController {
                 // configure the gradient
                 let gradient       = OMShadingGradientLayer(type:.radial)
                 
-                gradient.function  = .exponential
+                gradient.function  = .linear
                 gradient.frame     = progress.bounds
                 gradient.colors    = [colors[i],UIColor(white:0,alpha: 0.8),colors[i]]
                 
