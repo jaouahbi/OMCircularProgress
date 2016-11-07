@@ -79,10 +79,9 @@ import CoreFoundation
         }
     }
     
-    
-    //
+    /// Attribute determines what kinds of ligatures should be used when
+    /// displaying the string.
     //  default 1: default ligatures, 0: no ligatures, 2: all ligatures
-    //
     
     var fontLigature:NSNumber   = NSNumber(value: 1 as Int32) {
         didSet {
@@ -96,7 +95,7 @@ import CoreFoundation
         }
     }
     
-    var fontStrokeWidth:Float   = -3 {
+    var fontStrokeWidth:Float  = -3 {
         didSet {
             setNeedsDisplay()
         }
@@ -424,9 +423,9 @@ extension OMTextLayer
     }
     
     func createPathFromStringWithAttributes() -> UIBezierPath? {
-        
-        OMLog.printd("\(self.name ?? ""): createPathFromStringWithAttributes()")
-        
+        #if LOG
+            OMLog.printd("\(self.name ?? ""): createPathFromStringWithAttributes()")
+        #endif
         if let line = createLine() {
             
             let letters = CGMutablePath()
@@ -514,7 +513,9 @@ extension OMTextLayer {
             
             angleArc += glyphAngle
             
-            //OMLog.printd("\(self.name ?? ""): #\(lineGlyphIndex) angle : \(OMAngle.format(Double(glyphAngle))) arc length :\(OMAngle.format(Double(angleArc)))")
+            #if LOG
+                OMLog.printd("\(self.name ?? ""): #\(lineGlyphIndex) angle : \(OMAngle.format(Double(glyphAngle))) arc length :\(OMAngle.format(Double(angleArc)))")
+            #endif
             
             glyphArcInfo[lineGlyphIndex].angle = glyphAngle
             
@@ -526,19 +527,20 @@ extension OMTextLayer {
     
     
     func drawWithArc(context:CGContext, rect:CGRect) {
-        OMLog.printd("\(self.name ?? ""): drawWithArc(\(rect))")
-        
-        if let string = string, let angle = self.angleLength {
-            
-            let attributeString = self.stringWithAttributes(string)
-            let line  = CTLineCreateWithAttributedString(attributeString)
+        #if LOG
+            OMLog.printd("\(self.name ?? ""): drawWithArc(\(rect))")
+        #endif
+        if let line  = createLine(),
+           let angle = self.angleLength {
             let glyphCount:CFIndex = CTLineGetGlyphCount(line);
             if glyphCount == 0 {
-                OMLog.printw("\(self.name ?? ""): 0 glyphs \(attributeString))")
+                #if LOG
+                    OMLog.printw("\(self.name ?? ""): 0 glyphs found. \(string))")
+                #endif
                 return;
             }
             
-            let glyphArcInfo = prepareGlyphArcInfo(line: line,glyphCount: glyphCount,angle: angle)
+            let glyphArcInfo = prepareGlyphArcInfo(line: line,glyphCount: glyphCount, angle: angle)
             if glyphArcInfo.count > 0 {
                 
                 // Move the origin from the lower left of the view nearer to its center.
@@ -559,23 +561,21 @@ extension OMTextLayer {
                 let runCount = CFArrayGetCount(runArray);
                 
                 var glyphOffset:CFIndex = 0;
-                
                 for runIndex:CFIndex in 0 ..< runCount {
                     let run = (runArray as NSArray)[runIndex]
                     let runGlyphCount:CFIndex = CTRunGetGlyphCount(run as! CTRun);
-                    
                     for runGlyphIndex:CFIndex in 0 ..< runGlyphCount {
                         
                         let glyphRange:CFRange = CFRangeMake(runGlyphIndex, 1);
                         
                         let angleRotation:CGFloat = -(glyphArcInfo[runGlyphIndex + glyphOffset].angle);
                         
-                        //OMLog.printd("\(self.name ?? ""): run glyph#\(runGlyphIndex) angle rotation : \(OMAngle.format(Double(angleRotation)))");
-                        
+                        #if LOG
+                            OMLog.printd("\(self.name ?? ""): run glyph#\(runGlyphIndex) angle rotation : \(OMAngle.format(Double(angleRotation)))");
+                        #endif
                         context.rotate(by: angleRotation);
                         
                         // Center this glyph by moving left by half its width.
-                        
                         let glyphWidth:CGFloat = glyphArcInfo[runGlyphIndex + glyphOffset].width;
                         let halfGlyphWidth:CGFloat = glyphWidth / 2.0;
                         let positionForThisGlyph:CGPoint = CGPoint(x:textPosition.x - halfGlyphWidth, y:textPosition.y);

@@ -36,8 +36,6 @@ public func between<T: Comparable>(_ value: T, lower: T, upper: T , include: Boo
     return include ? (value >= left && value <= right) : (value > left && value < right)
 }
 
-
-
 // monotonically increasing function
 public func monotonic(_ numberOfElements:Int) -> [CGFloat] {
     assert(numberOfElements > 0)

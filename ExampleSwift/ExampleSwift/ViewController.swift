@@ -569,6 +569,7 @@ class ProgressExampleViewController: UIViewController {
                                       color.lighterColor(percent:  0.81),
                                       color.darkerColor(percent: 0.35)]
                 
+                
                 gradient.startRadius   = progress.innerRadius / progress.bounds.minRadius
                 gradient.endRadius     = progress.outerRadius / progress.bounds.minRadius
                 

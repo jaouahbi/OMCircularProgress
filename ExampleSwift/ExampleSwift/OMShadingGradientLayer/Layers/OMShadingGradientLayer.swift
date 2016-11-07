@@ -69,8 +69,9 @@ open class OMShadingGradientLayer : OMGradientLayer {
         let player = self.presentation()
     
         if let player = player {
-            
+               #if LOG
             OMLog.printv("\(self.name ?? "") (presentation) \(player)")
+                #endif
             
             colors       = player.colors
             locations    = player.locations
@@ -80,7 +81,9 @@ open class OMShadingGradientLayer : OMGradientLayer {
             endRadius    = player.endRadius
             
         } else {
+               #if LOG
            OMLog.printv("\(self.name ?? "") (model) \(self)")
+            #endif
         }
         
         if (isDrawable()) {

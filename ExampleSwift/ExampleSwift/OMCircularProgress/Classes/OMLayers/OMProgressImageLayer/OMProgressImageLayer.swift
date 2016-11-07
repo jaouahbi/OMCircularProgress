@@ -244,15 +244,19 @@ class OMProgressImageLayer : CALayer
             context.scaleBy(x: 1.0, y: -1.0);
         #endif
         
-        if (newImage != nil) {
-            let rect = CGRect(CGSize(width: newImage!.size.width, height: newImage!.size.height))
+        if let newImage = newImage {
+            let rect = CGRect(CGSize(width: newImage.size.width, height: newImage.size.height))
             if  grayScale {
                 // original image grayscaled + original image blend
                 if let image = self.image {
-                    context.draw((image.grayScaleWithAlphaImage().blendImage(newImage!).cgImage)!, in: rect)
+                   if let grayImage = image.grayScaleWithAlphaImage() {
+                        if let imageBlended = grayImage.blendImage(newImage) {
+                            context.draw(imageBlended.cgImage!, in: rect)
+                        }
+                    }
                 }
             } else {
-                context.draw(newImage!.cgImage!, in: rect)
+                context.draw(newImage.cgImage!, in: rect)
             }
         }
     }

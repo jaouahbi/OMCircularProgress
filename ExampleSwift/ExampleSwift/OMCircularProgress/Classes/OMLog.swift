@@ -23,7 +23,8 @@
 
 import Foundation
 
-// DISABLE_LOG
+// preprocessor:
+// LOG
 
 // Based on : https://github.com/kostiakoval/SpeedLog
 
@@ -73,39 +74,37 @@ public struct OMLog {
     /// - parameter level: log level
     
     public static func print(_ items: Any..., level:LogLevel) {
-        #if !DISABLE_LOG
-            let stringItem = items.map {"\($0)"}.joined(separator: " ")
-            if (OMLog.level.contains(level)) {
-                /// Name of the level
-                let nameOfLevel = levelName(level: level)
-                /// Print it out
-                Swift.print("\(nameOfLevel):\(stringItem)", terminator: "\n")
-            }
-        #endif
+        let stringItem = items.map {"\($0)"}.joined(separator: " ")
+        if (OMLog.level.contains(level)) {
+            /// Name of the level
+            let nameOfLevel = levelName(level: level)
+            /// Print it out
+            Swift.print("\(nameOfLevel):\(stringItem)", terminator: "\n")
+        }
     }
     public static func printd(_ items: Any..., level:LogLevel = .Debug) {
-        #if !DISABLE_LOG
-            print(items,level:level);
-        #endif
+        
+        print(items,level:level);
+        
     }
     public static func printw(_ items: Any..., level:LogLevel = .Warning) {
-        #if !DISABLE_LOG
-            print(items,level:level);
-        #endif
+        
+        print(items,level:level);
+        
     }
     public static func printi(_ items: Any..., level:LogLevel = .Info) {
-        #if !DISABLE_LOG
-            print(items,level:level);
-        #endif
+        
+        print(items,level:level);
+        
     }
     public static func printe(_ items: Any..., level:LogLevel = .Error) {
-        #if !DISABLE_LOG
-            print(items,level:level);
-        #endif
+        
+        print(items,level:level);
+        
     }
     public static func printv(_ items: Any..., level:LogLevel = .Verbose) {
-        #if !DISABLE_LOG
-            print(items,level:level);
-        #endif
+        
+        print(items,level:level);
+        
     }
 }
