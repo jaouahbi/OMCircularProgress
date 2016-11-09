@@ -44,17 +44,17 @@ class ProgressExampleViewController: UIViewController {
     {
         super.viewDidAppear(animated);
         
-        // DBG
+        #if LOG
+            self.progressViewMood.layer.name = "Mood"
+            self.progressViewClockHours.layer.name = "Clock Hours"
+            self.progressViewClockMinutes.layer.name = "Clock Minutes"
+            self.progressViewClockSeconds.layer.name = "Clock Seconds"
+            self.progressViewImagesWithDifferentsSize.layer.name = "ImagesWithDifferentsSize"
+            self.progressViewSimple.layer.name = "Direct"
+            self.progressViewGradientMask.layer.name = "GradientMask"
+            self.progressViewFlower.layer.name = "Flower"
+        #endif
         
-        self.progressViewMood.layer.name = "Mood"
-        self.progressViewClockHours.layer.name = "Clock Hours"
-        self.progressViewClockMinutes.layer.name = "Clock Minutes"
-        self.progressViewClockSeconds.layer.name = "Clock Seconds"
-        self.progressViewImagesWithDifferentsSize.layer.name = "ImagesWithDifferentsSize"
-        self.progressViewSimple.layer.name = "Direct"
-        self.progressViewGradientMask.layer.name = "GradientMask"
-        self.progressViewFlower.layer.name = "Flower"
-    
         // Setup the circular progress examples
         
         setUpExamples()

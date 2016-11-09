@@ -671,7 +671,9 @@ open class OMCPStepData : CustomDebugStringConvertible {
         if self.numberLayer  == nil {
             // Create the numerical text layer with the text centered
             self.numberLayer =  OMNumberLayer()
-            self.numberLayer?.name = "number layer"
+            #if LOG
+                self.numberLayer?.name = "number layer"
+            #endif
         }
         return self.numberLayer!
     }()
@@ -1057,8 +1059,9 @@ open class OMCPStepData : CustomDebugStringConvertible {
                "The start angle and the end angle cannot be the same. angle: \(OMAngle.format(start))")
         assert(start < end, "Unexpected start/end angle. \(OMAngle.format(start))/\(OMAngle.format(end))");
         
-        // DEBUG ONLY!
-        shapeLayer.name = name
+        #if LOG
+            shapeLayer.name = name
+        #endif
         
         // TODO: the head can be rounded?
         let canRoundedHead = true
@@ -1094,8 +1097,9 @@ open class OMCPStepData : CustomDebugStringConvertible {
         if step.borderRatio > 0 {
             let borderLayer  = step.border!
             let name = "step \(stepIndex(step)) shape border"
-            // DEBUG ONLY!
-            borderLayer.name = name
+            #if LOG
+                borderLayer.name = name
+            #endif
             #if LOG
                 OMLog.printi("\(layer.name ?? "")(\(name)): Adding the border layer with the ratio: \(step.borderRatio)")
             #endif
@@ -1277,8 +1281,9 @@ open class OMCPStepData : CustomDebugStringConvertible {
         #endif
         for (index, step) in dataSteps.enumerated() {
             let theStep = step as! OMCPStepData
-            // DEBUG ONLY!
-            theStep.ie.layer.name = "step \(index) image"
+            #if LOG
+                theStep.ie.layer.name = "step \(index) image"
+            #endif
             containerLayer!.addSublayer(theStep.ie.layer )
             theStep.ie.shadow = true
         }
@@ -1291,8 +1296,9 @@ open class OMCPStepData : CustomDebugStringConvertible {
         #endif
         for (index, step) in dataSteps.enumerated() {
             let theStep =  step as! OMCPStepData
-            // DEBUG ONLY!
-            theStep.te.layer .name = "step \(index) text"
+            #if LOG
+                theStep.te.layer .name = "step \(index) text"
+            #endif
             containerLayer!.addSublayer(theStep.te.layer )
         }
     }
@@ -1403,8 +1409,10 @@ open class OMCPStepData : CustomDebugStringConvertible {
         addStepImageLayers()
         if let img  = image.image {
             // Add the center image layer to the root layer.
+            #if LOG
+                image.name = "center image"
+            #endif
             
-            image.name = "center image"
             image.frame = bounds.size.center().centerRect(img.size)
             #if LOG
                 OMLog.printi("[\(layer.name ?? "")] Add the center image layer to the container layer. \(img)")
@@ -1423,7 +1431,9 @@ open class OMCPStepData : CustomDebugStringConvertible {
         addStepTextLayers()
         // Add the text layer.
         if percentText  {
-            number.name = "center number"
+            #if LOG
+                number.name = "center number"
+            #endif
             containerLayer!.addSublayer(number)
             number.shadowOpacity = 1.0
             number.shadowOffset  = kDefaultElementShadowOffset
@@ -1452,14 +1462,16 @@ open class OMCPStepData : CustomDebugStringConvertible {
             let data  = step as! OMCPStepData
             // Image Layer
             if data.ie.layer.image != nil {
-                // DEBUG ONLY!
-                data.ie.layer.name = "step \(stepIndex(data)) image"
+                #if LOG
+                    data.ie.layer.name = "step \(stepIndex(data)) image"
+                #endif
                 setUpStepImageLayerGeometry(data)
             }
             // Text Layer
             if  data.te.layer.string != nil {
-                // DEBUG ONLY!
-                data.te.layer.name = "step \(stepIndex(data)) text"
+                #if LOG
+                    data.te.layer.name = "step \(stepIndex(data)) text"
+                #endif
                 setUpStepTextLayerGeometry(data)
             }
         }
