@@ -43,7 +43,7 @@ class ProgressExampleViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(animated);
-
+        
         // DBG
         
         self.progressViewMood.layer.name = "Mood"
@@ -227,7 +227,7 @@ class ProgressExampleViewController: UIViewController {
                 
                 gradient.function  = .linear
                 gradient.frame     = progress.bounds
-                gradient.colors    = [colors[i],UIColor(white:0,alpha: 0.8),colors[i]]
+                gradient.colors    = [colors[i],UIColor(white:0,alpha: 1.0),colors[i]]
                 
                 let points         = OMGradientLayer.pointsFromNormalizedAngle(theStep.angle.norm())
                 
@@ -252,7 +252,7 @@ class ProgressExampleViewController: UIViewController {
         
         // Configure the animation
         
-        progress.animationDuration  = 10       // 20 seconds
+        progress.animationDuration  = 20   // 20 seconds
         progress.thicknessRatio     = 0.7      // 70%
         
         let colors : [UIColor] = UIColor.rainbow(25, hue: 0)
@@ -280,7 +280,7 @@ class ProgressExampleViewController: UIViewController {
                 gradient.function  = .exponential
                 gradient.frame     = progress.bounds
                 gradient.colors    = [color,
-                                      UIColor(white:0,alpha: 0.8),
+                                      UIColor(white:0,alpha: 1.0),
                                       color]
                 // Axial gradient
                 let points = OMGradientLayer.pointsFromNormalizedAngle(step.angle.norm())

@@ -809,6 +809,11 @@ open class OMCPStepData : CustomDebugStringConvertible {
             return
         }
         
+        //        if 1.0 == self[(Int(progress - 1))]!.progress {
+        //            // already update
+        //            return
+        //        }
+        
         assert(progress <= Double(numberOfSteps),"Unexpected progress \(progress) max \(numberOfSteps) ")
         
         let clmprogress:Double = clamp(progress, lowerValue: 0.0,upperValue: Double(numberOfSteps))
@@ -913,7 +918,7 @@ open class OMCPStepData : CustomDebugStringConvertible {
             if enableAnimations {
                 stepAnimation(step, progress:stepProgress)
             } else {
-     
+                
                 // Remove the default animation of strokeEnd from the shape layers.
                 //step.shapeLayer.actions = ["strokeEnd" : NSNull()]
                 //if let shapeLayerBorder = step.shapeLayerBorder {
@@ -1187,16 +1192,34 @@ open class OMCPStepData : CustomDebugStringConvertible {
             OMLog.printd("[\(layer.name ?? "")] angleRect(\(angle) \(align) \(size))")
         #endif
         return anglePoint(angle,align: align,size: size).centerRect(size)
-        
     }
+    
+    /// Calculate the center rect for the image and/or text at the angle.
+    ///
+    /// - parameter angle: element angle
+    /// - parameter radius: element radius
+    /// - parameter align: desired element position in radius  default: .middle
+    /// - parameter size:  optional element size  default: CGSize.zero
+    ///
+    /// returns: return a element final CGPoint
+    ///
     
     fileprivate func angleRect(_ angle:Double, radius:CGFloat, align:OMCPCRadiusPosition = .middle, size:CGSize = CGSize.zero) -> CGRect {
         #if LOG
             OMLog.printd("[\(layer.name ?? "")] angleRect(\(angle) \(radius) \(align) \(size))")
         #endif
         return anglePoint(angle,radius:radius,align: align,size: size).centerRect(size)
-        
     }
+    
+    /// Calculate the center point for the image and/or text at the angle.
+    ///
+    /// - parameter angle: element angle
+    /// - parameter radius: element radius
+    /// - parameter align: desired element position in radius  default: .middle
+    /// - parameter size:  optional element size  default: CGSize.zero
+    ///
+    /// returns: return a element final CGPoint
+    ///
     
     fileprivate func anglePoint(_ angle:Double, radius:CGFloat, align:OMCPCRadiusPosition = .middle,size:CGSize = CGSize.zero) -> CGPoint {
         #if LOG
@@ -1205,6 +1228,14 @@ open class OMCPStepData : CustomDebugStringConvertible {
         return OMAngle.pointOfAngle(angle,center:bounds.size.center(),radius:radius)
     }
     
+    /// Calculate the center point for the image and/or text at the angle.
+    ///
+    /// - parameter angle: element angle
+    /// - parameter align: desired element position in radius  default: .middle
+    /// - parameter size:  optional element size  default: CGSize.zero
+    ///
+    /// returns: return a element final CGPoint
+    ///
     
     fileprivate func anglePoint(_ angle:Double, align:OMCPCRadiusPosition, size:CGSize = CGSize.zero) -> CGPoint {
         #if LOG
@@ -1271,7 +1302,6 @@ open class OMCPStepData : CustomDebugStringConvertible {
     ///
     /// - parameter step: step object
     ///
-    
     fileprivate func setUpStepImageLayerGeometry(_ step:OMCPStepData) {
         
         let sizeOf = step.ie.layer.image?.size
@@ -1327,13 +1357,14 @@ open class OMCPStepData : CustomDebugStringConvertible {
                 let anglePoint = OMAngle.pointOfAngle(angle,
                                                       center:bounds.size.center(),
                                                       radius: CGFloat(positionInRadius(step.te.radiusPosition, size: sizeOf)))
-                
                 let frame = anglePoint.centerRect(sizeOf)
+                
                 #if LOG
                     OMLog.printd("[\(layer.name ?? "")] angle \(OMAngle.format(angle)) text angle position :\(step.te.anglePosition)")
                     OMLog.printd("[\(layer.name ?? "")] Position in angle \(anglePoint)  position in radius :\(step.te.radiusPosition)")
                     OMLog.printv("[\(layer.name ?? "")] Frame \(frame.integral) from the aligned step angle \(OMAngle.format(angle)) and the text size \(sizeOf.integral()))")
                 #endif
+                
                 // Set the new frame
                 step.te.layer.frame = frame
             }
@@ -1403,11 +1434,9 @@ open class OMCPStepData : CustomDebugStringConvertible {
     
     /// Dump the internal data
     internal func debugLayersAndSteps()  {
-        #if DEBUG
-            #if LOG
-                dumpLayers(0, layer:containerLayer)
-                dumpAllSteps()
-            #endif
+        #if LOG
+            dumpLayers(0, layer:containerLayer)
+            dumpAllSteps()
         #endif
     }
     
@@ -1453,7 +1482,9 @@ open class OMCPStepData : CustomDebugStringConvertible {
         addLayers()
         addImages()
         addTexts()
-        debugLayersAndSteps()
+        #if DEBUG
+            debugLayersAndSteps()
+        #endif
     }
 }
 
@@ -1656,10 +1687,9 @@ extension OMCircularProgress : CAAnimationDelegate
         func animationDidStart(_ anim: CAAnimation) {
             OMLog.printd("[\(layer.name ?? "")] animationDidStart:\((anim as! CABasicAnimation).keyPath!) : \((anim as! CABasicAnimation).beginTime) ")
         }
-    
         func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
             if flag {
-                OMLog.printd("[\(layer.name ?? "")] animationDidStop:\((anim as! CABasicAnimation).keyPath!) : \((anim as! CABasicAnimation).duration)")
+            OMLog.printd("[\(layer.name ?? "")] animationDidStop:\((anim as! CABasicAnimation).keyPath!) : \((anim as! CABasicAnimation).duration)")
             }
         }
     #endif
