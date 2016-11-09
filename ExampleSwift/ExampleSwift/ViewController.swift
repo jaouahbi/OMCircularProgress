@@ -38,7 +38,7 @@ class ProgressExampleViewController: UIViewController {
     @IBOutlet weak var progressViewGradientMask: OMCircularProgress!
     @IBOutlet weak var progressViewFlower: OMCircularProgress!
     
-    var calendar:Calendar = Calendar(identifier:Calendar.Identifier.gregorian);
+    var calendar:NSCalendar = NSCalendar(identifier:NSCalendar.Identifier.gregorian)!;
     
     override func viewDidAppear(_ animated: Bool)
     {
@@ -56,10 +56,9 @@ class ProgressExampleViewController: UIViewController {
         #endif
         
         // Setup the circular progress examples
-        
         setUpExamples()
         
-        // Clock timer
+        // scheduled a timer (1 sec.)
         Timer.scheduledTimer(timeInterval: 1.0,
                              target: self,
                              selector: #selector(ProgressExampleViewController.timerProc),
@@ -71,11 +70,8 @@ class ProgressExampleViewController: UIViewController {
     func setUpExamples()
     {
         // clock example
-        
         setupClock()
-        
         // mood example
-        
         setupMoodProgressViewExample(self.progressViewMood);
         setupWithImagesWithDifferentsSize(self.progressViewImagesWithDifferentsSize);
         setupDirectProgressExample(self.progressViewSimple);
@@ -87,10 +83,12 @@ class ProgressExampleViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: time) {
             
             // direct progress
-            let numberOfSteps  = self.progressViewSimple.numberOfSteps
-            let stepProgress =  [Double](repeating: 0.9, count: numberOfSteps)
+            let numberOfSteps       = self.progressViewSimple.numberOfSteps
+            //let invNumberOfSteps    = 1.0 / Double(numberOfSteps)
+            
             for i:Int in 0 ..< numberOfSteps {
-                self.progressViewSimple.setStepProgress(i, stepProgress: stepProgress[i])
+                //self.progressViewSimple.setStepProgress(i, stepProgress: Double(i) * invNumberOfSteps)
+                self.progressViewSimple.setStepProgress(i, stepProgress: 0.92)
             }
             
             // full progress
@@ -99,23 +97,23 @@ class ProgressExampleViewController: UIViewController {
             self.progressViewGradientMask.progress              = kCompleteProgress
             self.progressViewFlower.progress                    = kCompleteProgress
         }
-        
     }
 
+    /// Time proc
+    
     func timerProc()
     {
-        let seconds = (calendar as NSCalendar).components(.second, from:Date()).second
-        let minutes = (calendar as NSCalendar).components(.minute, from:Date()).minute
-        var hour    = (calendar as NSCalendar).components(.hour, from:Date()).hour
+        let seconds = calendar.components(.second, from:Date()).second!
+        let minutes = calendar.components(.minute, from:Date()).minute!
+        var hour    = calendar.components(.hour, from:Date()).hour!
         
-        
-        if(hour! > 12) {
-            hour! -= 12
+        if(hour > 12) {
+            hour -= 12
         }
         
-        self.progressViewClockHours.progress = Double(hour!)
-        self.progressViewClockMinutes.progress = Double(minutes!)
-        self.progressViewClockSeconds.progress = Double(seconds!)
+        self.progressViewClockHours.progress = Double(hour)
+        self.progressViewClockMinutes.progress = Double(minutes)
+        self.progressViewClockSeconds.progress = Double(seconds)
         
         // DBG
         // println("\(hour) : \(minutes) : \(seconds)")
@@ -387,6 +385,8 @@ class ProgressExampleViewController: UIViewController {
         progress.image.image = UIImage(named: "7")
     }
     
+    // MARK: Mood example
+    
     func setupMoodProgressViewExample(_ progress:OMCircularProgress) {
         
         // Configure the animation duration
@@ -541,6 +541,7 @@ class ProgressExampleViewController: UIViewController {
         let clockAngle = 𝜏 / Double(romanNumbers.count)
         
         let fontSize = UIDevice.current.userInterfaceIdiom == .pad ? 22 : 11
+        
         let font =  UIFont(name:"HelveticaNeue", size:CGFloat(fontSize))
         
         for i in 0 ..< romanNumbers.count  {
