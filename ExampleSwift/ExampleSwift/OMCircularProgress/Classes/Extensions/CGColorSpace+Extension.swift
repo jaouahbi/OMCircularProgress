@@ -21,6 +21,7 @@
 //  Created by Jorge Ouahbi on 13/5/16.
 //  Copyright © 2016 Jorge Ouahbi. All rights reserved.
 //
+//  v 1.0
 
 import UIKit
 
@@ -86,9 +87,6 @@ extension CGColorSpace {
     var numberOfComponents:size_t {
         return self.numberOfComponents
     }
-//    var model:CGColorSpaceModel {
-//        return model
-//    }
     var isRGB : Bool {
         return model == .rgb
     }
