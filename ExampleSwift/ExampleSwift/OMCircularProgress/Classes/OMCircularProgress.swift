@@ -794,6 +794,8 @@ open class OMCPStepData : CustomDebugStringConvertible {
             layoutIfNeeded()
             
             updateProgress()
+            
+            sendActions(for: .valueChanged)
         }
     }
     
@@ -1807,6 +1809,8 @@ extension OMCircularProgress
             }
         }
         super.touchesBegan(touches , with:event)
+        
+        sendActions(for: .allTouchEvents)
     }
 }
 
