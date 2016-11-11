@@ -20,9 +20,10 @@ Later I realized that the representation of the progress was very simple and lim
 ## Features
 
 - [x] Steps (Direct/Sequential)
-- [x] Text for each step
-- [x] Image for each step
-- [x] Mask layer for each step
+- [x] CoreAnimation based
+- [x] Text for each progress step
+- [x] Image for each progress step
+- [x] Mask layer for each progress step
 - [x] Center Text and Image
 - [x] CoreText layers
 - [x] Progress images
@@ -30,7 +31,7 @@ Later I realized that the representation of the progress was very simple and lim
 ## Requirements
 
 - iOS 8.0+
-- Xcode 8.0
+- Xcode 8
 
 ## Communication
 
