@@ -1,4 +1,3 @@
-
 //
 //    Copyright 2015 - Jorge Ouahbi
 //
@@ -22,46 +21,49 @@
 //  Created by Jorge Ouahbi on 27/4/16.
 //  Copyright © 2016 Jorge Ouahbi. All rights reserved.
 //
-// v 1.0
+// v 1.0 Merged files
+// v 1.1 Some clean
 
 
 import UIKit
 
-//
-//  Attributes
-//
+///  Attributes
 
 let kLuminanceDarkCutoff:CGFloat = 0.6;
 
 extension UIColor
 {
+    ///  chroma RGB
     var croma : CGFloat {
-        // calculate chroma
-        let min1  = min((components?[1])!, (components?[2])!)
-        let max1  = max((components?[1])!, (components?[2])!)
-        return max(components![0], max1) - min(components![0], min1);
+        
+        let comp  = components!
+        let min1  = min(comp[1], comp[2])
+        let max1  = max(comp[1], comp[2])
+        
+        return max(comp[0], max1) - min(comp[0], min1);
         
     }
     // luma RGB
+    // WebKit
+    // luma = (r * 0.2125 + g * 0.7154 + b * 0.0721) * ((double)a / 255.0);
+    
     var luma : CGFloat {
-        
-        let lumaRed   = 0.2126 * Float((components?[0])!)
-        let lumaGreen = 0.7152 * Float((components?[1])!)
-        let lumaBlue  = 0.0722 * Float((components?[2])!)
+        let comp      = components!
+        let lumaRed   = 0.2126 * Float(comp[0])
+        let lumaGreen = 0.7152 * Float(comp[1])
+        let lumaBlue  = 0.0722 * Float(comp[2])
         let luma      = Float(lumaRed + lumaGreen + lumaBlue)
         
         return CGFloat(luma * Float(components![3]))
     }
     
-    var luminance : CGFloat
-    {
-        let fmin = min(min((components?[0])!, (components?[1])!), (components?[2])!);
-        let fmax = max(max((components?[0])!, (components?[1])!), (components?[2])!);
+    var luminance : CGFloat {
+        let comp      = components!
+        let fmin = min(min(comp[0],comp[1]),comp[2])
+        let fmax = max(max(comp[0],comp[1]),comp[2])
         return (fmax + fmin) / 2.0;
     }
     
-    // WebKit
-    // luma = (r * 0.2125 + g * 0.7154 + b * 0.0721) * ((double)a / 255.0);
     
     var isLight : Bool {
         return self.luma >= kLuminanceDarkCutoff
@@ -73,15 +75,24 @@ extension UIColor
 }
 
 
-import UIKit
-
 extension UIColor {
+    
+    /// Returns an array of `CGFloat`s containing four elements with `self`'s:
+    /// * r (index `0`)
+    /// * g (index `1`)
+    /// * b (index `2`)
+    /// * a (index `3`)
+    /// or
+    /// * w (index `0`)
+    /// * a (index `1`)
     var components : [CGFloat]? {
         return self.cgColor.components
     }
+    /// number of color components
     var numberOfComponents : size_t {
         return self.cgColor.numberOfComponents
     }
+    /// color space
     var colorSpace : CGColorSpace? {
         return self.cgColor.colorSpace
     }
@@ -105,35 +116,55 @@ extension UIColor {
         return components
     }
     
-    var shortDescription:String {
-        
-        if (numberOfComponents == 2) {
-            
-            let w = String(format: "%.1f", (self.components?[0])!)
-            let a = String(format: "%.1f", (self.components?[1])!)
-            
-            if let colorSpace = self.colorSpace {
-                return "<\(colorSpace.model.name):\(w) \(a)>";
-            }
-            return "<\(w) \(a)>";
-            
-        } else {
-            
-            assert(numberOfComponents == 4)
-            let r = String(format: "%.1f", (self.components?[0])!)
-            let g = String(format: "%.1f", (self.components?[1])!)
-            let b = String(format: "%.1f", (self.components?[2])!)
-            let a = String(format: "%.1f", (self.components?[3])!)
-            
-            if let colorSpace = self.colorSpace {
-                return "<\(colorSpace.model.name):\(r) \(g) \(b) \(a)>";
-            }
-            return "<\(r) \(g) \(b) \(a)>";
-        }
+    var alpha : CGFloat {
+        return self.cgColor.alpha
     }
-}
-
-extension UIColor {
+    
+    var hue: CGFloat {
+        return  hsbaComponents[0];
+    }
+    
+    var saturation: CGFloat {
+        
+        return  hsbaComponents[1];
+    }
+    
+    var brightness: CGFloat {
+        return  hsbaComponents[2];
+    }
+    
+    
+    /// Returns a lighter color by the provided percentage
+    ///
+    /// - param: lighting percent percentage
+    /// - returns: lighter UIColor
+    
+    func lighterColor(percent : Double) -> UIColor {
+        return colorWithBrightnessFactor(factor: CGFloat(1 + percent));
+    }
+    
+    /// Returns a darker color by the provided percentage
+    ///
+    /// - param: darking percent percentage
+    /// - returns: darker UIColor
+    
+    func darkerColor(percent : Double) -> UIColor {
+        return colorWithBrightnessFactor(factor: CGFloat(1 - percent));
+    }
+    
+    /// Return a modified color using the brightness factor provided
+    ///
+    /// - param: factor brightness factor
+    /// - returns: modified color
+    
+    func colorWithBrightnessFactor(factor: CGFloat) -> UIColor {
+        
+        return UIColor(hue: hsbaComponents[0],
+                       saturation: hsbaComponents[1],
+                       brightness: hsbaComponents[2] * factor,
+                       alpha: hsbaComponents[3])
+        
+    }
     
     func difference(fromColor: UIColor) -> Int {
         // get the current color's red, green, blue and alpha values
@@ -173,134 +204,36 @@ extension UIColor {
         
         return max(brightness, fromBrightness) - min(brightness, fromBrightness)
     }
-}
-
-/// Rainbow
-
-extension UIColor
-{
-    /**
-     Returns a array of the complete hue color spectre (0 - 360)
-     
-     :param: number of hue UIColor steps
-     :param: start UIColor hue
-     :returns: UIColor array
-     */
     
-    class func rainbow(_ numberOfSteps:Int, hue:Double = 0.0) -> [UIColor]!{
+    /// Short description
+    var shortDescription:String {
         
-        var colors:[UIColor] = []
-        
-        let iNumberOfSteps =  1.0 / Double(numberOfSteps)
-        var hue:Double = hue
-        while hue < 1.0 {
-            if(colors.count == numberOfSteps){
-                break
+        let comp   = components!
+        if (numberOfComponents == 2) {
+            let w = String(format: "%.1f", comp[0])
+            let a = String(format: "%.1f", comp[1])
+            if let colorSpace = self.colorSpace {
+                return "<\(colorSpace.model.name):\(w) \(a)>";
             }
+            return "<\(w) \(a)>";
             
-            let color = UIColor(hue: CGFloat(hue),
-                                saturation:CGFloat(1.0),
-                                brightness:CGFloat(1.0),
-                                alpha:CGFloat(1.0));
-            
-            colors.append(color)
-            hue += iNumberOfSteps
-        }
-        
-        // assert(colors.count == numberOfSteps, "Unexpected number of rainbow colors \(colors.count). Expecting \(numberOfSteps)")
-        
-        return colors
-    }
-    
-    /**
-     Returns a lighter color by the provided percentage
-     
-     :param: lighting percent percentage
-     :returns: lighter UIColor
-     */
-    func lighterColor(percent : Double) -> UIColor {
-        return colorWithBrightnessFactor(factor: CGFloat(1 + percent));
-    }
-    
-    /**
-     Returns a darker color by the provided percentage
-     
-     :param: darking percent percentage
-     :returns: darker UIColor
-     */
-    func darkerColor(percent : Double) -> UIColor {
-        return colorWithBrightnessFactor(factor: CGFloat(1 - percent));
-    }
-    
-    /**
-     Return a modified color using the brightness factor provided
-     
-     :param: factor brightness factor
-     :returns: modified color
-     */
-    func colorWithBrightnessFactor(factor: CGFloat) -> UIColor {
-        var hue : CGFloat = 0
-        var saturation : CGFloat = 0
-        var brightness : CGFloat = 0
-        var alpha : CGFloat = 0
-        
-        if getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) {
-            return UIColor(hue: hue, saturation: saturation, brightness: brightness * factor, alpha: alpha)
         } else {
-            return self;
+            
+            assert(numberOfComponents == 4)
+            
+            let r = String(format: "%.1f",comp[0])
+            let g = String(format: "%.1f",comp[1])
+            let b = String(format: "%.1f",comp[2])
+            let a = String(format: "%.1f",comp[3])
+            
+            if let colorSpace = self.colorSpace {
+                return "<\(colorSpace.model.name):\(r) \(g) \(b) \(a)>";
+            }
+            return "<\(r) \(g) \(b) \(a)>";
         }
     }
 }
 
-extension UIColor
-{
-    var alpha : CGFloat {
-        return self.cgColor.alpha
-    }
-    
-    var hue: CGFloat {
-        
-        var hue : CGFloat = 0
-        var saturation : CGFloat = 0
-        var brightness : CGFloat = 0
-        var alpha : CGFloat = 0
-        
-        if ( getHue(&hue, saturation:&saturation, brightness:&brightness, alpha:&alpha)) {
-            return hue
-        }
-        
-        return 1.0;
-    }
-    
-    
-    var saturation: CGFloat {
-        
-        var hue : CGFloat = 0
-        var saturation : CGFloat = 0
-        var brightness : CGFloat = 0
-        var alpha : CGFloat = 0
-        
-        if ( getHue(&hue, saturation:&saturation, brightness:&brightness, alpha:&alpha)) {
-            return saturation
-        }
-        
-        return 1.0;
-    }
-    
-    var brightness: CGFloat {
-        
-        var hue : CGFloat = 0
-        var saturation : CGFloat = 0
-        var brightness : CGFloat = 0
-        var alpha : CGFloat = 0
-        
-        if ( getHue(&hue, saturation:&saturation, brightness:&brightness, alpha:&alpha)) {
-            return brightness
-        }
-        
-        return 1.0;
-    }
-}
 
 /// UIColor Extension that generate next UIColor
 
@@ -349,11 +282,48 @@ extension UIColor : IteratorProtocol
     
     class public func random() -> UIColor?
     {
-        let frndr = CGFloat(drand48())
-        let frndg = CGFloat(drand48())
-        let frndb = CGFloat(drand48())
+        let r = CGFloat(drand48())
+        let g = CGFloat(drand48())
+        let b = CGFloat(drand48())
         
-        return UIColor(red: frndr, green: frndg, blue: frndb, alpha: 1.0)
+        return UIColor(red: r, green: g, blue: b, alpha: 1.0)
+    }
+}
+
+/// Rainbow
+
+extension UIColor
+{
+    /// Returns a array of the complete hue color spectre (0 - 360)
+    ///
+    /// - param: number of hue UIColor steps
+    /// - param: start UIColor hue
+    /// - returns: UIColor array
+    
+    
+    class func rainbow(_ numberOfSteps:Int, hue:Double = 0.0) -> [UIColor]!{
+        
+        var colors:[UIColor] = []
+        
+        let iNumberOfSteps =  1.0 / Double(numberOfSteps)
+        var hue:Double = hue
+        while hue < 1.0 {
+            if(colors.count == numberOfSteps){
+                break
+            }
+            
+            let color = UIColor(hue: CGFloat(hue),
+                                saturation:CGFloat(1.0),
+                                brightness:CGFloat(1.0),
+                                alpha:CGFloat(1.0));
+            
+            colors.append(color)
+            hue += iNumberOfSteps
+        }
+        
+        // assert(colors.count == numberOfSteps, "Unexpected number of rainbow colors \(colors.count). Expecting \(numberOfSteps)")
+        
+        return colors
     }
 }
 
