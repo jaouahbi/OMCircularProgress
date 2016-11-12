@@ -166,6 +166,10 @@ extension UIColor {
         
     }
     
+    /// <#Description#>
+    ///
+    /// - Parameter fromColor: <#fromColor description#>
+    /// - Returns: <#return value description#>
     func difference(fromColor: UIColor) -> Int {
         // get the current color's red, green, blue and alpha values
         let red:CGFloat = self.components![0]
@@ -186,6 +190,10 @@ extension UIColor {
         return Int(redValue + greenValue + blueValue)
     }
     
+    /// <#Description#>
+    ///
+    /// - Parameter fromColor: <#fromColor description#>
+    /// - Returns: <#return value description#>
     func brightnessDifference(fromColor: UIColor) -> Int {
         // get the current color's red, green, blue and alpha values
         let red:CGFloat = self.components![0]
