@@ -69,4 +69,17 @@ extension CGRect{
     public var maxRadius:CGFloat {
         return 0.5 * sqrt(size.width * size.width + size.height * size.height)
     }
+    
+    /// Construct with points
+    ///
+    /// - parameter point1: CGPoint
+    /// - parameter point2: CGPoint
+    ///
+    /// - returns: CGRect
+    public init(_ point1:CGPoint,point2:CGPoint) {
+        self.init(point1)
+        size.width  = fabs(point2.x-self.origin.x)
+        size.height = fabs(point2.y-self.origin.y)
+    }
+    
 }

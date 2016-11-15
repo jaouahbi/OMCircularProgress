@@ -40,8 +40,8 @@ extension UIColor
     
     public class func lerp(_ start:UIColor, end:UIColor, t:CGFloat) -> UIColor {
         
-        let srgba = start.components!
-        let ergba = end.components!
+        let srgba = start.components
+        let ergba = end.components
         
         return UIColor(red: Interpolation.lerp(srgba[0],y1: ergba[0],t: t),
                        green: Interpolation.lerp(srgba[1],y1: ergba[1],t: t),
@@ -57,8 +57,8 @@ extension UIColor
     ///   - t:  alpha
     /// - Returns: return UIColor
     public class func coserp(_ start:UIColor, end:UIColor, t:CGFloat) -> UIColor {
-        let srgba = start.components!
-        let ergba = end.components!
+        let srgba = start.components
+        let ergba = end.components
         return UIColor(red: Interpolation.coserp(srgba[0],y1: ergba[0],t: t),
                        green: Interpolation.coserp(srgba[1],y1: ergba[1],t: t),
                        blue: Interpolation.coserp(srgba[2],y1: ergba[2],t: t),
@@ -74,8 +74,8 @@ extension UIColor
     /// - Returns: return UIColor
     
     public class func eerp(_ start:UIColor, end:UIColor, t:CGFloat) -> UIColor {
-        let srgba = start.components!
-        let ergba = end.components!
+        let srgba = start.components
+        let ergba = end.components
         
         let r = clamp(Interpolation.eerp(srgba[0],y1: ergba[0],t: t),lower: 0,upper: 1)
         let g = clamp(Interpolation.eerp(srgba[1],y1: ergba[1],t: t),lower: 0,upper: 1)
@@ -101,11 +101,11 @@ extension UIColor
     /// - Returns: return UIColor
     
     public class func bilerp(_ start:[UIColor], end:[UIColor], t:[CGFloat]) -> UIColor {
-        let srgba0 = start[0].components!
-        let ergba0 = end[0].components!
+        let srgba0 = start[0].components
+        let ergba0 = end[0].components
         
-        let srgba1 = start[1].components!
-        let ergba1 = end[1].components!
+        let srgba1 = start[1].components
+        let ergba1 = end[1].components
         
         return UIColor(red: Interpolation.bilerp(srgba0[0], y01: ergba0[0], t1: t[0], y10: srgba1[0], y11: ergba1[0], t2: t[1]),
                        green: Interpolation.bilerp(srgba0[1], y01: ergba0[1], t1: t[0], y10: srgba1[1], y11: ergba1[1], t2: t[1]),

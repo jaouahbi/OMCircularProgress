@@ -462,11 +462,18 @@ open class OMCPStepData : CustomDebugStringConvertible {
     
     // CPElements
     
-    var ie:OMCPCElement<OMProgressImageLayer> = OMCPCElement<OMProgressImageLayer>()
-    var te:OMCPCElement<OMTextLayer>          = OMCPCElement<OMTextLayer>()
+    var imageElement:OMCPCElement<OMProgressImageLayer> = OMCPCElement<OMProgressImageLayer>()
+    var textElement:OMCPCElement<OMTextLayer>           = OMCPCElement<OMTextLayer>()
     
-    // CGFloat(alignInRadius(align: element.radiusPosition, size: sizeOf))
     
+    /// Setup the step layer geometry
+    ///
+    /// - Parameters:
+    ///   - element: <#element description#>
+    ///   - radius: <#radius description#>
+    ///   - rect: <#rect description#>
+    ///   - sizeOf: <#sizeOf description#>
+    ///   - startAngle: <#startAngle description#>
     func setUpStepLayerGeometry(element:OMCPCElement<CALayer>,
                                 radius:CGFloat,
                                 rect:CGRect,
@@ -514,7 +521,6 @@ open class OMCPStepData : CustomDebugStringConvertible {
     }
     
     /// Border
-    
     var borderRatio:Double  = 0.0                            // border layer ratio. Default: 0%
     var borderShadow:Bool   = true                           // border layer shadow. Default: true
     internal var shapeLayerBorder:CAShapeLayer? = nil        // layer for the border
@@ -524,10 +530,8 @@ open class OMCPStepData : CustomDebugStringConvertible {
         }
         return self.shapeLayerBorder!;
     }()
-    
-    
+
     /// Well layer.
-    
     internal var wellLayer:CAShapeLayer?                     // optional well layer
     lazy var well : CAShapeLayer! = {
         if self.wellLayer == nil {
@@ -543,8 +547,6 @@ open class OMCPStepData : CustomDebugStringConvertible {
     /// - parameter percent:    percent of circle
     /// - parameter color:      color step
     ///
-    
-    
     required convenience public init(start:Double, percent:Double, color:UIColor!){
         self.init(start:start,
                   end: start + (𝜏 * percent),
@@ -1284,10 +1286,10 @@ open class OMCPStepData : CustomDebugStringConvertible {
         for (index, step) in dataSteps.enumerated() {
             let theStep = step as! OMCPStepData
             #if LOG
-                theStep.ie.layer.name = "step \(index) image"
+                theStep.imageElement.layer.name = "step \(index) image"
             #endif
-            containerLayer!.addSublayer(theStep.ie.layer )
-            theStep.ie.shadow = true
+            containerLayer!.addSublayer(theStep.imageElement.layer )
+            theStep.imageElement.shadow = true
         }
     }
     
@@ -1299,9 +1301,9 @@ open class OMCPStepData : CustomDebugStringConvertible {
         for (index, step) in dataSteps.enumerated() {
             let theStep =  step as! OMCPStepData
             #if LOG
-                theStep.te.layer .name = "step \(index) text"
+                theStep.textElement.layer .name = "step \(index) text"
             #endif
-            containerLayer!.addSublayer(theStep.te.layer )
+            containerLayer!.addSublayer(theStep.textElement.layer )
         }
     }
     
@@ -1312,32 +1314,32 @@ open class OMCPStepData : CustomDebugStringConvertible {
     ///
     fileprivate func setUpStepImageLayerGeometry(_ step:OMCPStepData) {
         
-        let sizeOf = step.ie.layer.image?.size
+        let sizeOf = step.imageElement.layer.image?.size
         // Reset the angle orientation before sets the new frame
-        step.ie.layer.setTransformRotationZ(0)
-        let angle = step.angle.angle(step.ie.anglePosition)
+        step.imageElement.layer.setTransformRotationZ(0)
+        let angle = step.angle.angle(step.imageElement.anglePosition)
         
         let anglePoint = OMAngle.pointOfAngle(angle,
                                               center:bounds.size.center(),
-                                              radius: CGFloat(positionInRadius(step.ie.radiusPosition, size: sizeOf!)))
+                                              radius: CGFloat(positionInRadius(step.imageElement.radiusPosition, size: sizeOf!)))
         
         let positionInAngle = anglePoint.centerRect(sizeOf!)
         #if LOG
             OMLog.printd("[\(layer.name ?? "")] setUpStepImageLayerGeometric(\(step))")
-            OMLog.printd("[\(layer.name ?? "")] angle \(round(angle.radiansToDegrees())) text angle position :\(step.ie.anglePosition)")
-            OMLog.printd("[\(layer.name ?? "")] Position in angle \(anglePoint)  position in radius :\(step.ie.radiusPosition)")
+            OMLog.printd("[\(layer.name ?? "")] angle \(round(angle.radiansToDegrees())) text angle position :\(step.imageElement.anglePosition)")
+            OMLog.printd("[\(layer.name ?? "")] Position in angle \(anglePoint)  position in radius :\(step.imageElement.radiusPosition)")
             OMLog.printv("[\(layer.name ?? "")] Frame \(positionInAngle.integral) from the aligned step angle \(OMAngle.format(angle)) and the image size \((sizeOf?.integral())!)")
         #endif
         
         // Set the new frame
-        step.ie.layer.frame = positionInAngle
+        step.imageElement.layer.frame = positionInAngle
         // Rotate the layer
-        if (step.ie.orientationToAngle) {
+        if (step.imageElement.orientationToAngle) {
             let rotationZ = (angle - startAngle)
             #if LOG
                 OMLog.printv("[\(layer.name ?? "")] Image will be oriented to angle: \(OMAngle.format(rotationZ))")
             #endif
-            step.ie.layer.setTransformRotationZ(rotationZ)
+            step.imageElement.layer.setTransformRotationZ(rotationZ)
         }
     }
     
@@ -1351,39 +1353,39 @@ open class OMCPStepData : CustomDebugStringConvertible {
         #if LOG
             OMLog.printd("[\(layer.name ?? "")] setUpStepTextLayerGeometric(\(step))")
         #endif
-        if step.te.layer.string != nil {
+        if step.textElement.layer.string != nil {
             // Reset the angle orientation before sets the new frame
-            step.te.layer.setTransformRotationZ(0.0)
+            step.textElement.layer.setTransformRotationZ(0.0)
             
             // We must to have the same center and the same bounds
-            if (step.te.layer.radiusRatio > 0) {
-                step.te.layer.frame = self.bounds
+            if (step.textElement.layer.radiusRatio > 0) {
+                step.textElement.layer.frame = self.bounds
             } else {
-                let sizeOf = step.te.layer.frameSize();
-                let angle:Double = step.angle.angle(step.te.anglePosition)
+                let sizeOf = step.textElement.layer.frameSize();
+                let angle:Double = step.angle.angle(step.textElement.anglePosition)
                 
                 let anglePoint = OMAngle.pointOfAngle(angle,
                                                       center:bounds.size.center(),
-                                                      radius: CGFloat(positionInRadius(step.te.radiusPosition, size: sizeOf)))
+                                                      radius: CGFloat(positionInRadius(step.textElement.radiusPosition, size: sizeOf)))
                 let frame = anglePoint.centerRect(sizeOf)
                 
                 #if LOG
-                    OMLog.printd("[\(layer.name ?? "")] angle \(OMAngle.format(angle)) text angle position :\(step.te.anglePosition)")
-                    OMLog.printd("[\(layer.name ?? "")] Position in angle \(anglePoint)  position in radius :\(step.te.radiusPosition)")
+                    OMLog.printd("[\(layer.name ?? "")] angle \(OMAngle.format(angle)) text angle position :\(step.textElement.anglePosition)")
+                    OMLog.printd("[\(layer.name ?? "")] Position in angle \(anglePoint)  position in radius :\(step.textElement.radiusPosition)")
                     OMLog.printv("[\(layer.name ?? "")] Frame \(frame.integral) from the aligned step angle \(OMAngle.format(angle)) and the text size \(sizeOf.integral()))")
                 #endif
                 
                 // Set the new frame
-                step.te.layer.frame = frame
+                step.textElement.layer.frame = frame
             }
             
-            if step.te.orientationToAngle {
-                let angle = step.angle.angle(step.te.anglePosition)
+            if step.textElement.orientationToAngle {
+                let angle = step.angle.angle(step.textElement.anglePosition)
                 let rotationZ = (angle - startAngle)
                 #if LOG
                     OMLog.printv("[\(layer.name ?? "")] Image will be oriented to angle: \(round(rotationZ.radiansToDegrees()))")
                 #endif
-                step.te.layer.setTransformRotationZ( rotationZ )
+                step.textElement.layer.setTransformRotationZ( rotationZ )
             }
         }
     }
@@ -1463,16 +1465,16 @@ open class OMCPStepData : CustomDebugStringConvertible {
         for (_, step) in dataSteps.enumerated() {
             let data  = step as! OMCPStepData
             // Image Layer
-            if data.ie.layer.image != nil {
+            if data.imageElement.layer.image != nil {
                 #if LOG
-                    data.ie.layer.name = "step \(stepIndex(data)) image"
+                    data.imageElement.layer.name = "step \(stepIndex(data)) image"
                 #endif
                 setUpStepImageLayerGeometry(data)
             }
             // Text Layer
-            if  data.te.layer.string != nil {
+            if  data.textElement.layer.string != nil {
                 #if LOG
-                    data.te.layer.name = "step \(stepIndex(data)) text"
+                    data.textElement.layer.name = "step \(stepIndex(data)) text"
                 #endif
                 setUpStepTextLayerGeometry(data)
             }
@@ -1756,7 +1758,7 @@ extension OMCircularProgress : CAAnimationDelegate
             shapeLayerBorder.add(strokeAnimation, forKey: "strokeEnd")
         }
         
-        if let imgLayer = step.ie.layer {
+        if let imgLayer = step.imageElement.layer {
             // Remove all animations
             imgLayer.removeAllAnimations()
             // Add animation to the image

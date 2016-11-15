@@ -23,6 +23,42 @@
 
 import UIKit
 
+/// Rainbow
+
+extension UIColor
+{
+    /// Returns a array of the complete hue color spectre (0 - 360)
+    ///
+    /// - param: number of hue UIColor steps
+    /// - param: start UIColor hue
+    /// - returns: UIColor array
+    
+    
+    class func rainbow(_ numberOfSteps:Int, hue:Double = 0.0) -> [UIColor]!{
+        
+        var colors:[UIColor] = []
+        
+        let iNumberOfSteps =  1.0 / Double(numberOfSteps)
+        var hue:Double = hue
+        while hue < 1.0 {
+            if(colors.count == numberOfSteps){
+                break
+            }
+            
+            let color = UIColor(hue: CGFloat(hue),
+                                saturation:CGFloat(1.0),
+                                brightness:CGFloat(1.0),
+                                alpha:CGFloat(1.0));
+            
+            colors.append(color)
+            hue += iNumberOfSteps
+        }
+        
+        // assert(colors.count == numberOfSteps, "Unexpected number of rainbow colors \(colors.count). Expecting \(numberOfSteps)")
+        
+        return colors
+    }
+}
 
 
 class ProgressExampleViewController: UIViewController {
@@ -354,15 +390,15 @@ class ProgressExampleViewController: UIViewController {
             if let theStep = theStep {
                 
                 if  (i % 4 == 0)  {
-                    theStep.ie.layer.image = UIImage(named: "satellite")
-                    theStep.ie.orientationToAngle = true
+                    theStep.imageElement.layer.image = UIImage(named: "satellite")
+                    theStep.imageElement.orientationToAngle = true
                 }
                 
                 let color = colors[i]
                 
                 theStep.borderRatio            = 0.1
                 theStep.border.strokeColor     = color.darkerColor(percent: 0.6).cgColor
-                theStep.ie.radiusPosition      = .middle
+                theStep.imageElement.radiusPosition      = .middle
                 
                 // configure the gradient
                 let gradient       = OMShadingGradientLayer(type:.radial)
@@ -429,58 +465,58 @@ class ProgressExampleViewController: UIViewController {
             
             if let theStep = theStep {
                 
-                theStep.te.layer.string = strings[i]
+                theStep.textElement.layer.string = strings[i]
                 
                 if (i == 0) {
             
-                    theStep.te.layer.radiusRatio            = 0.80
-                    theStep.te.layer.angleLength            = theStep.angle.length()
-                    theStep.te.orientationToAngle           = true;
+                    theStep.textElement.layer.radiusRatio            = 0.80
+                    theStep.textElement.layer.angleLength            = theStep.angle.length()
+                    theStep.textElement.orientationToAngle           = true;
                     
-                    theStep.te.layer.font                   = fontCourier
-                    theStep.te.layer.foregroundColor        =  UIColor.white
-                    theStep.te.layer.fontBackgroundColor    = UIColor.clear
-                    theStep.te.layer.fontStrokeColor        = UIColor.crayolaOnyxColor
-                    theStep.te.layer.fontStrokeWidth        = -3
-                    theStep.te.shadow                       = false
+                    theStep.textElement.layer.font                   = fontCourier
+                    theStep.textElement.layer.foregroundColor        =  UIColor.white
+                    theStep.textElement.layer.fontBackgroundColor    = UIColor.clear
+                    theStep.textElement.layer.fontStrokeColor        = UIColor.crayolaOnyxColor
+                    theStep.textElement.layer.fontStrokeWidth        = -3
+                    theStep.textElement.shadow                       = false
                 } else if(i == 1) {
-                    theStep.te.layer.radiusRatio            = 0.40
-                    theStep.te.layer.angleLength            = theStep.angle.length()
-                    theStep.te.orientationToAngle           = true;
+                    theStep.textElement.layer.radiusRatio            = 0.40
+                    theStep.textElement.layer.angleLength            = theStep.angle.length()
+                    theStep.textElement.orientationToAngle           = true;
                     
-                    theStep.te.layer.font                   = fontCourier
-                    theStep.te.layer.foregroundColor        = UIColor.crayolaOnyxColor
-                    theStep.te.layer.fontBackgroundColor    = UIColor.clear
-                    theStep.te.layer.fontStrokeColor        = UIColor.white
-                    theStep.te.layer.fontStrokeWidth        = -3
-                    theStep.te.shadow                       = false
+                    theStep.textElement.layer.font                   = fontCourier
+                    theStep.textElement.layer.foregroundColor        = UIColor.crayolaOnyxColor
+                    theStep.textElement.layer.fontBackgroundColor    = UIColor.clear
+                    theStep.textElement.layer.fontStrokeColor        = UIColor.white
+                    theStep.textElement.layer.fontStrokeWidth        = -3
+                    theStep.textElement.shadow                       = false
                 } else if(i == 2) {
-                    theStep.te.layer.radiusRatio            = 0.80
-                    theStep.te.layer.angleLength                  = theStep.angle.length()
-                    theStep.te.orientationToAngle           = true;
-                    theStep.te.layer.font                   = fontCourier
-                    theStep.te.layer.foregroundColor        = UIColor.white
-                    theStep.te.layer.fontBackgroundColor    = UIColor.clear
-                    theStep.te.layer.fontStrokeColor        =  UIColor.crayolaOnyxColor
-                    theStep.te.layer.fontStrokeWidth        = -3
-                    theStep.te.shadow                       = false
+                    theStep.textElement.layer.radiusRatio            = 0.80
+                    theStep.textElement.layer.angleLength                  = theStep.angle.length()
+                    theStep.textElement.orientationToAngle           = true;
+                    theStep.textElement.layer.font                   = fontCourier
+                    theStep.textElement.layer.foregroundColor        = UIColor.white
+                    theStep.textElement.layer.fontBackgroundColor    = UIColor.clear
+                    theStep.textElement.layer.fontStrokeColor        =  UIColor.crayolaOnyxColor
+                    theStep.textElement.layer.fontStrokeWidth        = -3
+                    theStep.textElement.shadow                       = false
                 } else {
-                    theStep.te.layer.font                   = fontCourier
-                    theStep.te.layer.foregroundColor        =  UIColor.crayolaOnyxColor
-                    theStep.te.layer.fontBackgroundColor    = UIColor.clear
-                    theStep.te.layer.fontStrokeColor        = UIColor.white
-                    theStep.te.layer.fontStrokeWidth        = -3
+                    theStep.textElement.layer.font                   = fontCourier
+                    theStep.textElement.layer.foregroundColor        =  UIColor.crayolaOnyxColor
+                    theStep.textElement.layer.fontBackgroundColor    = UIColor.clear
+                    theStep.textElement.layer.fontStrokeColor        = UIColor.white
+                    theStep.textElement.layer.fontStrokeWidth        = -3
                     
-                    theStep.te.layer.radiusRatio            = 0.40
-                    theStep.te.layer.angleLength            = theStep.angle.length()
-                    theStep.te.orientationToAngle           = true
-                    theStep.te.shadow                       = false
+                    theStep.textElement.layer.radiusRatio            = 0.40
+                    theStep.textElement.layer.angleLength            = theStep.angle.length()
+                    theStep.textElement.orientationToAngle           = true
+                    theStep.textElement.shadow                       = false
                 }
                 
                 // the images
-                theStep.ie.layer.image = UIImage(named: images[i])
-                //theStep.ie.orientationToAngle = true
-                theStep.ie.radiusPosition = .middle
+                theStep.imageElement.layer.image = UIImage(named: images[i])
+                //theStep.imageElement.orientationToAngle = true
+                theStep.imageElement.radiusPosition = .middle
                 
                 // configure the gradient
                 let gradient       = OMShadingGradientLayer(type:.axial)
@@ -552,16 +588,16 @@ class ProgressExampleViewController: UIViewController {
                 
                 // Configure the step
                 
-                step.te.layer.string                 = romanNumbers[i]
-                step.te.layer.font                   = font
-                step.te.layer.foregroundColor        = UIColor.black
-                step.te.layer.fontBackgroundColor    = UIColor.clear
-                step.te.layer.fontStrokeColor        = UIColor.white
-                step.te.layer.fontStrokeWidth        = -4
+                step.textElement.layer.string                 = romanNumbers[i]
+                step.textElement.layer.font                   = font
+                step.textElement.layer.foregroundColor        = UIColor.black
+                step.textElement.layer.fontBackgroundColor    = UIColor.clear
+                step.textElement.layer.fontStrokeColor        = UIColor.white
+                step.textElement.layer.fontStrokeWidth        = -4
                 
-                step.te.radiusPosition                = .middle
-                step.te.orientationToAngle            = true
-                step.te.anglePosition                 = .end
+                step.textElement.radiusPosition                = .middle
+                step.textElement.orientationToAngle            = true
+                step.textElement.anglePosition                 = .end
                 
                 // configure the gradient
                 let gradient       = OMShadingGradientLayer(type:.radial)
@@ -624,17 +660,17 @@ class ProgressExampleViewController: UIViewController {
                 
                 if ((i % quarter) == 0) {
                     
-                    step.te.layer.string                 = "\(i)"
-                    step.te.layer.font                   = fontMenlo
+                    step.textElement.layer.string                 = "\(i)"
+                    step.textElement.layer.font                   = fontMenlo
                     
-                    step.te.layer.foregroundColor        = UIColor.black
-                    step.te.layer.fontBackgroundColor    = UIColor.clear
-                    step.te.layer.fontStrokeColor        = UIColor.white
-                    step.te.layer.fontStrokeWidth        = -2
+                    step.textElement.layer.foregroundColor        = UIColor.black
+                    step.textElement.layer.fontBackgroundColor    = UIColor.clear
+                    step.textElement.layer.fontStrokeColor        = UIColor.white
+                    step.textElement.layer.fontStrokeWidth        = -2
                     
-                    step.te.radiusPosition               = .middle
-                    step.te.orientationToAngle           = true
-                    step.te.anglePosition                = .end
+                    step.textElement.radiusPosition               = .middle
+                    step.textElement.orientationToAngle           = true
+                    step.textElement.anglePosition                = .end
                 }
                 
                 // configure the gradient
@@ -691,16 +727,16 @@ class ProgressExampleViewController: UIViewController {
                     
                     // Configure the text layer
                     
-                    step.te.layer.string                 = "\(i)"
-                    step.te.layer.font                   = fontMenlo
-                    step.te.layer.foregroundColor        = UIColor.black
-                    step.te.layer.fontBackgroundColor    = UIColor.clear
-                    step.te.layer.fontStrokeColor        = UIColor.white
-                    step.te.layer.fontStrokeWidth        = -3
+                    step.textElement.layer.string                 = "\(i)"
+                    step.textElement.layer.font                   = fontMenlo
+                    step.textElement.layer.foregroundColor        = UIColor.black
+                    step.textElement.layer.fontBackgroundColor    = UIColor.clear
+                    step.textElement.layer.fontStrokeColor        = UIColor.white
+                    step.textElement.layer.fontStrokeWidth        = -3
                     
-                    step.te.radiusPosition                = .middle
-                    step.te.orientationToAngle            = true
-                    step.te.anglePosition                 = .end
+                    step.textElement.radiusPosition                = .middle
+                    step.textElement.orientationToAngle            = true
+                    step.textElement.anglePosition                 = .end
                 }
                 
                 // Configure the radial gradient

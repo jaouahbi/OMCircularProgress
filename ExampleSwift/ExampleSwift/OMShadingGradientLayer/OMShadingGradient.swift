@@ -101,10 +101,10 @@ func ShadingFunctionCreate(_ colors : [UIColor],
                #if LOG
             OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) <= position \(String(format:"%.1f",stop1Position)) color \(stop1Color.shortDescription)")
                 #endif
-            outData[0] = (stop1Color.components?[0])!
-            outData[1] = (stop1Color.components?[1])!
-            outData[2] = (stop1Color.components?[2])!
-            outData[3] = (stop1Color.components?[3])!
+            outData[0] = stop1Color.components[0]
+            outData[1] = stop1Color.components[1]
+            outData[2] = stop1Color.components[2]
+            outData[3] = stop1Color.components[3]
             
         } else if (alpha >= stop2Position) {
                #if LOG
@@ -112,10 +112,10 @@ func ShadingFunctionCreate(_ colors : [UIColor],
             OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) >= position \(String(format:"%.1f",stop2Position)) color \(stop1Color.shortDescription)")
                 
                 #endif
-            outData[0] = (stop2Color.components?[0])!
-            outData[1] = (stop2Color.components?[1])!
-            outData[2] = (stop2Color.components?[2])!
-            outData[3] = (stop2Color.components?[3])!
+            outData[0] = stop2Color.components[0]
+            outData[1] = stop2Color.components[1]
+            outData[2] = stop2Color.components[2]
+            outData[3] = stop2Color.components[3]
             
         } else {
             
@@ -129,7 +129,7 @@ func ShadingFunctionCreate(_ colors : [UIColor],
                 #endif
             
             for componentIndex in 0 ..< 3 {
-                outData[componentIndex] = (newColor.components?[componentIndex])!
+                outData[componentIndex] = newColor.components[componentIndex]
             }
             
             // Premultiply the color by the alpha.
