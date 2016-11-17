@@ -63,7 +63,7 @@ extension UIImage
         let bitmap = UIGraphicsGetCurrentContext()
         
         // Move the origin to the middle of the image so we will rotate and scale around the center.
-        bitmap?.translateBy(x: size.width/2, y: size.height/2);
+        bitmap?.translateBy(x: size.width * 0.5, y: size.height * 0.5);
         
         //   // Rotate the image context
         bitmap?.rotate(by: radians);
@@ -274,20 +274,29 @@ extension UIImage
 }
 
 
+//
+// Transform and blend extension
+//
+
 extension UIImage
 {
     
-    // Transform the image in grayscale.
-    func grayScaleWithAlphaImage() -> UIImage
+    /// Transform the image in grayscale.
+    ///
+    /// - returns: UIImage
+    
+    func grayScaleWithAlphaImage() -> UIImage?
     {
-        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale);
-        let imageRect = CGRect(x: 0.0, y: 0.0, width: self.size.width, height: self.size.height);
+        let imageRect = CGRect(self.size)
         
-        let ctx = UIGraphicsGetCurrentContext();
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale);
+        let context = UIGraphicsGetCurrentContext();
         
         // Draw a white background
-        ctx?.setFillColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0);
-        ctx?.fill(imageRect);
+        // context?.setFillColor(gray:1.0, alpha: 1.0);
+
+        context?.setFillColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0);
+        context?.fill(imageRect);
         
         // Draw the luminosity on top of the white background to get grayscale
         self.draw(in: imageRect,blendMode:CGBlendMode.luminosity,alpha:1.0);
@@ -296,11 +305,18 @@ extension UIImage
         self.draw(in: imageRect,blendMode:CGBlendMode.destinationIn,alpha:1.0);
         
         let grayscaleImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        return grayscaleImage!
+        UIGraphicsEndImageContext()
+        return grayscaleImage
     }
     
-    func blendImage(_ other:UIImage, alpha:CGFloat = 1.0) -> UIImage
+    /// Blend current UIImage with other
+    ///
+    /// - parameter other:  other image
+    /// - parameter alpha: blend alpha (default:1.0)
+    ///
+    /// - returns: UIImage?
+    
+    func blendImage(_ other:UIImage, alpha:CGFloat = 1.0) -> UIImage?
     {
         UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale);
         
@@ -310,25 +326,52 @@ extension UIImage
         let newImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         
-        return newImage!
+        return newImage
     }
     
-    func maskImage(_ path:UIBezierPath) -> UIImage
+    /// Blend current UIImage with other (alpha:1.0)
+    ///
+    /// - parameter other: other image
+    ///
+    /// - returns: UIImage?
+    
+    func blendImage(_ other:UIImage) -> UIImage?
     {
-        UIGraphicsBeginImageContextWithOptions(self.size, false, 0)
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale);
         
+        self.draw(at: CGPoint.zero)
+        other.draw(at: CGPoint.zero)
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        return newImage
+    }
+    
+    /// Mask current UIImage with path
+    ///
+    /// - parameter other: path
+    ///
+    /// - returns: UIImage?
+    
+    func maskImage(_ path:UIBezierPath) -> UIImage?
+    {
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
         path.addClip()
         self.draw(at: CGPoint.zero)
-        
-        
         let maskedImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return maskedImage!;
+        return maskedImage
     }
-    
+}
+
+// reflection extension
+
+extension UIImage {
+
     class func gradientMask() -> CGImage
     {
-        //create gradient mask
+        // create gradient mask
         
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 1, height: 256), true, 0.0);
         
@@ -356,7 +399,7 @@ extension UIImage
         //get reflection dimensions
         let height = ceil(self.size.height * scale);
         let size = CGSize(width: self.size.width, height: height);
-        let bounds = CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height);
+        let bounds = CGRect(size);
         
         //create drawing context
         UIGraphicsBeginImageContextWithOptions(size, false, 0.0);
@@ -368,7 +411,7 @@ extension UIImage
         //draw reflected image
         context?.scaleBy(x: 1.0, y: -1.0);
         context?.translateBy(x: 0.0, y: -self.size.height)
-        self.draw(in: CGRect(x: 0.0, y: 0.0, width: self.size.width, height: self.size.height))
+        self.draw(in: bounds)
         
         //capture resultant image
         let reflection = UIGraphicsGetImageFromCurrentImageContext();
@@ -378,7 +421,7 @@ extension UIImage
         return reflection!;
     }
     
-    func imageWithReflectionWithScale(_ scale:CGFloat,gap:CGFloat,alpha:CGFloat) -> UIImage
+    func imageWithReflectionWithScale(_ scale:CGFloat,gap:CGFloat,alpha:CGFloat = 1.0) -> UIImage
     {
         //get reflected image
         let reflection = self.reflectedImageWithScale(scale);
@@ -401,6 +444,11 @@ extension UIImage
         return image!;
     }
 }
+
+
+//
+// Shadow extension
+//
 
 extension UIImage {
     

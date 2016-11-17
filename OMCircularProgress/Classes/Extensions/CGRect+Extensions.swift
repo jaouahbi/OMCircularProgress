@@ -59,4 +59,27 @@ extension CGRect{
     public init(_ origin:CGPoint) {
         self.init(origin: origin,size: CGSize.zero)
     }
+    
+    /// Min radius from rectangle
+    public var minRadius:CGFloat {
+        return size.min() * 0.5;
+    }
+    
+    /// Max radius from a rectangle (pythagoras)
+    public var maxRadius:CGFloat {
+        return 0.5 * sqrt(size.width * size.width + size.height * size.height)
+    }
+    
+    /// Construct with points
+    ///
+    /// - parameter point1: CGPoint
+    /// - parameter point2: CGPoint
+    ///
+    /// - returns: CGRect
+    public init(_ point1:CGPoint,point2:CGPoint) {
+        self.init(point1)
+        size.width  = fabs(point2.x-self.origin.x)
+        size.height = fabs(point2.y-self.origin.y)
+    }
+    
 }

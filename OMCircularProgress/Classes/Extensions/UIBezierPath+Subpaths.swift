@@ -32,7 +32,9 @@ extension CGPath {
             let body = unsafeBitCast(info, to: Body.self)
             body(element.pointee)
         }
-        OMLog.printi("Memory layout \(MemoryLayout.size(ofValue: body))")
+        #if LOG
+            OMLog.printi("(CGPath) Memory layout \(MemoryLayout.size(ofValue: body))")
+        #endif
         let unsafeBody = unsafeBitCast(body, to: UnsafeMutableRawPointer.self)
         self.apply(info: unsafeBody, function: callback)
     }
@@ -68,27 +70,28 @@ extension UIBezierPath {
         self.cgPath.forEach { element in
             switch (element.type) {
             case .moveToPoint:
-                if ((current) != nil){
+                if let current = current {
                     results.add(current);
                 }
                 current = UIBezierPath()
                 current!.move(to: element.points[0]);
                 
             case .addQuadCurveToPoint, .addCurveToPoint, .addLineToPoint:
-                if ((current) != nil){
-                    element.addToPath(path: current!);
+                if let current = current {
+                    element.addToPath(path: current);
                 }
+                
             case .closeSubpath:
                 current?.close()
-                if ((current) != nil){
-                    results.add(current!);
+                if let current = current {
+                    results.add(current);
                 }
                 current = nil;
             }
         }
         
-        if ((current) != nil){
-            results.add(current!);
+        if let current = current {
+            results.add(current);
         }
         
         return results;

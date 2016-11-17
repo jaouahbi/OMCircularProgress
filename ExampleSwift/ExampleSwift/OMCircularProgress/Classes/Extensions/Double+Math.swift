@@ -23,13 +23,15 @@
 
 import UIKit
 
-/**
- *  Double Extension for conversion from/to degrees/radians and clamp
- */
-
+/// Double Extension for conversion from/to degrees/radians and clamp/map
 
 public func clamp(_ value:Double,lowerValue: Double, upperValue: Double) -> Double{
     return Swift.min(Swift.max(value, lowerValue), upperValue)
+}
+
+public func map(input:Double,input_start:Double,input_end:Double,output_start:Double,output_end:Double)-> Double {
+    let slope = 1.0 * (output_end - output_start) / (input_end - input_start)
+    return output_start + round(slope * (input - input_start))
 }
 
 public extension Double {

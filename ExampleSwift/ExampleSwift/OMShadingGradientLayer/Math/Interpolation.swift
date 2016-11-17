@@ -28,6 +28,8 @@ enum InterpolationType {
     case linear
     case exponential
     case cosine
+    case cubic
+    case bilinear
 }
 
 class Interpolation

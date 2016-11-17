@@ -29,6 +29,12 @@ public func clamp(_ value:CGFloat,lowerValue: CGFloat, upperValue: CGFloat) -> C
     return Swift.min(Swift.max(value, lowerValue), upperValue)
 }
 
+public func map(input:CGFloat,input_start:CGFloat,input_end:CGFloat,output_start:CGFloat,output_end:CGFloat)-> CGFloat {
+    let slope = 1.0 * (output_end - output_start) / (input_end - input_start)
+    return output_start + round(slope * (input - input_start))
+}
+
+
 public extension CGFloat {
     
     func degreesToRadians () -> CGFloat {
@@ -37,7 +43,6 @@ public extension CGFloat {
     func radiansToDegrees () -> CGFloat {
         return self * CGFloat(57.29577951)
     }
-    
     mutating func clamp(toLowerValue lowerValue: CGFloat, upperValue: CGFloat){
         self = Swift.min(Swift.max(self, lowerValue), upperValue)
     }

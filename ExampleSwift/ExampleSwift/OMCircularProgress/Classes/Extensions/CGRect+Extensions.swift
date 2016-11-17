@@ -60,12 +60,12 @@ extension CGRect{
         self.init(origin: origin,size: CGSize.zero)
     }
     
-    // min radius from rectangle
+    /// Min radius from rectangle
     public var minRadius:CGFloat {
         return size.min() * 0.5;
     }
     
-    // max radius from a rectangle (pythagoras)
+    /// Max radius from a rectangle (pythagoras)
     public var maxRadius:CGFloat {
         return 0.5 * sqrt(size.width * size.width + size.height * size.height)
     }

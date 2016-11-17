@@ -22,7 +22,9 @@ public struct Bezier {
         percentInflection: CGFloat = 0.0) -> BezierPath
     {
         guard sideCount >= 3 else {
+               #if LOG
             OMLog.printe("Bezier polygon construction requires 3+ sides")
+                #endif
             return BezierPath()
         }
         
