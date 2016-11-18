@@ -12,52 +12,32 @@
 		352CB7501A6D1FBB00863568 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 352CB74E1A6D1FBB00863568 /* Main.storyboard */; };
 		352CB7521A6D1FBB00863568 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 352CB7511A6D1FBB00863568 /* Images.xcassets */; };
 		352CB7611A6D1FBB00863568 /* ExampleSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352CB7601A6D1FBB00863568 /* ExampleSwiftTests.swift */; };
-		359E8B7D1D9AA78600F94622 /* CAShapeLayer+HitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B491D9AA78600F94622 /* CAShapeLayer+HitTest.swift */; };
-		359E8B7E1D9AA78600F94622 /* CATransform3D+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B4A1D9AA78600F94622 /* CATransform3D+Extension.swift */; };
-		359E8B7F1D9AA78600F94622 /* CGAffineTransform+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B4B1D9AA78600F94622 /* CGAffineTransform+Extension.swift */; };
-		359E8B811D9AA78600F94622 /* CGFloat+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B4D1D9AA78600F94622 /* CGFloat+Math.swift */; };
-		359E8B821D9AA78600F94622 /* CGPoint+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B4E1D9AA78600F94622 /* CGPoint+Center.swift */; };
-		359E8B831D9AA78600F94622 /* CGRect+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B4F1D9AA78600F94622 /* CGRect+Extensions.swift */; };
-		359E8B841D9AA78600F94622 /* CGSize+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B501D9AA78600F94622 /* CGSize+Math.swift */; };
-		359E8B851D9AA78600F94622 /* Compatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B511D9AA78600F94622 /* Compatibility.swift */; };
-		359E8B861D9AA78600F94622 /* Double+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B521D9AA78600F94622 /* Double+Math.swift */; };
-		359E8B871D9AA78600F94622 /* Float+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B531D9AA78600F94622 /* Float+Math.swift */; };
-		359E8B881D9AA78600F94622 /* NSNumber+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B541D9AA78600F94622 /* NSNumber+Format.swift */; };
-		359E8B891D9AA78600F94622 /* String+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B551D9AA78600F94622 /* String+Random.swift */; };
-		359E8B8A1D9AA78600F94622 /* UIBezierPath+Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B561D9AA78600F94622 /* UIBezierPath+Polygon.swift */; };
-		359E8B8B1D9AA78600F94622 /* UIBezierPath+Subpaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B571D9AA78600F94622 /* UIBezierPath+Subpaths.swift */; };
-		359E8B8C1D9AA78600F94622 /* UIColor+Crayola.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B581D9AA78600F94622 /* UIColor+Crayola.swift */; };
-		359E8B8F1D9AA78600F94622 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B5B1D9AA78600F94622 /* UIImage+Extensions.swift */; };
-		359E8B901D9AA78600F94622 /* OMCircularProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B5C1D9AA78600F94622 /* OMCircularProgress.swift */; };
-		359E8BA21D9AA78600F94622 /* OMNumberLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B751D9AA78600F94622 /* OMNumberLayer.swift */; };
-		359E8BA31D9AA78600F94622 /* OMProgressImageLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B771D9AA78600F94622 /* OMProgressImageLayer.swift */; };
-		359E8BA41D9AA78600F94622 /* OMTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B791D9AA78600F94622 /* OMTextLayer.swift */; };
-		359E8BA51D9AA78600F94622 /* OMLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B7A1D9AA78600F94622 /* OMLog.swift */; };
-		359E8BA81D9AB36200F94622 /* CAShapeLayer+HitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B491D9AA78600F94622 /* CAShapeLayer+HitTest.swift */; };
-		359E8BA91D9AB36200F94622 /* CATransform3D+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B4A1D9AA78600F94622 /* CATransform3D+Extension.swift */; };
-		359E8BAA1D9AB36200F94622 /* CGAffineTransform+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B4B1D9AA78600F94622 /* CGAffineTransform+Extension.swift */; };
-		359E8BAC1D9AB36200F94622 /* CGFloat+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B4D1D9AA78600F94622 /* CGFloat+Math.swift */; };
-		359E8BAD1D9AB36200F94622 /* CGPoint+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B4E1D9AA78600F94622 /* CGPoint+Center.swift */; };
-		359E8BAE1D9AB36200F94622 /* CGRect+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B4F1D9AA78600F94622 /* CGRect+Extensions.swift */; };
-		359E8BAF1D9AB36200F94622 /* CGSize+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B501D9AA78600F94622 /* CGSize+Math.swift */; };
-		359E8BB01D9AB36200F94622 /* Compatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B511D9AA78600F94622 /* Compatibility.swift */; };
-		359E8BB11D9AB36200F94622 /* Double+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B521D9AA78600F94622 /* Double+Math.swift */; };
-		359E8BB21D9AB36200F94622 /* Float+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B531D9AA78600F94622 /* Float+Math.swift */; };
-		359E8BB31D9AB36200F94622 /* NSNumber+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B541D9AA78600F94622 /* NSNumber+Format.swift */; };
-		359E8BB41D9AB36200F94622 /* String+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B551D9AA78600F94622 /* String+Random.swift */; };
-		359E8BB51D9AB36200F94622 /* UIBezierPath+Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B561D9AA78600F94622 /* UIBezierPath+Polygon.swift */; };
-		359E8BB61D9AB36200F94622 /* UIBezierPath+Subpaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B571D9AA78600F94622 /* UIBezierPath+Subpaths.swift */; };
-		359E8BB71D9AB36200F94622 /* UIColor+Crayola.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B581D9AA78600F94622 /* UIColor+Crayola.swift */; };
-		359E8BBA1D9AB36200F94622 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B5B1D9AA78600F94622 /* UIImage+Extensions.swift */; };
-		359E8BBB1D9AB36200F94622 /* OMCircularProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B5C1D9AA78600F94622 /* OMCircularProgress.swift */; };
-		359E8BCD1D9AB36200F94622 /* OMNumberLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B751D9AA78600F94622 /* OMNumberLayer.swift */; };
-		359E8BCE1D9AB36200F94622 /* OMProgressImageLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B771D9AA78600F94622 /* OMProgressImageLayer.swift */; };
-		359E8BCF1D9AB36200F94622 /* OMTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B791D9AA78600F94622 /* OMTextLayer.swift */; };
-		359E8BD01D9AB36200F94622 /* OMLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E8B7A1D9AA78600F94622 /* OMLog.swift */; };
-		35C1AB081DC08DD700B55036 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1AB021DC08DD700B55036 /* UIColor+Extensions.swift */; };
-		35C1AB091DC08DD700B55036 /* CALayer+AnimationKeyPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1AB031DC08DD700B55036 /* CALayer+AnimationKeyPath.swift */; };
-		35C1AB0D1DC08DD700B55036 /* CGColorSpace+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1AB071DC08DD700B55036 /* CGColorSpace+Extension.swift */; };
-		35C236DD1DC0613B0080A148 /* CALayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C236DC1DC0613B0080A148 /* CALayer+Extensions.swift */; };
+		354CB8AF1DDEE77C00B6675B /* CALayer+AnimationKeyPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8911DDEE77C00B6675B /* CALayer+AnimationKeyPath.swift */; };
+		354CB8B01DDEE77C00B6675B /* CALayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8921DDEE77C00B6675B /* CALayer+Extensions.swift */; };
+		354CB8B11DDEE77C00B6675B /* CAShapeLayer+HitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8931DDEE77C00B6675B /* CAShapeLayer+HitTest.swift */; };
+		354CB8B21DDEE77C00B6675B /* CATransform3D+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8941DDEE77C00B6675B /* CATransform3D+Extension.swift */; };
+		354CB8B31DDEE77C00B6675B /* CGAffineTransform+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8951DDEE77C00B6675B /* CGAffineTransform+Extension.swift */; };
+		354CB8B41DDEE77C00B6675B /* CGColorSpace+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8961DDEE77C00B6675B /* CGColorSpace+Extension.swift */; };
+		354CB8B51DDEE77C00B6675B /* CGFloat+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8971DDEE77C00B6675B /* CGFloat+Math.swift */; };
+		354CB8B61DDEE77C00B6675B /* CGPoint+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8981DDEE77C00B6675B /* CGPoint+Center.swift */; };
+		354CB8B71DDEE77C00B6675B /* CGRect+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8991DDEE77C00B6675B /* CGRect+Extensions.swift */; };
+		354CB8B81DDEE77C00B6675B /* CGSize+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB89A1DDEE77C00B6675B /* CGSize+Math.swift */; };
+		354CB8B91DDEE77C00B6675B /* Compatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB89B1DDEE77C00B6675B /* Compatibility.swift */; };
+		354CB8BA1DDEE77C00B6675B /* Double+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB89C1DDEE77C00B6675B /* Double+Math.swift */; };
+		354CB8BB1DDEE77C00B6675B /* Float+Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB89D1DDEE77C00B6675B /* Float+Math.swift */; };
+		354CB8BC1DDEE77C00B6675B /* NSNumber+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB89E1DDEE77C00B6675B /* NSNumber+Format.swift */; };
+		354CB8BD1DDEE77C00B6675B /* String+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB89F1DDEE77C00B6675B /* String+Random.swift */; };
+		354CB8BE1DDEE77C00B6675B /* UIBezierPath+Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8A01DDEE77C00B6675B /* UIBezierPath+Polygon.swift */; };
+		354CB8BF1DDEE77C00B6675B /* UIBezierPath+Subpaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8A11DDEE77C00B6675B /* UIBezierPath+Subpaths.swift */; };
+		354CB8C01DDEE77C00B6675B /* UIColor+Crayola.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8A21DDEE77C00B6675B /* UIColor+Crayola.swift */; };
+		354CB8C11DDEE77C00B6675B /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8A31DDEE77C00B6675B /* UIColor+Extensions.swift */; };
+		354CB8C21DDEE77C00B6675B /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8A41DDEE77C00B6675B /* UIImage+Extensions.swift */; };
+		354CB8C31DDEE77C00B6675B /* OMCircularProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8A51DDEE77C00B6675B /* OMCircularProgress.swift */; };
+		354CB8C41DDEE77C00B6675B /* OMNumberLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8A81DDEE77C00B6675B /* OMNumberLayer.swift */; };
+		354CB8C51DDEE77C00B6675B /* OMProgressImageLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8AA1DDEE77C00B6675B /* OMProgressImageLayer.swift */; };
+		354CB8C61DDEE77C00B6675B /* OMTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8AC1DDEE77C00B6675B /* OMTextLayer.swift */; };
+		354CB8C71DDEE77C00B6675B /* OMLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8AD1DDEE77C00B6675B /* OMLog.swift */; };
+		354CB8C91DDEE88E00B6675B /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354CB8C81DDEE88E00B6675B /* UIFont+Extensions.swift */; };
 		35C236F31DC065A40080A148 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C236E31DC065A40080A148 /* CGPoint+Extension.swift */; };
 		35C236F51DC065A40080A148 /* UIColor+Interpolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C236E51DC065A40080A148 /* UIColor+Interpolation.swift */; };
 		35C236F61DC065A40080A148 /* OMGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C236E71DC065A40080A148 /* OMGradientLayer.swift */; };
@@ -76,10 +56,6 @@
 		35D549D51DCD374A005EEA8D /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C236EC1DC065A40080A148 /* Math.swift */; };
 		35D549D61DCD374A005EEA8D /* OMGradientLayerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C236EE1DC065A40080A148 /* OMGradientLayerProtocols.swift */; };
 		35D549D71DCD374A005EEA8D /* OMShadingGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C236EF1DC065A40080A148 /* OMShadingGradient.swift */; };
-		35D549D81DCD374A005EEA8D /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1AB021DC08DD700B55036 /* UIColor+Extensions.swift */; };
-		35D549D91DCD374A005EEA8D /* CALayer+AnimationKeyPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1AB031DC08DD700B55036 /* CALayer+AnimationKeyPath.swift */; };
-		35D549DA1DCD374A005EEA8D /* CGColorSpace+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1AB071DC08DD700B55036 /* CGColorSpace+Extension.swift */; };
-		35D549DB1DCD374A005EEA8D /* CALayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C236DC1DC0613B0080A148 /* CALayer+Extensions.swift */; };
 		35F5DD691AEBDA1400F36353 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 35F5DD681AEBDA1400F36353 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -103,31 +79,32 @@
 		352CB75A1A6D1FBB00863568 /* ExampleSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		352CB75F1A6D1FBB00863568 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		352CB7601A6D1FBB00863568 /* ExampleSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSwiftTests.swift; sourceTree = "<group>"; };
-		359E8B491D9AA78600F94622 /* CAShapeLayer+HitTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CAShapeLayer+HitTest.swift"; sourceTree = "<group>"; };
-		359E8B4A1D9AA78600F94622 /* CATransform3D+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CATransform3D+Extension.swift"; sourceTree = "<group>"; };
-		359E8B4B1D9AA78600F94622 /* CGAffineTransform+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Extension.swift"; sourceTree = "<group>"; };
-		359E8B4D1D9AA78600F94622 /* CGFloat+Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Math.swift"; sourceTree = "<group>"; };
-		359E8B4E1D9AA78600F94622 /* CGPoint+Center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Center.swift"; sourceTree = "<group>"; };
-		359E8B4F1D9AA78600F94622 /* CGRect+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+Extensions.swift"; sourceTree = "<group>"; };
-		359E8B501D9AA78600F94622 /* CGSize+Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+Math.swift"; sourceTree = "<group>"; };
-		359E8B511D9AA78600F94622 /* Compatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compatibility.swift; sourceTree = "<group>"; };
-		359E8B521D9AA78600F94622 /* Double+Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double+Math.swift"; sourceTree = "<group>"; };
-		359E8B531D9AA78600F94622 /* Float+Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Float+Math.swift"; sourceTree = "<group>"; };
-		359E8B541D9AA78600F94622 /* NSNumber+Format.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+Format.swift"; sourceTree = "<group>"; };
-		359E8B551D9AA78600F94622 /* String+Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Random.swift"; sourceTree = "<group>"; };
-		359E8B561D9AA78600F94622 /* UIBezierPath+Polygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+Polygon.swift"; sourceTree = "<group>"; };
-		359E8B571D9AA78600F94622 /* UIBezierPath+Subpaths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+Subpaths.swift"; sourceTree = "<group>"; };
-		359E8B581D9AA78600F94622 /* UIColor+Crayola.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Crayola.swift"; sourceTree = "<group>"; };
-		359E8B5B1D9AA78600F94622 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
-		359E8B5C1D9AA78600F94622 /* OMCircularProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCircularProgress.swift; sourceTree = "<group>"; };
-		359E8B751D9AA78600F94622 /* OMNumberLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMNumberLayer.swift; sourceTree = "<group>"; };
-		359E8B771D9AA78600F94622 /* OMProgressImageLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMProgressImageLayer.swift; sourceTree = "<group>"; };
-		359E8B791D9AA78600F94622 /* OMTextLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMTextLayer.swift; sourceTree = "<group>"; };
-		359E8B7A1D9AA78600F94622 /* OMLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMLog.swift; sourceTree = "<group>"; };
-		35C1AB021DC08DD700B55036 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
-		35C1AB031DC08DD700B55036 /* CALayer+AnimationKeyPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CALayer+AnimationKeyPath.swift"; sourceTree = "<group>"; };
-		35C1AB071DC08DD700B55036 /* CGColorSpace+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGColorSpace+Extension.swift"; sourceTree = "<group>"; };
-		35C236DC1DC0613B0080A148 /* CALayer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CALayer+Extensions.swift"; sourceTree = "<group>"; };
+		354CB8911DDEE77C00B6675B /* CALayer+AnimationKeyPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CALayer+AnimationKeyPath.swift"; sourceTree = "<group>"; };
+		354CB8921DDEE77C00B6675B /* CALayer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CALayer+Extensions.swift"; sourceTree = "<group>"; };
+		354CB8931DDEE77C00B6675B /* CAShapeLayer+HitTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CAShapeLayer+HitTest.swift"; sourceTree = "<group>"; };
+		354CB8941DDEE77C00B6675B /* CATransform3D+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CATransform3D+Extension.swift"; sourceTree = "<group>"; };
+		354CB8951DDEE77C00B6675B /* CGAffineTransform+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Extension.swift"; sourceTree = "<group>"; };
+		354CB8961DDEE77C00B6675B /* CGColorSpace+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGColorSpace+Extension.swift"; sourceTree = "<group>"; };
+		354CB8971DDEE77C00B6675B /* CGFloat+Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Math.swift"; sourceTree = "<group>"; };
+		354CB8981DDEE77C00B6675B /* CGPoint+Center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Center.swift"; sourceTree = "<group>"; };
+		354CB8991DDEE77C00B6675B /* CGRect+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+Extensions.swift"; sourceTree = "<group>"; };
+		354CB89A1DDEE77C00B6675B /* CGSize+Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+Math.swift"; sourceTree = "<group>"; };
+		354CB89B1DDEE77C00B6675B /* Compatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compatibility.swift; sourceTree = "<group>"; };
+		354CB89C1DDEE77C00B6675B /* Double+Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double+Math.swift"; sourceTree = "<group>"; };
+		354CB89D1DDEE77C00B6675B /* Float+Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Float+Math.swift"; sourceTree = "<group>"; };
+		354CB89E1DDEE77C00B6675B /* NSNumber+Format.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+Format.swift"; sourceTree = "<group>"; };
+		354CB89F1DDEE77C00B6675B /* String+Random.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Random.swift"; sourceTree = "<group>"; };
+		354CB8A01DDEE77C00B6675B /* UIBezierPath+Polygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+Polygon.swift"; sourceTree = "<group>"; };
+		354CB8A11DDEE77C00B6675B /* UIBezierPath+Subpaths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+Subpaths.swift"; sourceTree = "<group>"; };
+		354CB8A21DDEE77C00B6675B /* UIColor+Crayola.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Crayola.swift"; sourceTree = "<group>"; };
+		354CB8A31DDEE77C00B6675B /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		354CB8A41DDEE77C00B6675B /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		354CB8A51DDEE77C00B6675B /* OMCircularProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCircularProgress.swift; sourceTree = "<group>"; };
+		354CB8A81DDEE77C00B6675B /* OMNumberLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMNumberLayer.swift; sourceTree = "<group>"; };
+		354CB8AA1DDEE77C00B6675B /* OMProgressImageLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMProgressImageLayer.swift; sourceTree = "<group>"; };
+		354CB8AC1DDEE77C00B6675B /* OMTextLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMTextLayer.swift; sourceTree = "<group>"; };
+		354CB8AD1DDEE77C00B6675B /* OMLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMLog.swift; sourceTree = "<group>"; };
+		354CB8C81DDEE88E00B6675B /* UIFont+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
 		35C236E31DC065A40080A148 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
 		35C236E51DC065A40080A148 /* UIColor+Interpolation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Interpolation.swift"; sourceTree = "<group>"; };
 		35C236E71DC065A40080A148 /* OMGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMGradientLayer.swift; sourceTree = "<group>"; };
@@ -179,8 +156,8 @@
 		352CB7471A6D1FBB00863568 /* ExampleSwift */ = {
 			isa = PBXGroup;
 			children = (
+				354CB88D1DDEE77C00B6675B /* OMCircularProgress */,
 				35C236DE1DC065A40080A148 /* OMShadingGradientLayer */,
-				3561AD261D9A96F10016DFBF /* OMCircularProgress */,
 				352CB74A1A6D1FBB00863568 /* AppDelegate.swift */,
 				352CB74C1A6D1FBB00863568 /* ViewController.swift */,
 				352CB74E1A6D1FBB00863568 /* Main.storyboard */,
@@ -216,82 +193,84 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		3561AD261D9A96F10016DFBF /* OMCircularProgress */ = {
+		354CB88D1DDEE77C00B6675B /* OMCircularProgress */ = {
 			isa = PBXGroup;
 			children = (
-				359E8B451D9AA78600F94622 /* Classes */,
+				354CB88E1DDEE77C00B6675B /* Classes */,
 			);
-			path = OMCircularProgress;
+			name = OMCircularProgress;
+			path = ../../OMCircularProgress;
 			sourceTree = "<group>";
 		};
-		359E8B451D9AA78600F94622 /* Classes */ = {
+		354CB88E1DDEE77C00B6675B /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				359E8B481D9AA78600F94622 /* Extensions */,
-				359E8B5C1D9AA78600F94622 /* OMCircularProgress.swift */,
-				359E8B5D1D9AA78600F94622 /* OMLayers */,
-				359E8B7A1D9AA78600F94622 /* OMLog.swift */,
+				354CB8901DDEE77C00B6675B /* Extensions */,
+				354CB8A51DDEE77C00B6675B /* OMCircularProgress.swift */,
+				354CB8A61DDEE77C00B6675B /* OMLayers */,
+				354CB8AD1DDEE77C00B6675B /* OMLog.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		359E8B481D9AA78600F94622 /* Extensions */ = {
+		354CB8901DDEE77C00B6675B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				35C1AB021DC08DD700B55036 /* UIColor+Extensions.swift */,
-				359E8B581D9AA78600F94622 /* UIColor+Crayola.swift */,
-				35C1AB071DC08DD700B55036 /* CGColorSpace+Extension.swift */,
-				35C1AB031DC08DD700B55036 /* CALayer+AnimationKeyPath.swift */,
-				35C236DC1DC0613B0080A148 /* CALayer+Extensions.swift */,
-				359E8B491D9AA78600F94622 /* CAShapeLayer+HitTest.swift */,
-				359E8B4A1D9AA78600F94622 /* CATransform3D+Extension.swift */,
-				359E8B4B1D9AA78600F94622 /* CGAffineTransform+Extension.swift */,
-				359E8B4E1D9AA78600F94622 /* CGPoint+Center.swift */,
-				359E8B4F1D9AA78600F94622 /* CGRect+Extensions.swift */,
-				359E8B501D9AA78600F94622 /* CGSize+Math.swift */,
-				359E8B511D9AA78600F94622 /* Compatibility.swift */,
-				359E8B4D1D9AA78600F94622 /* CGFloat+Math.swift */,
-				359E8B521D9AA78600F94622 /* Double+Math.swift */,
-				359E8B531D9AA78600F94622 /* Float+Math.swift */,
-				359E8B541D9AA78600F94622 /* NSNumber+Format.swift */,
-				359E8B551D9AA78600F94622 /* String+Random.swift */,
-				359E8B561D9AA78600F94622 /* UIBezierPath+Polygon.swift */,
-				359E8B571D9AA78600F94622 /* UIBezierPath+Subpaths.swift */,
-				359E8B5B1D9AA78600F94622 /* UIImage+Extensions.swift */,
+				354CB8C81DDEE88E00B6675B /* UIFont+Extensions.swift */,
+				354CB8911DDEE77C00B6675B /* CALayer+AnimationKeyPath.swift */,
+				354CB8921DDEE77C00B6675B /* CALayer+Extensions.swift */,
+				354CB8931DDEE77C00B6675B /* CAShapeLayer+HitTest.swift */,
+				354CB8941DDEE77C00B6675B /* CATransform3D+Extension.swift */,
+				354CB8951DDEE77C00B6675B /* CGAffineTransform+Extension.swift */,
+				354CB8961DDEE77C00B6675B /* CGColorSpace+Extension.swift */,
+				354CB8971DDEE77C00B6675B /* CGFloat+Math.swift */,
+				354CB8981DDEE77C00B6675B /* CGPoint+Center.swift */,
+				354CB8991DDEE77C00B6675B /* CGRect+Extensions.swift */,
+				354CB89A1DDEE77C00B6675B /* CGSize+Math.swift */,
+				354CB89B1DDEE77C00B6675B /* Compatibility.swift */,
+				354CB89C1DDEE77C00B6675B /* Double+Math.swift */,
+				354CB89D1DDEE77C00B6675B /* Float+Math.swift */,
+				354CB89E1DDEE77C00B6675B /* NSNumber+Format.swift */,
+				354CB89F1DDEE77C00B6675B /* String+Random.swift */,
+				354CB8A01DDEE77C00B6675B /* UIBezierPath+Polygon.swift */,
+				354CB8A11DDEE77C00B6675B /* UIBezierPath+Subpaths.swift */,
+				354CB8A21DDEE77C00B6675B /* UIColor+Crayola.swift */,
+				354CB8A31DDEE77C00B6675B /* UIColor+Extensions.swift */,
+				354CB8A41DDEE77C00B6675B /* UIImage+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		359E8B5D1D9AA78600F94622 /* OMLayers */ = {
+		354CB8A61DDEE77C00B6675B /* OMLayers */ = {
 			isa = PBXGroup;
 			children = (
-				359E8B741D9AA78600F94622 /* OMNumberLayer */,
-				359E8B761D9AA78600F94622 /* OMProgressImageLayer */,
-				359E8B781D9AA78600F94622 /* OMTextLayer */,
+				354CB8A71DDEE77C00B6675B /* OMNumberLayer */,
+				354CB8A91DDEE77C00B6675B /* OMProgressImageLayer */,
+				354CB8AB1DDEE77C00B6675B /* OMTextLayer */,
 			);
 			path = OMLayers;
 			sourceTree = "<group>";
 		};
-		359E8B741D9AA78600F94622 /* OMNumberLayer */ = {
+		354CB8A71DDEE77C00B6675B /* OMNumberLayer */ = {
 			isa = PBXGroup;
 			children = (
-				359E8B751D9AA78600F94622 /* OMNumberLayer.swift */,
+				354CB8A81DDEE77C00B6675B /* OMNumberLayer.swift */,
 			);
 			path = OMNumberLayer;
 			sourceTree = "<group>";
 		};
-		359E8B761D9AA78600F94622 /* OMProgressImageLayer */ = {
+		354CB8A91DDEE77C00B6675B /* OMProgressImageLayer */ = {
 			isa = PBXGroup;
 			children = (
-				359E8B771D9AA78600F94622 /* OMProgressImageLayer.swift */,
+				354CB8AA1DDEE77C00B6675B /* OMProgressImageLayer.swift */,
 			);
 			path = OMProgressImageLayer;
 			sourceTree = "<group>";
 		};
-		359E8B781D9AA78600F94622 /* OMTextLayer */ = {
+		354CB8AB1DDEE77C00B6675B /* OMTextLayer */ = {
 			isa = PBXGroup;
 			children = (
-				359E8B791D9AA78600F94622 /* OMTextLayer.swift */,
+				354CB8AC1DDEE77C00B6675B /* OMTextLayer.swift */,
 			);
 			path = OMTextLayer;
 			sourceTree = "<group>";
@@ -440,42 +419,43 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				359E8BA21D9AA78600F94622 /* OMNumberLayer.swift in Sources */,
-				359E8B7F1D9AA78600F94622 /* CGAffineTransform+Extension.swift in Sources */,
-				359E8B901D9AA78600F94622 /* OMCircularProgress.swift in Sources */,
-				35C236DD1DC0613B0080A148 /* CALayer+Extensions.swift in Sources */,
-				359E8B7E1D9AA78600F94622 /* CATransform3D+Extension.swift in Sources */,
-				359E8B811D9AA78600F94622 /* CGFloat+Math.swift in Sources */,
 				35C236F91DC065A40080A148 /* Interpolation.swift in Sources */,
-				359E8B861D9AA78600F94622 /* Double+Math.swift in Sources */,
-				359E8B871D9AA78600F94622 /* Float+Math.swift in Sources */,
-				359E8B851D9AA78600F94622 /* Compatibility.swift in Sources */,
-				359E8BA41D9AA78600F94622 /* OMTextLayer.swift in Sources */,
+				354CB8C11DDEE77C00B6675B /* UIColor+Extensions.swift in Sources */,
 				35C236F71DC065A40080A148 /* OMShadingGradientLayer.swift in Sources */,
 				35C236F81DC065A40080A148 /* Easing.swift in Sources */,
-				359E8B831D9AA78600F94622 /* CGRect+Extensions.swift in Sources */,
-				359E8B891D9AA78600F94622 /* String+Random.swift in Sources */,
+				354CB8AF1DDEE77C00B6675B /* CALayer+AnimationKeyPath.swift in Sources */,
+				354CB8B41DDEE77C00B6675B /* CGColorSpace+Extension.swift in Sources */,
 				352CB74D1A6D1FBB00863568 /* ViewController.swift in Sources */,
-				359E8B7D1D9AA78600F94622 /* CAShapeLayer+HitTest.swift in Sources */,
-				359E8B8A1D9AA78600F94622 /* UIBezierPath+Polygon.swift in Sources */,
-				35C1AB0D1DC08DD700B55036 /* CGColorSpace+Extension.swift in Sources */,
+				354CB8BB1DDEE77C00B6675B /* Float+Math.swift in Sources */,
+				354CB8BF1DDEE77C00B6675B /* UIBezierPath+Subpaths.swift in Sources */,
 				35C236F51DC065A40080A148 /* UIColor+Interpolation.swift in Sources */,
+				354CB8BA1DDEE77C00B6675B /* Double+Math.swift in Sources */,
 				352CB74B1A6D1FBB00863568 /* AppDelegate.swift in Sources */,
+				354CB8BC1DDEE77C00B6675B /* NSNumber+Format.swift in Sources */,
 				35C236FD1DC065A40080A148 /* OMShadingGradient.swift in Sources */,
-				359E8B8F1D9AA78600F94622 /* UIImage+Extensions.swift in Sources */,
-				359E8B8C1D9AA78600F94622 /* UIColor+Crayola.swift in Sources */,
+				354CB8C51DDEE77C00B6675B /* OMProgressImageLayer.swift in Sources */,
+				354CB8BE1DDEE77C00B6675B /* UIBezierPath+Polygon.swift in Sources */,
+				354CB8C91DDEE88E00B6675B /* UIFont+Extensions.swift in Sources */,
+				354CB8B71DDEE77C00B6675B /* CGRect+Extensions.swift in Sources */,
 				35C236FC1DC065A40080A148 /* OMGradientLayerProtocols.swift in Sources */,
-				359E8B841D9AA78600F94622 /* CGSize+Math.swift in Sources */,
+				354CB8B31DDEE77C00B6675B /* CGAffineTransform+Extension.swift in Sources */,
 				35C236F31DC065A40080A148 /* CGPoint+Extension.swift in Sources */,
-				359E8B881D9AA78600F94622 /* NSNumber+Format.swift in Sources */,
-				359E8BA51D9AA78600F94622 /* OMLog.swift in Sources */,
+				354CB8C71DDEE77C00B6675B /* OMLog.swift in Sources */,
+				354CB8B81DDEE77C00B6675B /* CGSize+Math.swift in Sources */,
+				354CB8B51DDEE77C00B6675B /* CGFloat+Math.swift in Sources */,
+				354CB8C41DDEE77C00B6675B /* OMNumberLayer.swift in Sources */,
+				354CB8B21DDEE77C00B6675B /* CATransform3D+Extension.swift in Sources */,
+				354CB8BD1DDEE77C00B6675B /* String+Random.swift in Sources */,
+				354CB8B91DDEE77C00B6675B /* Compatibility.swift in Sources */,
+				354CB8C21DDEE77C00B6675B /* UIImage+Extensions.swift in Sources */,
+				354CB8C31DDEE77C00B6675B /* OMCircularProgress.swift in Sources */,
+				354CB8B01DDEE77C00B6675B /* CALayer+Extensions.swift in Sources */,
+				354CB8C61DDEE77C00B6675B /* OMTextLayer.swift in Sources */,
+				354CB8B11DDEE77C00B6675B /* CAShapeLayer+HitTest.swift in Sources */,
+				354CB8C01DDEE77C00B6675B /* UIColor+Crayola.swift in Sources */,
 				35C236F61DC065A40080A148 /* OMGradientLayer.swift in Sources */,
 				35C236FA1DC065A40080A148 /* Math.swift in Sources */,
-				359E8BA31D9AA78600F94622 /* OMProgressImageLayer.swift in Sources */,
-				35C1AB081DC08DD700B55036 /* UIColor+Extensions.swift in Sources */,
-				35C1AB091DC08DD700B55036 /* CALayer+AnimationKeyPath.swift in Sources */,
-				359E8B821D9AA78600F94622 /* CGPoint+Center.swift in Sources */,
-				359E8B8B1D9AA78600F94622 /* UIBezierPath+Subpaths.swift in Sources */,
+				354CB8B61DDEE77C00B6675B /* CGPoint+Center.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -492,31 +472,6 @@
 				35D549D51DCD374A005EEA8D /* Math.swift in Sources */,
 				35D549D61DCD374A005EEA8D /* OMGradientLayerProtocols.swift in Sources */,
 				35D549D71DCD374A005EEA8D /* OMShadingGradient.swift in Sources */,
-				35D549D81DCD374A005EEA8D /* UIColor+Extensions.swift in Sources */,
-				35D549D91DCD374A005EEA8D /* CALayer+AnimationKeyPath.swift in Sources */,
-				35D549DA1DCD374A005EEA8D /* CGColorSpace+Extension.swift in Sources */,
-				35D549DB1DCD374A005EEA8D /* CALayer+Extensions.swift in Sources */,
-				359E8BA81D9AB36200F94622 /* CAShapeLayer+HitTest.swift in Sources */,
-				359E8BA91D9AB36200F94622 /* CATransform3D+Extension.swift in Sources */,
-				359E8BAA1D9AB36200F94622 /* CGAffineTransform+Extension.swift in Sources */,
-				359E8BAC1D9AB36200F94622 /* CGFloat+Math.swift in Sources */,
-				359E8BAD1D9AB36200F94622 /* CGPoint+Center.swift in Sources */,
-				359E8BAE1D9AB36200F94622 /* CGRect+Extensions.swift in Sources */,
-				359E8BAF1D9AB36200F94622 /* CGSize+Math.swift in Sources */,
-				359E8BB01D9AB36200F94622 /* Compatibility.swift in Sources */,
-				359E8BB11D9AB36200F94622 /* Double+Math.swift in Sources */,
-				359E8BB21D9AB36200F94622 /* Float+Math.swift in Sources */,
-				359E8BB31D9AB36200F94622 /* NSNumber+Format.swift in Sources */,
-				359E8BB41D9AB36200F94622 /* String+Random.swift in Sources */,
-				359E8BB51D9AB36200F94622 /* UIBezierPath+Polygon.swift in Sources */,
-				359E8BB61D9AB36200F94622 /* UIBezierPath+Subpaths.swift in Sources */,
-				359E8BB71D9AB36200F94622 /* UIColor+Crayola.swift in Sources */,
-				359E8BBA1D9AB36200F94622 /* UIImage+Extensions.swift in Sources */,
-				359E8BBB1D9AB36200F94622 /* OMCircularProgress.swift in Sources */,
-				359E8BCD1D9AB36200F94622 /* OMNumberLayer.swift in Sources */,
-				359E8BCE1D9AB36200F94622 /* OMProgressImageLayer.swift in Sources */,
-				359E8BCF1D9AB36200F94622 /* OMTextLayer.swift in Sources */,
-				359E8BD01D9AB36200F94622 /* OMLog.swift in Sources */,
 				352CB7611A6D1FBB00863568 /* ExampleSwiftTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -39,11 +39,14 @@ Open a issue.
 
 ## Installation
 
-> To use OMCircularProgress with a project , you must include all Swift files located inside the `OMCircularProgress` directory directly in your project.
+> To use OMCircularProgress you must include manually all swift files located inside the `OMCircularProgress` directory directly in your project.
 
 ## CocoaPods Installation
 
-> pod install
+> Easiest installation is through Cocoapods. Add the following line to your Podfile:
+
+pod `OMCircularProgress`
+and run pod install in your terminal.
 
 ## Carthage Installation
 

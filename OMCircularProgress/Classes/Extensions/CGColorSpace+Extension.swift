@@ -28,14 +28,14 @@ import UIKit
 extension CGColorSpaceModel {
     var name : String {
         switch self {
-            case .unknown:return "Unknown"
-            case .monochrome:return "Monochrome"
-            case .rgb:return "RGB"
-            case .cmyk:return "CMYK"
-            case .lab:return "Lab"
-            case .deviceN:return "DeviceN"
-            case .indexed:return "Indexed"
-            case .pattern:return "Pattern"
+        case .unknown:return "Unknown"
+        case .monochrome:return "Monochrome"
+        case .rgb:return "RGB"
+        case .cmyk:return "CMYK"
+        case .lab:return "Lab"
+        case .deviceN:return "DeviceN"
+        case .indexed:return "Indexed"
+        case .pattern:return "Pattern"
         }
     }
 }
@@ -65,5 +65,5 @@ extension CGColorSpace {
     var isPattern : Bool {
         return model == .pattern
     }
-
+    
 }
