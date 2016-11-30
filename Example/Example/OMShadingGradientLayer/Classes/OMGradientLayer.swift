@@ -24,6 +24,9 @@
 
 import UIKit
 
+public typealias  GradientColors = (UIColor,UIColor)
+typealias  TransformContextClosure = (_ ctx:CGContext, _ startPoint:CGPoint, _ endPoint:CGPoint, _ startRadius:CGFloat, _ endRadius:CGFloat) -> (Void)
+
 
 open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     
@@ -126,6 +129,52 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
         }
     }
     
+    /// Transform the radial gradient
+    /// example: oval gradient = CGAffineTransform(scaleX: 2, y: 1.0);
+    
+    open var radialTransform : CGAffineTransform = CGAffineTransform.identity {
+        didSet {
+            self.setNeedsDisplay()
+        }
+    }
+
+    
+    // Some predefined Gradients (from WebKit)
+    
+    public lazy var insetGradient:GradientColors =  {
+        return  (UIColor(red:0 / 255.0, green:0 / 255.0,blue: 0 / 255.0,alpha: 0 ),
+                 UIColor(red: 0 / 255.0, green:0 / 255.0,blue: 0 / 255.0,alpha: 0.2 ))
+        
+    }()
+    
+    public lazy var shineGradient:GradientColors =  {
+        return  (UIColor(red:1, green:1,blue: 1,alpha: 0 ),
+                 UIColor(red: 1, green:1,blue:1,alpha: 0.8 ))
+        
+    }()
+    
+    
+    public lazy var shadeGradient:GradientColors =  {
+        return  (UIColor(red: 252 / 255.0, green: 252 / 255.0,blue: 252 / 255.0,alpha: 0.65 ),
+                 UIColor(red:  178 / 255.0, green:178 / 255.0,blue: 178 / 255.0,alpha: 0.65 ))
+        
+    }()
+    
+    
+    public lazy var convexGradient:GradientColors =  {
+        return  (UIColor(red:1,green:1,blue:1,alpha: 0.43 ),
+                 UIColor(red:1,green:1,blue:1,alpha: 0.5 ))
+        
+    }()
+    
+    
+    public lazy var concaveGradient:GradientColors =  {
+        return  (UIColor(red:1,green:1,blue:1,alpha: 0.0 ),
+                 UIColor(red:1,green:1,blue:1,alpha: 0.46 ))
+        
+    }()
+    
+    
     //  Here's a method that creates a view that allows 360 degree rotation of its two-colour
     //  gradient based upon input from a slider (or anything). The incoming slider value
     //  ("x" variable below) is between 0.0 and 1.0.
@@ -197,6 +246,13 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
             // radial gradient properties
             self.startRadius        = other.startRadius
             self.endRadius          = other.endRadius
+            
+            // OMMaskeableLayerProtocol
+            self.path               = other.path
+            self.stroke             = other.stroke
+            self.lineWidth          = other.lineWidth
+            
+            self.radialTransform  = other.radialTransform
         }
     }
     
@@ -210,7 +266,6 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
             event == OMGradientLayerProperties.endRadius) {
             return true
         }
-        
         return super.needsDisplay(forKey: event)
     }
     
@@ -233,6 +288,27 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
         ctx.clip(to: clipBoundingBox)
     }
     
+    func prepareContextIfNeeds(_ ctx:CGContext, scale:CGAffineTransform, closure:TransformContextClosure) {
+        
+        let sp  = self.startPoint * self.bounds.size
+        let ep  = self.endPoint   * self.bounds.size
+        let mr  = minRadius(self.bounds.size)
+        // Scaling transformation and keeping track of the inverse
+        let invScaleT = scale.inverted();
+        // Extract the Sx and Sy elements from the inverse matrix (See the Quartz documentation for the math behind the matrices)
+        let invS = CGPoint(x:invScaleT.a, y:invScaleT.d);
+        // Transform center and radius of gradient with the inverse
+        let startPointAffined   = CGPoint(x:sp.x * invS.x, y:sp.y * invS.y);
+        let endPointAffined     = CGPoint(x:ep.x * invS.x, y:ep.y * invS.y);
+        let startRadiusAffined  = mr * startRadius * invS.x;
+        let endRadiusAffined    = mr * endRadius * invS.x;
+        // Draw the gradient with the scale transform on the context
+        ctx.scaleBy(x: scale.a, y: scale.d);
+        closure(ctx, startPointAffined, endPointAffined, startRadiusAffined, endRadiusAffined)
+        // Reset the context
+        ctx.scaleBy(x: invS.x, y: invS.y);
+    }
+    
     
     func addPathAndClipIfNeeded(_ ctx:CGContext) {
         if (self.path != nil) {
@@ -248,27 +324,22 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     func isDrawable() -> Bool {
         if (colors.count == 0) {
             // nothing to do
-               #if LOG
-            OMLog.printv("\(self.name ?? "")) Unable to do the shading without colors.")
-                #endif
+            OMLog.printv("\(self.name ?? "") Unable to do the shading without colors.")
             return false
         }
         if (startPoint.isZero && endPoint.isZero) {
             // nothing to do
-               #if LOG
-            OMLog.printv("\(self.name ?? "")) Start point and end point are {x:0, y:0}.")
-                #endif
+            OMLog.printv("\(self.name ?? "") Start point and end point are {x:0, y:0}.")
             return false
         }
         if (startRadius == endRadius && self.isRadial) {
             // nothing to do
-               #if LOG
-            OMLog.printv("\(self.name ?? "")) Start radius and end radius are equal. \(startRadius) \(endRadius)")
-                #endif
+            OMLog.printv("\(self.name ?? "") Start radius and end radius are equal. \(startRadius) \(endRadius)")
             return false
         }
         return true;
     }
+
     
     override open var description:String {
         get {

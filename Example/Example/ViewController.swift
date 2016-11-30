@@ -470,7 +470,7 @@ class ProgressExampleViewController: UIViewController {
                 if (i == 0) {
             
                     theStep.textElement.layer.radiusRatio            = 0.80
-                    theStep.textElement.layer.angleLength            = theStep.angle.length()
+                    theStep.textElement.layer.angleLenght            = theStep.angle.length()
                     theStep.textElement.orientationToAngle           = true;
                     
                     theStep.textElement.layer.font                   = fontCourier
@@ -481,7 +481,7 @@ class ProgressExampleViewController: UIViewController {
                     theStep.textElement.shadow                       = false
                 } else if(i == 1) {
                     theStep.textElement.layer.radiusRatio            = 0.40
-                    theStep.textElement.layer.angleLength            = theStep.angle.length()
+                    theStep.textElement.layer.angleLenght            = theStep.angle.length()
                     theStep.textElement.orientationToAngle           = true;
                     
                     theStep.textElement.layer.font                   = fontCourier
@@ -492,7 +492,7 @@ class ProgressExampleViewController: UIViewController {
                     theStep.textElement.shadow                       = false
                 } else if(i == 2) {
                     theStep.textElement.layer.radiusRatio            = 0.80
-                    theStep.textElement.layer.angleLength                  = theStep.angle.length()
+                    theStep.textElement.layer.angleLenght                  = theStep.angle.length()
                     theStep.textElement.orientationToAngle           = true;
                     theStep.textElement.layer.font                   = fontCourier
                     theStep.textElement.layer.foregroundColor        = UIColor.white
@@ -508,7 +508,7 @@ class ProgressExampleViewController: UIViewController {
                     theStep.textElement.layer.fontStrokeWidth        = -3
                     
                     theStep.textElement.layer.radiusRatio            = 0.40
-                    theStep.textElement.layer.angleLength            = theStep.angle.length()
+                    theStep.textElement.layer.angleLenght            = theStep.angle.length()
                     theStep.textElement.orientationToAngle           = true
                     theStep.textElement.shadow                       = false
                 }

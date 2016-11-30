@@ -24,8 +24,7 @@
 import UIKit
 
 
-extension CGPoint
-{
+extension CGPoint {
     public func center(_ size:CGSize) -> CGPoint {
         return CGPoint(x:self.x - size.width  * 0.5, y:self.y - size.height * 0.5);
     }

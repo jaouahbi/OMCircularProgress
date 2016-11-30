@@ -19,11 +19,12 @@ import UIKit
 
 open class OMShadingGradientLayer : OMGradientLayer {
     
+    /// Contruct gradient object with a type
     convenience public init(type:OMGradientType) {
         self.init()
         self.gradientType  = type;
         
-        if(type == .radial) {
+        if type == .radial {
             self.startPoint = CGPoint(x: 0.5,y: 0.5)
             self.endPoint   = CGPoint(x: 0.5,y: 0.5)
         }
@@ -34,31 +35,33 @@ open class OMShadingGradientLayer : OMGradientLayer {
         super.init()
     }
     
+    /// Slope function
     open var slopeFunction: EasingFunction  = Linear {
         didSet {
-            self.setNeedsDisplay();
+            setNeedsDisplay();
         }
     }
+    /// Interpolation gardient function
     open var function: GradientFunction = .linear {
         didSet {
-            self.setNeedsDisplay();
+            setNeedsDisplay();
         }
     }
-    
+    /// Contruct gradient object with a layer
     override public  init(layer: Any) {
         super.init(layer: layer as AnyObject)
         if let other = layer as? OMShadingGradientLayer {
             self.slopeFunction = other.slopeFunction;
         }
     }
-    
+    /// Contruct gradient object from NSCoder
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
     override open func draw(in ctx: CGContext) {
         super.draw(in: ctx)
-        
+
         var locations   :[CGFloat]? = self.locations
         var colors      :[UIColor]  = self.colors
         var startPoint  : CGPoint   = self.startPoint
@@ -66,12 +69,11 @@ open class OMShadingGradientLayer : OMGradientLayer {
         var startRadius : CGFloat   = self.startRadius
         var endRadius   : CGFloat   = self.endRadius
         
-        let player = self.presentation()
+        let player = presentation()
     
         if let player = player {
-               #if LOG
+            
             OMLog.printv("\(self.name ?? "") (presentation) \(player)")
-                #endif
             
             colors       = player.colors
             locations    = player.locations
@@ -81,13 +83,10 @@ open class OMShadingGradientLayer : OMGradientLayer {
             endRadius    = player.endRadius
             
         } else {
-               #if LOG
            OMLog.printv("\(self.name ?? "") (model) \(self)")
-            #endif
         }
         
-        if (isDrawable()) {
-            
+        if isDrawable() {
             ctx.saveGState()
             // The starting point of the axis, in the shading's target coordinate space.
             var start:CGPoint = startPoint * self.bounds.size
@@ -122,22 +121,45 @@ open class OMShadingGradientLayer : OMGradientLayer {
                 // `start', specified in the shading's target coordinate space. The ending
                 // circle has radius `endRadius' and is centered at `end', specified in the
                 // shading's target coordinate space.
-                
-                
             }
             
-            var shading:OMShadingGradient = OMShadingGradient(colors: colors,
-                                                              locations: locations,
-                                                              startPoint: start ,
-                                                              startRadius: startRadius * self.bounds.minRadius,
-                                                              endPoint:end ,
-                                                              endRadius: endRadius * self.bounds.minRadius,
-                                                              extendStart: self.extendsBeforeStart,
-                                                              extendEnd: self.extendsPastEnd,
-                                                              gradientType: self.gradientType,
-                                                              functionType: self.function,
-                                                              slopeFunction: self.slopeFunction)
-            ctx.drawShading(shading.shadingHandle);
+            var shading:OMShadingGradient? = nil
+            
+            if !self.radialTransform.isIdentity && !self.isAxial {
+                // transform the radial context
+                self.prepareContextIfNeeds(ctx, scale: self.radialTransform,
+                                           closure:{(ctx, startPoint, endPoint, startRadius, endRadius) -> (Void) in
+                    shading = OMShadingGradient(colors: colors,
+                                                locations: locations,
+                                                startPoint: startPoint ,
+                                                startRadius: startRadius,
+                                                endPoint:endPoint ,
+                                                endRadius: endRadius ,
+                                                extendStart: self.extendsBeforeStart,
+                                                extendEnd: self.extendsPastEnd,
+                                                gradientType: self.gradientType,
+                                                functionType: self.function,
+                                                slopeFunction: self.slopeFunction)
+                    
+                    ctx.drawShading(shading!.shadingHandle);
+                })
+            } else {
+                let minimumRadius = minRadius(self.bounds.size)
+                
+                shading = OMShadingGradient(colors: colors,
+                                            locations: locations,
+                                            startPoint: start ,
+                                            startRadius: startRadius * minimumRadius,
+                                            endPoint:end ,
+                                            endRadius: endRadius * minimumRadius,
+                                            extendStart: self.extendsBeforeStart,
+                                            extendEnd: self.extendsPastEnd,
+                                            gradientType: self.gradientType,
+                                            functionType: self.function,
+                                            slopeFunction: self.slopeFunction)
+                
+                ctx.drawShading(shading!.shadingHandle);
+            }
             ctx.restoreGState();
         }
     }
@@ -151,10 +173,10 @@ open class OMShadingGradientLayer : OMGradientLayer {
                 currentDescription += " exponential interpolation"
             } else if(self.function == .cosine) {
                 currentDescription += " cosine interpolation"
-            }
-            
-            //currentDescription += " \(self.slopeFunction.1)"
+            } 
             return currentDescription
         }
     }
 }
+
+

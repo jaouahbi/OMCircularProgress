@@ -37,6 +37,8 @@
 //      Added code so that the text can follow an angle with a certain radius (Based on ArcTextView example by Apple)
 //  Versión 0.14 (25-9-2016)
 //      Added text to path helper function
+//  Versión 0.15 (30-11-2016)
+//      Added vertical alignment
 
 
 #if os(iOS)
@@ -55,14 +57,20 @@ import CoreFoundation
     
     fileprivate(set) var fontRef:CTFont = CTFontCreateWithName("Helvetica" as CFString, 12.0, nil);
     
-    var angleLength : Double? {
+    
+    var verticalCeter : Bool = true {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    var angleLenght : Double? {
         didSet {
             setNeedsDisplay()
         }
     }
     var radiusRatio : CGFloat = 0.0 {
         didSet {
-            radiusRatio = clamp(radiusRatio, lowerValue: 0, upperValue: 1.0)
+            radiusRatio = clamp(radiusRatio, lower: 0, upper: 1.0)
             setNeedsDisplay()
         }
     }
@@ -79,9 +87,7 @@ import CoreFoundation
         }
     }
     
-    /// Attribute determines what kinds of ligatures should be used when
-    /// displaying the string.
-    //  default 1: default ligatures, 0: no ligatures, 2: all ligatures
+    ///  default 1: default ligatures, 0: no ligatures, 2: all ligatures
     
     var fontLigature:NSNumber   = NSNumber(value: 1 as Int32) {
         didSet {
@@ -95,7 +101,7 @@ import CoreFoundation
         }
     }
     
-    var fontStrokeWidth:Float  = -3 {
+    var fontStrokeWidth:Float   = -3 {
         didSet {
             setNeedsDisplay()
         }
@@ -150,10 +156,10 @@ import CoreFoundation
         
         // https://github.com/danielamitay/iOS-App-Performance-Cheatsheet/blob/master/QuartzCore.md
         
-        self.shouldRasterize = true
-        self.rasterizationScale = self.contentsScale
+        //self.shouldRasterize = true
+        //self.rasterizationScale = UIScreen.main.scale
         self.drawsAsynchronously = true
-        self.allowsGroupOpacity  = true
+        self.allowsGroupOpacity  = false
         
     }
     
@@ -361,23 +367,30 @@ import CoreFoundation
                 context.scaleBy(x: 1.0, y: -1.0);
             #endif
             
-            let rect:CGRect = bounds
+            var rect:CGRect = bounds
             
-            if (radiusRatio == 0 && angleLength == nil) {
+            if (radiusRatio == 0 && angleLenght == nil) {
                 
                 // Create a path which bounds the area where you will be drawing text.
                 // The path need not be rectangular.
                 
                 let path = CGMutablePath();
                 
-                // add the rect for the frame
-                path.addRect(rect);
-                
                 // Add the atributtes to the String
                 let attrStringWithAttributes = stringWithAttributes(string)
                 
                 // Create the framesetter with the attributed string.
                 let framesetter = CTFramesetterCreateWithAttributedString(attrStringWithAttributes);
+                
+                if verticalCeter {
+                    let boundingBox = CTFontGetBoundingBox(fontRef);
+                    // Get the position on the y axis (middle)
+                    let midHeight = (rect.size.height * 0.5) - boundingBox.size.height * 0.5
+                    rect = CGRect(x:0, y:midHeight, width:rect.size.width, height:boundingBox.size.height)
+                }
+                
+                // add the rect for the frame
+                path.addRect(rect);
                 
                 // Create a frame.
                 let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, nil);
@@ -423,9 +436,9 @@ extension OMTextLayer
     }
     
     func createPathFromStringWithAttributes() -> UIBezierPath? {
-        #if LOG
-            OMLog.printd("\(self.name ?? ""): createPathFromStringWithAttributes()")
-        #endif
+        
+        OMLog.printd("\(self.name ?? ""): createPathFromStringWithAttributes()")
+        
         if let line = createLine() {
             
             let letters = CGMutablePath()
@@ -497,7 +510,7 @@ extension OMTextLayer {
         var info = glyphArcInfo.first!
         var prevHalfWidth:CGFloat = info.width / 2.0;
         
-        info.angle = (prevHalfWidth / lineLength) * CGFloat(angleLength!)
+        info.angle = (prevHalfWidth / lineLength) * CGFloat(angleLenght!)
         
         var angleArc = info.angle
         
@@ -509,13 +522,11 @@ extension OMTextLayer {
             
             let prevCenterToCenter:CGFloat = prevHalfWidth + halfWidth;
             
-            let glyphAngle = (prevCenterToCenter / lineLength) * CGFloat(angleLength!)
+            let glyphAngle = (prevCenterToCenter / lineLength) * CGFloat(angleLenght!)
             
             angleArc += glyphAngle
             
-            #if LOG
-                OMLog.printd("\(self.name ?? ""): #\(lineGlyphIndex) angle : \(OMAngle.format(Double(glyphAngle))) arc length :\(OMAngle.format(Double(angleArc)))")
-            #endif
+            //OMLog.printd("\(self.name ?? ""): #\(lineGlyphIndex) angle : \(CPCAngle.format(Double(glyphAngle))) arc length :\(CPCAngle.format(Double(angleArc)))")
             
             glyphArcInfo[lineGlyphIndex].angle = glyphAngle
             
@@ -526,21 +537,21 @@ extension OMTextLayer {
     }
     
     
-    func drawWithArc(context:CGContext, rect:CGRect) {
-        #if LOG
-            OMLog.printd("\(self.name ?? ""): drawWithArc(\(rect))")
-        #endif
-        if let line  = createLine(),
-           let angle = self.angleLength {
+    func drawWithArc(context:CGContext, rect:CGRect)
+    {
+        OMLog.printd("\(self.name ?? ""): drawWithArc(\(rect))")
+        
+        if let string = string, let angle = self.angleLenght {
+            
+            let attributeString = self.stringWithAttributes(string)
+            let line  = CTLineCreateWithAttributedString(attributeString)
             let glyphCount:CFIndex = CTLineGetGlyphCount(line);
             if glyphCount == 0 {
-                #if LOG
-                    OMLog.printw("\(self.name ?? ""): 0 glyphs found. \(string))")
-                #endif
+                OMLog.printw("\(self.name ?? ""): 0 glyphs \(attributeString))")
                 return;
             }
             
-            let glyphArcInfo = prepareGlyphArcInfo(line: line,glyphCount: glyphCount, angle: angle)
+            let glyphArcInfo = prepareGlyphArcInfo(line: line,glyphCount: glyphCount,angle: angle)
             if glyphArcInfo.count > 0 {
                 
                 // Move the origin from the lower left of the view nearer to its center.
@@ -561,21 +572,23 @@ extension OMTextLayer {
                 let runCount = CFArrayGetCount(runArray);
                 
                 var glyphOffset:CFIndex = 0;
+                
                 for runIndex:CFIndex in 0 ..< runCount {
                     let run = (runArray as NSArray)[runIndex]
                     let runGlyphCount:CFIndex = CTRunGetGlyphCount(run as! CTRun);
+                    
                     for runGlyphIndex:CFIndex in 0 ..< runGlyphCount {
                         
                         let glyphRange:CFRange = CFRangeMake(runGlyphIndex, 1);
                         
                         let angleRotation:CGFloat = -(glyphArcInfo[runGlyphIndex + glyphOffset].angle);
                         
-                        #if LOG
-                            OMLog.printd("\(self.name ?? ""): run glyph#\(runGlyphIndex) angle rotation : \(OMAngle.format(Double(angleRotation)))");
-                        #endif
+                        //OMLog.printd("\(self.name ?? ""): run glyph#\(runGlyphIndex) angle rotation : \(CPCAngle.format(Double(angleRotation)))");
+                        
                         context.rotate(by: angleRotation);
                         
                         // Center this glyph by moving left by half its width.
+                        
                         let glyphWidth:CGFloat = glyphArcInfo[runGlyphIndex + glyphOffset].width;
                         let halfGlyphWidth:CGFloat = glyphWidth / 2.0;
                         let positionForThisGlyph:CGPoint = CGPoint(x:textPosition.x - halfGlyphWidth, y:textPosition.y);

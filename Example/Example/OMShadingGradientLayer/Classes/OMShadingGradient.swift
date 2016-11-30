@@ -27,10 +27,10 @@
 import Foundation
 import UIKit
 
-/// function slope
+// function slope
 typealias GradientSlopeFunction = EasingFunction
 
-/// interpolate two UIColors
+// interpolate two UIColors
 typealias GradientInterpolationFunction = (UIColor,UIColor,CGFloat) -> UIColor
 
 public enum GradientFunction {
@@ -39,12 +39,7 @@ public enum GradientFunction {
     case cosine
 }
 
-/// Create the shading function
-///
-/// - parameter colors:                colors
-/// - parameter locations:             locations
-/// - parameter slopeFunction:         slope function
-/// - parameter interpolationFunction: interpolation function
+
 
 func ShadingFunctionCreate(_ colors : [UIColor],
                             locations : [CGFloat],
@@ -52,7 +47,7 @@ func ShadingFunctionCreate(_ colors : [UIColor],
                               interpolationFunction: @escaping GradientInterpolationFunction) -> (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void
 {
     return { inData, outData in
-        // apply the slope function
+        
         let alpha = CGFloat(slopeFunction(Double(inData[0])))
         
         var positionIndex = 0;
@@ -81,7 +76,8 @@ func ShadingFunctionCreate(_ colors : [UIColor],
             }
             // Next positon index
             positionIndex += 1;
-                
+            
+            
         } else {
             // if we only have one value, that's what we return
             stop2Position = stop1Position;
@@ -98,24 +94,19 @@ func ShadingFunctionCreate(_ colors : [UIColor],
         
         if (alpha <= stop1Position) {
             // if we are less than our lowest position, return our first color
-               #if LOG
             OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) <= position \(String(format:"%.1f",stop1Position)) color \(stop1Color.shortDescription)")
-                #endif
-            outData[0] = stop1Color.components[0]
-            outData[1] = stop1Color.components[1]
-            outData[2] = stop1Color.components[2]
-            outData[3] = stop1Color.components[3]
+            outData[0] = (stop1Color.components[0])
+            outData[1] = (stop1Color.components[1])
+            outData[2] = (stop1Color.components[2])
+            outData[3] = (stop1Color.components[3])
             
         } else if (alpha >= stop2Position) {
-               #if LOG
             // likewise if we are greater than our highest position, return the last color
             OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) >= position \(String(format:"%.1f",stop2Position)) color \(stop1Color.shortDescription)")
-                
-                #endif
-            outData[0] = stop2Color.components[0]
-            outData[1] = stop2Color.components[1]
-            outData[2] = stop2Color.components[2]
-            outData[3] = stop2Color.components[3]
+            outData[0] = (stop2Color.components[0])
+            outData[1] = (stop2Color.components[1])
+            outData[2] = (stop2Color.components[2])
+            outData[3] = (stop2Color.components[3])
             
         } else {
             
@@ -124,15 +115,14 @@ func ShadingFunctionCreate(_ colors : [UIColor],
             let newPosition = (alpha - stop1Position) / (stop2Position - stop1Position);
             
             let newColor : UIColor = interpolationFunction(stop1Color, stop2Color, newPosition)
-               #if LOG
-            OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) position \(String(format:"%.1f",newPosition)) color \(newColor.shortDescription)")
-                #endif
             
+            OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) position \(String(format:"%.1f",newPosition)) color \(newColor.shortDescription)")
+        
             for componentIndex in 0 ..< 3 {
-                outData[componentIndex] = newColor.components[componentIndex]
+                outData[componentIndex] = (newColor.components[componentIndex])
             }
             
-            // Premultiply the color by the alpha.
+            //Premultiply the color by the alpha.?
             
             // The alpha component is always 1, the shading is always opaque.
             // outData[3] = 1.0
@@ -141,13 +131,6 @@ func ShadingFunctionCreate(_ colors : [UIColor],
 }
 
 
-/// Shading callback
-///
-/// - parameter infoPointer: pointer
-/// - parameter inData:      input data
-/// - parameter outData:     output data
-///
-/// - returns: <#return value description#>
 func ShadingCallback(_ infoPointer:UnsafeMutableRawPointer?,
                      inData: UnsafePointer<CGFloat>,
                      outData: UnsafeMutablePointer<CGFloat>) -> Swift.Void {
@@ -156,8 +139,6 @@ func ShadingCallback(_ infoPointer:UnsafeMutableRawPointer?,
     info?.shadingFunction(inData, outData)
 }
 
-
-/// OMShadingGradient type
 
 public struct OMShadingGradient {
     fileprivate var monotonicLocations:[CGFloat] = []
@@ -238,12 +219,13 @@ public struct OMShadingGradient {
         self.startRadius = startRadius
         self.endRadius   = endRadius
         
+        // already checked in OMShadingGradientLayer
         assert(colors.count >= 2);
         
         // if only exist one color, duplicate it.
         if (colors.count == 1) {
             let color = colors.first!
-            self.colors = [color, color];
+            self.colors = [color,color];
         } else {
             self.colors = colors
         }
@@ -258,9 +240,7 @@ public struct OMShadingGradient {
                 assert(color.colorSpace?.model == .rgb,"unexpected color space model \(color.colorSpace?.model.name)")
                 if(color.colorSpace?.model != .rgb) {
                     //TODO: handle different color spaces
-                       #if LOG
                     OMLog.printw("(OMShadingGradient) : Unsupported color space. model: \(color.colorSpace?.model.name)")
-                    #endif
                 }
             }
         }
@@ -283,13 +263,11 @@ public struct OMShadingGradient {
         if (monotonicLocations.count == 0) {
             monotonicLocations = monotonic(colors.count)
         }
-           #if LOG
+        
         OMLog.printv("(OMShadingGradient): \(monotonicLocations.count) monotonic locations")
         OMLog.printv("(OMShadingGradient): \(monotonicLocations)")
-        #endif
     }
     
-    /// lazy shading function
     lazy var shadingFunction : (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void = {
         var interpolationFunction:GradientInterpolationFunction =  UIColor.lerp
         switch(self.functionType){
@@ -308,7 +286,7 @@ public struct OMShadingGradient {
                                      slopeFunction: self.slopeFunction,
                                      interpolationFunction: interpolationFunction )
     }()
-    /// lazy handle function
+    
     lazy var handleFunction : CGFunction! = {
         var callbacks = CGFunctionCallbacks(version: 0, evaluate: ShadingCallback, releaseInfo: nil)
         return CGFunction(info: &self,  // info
@@ -318,8 +296,9 @@ public struct OMShadingGradient {
             range: [0, 1, 0, 1, 0, 1, 0, 1],   // range
             callbacks: &callbacks)                 // callbacks
     }()
-    /// lazy shading handle
+    
     lazy var shadingHandle : CGShading! = {
+
         var callbacks = CGFunctionCallbacks(version: 0, evaluate: ShadingCallback, releaseInfo: nil)
         if(self.gradientType == .axial) {
            return CGShading(axialSpace: self.colorSpace,

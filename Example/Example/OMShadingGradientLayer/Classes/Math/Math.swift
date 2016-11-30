@@ -36,6 +36,18 @@ public func between<T: Comparable>(_ value: T, lower: T, upper: T , include: Boo
     return include ? (value >= left && value <= right) : (value > left && value < right)
 }
 
+// min radius from rectangle
+public func minRadius(_ size: CGSize) -> CGFloat {
+    assert(size != CGSize.zero)
+    return size.min() * 0.5;
+}
+
+// max radius from a rectangle (pythagoras)
+public func maxRadius(_ size: CGSize) -> CGFloat {
+    assert(size != CGSize.zero)
+    return 0.5 * sqrt(size.width * size.width + size.height * size.height)
+}
+
 // monotonically increasing function
 public func monotonic(_ numberOfElements:Int) -> [CGFloat] {
     assert(numberOfElements > 0)
@@ -47,3 +59,20 @@ public func monotonic(_ numberOfElements:Int) -> [CGFloat] {
     return monotonicFunction
 }
 
+
+public func linlin( val:Double,  inMin:Double,  inMax:Double,  outMin:Double,  outMax:Double) -> Double {
+    return ((val - inMin) / (inMax - inMin) * (outMax - outMin)) + outMin;
+}
+
+public func  linexp( val:Double,  inMin:Double,  inMax:Double,  outMin:Double,  outMax:Double) -> Double
+{
+    //clipping
+    let valclamp = max(min(val, inMax), inMin);
+    return pow((outMax / outMin), (valclamp - inMin) / (inMax - inMin)) * outMin;
+}
+public func explin(val:Double,  inMin:Double,  inMax:Double,  outMin:Double,  outMax:Double) -> Double
+{
+    //clipping
+    let valclamp = max(min(val, inMax), inMin);
+    return (log(valclamp/inMin) / log(inMax/inMin) * (outMax - outMin)) + outMin;
+}

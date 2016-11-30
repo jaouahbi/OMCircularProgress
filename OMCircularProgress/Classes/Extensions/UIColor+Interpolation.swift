@@ -107,10 +107,10 @@ extension UIColor
         let srgba1 = start[1].components
         let ergba1 = end[1].components
         
-        return UIColor(red: Interpolation.bilerp(srgba0[0], y01: ergba0[0], t1: t[0], y10: srgba1[0], y11: ergba1[0], t2: t[1]),
-                       green: Interpolation.bilerp(srgba0[1], y01: ergba0[1], t1: t[0], y10: srgba1[1], y11: ergba1[1], t2: t[1]),
-                       blue: Interpolation.bilerp(srgba0[2], y01: ergba0[2], t1: t[0], y10: srgba1[2], y11: ergba1[2], t2: t[1]),
-                       alpha:  Interpolation.bilerp(srgba0[3], y01: ergba0[3], t1: t[0], y10: srgba1[3], y11: ergba1[3], t2: t[1]))
+        return UIColor(red: Interpolation.bilerp(srgba0[0], y1: ergba0[0], t1: t[0], y2: srgba1[0], y3: ergba1[0], t2: t[1]),
+                       green: Interpolation.bilerp(srgba0[1], y1: ergba0[1], t1: t[0], y2: srgba1[1], y3: ergba1[1], t2: t[1]),
+                       blue: Interpolation.bilerp(srgba0[2], y1: ergba0[2], t1: t[0], y2: srgba1[2], y3: ergba1[2], t2: t[1]),
+                       alpha:  Interpolation.bilerp(srgba0[3], y1: ergba0[3], t1: t[0], y2: srgba1[3], y3: ergba1[3], t2: t[1]))
         
     }
 }
