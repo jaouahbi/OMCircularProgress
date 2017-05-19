@@ -198,7 +198,7 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
         //rotations move anti-clockwise
         
         //create coordinates
-        let r = 2*M_PI
+        let r = 2.0 * .pi;
         let a = pow(sin((r*((normalizedAngle+0.75)/2))),2);
         let b = pow(sin((r*((normalizedAngle+0.0)/2))),2);
         let c = pow(sin((r*((normalizedAngle+0.25)/2))),2);

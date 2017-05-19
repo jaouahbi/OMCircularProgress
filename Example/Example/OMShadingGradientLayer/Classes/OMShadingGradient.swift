@@ -235,12 +235,12 @@ public struct OMShadingGradient {
             for color in colors {
                 // must be the same colorspace
                 assert(lastColor.colorSpace?.model == color.colorSpace?.model,
-                       "unexpected color model \(color.colorSpace?.model.name) != \(lastColor.colorSpace?.model.name)")
+                       "unexpected color model \(String(describing: color.colorSpace?.model.name)) != \(String(describing: lastColor.colorSpace?.model.name))")
                 // and correct model
-                assert(color.colorSpace?.model == .rgb,"unexpected color space model \(color.colorSpace?.model.name)")
+                assert(color.colorSpace?.model == .rgb,"unexpected color space model \(String(describing: color.colorSpace?.model.name))")
                 if(color.colorSpace?.model != .rgb) {
                     //TODO: handle different color spaces
-                    OMLog.printw("(OMShadingGradient) : Unsupported color space. model: \(color.colorSpace?.model.name)")
+                    OMLog.printw("(OMShadingGradient) : Unsupported color space. model: \(String(describing: color.colorSpace?.model.name))")
                 }
             }
         }

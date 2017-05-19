@@ -90,17 +90,17 @@ extension UIImage
             
         case .down, .downMirrored:
             transform = transform.translatedBy(x: newSize.width, y: newSize.height);
-            transform = transform.rotated(by: CGFloat(M_PI));
+            transform = transform.rotated(by: .pi);
             break;
             
         case .left, .leftMirrored:
             transform = transform.translatedBy(x: newSize.width, y: 0);
-            transform = transform.rotated(by: CGFloat(M_PI_2));
+            transform = transform.rotated(by: .pi / 2.0);
             break;
             
         case .right,.rightMirrored:
             transform = transform.translatedBy(x: 0, y: newSize.height);
-            transform = transform.rotated(by: CGFloat(-M_PI_2));
+            transform = transform.rotated(by: CGFloat(-.pi / 2.0));
             break;
         }
         

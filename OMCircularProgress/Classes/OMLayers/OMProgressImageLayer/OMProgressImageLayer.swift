@@ -80,8 +80,7 @@ class OMProgressImageLayer : CALayer
     }
     
     // -90 degrees
-    
-    var beginRadians: Double = -M_PI_2 {
+    var beginRadians: Double = -.pi / 2.0 {
         didSet {
             if(self.type == .circular) {
                 setNeedsDisplay()

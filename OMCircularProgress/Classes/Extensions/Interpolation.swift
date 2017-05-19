@@ -147,7 +147,7 @@ class Interpolation
     
     class func coserp(_ y0:CGFloat,y1:CGFloat,t:CGFloat) -> CGFloat {
         assert(t >= 0.0 && t <= 1.0);
-        let mu2 = CGFloat(1.0-cos(Double(t)*M_PI))/2;
+        let mu2 = CGFloat(1.0-cos(Double(t) * .pi))/2;
         return (y0*(1.0-mu2)+y1*mu2);
     }
 }

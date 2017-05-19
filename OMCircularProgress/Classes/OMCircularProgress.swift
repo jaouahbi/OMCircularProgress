@@ -22,8 +22,7 @@
 
 /// Constants
 
-let π   = M_PI
-let 𝜏   = 2.0 * π
+let 𝜏   = 2.0 * .pi
 
 // MARK: - Constant Definitions
 
@@ -956,7 +955,7 @@ open class OMCPStepData : CustomDebugStringConvertible {
     func percentDone() -> Double {
         let radians =  numberOfRadians()
         if radians > 0 {
-            return radians / (M_PI * 2.0)
+            return radians / (.pi * 2.0)
         }
         return 0;
     }
@@ -1583,7 +1582,7 @@ extension OMCircularProgress {
     internal func isOverflow(lenght:Double) -> Bool {
         let numberOfRad = numberOfRadians() + lenght
         let diference   = numberOfRad - 𝜏
-        if diference > Double(FLT_EPSILON) {
+        if diference > .ulpOfOne { // EPSILON
             #if LOG
                 OMLog.printw("[\(layer.name ?? "")] Out of radians: can't create the step. overflow by \(𝜏 - numberOfRad) radians")
             #endif

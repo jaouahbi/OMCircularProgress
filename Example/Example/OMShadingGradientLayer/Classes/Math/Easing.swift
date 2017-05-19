@@ -201,19 +201,19 @@ func QuinticEaseInOut(_ p: Double) -> Double
 // Modeled after quarter-cycle of sine wave
 func SineEaseIn(_ p: Double) -> Double
 {
-    return sin((p - 1) * Double(M_PI_2)) + 1;
+    return sin((p - 1) * .pi / 2.0) + 1;
 }
 
 // Modeled after quarter-cycle of sine wave (different phase)
 func SineEaseOut(_ p: Double) -> Double
 {
-    return sin(p * Double(M_PI_2));
+    return sin(p * .pi / 2.0);
 }
 
 // Modeled after half sine wave
 func SineEaseInOut(_ p: Double) -> Double
 {
-    return 0.5 * (1 - cos(p * Double(M_PI)));
+    return 0.5 * (1 - cos(p * .pi));
 }
 
 // Modeled after shifted quadrant IV of unit circle
@@ -275,13 +275,13 @@ func ExponentialEaseInOut(_ p: Double) -> Double
 // Modeled after the damped sine wave y = sin(13pi/2*x)*pow(2, 10 * (x - 1))
 func ElasticEaseIn(_ p: Double) -> Double
 {
-    return sin(13 * Double(M_PI_2) * p) * pow(2, 10 * (p - 1));
+    return sin(13 * .pi / 2.0 * p) * pow(2, 10 * (p - 1));
 }
 
 // Modeled after the damped sine wave y = sin(-13pi/2*(x + 1))*pow(2, -10x) + 1
 func ElasticEaseOut(_ p: Double) -> Double
 {
-    return sin(-13 * Double(M_PI_2) * (p + 1)) * pow(2, -10 * p) + 1;
+    return sin(-13 * .pi / 2.0 * (p + 1)) * pow(2, -10 * p) + 1;
 }
 
 // Modeled after the piecewise exponentially-damped sine wave:
@@ -291,25 +291,25 @@ func ElasticEaseInOut(_ p: Double) -> Double
 {
     if(p < 0.5)
     {
-        return 0.5 * sin(13 * Double(M_PI_2) * (2 * p)) * pow(2, 10 * ((2 * p) - 1));
+        return 0.5 * sin(13 * .pi / 2.0 * (2 * p)) * pow(2, 10 * ((2 * p) - 1));
     }
     else
     {
-        return 0.5 * (sin(-13 * Double(M_PI_2) * ((2 * p - 1) + 1)) * pow(2, -10 * (2 * p - 1)) + 2);
+        return 0.5 * (sin(-13 * .pi / 2.0 * ((2 * p - 1) + 1)) * pow(2, -10 * (2 * p - 1)) + 2);
     }
 }
 
 // Modeled after the overshooting cubic y = x^3-x*sin(x*pi)
 func BackEaseIn(_ p: Double) -> Double
 {
-    return p * p * p - p * sin(p * Double(M_PI));
+    return p * p * p - p * sin(p * .pi);
 }
 
 // Modeled after overshooting cubic y = 1-((1-x)^3-(1-x)*sin((1-x)*pi))
 func BackEaseOut(_ p: Double) -> Double
 {
     let f = (1 - p);
-    return 1 - (f * f * f - f * sin(f * Double(M_PI)));
+    return 1 - (f * f * f - f * sin(f * .pi));
 }
 
 // Modeled after the piecewise overshooting cubic function:
@@ -320,12 +320,12 @@ func BackEaseInOut(_ p: Double) -> Double
     if(p < 0.5)
     {
         let f = 2 * p;
-        return 0.5 * (f * f * f - f * sin(f * Double(M_PI)));
+        return 0.5 * (f * f * f - f * sin(f * .pi));
     }
     else
     {
         let f = (1 - (2*p - 1));
-        let fsin = sin(f * Double(M_PI))
+        let fsin = sin(f * .pi)
         return 0.5 * (1 - (f * f * f - f * fsin)) + 0.5;
     }
 }

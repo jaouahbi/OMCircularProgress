@@ -374,7 +374,7 @@ class ProgressExampleViewController: UIViewController {
         
         let colors : [UIColor] = UIColor.rainbow(16, hue: 0)
         
-        let stepAngle = (M_PI * 2.0) / Double(colors.count)
+        let stepAngle = (.pi * 2.0) / Double(colors.count)
         
         for i in 0 ..< colors.count  {
             let theStep:OMCPStepData?
