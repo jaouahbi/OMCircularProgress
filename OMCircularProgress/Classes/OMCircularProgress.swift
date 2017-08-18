@@ -13,6 +13,11 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 //
+//  Version             Changes
+//
+//  1.0                 Update to Xcode 9 beta4 Swift jom:(18/8/2017)
+//
+//
 
 #if os(iOS)
     import UIKit
@@ -35,16 +40,16 @@ let kDefaultStartAngle:Double = -90.degreesToRadians()
 let kDefaultBorderColor:CGColor       = UIColor.black.cgColor
 
 // Image Shadow
-let kDefaultElementShadowOffset:CGSize  = CGSize(width:0.0,height: 10.0)
-let kDefaultElementShadowRadius:CGFloat = 3
-let kDefaultElementShadowColor:CGColor  = UIColor.black.cgColor
+let kDefaultElementShadowOpacity:Float   = 1 // opaque
+let kDefaultElementShadowOffset:CGSize   = CGSize(width:0.0,height: 10.0)
+let kDefaultElementShadowRadius:CGFloat  = 3
+let kDefaultElementShadowColor:CGColor   = UIColor.black.cgColor
 
 
 // Border Shadow
 let kDefaultBorderShadowOffset:CGSize  = CGSize(width:0.0,height: 2.5)
 let kDefaultBorderShadowRadius:CGFloat = 2
 let kDefaultBorderShadowColor:CGColor  = UIColor(white:0.3,alpha:1.0).cgColor
-
 
 ///
 /// The OMCircularProgress delegate Protocol
@@ -420,14 +425,36 @@ open class OMCPCElement<T:CALayer> {
         return CGSize(width :offset.height*CGFloat(sin(angle)) + offset.width*CGFloat(cos(angle)),
                       height:offset.height*CGFloat(cos(angle)) - offset.width*CGFloat(sin(angle)))
     }
+    
+    /* The color of the shadow. Defaults to opaque black. Colors created
+     * from patterns are currently NOT supported. Animatable. */
+    
+    /** Shadow properties. **/
+    open var shadowColor: CGColor = kDefaultElementShadowColor
+    
+    /* The opacity of the shadow. Defaults to 0. Specifying a value outside the
+     * [0,1] range will give undefined results. Animatable. */
+    
+    open var shadowOpacity: Float = kDefaultElementShadowOpacity
+    
+    /* The shadow offset. Defaults to (0, -3). Animatable. */
+    
+    open var shadowOffset: CGSize = kDefaultElementShadowOffset
+
+    /* The blur radius used to create the shadow. Defaults to 3. Animatable. */
+    
+    open var shadowRadius: CGFloat = kDefaultElementShadowRadius
+    
+    open var shadowPath: CGPath?
+    
     /// Enable element shadow
     var shadow:Bool = false {
         didSet {
             if (shadow) {
-                layer.shadowOpacity = 1.0
-                layer.shadowRadius  = kDefaultElementShadowRadius
-                layer.shadowColor   = kDefaultElementShadowColor
-                layer.shadowOffset  = kDefaultElementShadowOffset
+                layer.shadowRadius   = self.shadowRadius
+                layer.shadowColor    = self.shadowColor
+                layer.shadowOffset   = self.shadowOffset
+                layer.shadowOpacity  = self.shadowOpacity
                 if orientationToAngle {
                     let angle = layer.getTransformRotationZ()
                     layer.shadowOffset = correctedShadowOffsetForTransformRotationZ(angle, offset: layer.shadowOffset)
@@ -436,6 +463,7 @@ open class OMCPCElement<T:CALayer> {
                     #endif
                 }
             } else {
+                // Trasparent
                 layer.shadowOpacity = 0
             }
         }
