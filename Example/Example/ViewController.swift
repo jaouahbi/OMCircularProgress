@@ -147,7 +147,7 @@ class ProgressExampleViewController: UIViewController {
             hour -= 12
         }
         
-        self.progressViewClockHours.progress = Double(hour)
+        self.progressViewClockHours.progress   = Double(hour)
         self.progressViewClockMinutes.progress = Double(minutes)
         self.progressViewClockSeconds.progress = Double(seconds)
         
