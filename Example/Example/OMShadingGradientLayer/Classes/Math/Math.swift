@@ -59,19 +59,22 @@ public func monotonic(_ numberOfElements:Int) -> [CGFloat] {
     return monotonicFunction
 }
 
+// redistributes values on a slope (ease-in ease-out)
+public func slope( x:Float, A:Float) -> Float {
+    let p = powf(x,A);
+    return p/(p + powf(1.0-x, A));
+}
 
 public func linlin( val:Double,  inMin:Double,  inMax:Double,  outMin:Double,  outMax:Double) -> Double {
     return ((val - inMin) / (inMax - inMin) * (outMax - outMin)) + outMin;
 }
 
-public func  linexp( val:Double,  inMin:Double,  inMax:Double,  outMin:Double,  outMax:Double) -> Double
-{
+public func  linexp( val:Double,  inMin:Double,  inMax:Double,  outMin:Double,  outMax:Double) -> Double {
     //clipping
     let valclamp = max(min(val, inMax), inMin);
     return pow((outMax / outMin), (valclamp - inMin) / (inMax - inMin)) * outMin;
 }
-public func explin(val:Double,  inMin:Double,  inMax:Double,  outMin:Double,  outMax:Double) -> Double
-{
+public func explin(val:Double,  inMin:Double,  inMax:Double,  outMin:Double,  outMax:Double) -> Double {
     //clipping
     let valclamp = max(min(val, inMax), inMin);
     return (log(valclamp/inMin) / log(inMax/inMin) * (outMax - outMin)) + outMin;

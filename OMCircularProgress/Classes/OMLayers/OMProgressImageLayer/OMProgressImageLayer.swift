@@ -73,7 +73,7 @@ class OMProgressImageLayer : CALayer
             setNeedsDisplay()
         }
     }
-    var progress: Double  = 0.0 {
+    @objc var progress: Double  = 0.0 {
         didSet {
             setNeedsDisplay()
         }

@@ -50,7 +50,7 @@ extension CGPoint : Hashable  {
         
     }
     var isZero : Bool {
-        return self == CGPoint.zero
+        return self.equalTo(CGPoint.zero);
     }
     
     func distance(_ point:CGPoint) -> CGFloat {

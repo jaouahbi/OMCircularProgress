@@ -39,7 +39,7 @@ public enum GradientFunction {
     case cosine
 }
 
-
+// TODO(jom): add a black and with gradients
 
 func ShadingFunctionCreate(_ colors : [UIColor],
                             locations : [CGFloat],
@@ -134,16 +134,17 @@ func ShadingFunctionCreate(_ colors : [UIColor],
 func ShadingCallback(_ infoPointer:UnsafeMutableRawPointer?,
                      inData: UnsafePointer<CGFloat>,
                      outData: UnsafeMutablePointer<CGFloat>) -> Swift.Void {
-    let rawPointer = UnsafeMutableRawPointer(infoPointer)
-    var info = rawPointer?.load(as: OMShadingGradient.self)
-    info?.shadingFunction(inData, outData)
+    // Load the UnsafeMutableRawPointer, and call the shadingFunction
+    var shadingPtr = infoPointer?.load(as: OMShadingGradient.self)
+    shadingPtr?.shadingFunction(inData, outData)
 }
 
 
 public struct OMShadingGradient {
     fileprivate var monotonicLocations:[CGFloat] = []
+    var locations : [CGFloat]?
+    
     let colors : [UIColor]
-    let locations : [CGFloat]?
     let startPoint : CGPoint
     let endPoint : CGPoint
     let startRadius : CGFloat
@@ -261,7 +262,8 @@ public struct OMShadingGradient {
         // TODO(jom): handle different number colors and locations
         
         if (monotonicLocations.count == 0) {
-            monotonicLocations = monotonic(colors.count)
+            self.monotonicLocations = monotonic(colors.count)
+            self.locations          = self.monotonicLocations;
         }
         
         OMLog.printv("(OMShadingGradient): \(monotonicLocations.count) monotonic locations")
@@ -269,6 +271,7 @@ public struct OMShadingGradient {
     }
     
     lazy var shadingFunction : (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void = {
+        // @default: linear interpolation
         var interpolationFunction:GradientInterpolationFunction =  UIColor.lerp
         switch(self.functionType){
         case .linear :
@@ -289,12 +292,12 @@ public struct OMShadingGradient {
     
     lazy var handleFunction : CGFunction! = {
         var callbacks = CGFunctionCallbacks(version: 0, evaluate: ShadingCallback, releaseInfo: nil)
-        return CGFunction(info: &self,  // info
+        return CGFunction(info: &self,                   // info
             domainDimension: 1,                          // domainDimension
-            domain: [0, 1],                     // domain
-            rangeDimension: 4,                          // rangeDimension
-            range: [0, 1, 0, 1, 0, 1, 0, 1],   // range
-            callbacks: &callbacks)                 // callbacks
+            domain: [0, 1],                              // domain
+            rangeDimension: 4,                           // rangeDimension
+            range: [0, 1, 0, 1, 0, 1, 0, 1],             // range
+            callbacks: &callbacks)                       // callbacks
     }()
     
     lazy var shadingHandle : CGShading! = {

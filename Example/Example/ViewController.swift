@@ -137,7 +137,7 @@ class ProgressExampleViewController: UIViewController {
 
     /// Time proc
     
-    func timerProc()
+    @objc func timerProc()
     {
         let seconds = calendar.components(.second, from:Date()).second!
         let minutes = calendar.components(.minute, from:Date()).minute!

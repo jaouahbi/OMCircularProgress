@@ -148,16 +148,18 @@ extension UIColor {
     /// - alpha (index `3`)
     var hsbaComponents: [CGFloat] {
         // Constructs the array in which to store the HSBA-components.
-        var components = [CGFloat](repeating: 0.0, count: 4)
         
-        // Stores `self`'s HSBA-component values in `components`.
-        getHue(       &(components[0]),
-                      saturation: &(components[1]),
-                      brightness: &(components[2]),
-                      alpha:      &(components[3])
-        )
+        var components0:CGFloat = 0
+        var components1:CGFloat = 0
+        var components2:CGFloat = 0
+        var components3:CGFloat = 0
         
-        return components
+        getHue(       &components0,
+                      saturation: &components1,
+                      brightness: &components2,
+                      alpha:      &components3)
+        
+        return [components0,components1,components2,components3];
     }
     /// alpha component
     var alpha : CGFloat {
