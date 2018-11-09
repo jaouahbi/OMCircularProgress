@@ -27,7 +27,7 @@ import CoreGraphics
 
 extension CAShapeLayer {
     override open func contains(_ p:CGPoint) -> Bool {
-        let eoFill:Bool = (self.fillRule == "even-odd")
+        let eoFill:Bool = (convertFromCAShapeLayerFillRule(self.fillRule) == "even-odd")
         guard let path = self.path
         else { return false }
         return path.contains(p, using: eoFill ? .evenOdd : .winding)
@@ -38,4 +38,9 @@ extension CAShapeLayer {
         else { return CGRect.zero }
         return path.boundingBox
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromCAShapeLayerFillRule(_ input: CAShapeLayerFillRule) -> String {
+	return input.rawValue
 }

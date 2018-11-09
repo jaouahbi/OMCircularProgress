@@ -382,8 +382,8 @@ open class OMAngle : CustomDebugStringConvertible {
         let p2  = OMAngle.pointOfAngle(angle.end, center: center, radius: radius)
         return CGRect(x:min(p1.x, p2.x),
                       y:min(p1.y, p2.y),
-                      width:fabs(p1.x - p2.x),
-                      height:fabs(p1.y - p2.y));
+                      width:abs(p1.x - p2.x),
+                      height:abs(p1.y - p2.y));
     }
     
     ///  Point in a angle
@@ -1118,9 +1118,9 @@ open class OMCPStepData : CustomDebugStringConvertible {
         shapeLayer.strokeColor     = ( step.maskLayer != nil ) ? UIColor.black.cgColor : step.color.cgColor
         
         if self.options.contains(.roundedHead) && canRoundedHead {
-            shapeLayer.lineCap   = kCALineCapRound;
+            shapeLayer.lineCap   = CAShapeLayerLineCap.round;
         } else {
-            shapeLayer.lineCap   = kCALineCapButt;
+            shapeLayer.lineCap   = CAShapeLayerLineCap.butt;
         }
         shapeLayer.strokeStart     = 0.0
         shapeLayer.strokeEnd       = 0.0
@@ -1759,7 +1759,7 @@ extension OMCircularProgress : CAAnimationDelegate
         
         strokeAnimation.isRemovedOnCompletion = false
         strokeAnimation.isAdditive = true
-        strokeAnimation.fillMode = kCAFillModeForwards
+        strokeAnimation.fillMode = CAMediaTimingFillMode.forwards
         strokeAnimation.delegate = self
         
         if (progressStyle == .sequential) {

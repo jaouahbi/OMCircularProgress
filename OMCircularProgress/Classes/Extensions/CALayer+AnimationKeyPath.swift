@@ -31,8 +31,10 @@ public extension CALayer {
     
     public func animationActionForKey(_ event:String!) -> CABasicAnimation! {
         let animation = CABasicAnimation(keyPath: event)
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-        animation.fromValue = self.presentation()!.value(forKey: event);
+        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
+        if let presentation = self.presentation() {
+            animation.fromValue = presentation.value(forKey: event);
+        }
         return animation
     }
     
@@ -62,7 +64,7 @@ public extension CALayer {
             animation.beginTime = beginTime
         }
         
-        animation.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionLinear)
+        animation.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.linear)
         animation.setValue(self,forKey:keyPath)
         self.add(animation, forKey:keyPath)
         self.setValue(toValue,forKey:keyPath)

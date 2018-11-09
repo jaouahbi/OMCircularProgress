@@ -36,6 +36,7 @@ extension CGColorSpaceModel {
         case .deviceN:return "DeviceN"
         case .indexed:return "Indexed"
         case .pattern:return "Pattern"
+        case .XYZ:return "XYZ"
         }
     }
 }

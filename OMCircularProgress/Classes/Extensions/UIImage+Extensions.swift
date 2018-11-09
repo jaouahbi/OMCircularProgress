@@ -455,7 +455,7 @@ extension UIImage {
     func addShadowColor(_ offset:CGSize, color:UIColor = UIColor.darkGray, blur:CGFloat = 6.0) -> UIImage
     {
         //get size
-        let border = CGSize(width: fabs(offset.width) + blur, height: fabs(offset.height) + blur);
+        let border = CGSize(width: abs(offset.width) + blur, height: abs(offset.height) + blur);
         
         let size = CGSize(width: self.size.width + border.width * 2.0,
                           height: self.size.height + border.height * 2.0);

@@ -78,8 +78,8 @@ extension CGRect{
     /// - returns: CGRect
     public init(_ point1:CGPoint,point2:CGPoint) {
         self.init(point1)
-        size.width  = fabs(point2.x-self.origin.x)
-        size.height = fabs(point2.y-self.origin.y)
+        size.width  = abs(point2.x-self.origin.x)
+        size.height = abs(point2.y-self.origin.y)
     }
     
 }

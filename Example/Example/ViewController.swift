@@ -41,7 +41,7 @@ extension UIColor
         let iNumberOfSteps =  1.0 / Double(numberOfSteps)
         var hue:Double = hue
         while hue < 1.0 {
-            if(colors.count == numberOfSteps){
+            if (colors.count == numberOfSteps) {
                 break
             }
             

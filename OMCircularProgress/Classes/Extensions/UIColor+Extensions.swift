@@ -81,7 +81,7 @@ extension UIColor {
         var characterSet = NSCharacterSet.whitespacesAndNewlines
         characterSet = characterSet.union(NSCharacterSet(charactersIn: "#") as CharacterSet)
         let cString = hex.trimmingCharacters(in: characterSet).uppercased()
-        if (cString.characters.count != 6) {
+        if (cString.count != 6) {
             self.init(white: 1.0, alpha: 1.0)
         } else {
             var rgbValue: UInt32 = 0
