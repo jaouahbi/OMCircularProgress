@@ -845,7 +845,7 @@ open class OMCPStepData : CustomDebugStringConvertible {
         
         assert(progress <= Double(numberOfSteps),"Unexpected progress \(progress) max \(numberOfSteps) ")
         
-        let clmprogress:Double = clamp(progress, lower: 0.0,upper: Double(numberOfSteps))
+        let clmprogress:Double = clamp(progress, lowerValue: 0.0,upperValue: Double(numberOfSteps))
         
         let stepsDone   = Int(clmprogress);
         let curStep     = clmprogress - floor(clmprogress);
@@ -857,15 +857,12 @@ open class OMCPStepData : CustomDebugStringConvertible {
         newBeginTime = 0.0
         
         for index:Int in 0..<numberOfSteps {
-            
             Log.v("[\(layer.name ?? "")]#\(index) of \(numberOfSteps) in \(progress) : done:\(stepsDone) current:\(curStep)")
-            
-            
             setStepProgress(index, stepProgress: (index < stepsDone) ?  1.0 : curStep)
         }
         
         let duration        = (animationDuration / Double(numberOfSteps)) * clmprogress
-        let toValue:Double  = clamp((progress / Double(numberOfSteps)),lower: 0.0,upper: 1.0)
+        let toValue:Double  = clamp((progress / Double(numberOfSteps)),lowerValue: 0.0,upperValue: 1.0)
         
         weak var delegate = self
         
@@ -901,7 +898,6 @@ open class OMCPStepData : CustomDebugStringConvertible {
         
         CATransaction.commit()
         
-        
         Log.d("[\(layer.name ?? "")] updateCompleteProgress (progress: \(clmprogress) of \(numberOfSteps))")
         
     }
@@ -912,14 +908,11 @@ open class OMCPStepData : CustomDebugStringConvertible {
     ///
     /// - returns: step progress
     
-    func getStepProgress(_ index:Int) -> Double
-    {
+    func getStepProgress(_ index:Int) -> Double {
         assert(index <= numberOfSteps, "out of bounds. \(index) max: \(numberOfSteps)")
-        
-        if(index >= numberOfSteps) {
+        if (index >= numberOfSteps) {
             return 0
         }
-        
         return self[index]!.progress
     }
     
@@ -1572,23 +1565,23 @@ extension OMCircularProgress {
         let angle = OMAngle(start:start,end:end)
         // Validate the angle
         let valid = angle.valid()
-        assert(valid,"Invalid angle:\(angle). range in radians : -(2*PI)/+(2*PI)")
+        assert(valid, "Invalid angle:\(angle). range in radians : -(2*PI)/+(2*PI)")
         if(!valid) {
-            
             Log.w("[\(layer.name ?? "")] Invalid angle :\(angle)")
-            
             return nil;
         }
+       
+        let overflow = overflowBy(lenght: angle.length());
+        if (overflow > 0) {
+            // remove the overflow.
+            angle.end -= overflow;
+        }
+        
         // Create the step
         let step = OMCPStepData(angle: angle, color:color)
-        
-        
+    
         Log.v("[\(layer.name ?? "")] Adding new step#\(numberOfSteps) with the angle: \(angle)")
-        
-        
-        if isOverflow(lenght: angle.length()) {
-            return nil
-        }
+    
         // Save the step
         dataSteps.add(step)
         return step
@@ -1596,21 +1589,28 @@ extension OMCircularProgress {
     
     /// Remove all steps.
     func removeAllSteps() {
-        self.dataSteps.removeAllObjects()
-        assert(self.dataSteps.count == 0)
+        dataSteps.removeAllObjects()
+        assert(dataSteps.count == 0)
         removeSublayers()
         layoutSubviews()
     }
     
-    /// Check steps overflow
-    internal func isOverflow(lenght:Double) -> Bool {
-        let numberOfRad = numberOfRadians() + lenght
-        let diference   = numberOfRad - 𝜏
-        if diference > .ulpOfOne { // EPSILON
-            Log.w("[\(layer.name ?? "")] Unable to create the step \(self.dataSteps.count + 1): Angle is out of radians. Overflow by \(String(format: "%.16f", diference)) radians")
-            return true
+    /// Check if the lenght will overflow the angle.
+    ///
+    /// - parameter lenght:   Double lenght
+    ///
+    /// - returns: Bool
+
+    internal func overflowBy(lenght:Double) -> Double {
+        let kOverflowEpsilon = Double.ulpOfOne // Double.ulpOfOne == "0.0000000000000002"
+        let numberOfRad = (numberOfRadians() + lenght)
+        let diference   = (numberOfRad - 𝜏)
+        // Check angle the overflow
+        if diference > kOverflowEpsilon {
+            Log.w("[\(layer.name ?? "")] Unable to create the step \(self.dataSteps.count + 1): Angle is out of radians. Overflow by \(String(format: "%.16f", diference)) radians, maximun: \(String(format: "%.16f", kOverflowEpsilon))")
+            return diference
         }
-        return false
+        return 0
     }
     /// Create a new step progress.
     ///
@@ -1637,15 +1637,18 @@ extension OMCircularProgress {
             Log.w("[\(layer.name ?? "")] Invalid start angle: \(OMAngle.format(start))")
             return nil;
         }
-        // clap the percent.
+        // clamp the percent.
         let step = OMCPStepData(start:start,
-                                percent:Double(clamp(CGFloat(percent), lowerValue: 0.0, upperValue: 1.0)),
+                                percent:clamp(percent, lowerValue: 0.0, upperValue: 1.0),
                                 color:color)
         
-        Log.v("\(layer.name ?? "")): Adding new step#\(numberOfSteps) with the angle: \(step.angle!)")
-        if isOverflow(lenght:  step.angle.length()) {
-            return nil
+        let overflow = overflowBy(lenght: step.angle.length());
+        if (overflow > 0) {
+          // remove the overflow.
+           step.angle.end -= overflow;
         }
+        
+        Log.v("\(layer.name ?? "")): Adding new step#\(numberOfSteps) with the angle: \(step.angle!)")
         
         dataSteps.add(step)
         return step

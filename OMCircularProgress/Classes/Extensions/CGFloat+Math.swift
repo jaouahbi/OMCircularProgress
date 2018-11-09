@@ -23,16 +23,7 @@
 
 import UIKit
 
-///  CGFloat Extension for conversion from/to degrees/radians and clamp
-
-public func clamp(_ value:CGFloat,lowerValue: CGFloat, upperValue: CGFloat) -> CGFloat{
-    return Swift.min(Swift.max(value, lowerValue), upperValue)
-}
-
-public func map(input:CGFloat,input_start:CGFloat,input_end:CGFloat,output_start:CGFloat,output_end:CGFloat)-> CGFloat {
-    let slope = 1.0 * (output_end - output_start) / (input_end - input_start)
-    return output_start + round(slope * (input - input_start))
-}
+///  CGFloat Extension for conversion from/to degrees/radians
 
 
 public extension CGFloat {

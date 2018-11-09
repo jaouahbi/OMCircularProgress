@@ -101,13 +101,13 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     // MARK: - OMRadialGradientLayerProtocol
     open var startRadius: CGFloat = 0 {
         didSet {
-            startRadius = clamp(startRadius, lower: 0, upper: 1.0)
+            startRadius = clamp(startRadius, lowerValue: 0, upperValue: 1.0)
             self.setNeedsDisplay();
         }
     }
     open var endRadius: CGFloat = 0 {
         didSet {
-            endRadius = clamp(endRadius, lower: 0, upper: 1.0)
+            endRadius = clamp(endRadius, lowerValue: 0, upperValue: 1.0)
             self.setNeedsDisplay();
         }
     }
