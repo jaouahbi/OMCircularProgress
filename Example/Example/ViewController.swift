@@ -19,7 +19,6 @@
 //
 //  Created by Jorge Ouahbi on 19/1/15.
 //
-//  TODO: appearance
 
 import UIKit
 
@@ -80,7 +79,7 @@ class ProgressExampleViewController: UIViewController {
     {
         super.viewDidAppear(animated);
         
-        #if LOG
+       #if !DISABLE_LOG
             self.progressViewMood.layer.name = "Mood"
             self.progressViewClockHours.layer.name = "Clock Hours"
             self.progressViewClockMinutes.layer.name = "Clock Minutes"
@@ -143,7 +142,7 @@ class ProgressExampleViewController: UIViewController {
         let minutes = calendar.components(.minute, from:Date()).minute!
         var hour    = calendar.components(.hour, from:Date()).hour!
         
-        if(hour > 12) {
+        if (hour > 12) {
             hour -= 12
         }
         
@@ -331,7 +330,7 @@ class ProgressExampleViewController: UIViewController {
         }
     }
     
-    
+    // MARK: Unused
     func darkerToLighterGradientRadial(progress:OMCircularProgress, color:UIColor) -> OMGradientLayer
     {
         let gradient       = OMShadingGradientLayer(type:.radial)
@@ -348,7 +347,7 @@ class ProgressExampleViewController: UIViewController {
         
         return gradient;
     }
-    
+    // MARK: Unused
     func lighterToDarkerGradientRadial(progress:OMCircularProgress, color:UIColor) -> OMGradientLayer
     {
         let gradient       = OMShadingGradientLayer(type:.radial)

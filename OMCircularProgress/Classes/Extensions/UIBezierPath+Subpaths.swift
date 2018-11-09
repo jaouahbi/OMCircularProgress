@@ -25,7 +25,7 @@
 import UIKit
 
 extension CGPath {
-
+    
     
     func forEach( body: @escaping @convention(block) (CGPathElement) -> Void) {
         typealias Body = @convention(block) (CGPathElement) -> Void
@@ -33,9 +33,7 @@ extension CGPath {
             let body = unsafeBitCast(info, to: Body.self)
             body(element.pointee)
         }
-        #if LOG
-            OMLog.printi("(CGPath) Memory layout \(MemoryLayout.size(ofValue: body))")
-        #endif
+        Log.i("(CGPath) Memory layout \(MemoryLayout.size(ofValue: body))")
         let unsafeBody = unsafeBitCast(body, to: UnsafeMutableRawPointer.self)
         self.apply(info: unsafeBody, function: callback)
     }

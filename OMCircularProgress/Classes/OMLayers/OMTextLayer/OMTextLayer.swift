@@ -437,7 +437,7 @@ extension OMTextLayer
     
     func createPathFromStringWithAttributes() -> UIBezierPath? {
         
-        OMLog.printd("\(self.name ?? ""): createPathFromStringWithAttributes()")
+        Log.d("\(self.name ?? ""): createPathFromStringWithAttributes()")
         
         if let line = createLine() {
             
@@ -539,7 +539,7 @@ extension OMTextLayer {
     
     func drawWithArc(context:CGContext, rect:CGRect)
     {
-        OMLog.printd("\(self.name ?? ""): drawWithArc(\(rect))")
+        Log.d("\(self.name ?? ""): drawWithArc(\(rect))")
         
         if let string = string, let angle = self.angleLenght {
             
@@ -547,7 +547,7 @@ extension OMTextLayer {
             let line  = CTLineCreateWithAttributedString(attributeString)
             let glyphCount:CFIndex = CTLineGetGlyphCount(line);
             if glyphCount == 0 {
-                OMLog.printw("\(self.name ?? ""): 0 glyphs \(attributeString))")
+                Log.w("\(self.name ?? ""): 0 glyphs \(attributeString))")
                 return;
             }
             

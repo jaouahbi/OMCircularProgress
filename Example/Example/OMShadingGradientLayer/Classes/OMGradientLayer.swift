@@ -324,17 +324,17 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     func isDrawable() -> Bool {
         if (colors.count == 0) {
             // nothing to do
-            OMLog.printv("\(self.name ?? "") Unable to do the shading without colors.")
+            Log.v("\(self.name ?? "") Unable to do the shading without colors.")
             return false
         }
         if (startPoint.isZero && endPoint.isZero) {
             // nothing to do
-            OMLog.printv("\(self.name ?? "") Start point and end point are {x:0, y:0}.")
+            Log.v("\(self.name ?? "") Start point and end point are {x:0, y:0}.")
             return false
         }
         if (startRadius == endRadius && self.isRadial) {
             // nothing to do
-            OMLog.printv("\(self.name ?? "") Start radius and end radius are equal. \(startRadius) \(endRadius)")
+            Log.v("\(self.name ?? "") Start radius and end radius are equal. \(startRadius) \(endRadius)")
             return false
         }
         return true;

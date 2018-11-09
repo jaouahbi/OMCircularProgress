@@ -38,7 +38,7 @@
 		355ABC1C1DEF4DA1008A4B9F /* OMNumberLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABBFE1DEF4DA1008A4B9F /* OMNumberLayer.swift */; };
 		355ABC1D1DEF4DA1008A4B9F /* OMProgressImageLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC001DEF4DA1008A4B9F /* OMProgressImageLayer.swift */; };
 		355ABC1E1DEF4DA1008A4B9F /* OMTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC021DEF4DA1008A4B9F /* OMTextLayer.swift */; };
-		355ABC1F1DEF4DA1008A4B9F /* OMLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC031DEF4DA1008A4B9F /* OMLog.swift */; };
+		355ABC1F1DEF4DA1008A4B9F /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC031DEF4DA1008A4B9F /* Log.swift */; };
 		355ABC441DEF4E01008A4B9F /* Easing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC301DEF4E01008A4B9F /* Easing.swift */; };
 		355ABC461DEF4E01008A4B9F /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC321DEF4E01008A4B9F /* Math.swift */; };
 		355ABC471DEF4E01008A4B9F /* OMGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC331DEF4E01008A4B9F /* OMGradientLayer.swift */; };
@@ -84,7 +84,7 @@
 		355ABBFE1DEF4DA1008A4B9F /* OMNumberLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMNumberLayer.swift; sourceTree = "<group>"; };
 		355ABC001DEF4DA1008A4B9F /* OMProgressImageLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMProgressImageLayer.swift; sourceTree = "<group>"; };
 		355ABC021DEF4DA1008A4B9F /* OMTextLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMTextLayer.swift; sourceTree = "<group>"; };
-		355ABC031DEF4DA1008A4B9F /* OMLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMLog.swift; sourceTree = "<group>"; };
+		355ABC031DEF4DA1008A4B9F /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		355ABC301DEF4E01008A4B9F /* Easing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Easing.swift; sourceTree = "<group>"; };
 		355ABC321DEF4E01008A4B9F /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		355ABC331DEF4E01008A4B9F /* OMGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMGradientLayer.swift; sourceTree = "<group>"; };
@@ -152,7 +152,7 @@
 				355ABBE31DEF4DA1008A4B9F /* Extensions */,
 				355ABBFB1DEF4DA1008A4B9F /* OMCircularProgress.swift */,
 				355ABBFC1DEF4DA1008A4B9F /* OMLayers */,
-				355ABC031DEF4DA1008A4B9F /* OMLog.swift */,
+				355ABC031DEF4DA1008A4B9F /* Log.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -331,7 +331,7 @@
 				355ABC521DEF5023008A4B9F /* CGFloat+Extensions.swift in Sources */,
 				355ABC141DEF4DA1008A4B9F /* UIBezierPath+Polygon.swift in Sources */,
 				355ABC511DEF5023008A4B9F /* CGPoint+Extension.swift in Sources */,
-				355ABC1F1DEF4DA1008A4B9F /* OMLog.swift in Sources */,
+				355ABC1F1DEF4DA1008A4B9F /* Log.swift in Sources */,
 				355ABC191DEF4DA1008A4B9F /* UIFont+Extensions.swift in Sources */,
 				355ABC4A1DEF4E01008A4B9F /* OMShadingGradient.swift in Sources */,
 				355ABC481DEF4E01008A4B9F /* OMGradientLayerProtocols.swift in Sources */,
@@ -496,7 +496,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = VBTKBHNWT3;
-				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DISABLE_LOG=0",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
@@ -512,6 +515,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = VBTKBHNWT3;
+				GCC_PREPROCESSOR_DEFINITIONS = "DISABLE_LOG=1";
 				INFOPLIST_FILE = "$(SRCROOT)/Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";

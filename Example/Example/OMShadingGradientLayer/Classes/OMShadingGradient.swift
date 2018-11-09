@@ -94,7 +94,7 @@ func ShadingFunctionCreate(_ colors : [UIColor],
         
         if (alpha <= stop1Position) {
             // if we are less than our lowest position, return our first color
-            OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) <= position \(String(format:"%.1f",stop1Position)) color \(stop1Color.shortDescription)")
+            Log.d("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) <= position \(String(format:"%.1f",stop1Position)) color \(stop1Color.shortDescription)")
             outData[0] = (stop1Color.components[0])
             outData[1] = (stop1Color.components[1])
             outData[2] = (stop1Color.components[2])
@@ -102,7 +102,7 @@ func ShadingFunctionCreate(_ colors : [UIColor],
             
         } else if (alpha >= stop2Position) {
             // likewise if we are greater than our highest position, return the last color
-            OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) >= position \(String(format:"%.1f",stop2Position)) color \(stop1Color.shortDescription)")
+            Log.d("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) >= position \(String(format:"%.1f",stop2Position)) color \(stop1Color.shortDescription)")
             outData[0] = (stop2Color.components[0])
             outData[1] = (stop2Color.components[1])
             outData[2] = (stop2Color.components[2])
@@ -116,7 +116,7 @@ func ShadingFunctionCreate(_ colors : [UIColor],
             
             let newColor : UIColor = interpolationFunction(stop1Color, stop2Color, newPosition)
             
-            OMLog.printd("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) position \(String(format:"%.1f",newPosition)) color \(newColor.shortDescription)")
+            Log.d("(OMShadingGradient) alpha:\(String(format:"%.1f",alpha)) position \(String(format:"%.1f",newPosition)) color \(newColor.shortDescription)")
         
             for componentIndex in 0 ..< 3 {
                 outData[componentIndex] = (newColor.components[componentIndex])
@@ -241,7 +241,7 @@ public struct OMShadingGradient {
                 assert(color.colorSpace?.model == .rgb,"unexpected color space model \(String(describing: color.colorSpace?.model.name))")
                 if(color.colorSpace?.model != .rgb) {
                     //TODO: handle different color spaces
-                    OMLog.printw("(OMShadingGradient) : Unsupported color space. model: \(String(describing: color.colorSpace?.model.name))")
+                    Log.w("(OMShadingGradient) : Unsupported color space. model: \(String(describing: color.colorSpace?.model.name))")
                 }
             }
         }
@@ -266,8 +266,8 @@ public struct OMShadingGradient {
             self.locations          = self.monotonicLocations;
         }
         
-        OMLog.printv("(OMShadingGradient): \(monotonicLocations.count) monotonic locations")
-        OMLog.printv("(OMShadingGradient): \(monotonicLocations)")
+        Log.v("(OMShadingGradient): \(monotonicLocations.count) monotonic locations")
+        Log.v("(OMShadingGradient): \(monotonicLocations)")
     }
     
     lazy var shadingFunction : (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void = {

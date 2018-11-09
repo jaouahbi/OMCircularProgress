@@ -45,28 +45,23 @@ public extension CALayer {
                                duration:TimeInterval,
                                delegate:AnyObject?)
     {
-        let animation = CABasicAnimation(keyPath:keyPath);
-        
-        var currentValue: AnyObject? = self.presentation()?.value(forKey: keyPath) as AnyObject?
-        
-        if (currentValue == nil) {
-            currentValue = fromValue
-        }
-        
-        animation.fromValue = currentValue
+        // Create and fill the basic animation instance object for a keyPath
+        let animation       = CABasicAnimation(keyPath:keyPath);
+        animation.fromValue = presentation()?.value(forKey: keyPath) ?? fromValue
         animation.toValue   = toValue
         animation.delegate  = delegate as! CAAnimationDelegate?
         
-        if(duration > 0.0){
+        if (duration > 0.0){
             animation.duration = duration
         }
-        if(beginTime > 0.0){
+        if (beginTime > 0.0){
             animation.beginTime = beginTime
         }
         
-        animation.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.linear)
+        // @note Defaults to nil indicating linear pacing.
+        // animation.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.linear)
         animation.setValue(self,forKey:keyPath)
-        self.add(animation, forKey:keyPath)
-        self.setValue(toValue,forKey:keyPath)
+        add(animation, forKey:keyPath)
+        setValue(toValue,forKey:keyPath)
     }
 }
