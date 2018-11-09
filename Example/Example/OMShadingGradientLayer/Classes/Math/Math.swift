@@ -23,8 +23,6 @@
 
 import UIKit
 
-
-
 // Clamp a number between lowerValue and upperValue.
 public func clamp<T>(_ value: T, lowerValue: T, upperValue: T) -> T where T : Comparable {
     return min(max(value, lowerValue), upperValue)

@@ -15,17 +15,17 @@
 //
 
 //
-//  OMLog.swift
+//  Log.swift
 //
 //  Created by Jorge Ouahbi on 25/9/16.
 //  Copyright © 2016 Jorge Ouahbi. All rights reserved.
 //
+//  Based on : https://github.com/kostiakoval/SpeedLog
+//
+//  Note     : For control the logs you must use the DISABLE_LOG variable
+//
 
 import Foundation
-
-// DISABLE_LOG
-
-// Based on : https://github.com/kostiakoval/SpeedLog
 
 ///LogLevel type. Specify what level of details should be included to the log
 public struct LogLevel : OptionSet {
@@ -46,10 +46,9 @@ public struct LogLevel : OptionSet {
     public static let NormalOptions: LogLevel = [Warning, Error]
     /// DeveloperOptions - Enable normal options, [Info, Warning, Error]
     public static let DevOptions: LogLevel = [Verbose, Info, Warning, Error]
-    /// QAOptions - Enable QA options, [Debug, Verbose, Info, Warning, Error]
+    /// DebugOptions - Enable Debug options, [Debug, Verbose, Info, Warning, Error]
     public static let DebugOptions: LogLevel = AllOptions
     
-
 }
 
 
@@ -57,7 +56,6 @@ public struct LogLevel : OptionSet {
 public struct Log {
     /// Log Mode
     public static var level: LogLevel = .NormalOptions
-    
     private static func levelName(level:LogLevel) -> String {
         switch level {
         case LogLevel.Debug:
@@ -76,19 +74,22 @@ public struct Log {
         }
     }
     
-    /// print items to the console
+    /// Print items to the console.
+    ///
+    /// * Note that this function ignores the DISABLE_LOG variable.
     ///
     /// - parameter items: items to print
     /// - parameter level: log level
     
     public static func print(_ items: Any..., level:LogLevel) {
-        #if !DISABLE_LOG
-            let stringItem = items.map {"\($0)"}.joined(separator: " ")
-            if (Log.level.contains(level)) {
-                Swift.print("\(levelName(level: level)):\(stringItem)", terminator: "\n")
-            }
-        #endif
+        let stringItem = items.map {"\($0)"}.joined(separator: " ")
+        if (Log.level.contains(level)) {
+            Swift.print("\(levelName(level: level)):\(stringItem)", terminator: "\n")
+        }
     }
+    
+    // MARK: Log functions for each level.
+    
     public static func d(_ items: Any..., level:LogLevel = .Debug) {
         #if !DISABLE_LOG
             print(items,level:level);
