@@ -25,6 +25,6 @@ import UIKit
 
 extension CGAffineTransform : CustomDebugStringConvertible {
     public var debugDescription: String {
-        return NSCoder.string(for: self)
+        return NSStringFromCGAffineTransform(self)
     }
 }

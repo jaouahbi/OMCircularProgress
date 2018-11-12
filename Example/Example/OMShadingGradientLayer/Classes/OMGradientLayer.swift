@@ -346,7 +346,7 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
             var currentDescription:String = "type: \((self.isAxial ? "Axial" : "Radial")) "
             if let locations = locations {
                 if(locations.count == colors.count) {
-                    _ = zip(colors,locations).compactMap { currentDescription += "color: \($0.0.shortDescription) location: \($0.1) " }
+                    _ = zip(colors,locations).flatMap { currentDescription += "color: \($0.0.shortDescription) location: \($0.1) " }
                 } else {
                     if (locations.count > 0) {
                         _ = locations.map({currentDescription += "\($0) "})

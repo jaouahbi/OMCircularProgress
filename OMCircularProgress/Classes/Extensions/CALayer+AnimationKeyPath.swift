@@ -31,10 +31,8 @@ public extension CALayer {
     
     public func animationActionForKey(_ event:String!) -> CABasicAnimation! {
         let animation = CABasicAnimation(keyPath: event)
-        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
-        if let presentation = self.presentation() {
-            animation.fromValue = presentation.value(forKey: event);
-        }
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animation.fromValue = self.presentation()!.value(forKey: event);
         return animation
     }
     
@@ -45,23 +43,28 @@ public extension CALayer {
                                duration:TimeInterval,
                                delegate:AnyObject?)
     {
-        // Create and fill the basic animation instance object for a keyPath
-        let animation       = CABasicAnimation(keyPath:keyPath);
-        animation.fromValue = presentation()?.value(forKey: keyPath) ?? fromValue
+        let animation = CABasicAnimation(keyPath:keyPath);
+        
+        var currentValue: AnyObject? = self.presentation()?.value(forKey: keyPath) as AnyObject?
+        
+        if (currentValue == nil) {
+            currentValue = fromValue
+        }
+        
+        animation.fromValue = currentValue
         animation.toValue   = toValue
         animation.delegate  = delegate as! CAAnimationDelegate?
         
-        if (duration > 0.0){
+        if(duration > 0.0){
             animation.duration = duration
         }
-        if (beginTime > 0.0){
+        if(beginTime > 0.0){
             animation.beginTime = beginTime
         }
         
-        // @note Defaults to nil indicating linear pacing.
-        // animation.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.linear)
+        animation.timingFunction = CAMediaTimingFunction(name:kCAMediaTimingFunctionLinear)
         animation.setValue(self,forKey:keyPath)
-        add(animation, forKey:keyPath)
-        setValue(toValue,forKey:keyPath)
+        self.add(animation, forKey:keyPath)
+        self.setValue(toValue,forKey:keyPath)
     }
 }

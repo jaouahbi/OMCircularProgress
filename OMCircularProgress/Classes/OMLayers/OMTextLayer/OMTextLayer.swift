@@ -526,7 +526,7 @@ extension OMTextLayer {
             
             angleArc += glyphAngle
             
-            //OMLog.printd("\(self.name ?? ""): #\(lineGlyphIndex) angle : \(CPCAngle.format(Double(glyphAngle))) arc length :\(CPCAngle.format(Double(angleArc)))")
+            //Log.d("\(self.name ?? ""): #\(lineGlyphIndex) angle : \(CPCAngle.format(Double(glyphAngle))) arc length :\(CPCAngle.format(Double(angleArc)))")
             
             glyphArcInfo[lineGlyphIndex].angle = glyphAngle
             
@@ -583,7 +583,7 @@ extension OMTextLayer {
                         
                         let angleRotation:CGFloat = -(glyphArcInfo[runGlyphIndex + glyphOffset].angle);
                         
-                        //OMLog.printd("\(self.name ?? ""): run glyph#\(runGlyphIndex) angle rotation : \(CPCAngle.format(Double(angleRotation)))");
+                        //Log.d("\(self.name ?? ""): run glyph#\(runGlyphIndex) angle rotation : \(CPCAngle.format(Double(angleRotation)))");
                         
                         context.rotate(by: angleRotation);
                         

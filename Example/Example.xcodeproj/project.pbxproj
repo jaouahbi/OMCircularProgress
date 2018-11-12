@@ -38,7 +38,6 @@
 		355ABC1C1DEF4DA1008A4B9F /* OMNumberLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABBFE1DEF4DA1008A4B9F /* OMNumberLayer.swift */; };
 		355ABC1D1DEF4DA1008A4B9F /* OMProgressImageLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC001DEF4DA1008A4B9F /* OMProgressImageLayer.swift */; };
 		355ABC1E1DEF4DA1008A4B9F /* OMTextLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC021DEF4DA1008A4B9F /* OMTextLayer.swift */; };
-		355ABC1F1DEF4DA1008A4B9F /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC031DEF4DA1008A4B9F /* Log.swift */; };
 		355ABC441DEF4E01008A4B9F /* Easing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC301DEF4E01008A4B9F /* Easing.swift */; };
 		355ABC461DEF4E01008A4B9F /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC321DEF4E01008A4B9F /* Math.swift */; };
 		355ABC471DEF4E01008A4B9F /* OMGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC331DEF4E01008A4B9F /* OMGradientLayer.swift */; };
@@ -49,6 +48,7 @@
 		355ABC511DEF5023008A4B9F /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC4D1DEF5023008A4B9F /* CGPoint+Extension.swift */; };
 		355ABC521DEF5023008A4B9F /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC4E1DEF5023008A4B9F /* CGFloat+Extensions.swift */; };
 		355ABC531DEF5023008A4B9F /* CGAffineTransform+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC4F1DEF5023008A4B9F /* CGAffineTransform+Extensions.swift */; };
+		C974821A219A385000B31CF9 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9748219219A385000B31CF9 /* Log.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,7 +84,6 @@
 		355ABBFE1DEF4DA1008A4B9F /* OMNumberLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMNumberLayer.swift; sourceTree = "<group>"; };
 		355ABC001DEF4DA1008A4B9F /* OMProgressImageLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMProgressImageLayer.swift; sourceTree = "<group>"; };
 		355ABC021DEF4DA1008A4B9F /* OMTextLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMTextLayer.swift; sourceTree = "<group>"; };
-		355ABC031DEF4DA1008A4B9F /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		355ABC301DEF4E01008A4B9F /* Easing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Easing.swift; sourceTree = "<group>"; };
 		355ABC321DEF4E01008A4B9F /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		355ABC331DEF4E01008A4B9F /* OMGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMGradientLayer.swift; sourceTree = "<group>"; };
@@ -95,6 +94,7 @@
 		355ABC4D1DEF5023008A4B9F /* CGPoint+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
 		355ABC4E1DEF5023008A4B9F /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 		355ABC4F1DEF5023008A4B9F /* CGAffineTransform+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Extensions.swift"; sourceTree = "<group>"; };
+		C9748219219A385000B31CF9 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,10 +149,10 @@
 		355ABBE21DEF4DA1008A4B9F /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C9748219219A385000B31CF9 /* Log.swift */,
 				355ABBE31DEF4DA1008A4B9F /* Extensions */,
 				355ABBFB1DEF4DA1008A4B9F /* OMCircularProgress.swift */,
 				355ABBFC1DEF4DA1008A4B9F /* OMLayers */,
-				355ABC031DEF4DA1008A4B9F /* Log.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -282,13 +282,12 @@
 			attributes = {
 				LastSwiftMigration = 0720;
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = none;
 				TargetAttributes = {
 					352CB7441A6D1FBB00863568 = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = VBTKBHNWT3;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 0900;
 					};
 				};
 			};
@@ -331,7 +330,6 @@
 				355ABC521DEF5023008A4B9F /* CGFloat+Extensions.swift in Sources */,
 				355ABC141DEF4DA1008A4B9F /* UIBezierPath+Polygon.swift in Sources */,
 				355ABC511DEF5023008A4B9F /* CGPoint+Extension.swift in Sources */,
-				355ABC1F1DEF4DA1008A4B9F /* Log.swift in Sources */,
 				355ABC191DEF4DA1008A4B9F /* UIFont+Extensions.swift in Sources */,
 				355ABC4A1DEF4E01008A4B9F /* OMShadingGradient.swift in Sources */,
 				355ABC481DEF4E01008A4B9F /* OMGradientLayerProtocols.swift in Sources */,
@@ -350,6 +348,7 @@
 				355ABC441DEF4E01008A4B9F /* Easing.swift in Sources */,
 				355ABC0C1DEF4DA1008A4B9F /* CGRect+Extensions.swift in Sources */,
 				355ABBD11DEF4CD8008A4B9F /* AppDelegate.swift in Sources */,
+				C974821A219A385000B31CF9 /* Log.swift in Sources */,
 				355ABC081DEF4DA1008A4B9F /* CGAffineTransform+Extension.swift in Sources */,
 				355ABC0D1DEF4DA1008A4B9F /* CGSize+Math.swift in Sources */,
 				355ABC461DEF4E01008A4B9F /* Math.swift in Sources */,
@@ -396,14 +395,12 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -453,14 +450,12 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -495,18 +490,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = VBTKBHNWT3;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"DISABLE_LOG=0",
-				);
+				DEVELOPMENT_TEAM = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.io.OMCircularProgress.Example;
+				PRODUCT_BUNDLE_IDENTIFIER = Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -514,15 +507,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = VBTKBHNWT3;
-				GCC_PREPROCESSOR_DEFINITIONS = "DISABLE_LOG=1";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.io.OMCircularProgress.Example;
+				PRODUCT_BUNDLE_IDENTIFIER = Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
