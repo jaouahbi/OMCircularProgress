@@ -51,7 +51,7 @@ import CoreGraphics
 import CoreText
 import CoreFoundation
 
-@objc class OMTextLayer : CALayer
+ class OMTextLayer : CALayer
 {
     // MARK: properties
     

@@ -51,7 +51,7 @@ private struct OMProgressImageLayerProperties {
     static var Progress = "progress"
 }
 
-class OMProgressImageLayer : CALayer
+@objc class OMProgressImageLayer : CALayer
 {
     // progress showing image or hiding
     
@@ -163,7 +163,7 @@ class OMProgressImageLayer : CALayer
         var newImage:UIImage? = nil
         var newProgress:Double = self.progress
         
-        if let presentationLayer: AnyObject = self.presentation(){
+        if let presentationLayer = self.presentation(){
             newProgress = presentationLayer.progress
         }
         

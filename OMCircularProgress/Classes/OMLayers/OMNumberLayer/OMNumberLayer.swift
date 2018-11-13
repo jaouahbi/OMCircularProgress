@@ -48,11 +48,11 @@ private struct OMNumberLayerProperties {
 // CALayer object
 //
 
-@objc class OMNumberLayer : OMTextLayer
+ class OMNumberLayer : OMTextLayer
 {
     // MARK: properties
     
-    var number: NSNumber? = nil {
+    @objc var number: NSNumber? = nil {
         didSet{
             setNeedsDisplay()
         }
