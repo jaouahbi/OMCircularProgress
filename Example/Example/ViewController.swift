@@ -157,25 +157,28 @@ class ProgressExampleViewController: UIViewController {
     
     func setupDirectProgressExample(_ progress:OMCircularProgress) {
         
-        progress.progressStyle = .direct
+        
+        let numberOfSteps = 20
+        let stepAngle     = 𝜏 / Double(numberOfSteps)
+        let color         = UIColor.crayolaCeruleanColor
+        
+        progress.style = .direct
         
         // Configure the animation
         
-        progress.animationDuration  = 40.0
+        progress.animationDuration  = 10.0 * Double(numberOfSteps)
         progress.thicknessRatio     = 1.0      // 100%
         
         let colors : [UIColor] = [UIColor.crayolaSeaSerpentColor,
                                   UIColor.crayolaCeruleanColor,
                                   UIColor.crayolaSeaSerpentColor]
         
-        let numberOfSteps = 20
-        let stepAngle     = 𝜏 / Double(numberOfSteps)
-        let color         = UIColor.crayolaCeruleanColor
+
         
         for i in 0 ..< numberOfSteps  {
             
             // Create the step.
-            let theStep:OMCPStepData?
+            let theStep:CPStepData?
             // If the step exist, only update the step data
             if progress.dataSteps.count > i {
                 theStep = progress[i]
@@ -243,7 +246,7 @@ class ProgressExampleViewController: UIViewController {
             
             // Create the step.
             
-            let theStep:OMCPStepData?
+            let theStep:CPStepData?
             
             // If the step exist, only update the step data
             
@@ -285,7 +288,7 @@ class ProgressExampleViewController: UIViewController {
         
         // Configure the animation
         
-        progress.animationDuration  = 20   // 20 seconds
+        progress.animationDuration  = 10   // 10 seconds
         progress.thicknessRatio     = 0.7      // 70%
         
         let colors : [UIColor] = UIColor.rainbow(25, hue: 0)
@@ -296,7 +299,7 @@ class ProgressExampleViewController: UIViewController {
             
             let color = colors[i]
             // Create the step.
-            let theStep:OMCPStepData?
+            let theStep:CPStepData?
             
             // If the step exist, only update the step data
             
@@ -368,7 +371,7 @@ class ProgressExampleViewController: UIViewController {
     
     func setupWithImagesWithDifferentsSize(_ progress:OMCircularProgress) {
         
-        progress.animationDuration  = 4
+        progress.animationDuration  = 10
         progress.thicknessRatio     = 0.4      // 40%
         
         let colors : [UIColor] = UIColor.rainbow(16, hue: 0)
@@ -376,7 +379,7 @@ class ProgressExampleViewController: UIViewController {
         let stepAngle = (.pi * 2.0) / Double(colors.count)
         
         for i in 0 ..< colors.count  {
-            let theStep:OMCPStepData?
+            let theStep:CPStepData?
             
             // If the step exist, only update the step data
             
@@ -452,7 +455,7 @@ class ProgressExampleViewController: UIViewController {
             
             // Create and configure the step
             
-            let theStep:OMCPStepData?
+            let theStep:CPStepData?
             
             // If the step exist, only update the step data
             
@@ -645,7 +648,7 @@ class ProgressExampleViewController: UIViewController {
             
             // Create the step.
             
-            let theStep:OMCPStepData?
+            let theStep:CPStepData?
             
             if progress.dataSteps.count > i {
                 theStep = progress[i]
@@ -712,7 +715,7 @@ class ProgressExampleViewController: UIViewController {
             
             // Create one step for each minute
             
-            let theStep:OMCPStepData?
+            let theStep:CPStepData?
             
             if progress.dataSteps.count > i {
                 theStep = progress[i]
