@@ -479,7 +479,6 @@ open class CPCElement<T:CALayer> {
         }
         return self.internalLayer!
     }()
-    
 }
 
 /// The CPStepData object represent each step element data in the circular progress control
@@ -639,27 +638,6 @@ open class CPStepData : CustomDebugStringConvertible {
 
 @IBDesignable class OMCircularProgress : UIControl {
     
-    /// MARK: Contructors
-    
-    required init?(coder : NSCoder) {
-        super.init(coder: coder)
-        commonInit()
-    }
-    
-    required init?(style : CPCStyle) {
-        super.init(frame:CGRect.zero)
-        self.style = style
-        commonInit()
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        commonInit()
-    }
-    
-    func commonInit() {
-        
-    }
     
     // Array of OMCPStepData
     var dataSteps: NSMutableArray   = []
@@ -702,29 +680,12 @@ open class CPStepData : CustomDebugStringConvertible {
         if self.numberLayer  == nil {
             // Create the numerical text layer with the text centered
             self.numberLayer =  OMNumberLayer()
-              #if !DISABLE_LOG
+            #if !DISABLE_LOG
             self.numberLayer?.name = "number layer"
             #endif
         }
         return self.numberLayer!
     }()
-    
-    
-    /// Update the center numerical layer
-    
-    func updateNumberLayerGeometry() {
-        
-        let numberLayer = number!
-        
-        // The percent is represented from 0.0 to 1.0
-        
-        let numberToRepresent = NSNumber(value:Int32(1));
-        
-        let size = numberLayer.frameSizeLengthFromNumber(numberToRepresent)
-        
-        numberLayer.frame = bounds.size.center().centerRect(size)
-        
-    }
     
     // MARK: Images
     
@@ -738,9 +699,9 @@ open class CPStepData : CustomDebugStringConvertible {
     
     // MARK: Font and Text (do no need layout)
     
-    // text
+    /// Text
     
-    /// The text represent a percent number.
+    // The text represent a percent number.
     var percentText:Bool = false {
         didSet{
             number.formatStyle = percentText ? .percentStyle : .noStyle
@@ -773,24 +734,19 @@ open class CPStepData : CustomDebugStringConvertible {
     // Radius of the progress view
     
     var radius : CGFloat {
-        
         set(newRadius) {
             suggestedRadiusRatio = newRadius
-            self.setNeedsLayout()
+            setNeedsLayout()
         }
-        
         get {
-            
             if suggestedRadiusRatio > 0.0 {
                 return suggestedRadiusRatio * (bounds.insetBy(dx: kControlInset, dy: kControlInset).size.min() * 0.5)
             }
-            
-            return ( bounds.insetBy(dx: kControlInset, dy: kControlInset).size.min() * 0.5)
-            
+            return (bounds.insetBy(dx: kControlInset, dy: kControlInset).size.min() * 0.5)
         }
     }
     
-    // Border
+    /// Border
     
     // Border width
     
@@ -810,9 +766,9 @@ open class CPStepData : CustomDebugStringConvertible {
     public var progress: Double = 0.0 {
         
         didSet(oldValue) {
-        
+            
             Log.d("[\(layer.name ?? "")] old\\new progress: \(oldValue)\\\(progress)")
-
+            
             //let rads = numberOfRadians()
             //assert(abs(rads - 2 * M_PI) < DBL_EPSILON, "Unexpected angle consistence of circle radians (2 * π) != \(rads)")
             
@@ -829,14 +785,55 @@ open class CPStepData : CustomDebugStringConvertible {
     }
     
     
-    /// Update the progress stuff.
+    /// MARK: Contructors
     
-    fileprivate func updateProgress()
-    {
-
-        Log.d("[\(layer.name ?? "")] updateCompleteProgress (progress: \(progress) of \(numberOfSteps))")
-
+    required init?(coder : NSCoder) {
+        super.init(coder: coder)
+        commonInit()
+    }
+    
+    required init?(style : CPCStyle) {
+        super.init(frame:CGRect.zero)
+        self.style = style
+        commonInit()
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+    }
+    
+    func commonInit() {
         
+    }
+    
+    ///  Layout the subviews
+    override func layoutSubviews() {
+        Log.d("[\(layer.name ?? "")] layoutSubviews()")
+        super.layoutSubviews()
+        updateLayerTree()
+    }
+    
+    /// Update the center numerical layer
+    func updateNumberLayerGeometry() {
+        
+        let numberLayer = number!
+        
+        // The percent is represented from 0.0 to 1.0
+        
+        let numberToRepresent = NSNumber(value:Int32(1));
+        
+        let size = numberLayer.frameSizeLengthFromNumber(numberToRepresent)
+        
+        numberLayer.frame = bounds.size.center().centerRect(size)
+        
+    }
+    
+    /// Update the progress.
+    
+    fileprivate func updateProgress() {
+        Log.d("[\(layer.name ?? "")] updateProgress (progress: \(progress) of \(numberOfSteps))")
+
         if progress == 0 {
             // Nothing to update
             return
@@ -1184,84 +1181,6 @@ open class CPStepData : CustomDebugStringConvertible {
             containerLayer!.addSublayer(shapeLayer)
         }
     }
-    
-    ///  Layout the subviews
-    override func layoutSubviews() {
-
-        Log.d("[\(layer.name ?? "")] layoutSubviews()")
-
-        super.layoutSubviews()
-        updateLayerTree()
-    }
-    
-    
-    
-    /// Calculate the center rect for the image and/or text at the angle.
-    ///
-    /// - parameter angle: element angle
-    /// - parameter align: desired element position in radius  default: .middle
-    /// - parameter size:  optional element size  default: CGSize.zero
-    ///
-    /// returns: return a element final CGPoint
-    ///
-    
-    fileprivate func angleRect(_ angle:Double, align:CPRadiusPosition, size:CGSize = CGSize.zero) -> CGRect {
-
-        Log.d("[\(layer.name ?? "")] angleRect(\(angle) \(align) \(size))")
-
-        return anglePoint(angle,align: align,size: size).centerRect(size)
-    }
-    
-    /// Calculate the center rect for the image and/or text at the angle.
-    ///
-    /// - parameter angle: element angle
-    /// - parameter radius: element radius
-    /// - parameter align: desired element position in radius  default: .middle
-    /// - parameter size:  optional element size  default: CGSize.zero
-    ///
-    /// returns: return a element final CGPoint
-    ///
-    
-    fileprivate func angleRect(_ angle:Double, radius:CGFloat, align:CPRadiusPosition = .middle, size:CGSize = CGSize.zero) -> CGRect {
-
-        Log.d("[\(layer.name ?? "")] angleRect(\(angle) \(radius) \(align) \(size))")
-
-        return anglePoint(angle,radius:radius,align: align,size: size).centerRect(size)
-    }
-    
-    /// Calculate the center point for the image and/or text at the angle.
-    ///
-    /// - parameter angle: element angle
-    /// - parameter radius: element radius
-    /// - parameter align: desired element position in radius  default: .middle
-    /// - parameter size:  optional element size  default: CGSize.zero
-    ///
-    /// returns: return a element final CGPoint
-    ///
-    
-    fileprivate func anglePoint(_ angle:Double, radius:CGFloat, align:CPRadiusPosition = .middle,size:CGSize = CGSize.zero) -> CGPoint {
-
-        Log.d("[\(layer.name ?? "")] anglePoint(\(angle) \(radius) \(align) \(size))")
-
-        return Angle.pointOfAngle(angle,center:bounds.size.center(),radius:radius)
-    }
-    
-    /// Calculate the center point for the image and/or text at the angle.
-    ///
-    /// - parameter angle: element angle
-    /// - parameter align: desired element position in radius  default: .middle
-    /// - parameter size:  optional element size  default: CGSize.zero
-    ///
-    /// returns: return a element final CGPoint
-    ///
-    
-    fileprivate func anglePoint(_ angle:Double, align:CPRadiusPosition, size:CGSize = CGSize.zero) -> CGPoint {
-
-        Log.d("[\(layer.name ?? "")] anglePoint(\(angle) \(align) \(size))")
-
-        return Angle.pointOfAngle(angle,center:bounds.size.center(),radius:CGFloat(positionInRadius(align ,size: size )))
-    }
-    
     /// Get the position in the radius
     ///
     /// - parameter position: position in radius
@@ -1269,20 +1188,20 @@ open class CPStepData : CustomDebugStringConvertible {
     ///
     /// - returns: return the position in the radius
     
-    internal func positionInRadius(_ position : CPRadiusPosition, size:CGSize = CGSize.zero) -> Double {
-        let newRadius:Double
+    internal func positionInRadius(_ position : CPRadiusPosition, size:CGSize = CGSize.zero) -> CGFloat {
+        let newRadius:CGFloat
         switch(position){
         case .middle:
-            newRadius = Double(midRadius)
+            newRadius = midRadius
             break
         case .inner:
-            newRadius = Double(innerRadius)
+            newRadius = innerRadius
             break
         case .border:
-            newRadius = Double(outerRadius)
+            newRadius = outerRadius
             break
         case .outer:
-            newRadius = Double(outerRadius + (size.height * 0.5))
+            newRadius = outerRadius + (size.height * 0.5)
             break
         }
         return newRadius;
@@ -1290,13 +1209,12 @@ open class CPStepData : CustomDebugStringConvertible {
     
     /// Add the created step image layers to the root layer.
     fileprivate func addStepImageLayers() {
-
         Log.d("[\(layer.name ?? "")] addStepImageLayers()")
 
         for (index, step) in dataSteps.enumerated() {
             let theStep = step as! CPStepData
-              #if !DISABLE_LOG
-            theStep.imageElement.layer.name = "step \(index) image"
+            #if !DISABLE_LOG
+                theStep.imageElement.layer.name = "step \(index) image"
             #endif
             containerLayer!.addSublayer(theStep.imageElement.layer )
             theStep.imageElement.shadow = true
@@ -1331,7 +1249,7 @@ open class CPStepData : CustomDebugStringConvertible {
         
         let anglePoint = Angle.pointOfAngle(angle,
                                               center:bounds.size.center(),
-                                              radius: CGFloat(positionInRadius(step.imageElement.radiusPosition, size: sizeOf!)))
+                                              radius: positionInRadius(step.imageElement.radiusPosition, size: sizeOf!))
         
         let positionInAngle = anglePoint.centerRect(sizeOf!)
 
@@ -1340,15 +1258,12 @@ open class CPStepData : CustomDebugStringConvertible {
         Log.d("[\(layer.name ?? "")] Position in angle \(anglePoint)  position in radius :\(step.imageElement.radiusPosition)")
         Log.v("[\(layer.name ?? "")] Frame \(positionInAngle.integral) from the aligned step angle \(Angle.format(angle)) and the image size \((sizeOf?.integral())!)")
 
-        
         // Set the new frame
         step.imageElement.layer.frame = positionInAngle
         // Rotate the layer
         if (step.imageElement.orientationToAngle) {
             let rotationZ = (angle - startAngle)
-
             Log.v("[\(layer.name ?? "")] Image will be oriented to angle: \(Angle.format(rotationZ))")
-
             step.imageElement.layer.setTransformRotationZ(rotationZ)
         }
     }
@@ -1375,7 +1290,7 @@ open class CPStepData : CustomDebugStringConvertible {
                 
                 let anglePoint = Angle.pointOfAngle(angle,
                                                       center:bounds.size.center(),
-                                                      radius: CGFloat(positionInRadius(step.textElement.radiusPosition, size: sizeOf)))
+                                                      radius:positionInRadius(step.textElement.radiusPosition, size: sizeOf))
                 let frame = anglePoint.centerRect(sizeOf)
                 
 
@@ -1400,7 +1315,6 @@ open class CPStepData : CustomDebugStringConvertible {
     }
     
     /// Remove all layers from the superlayer.
-    
     internal func removeSublayers() {
         Log.d("[\(layer.name ?? "")] removeSublayers() \((containerLayer!.sublayers != nil) ? containerLayer!.sublayers!.count : 0)")
         if let s = containerLayer!.sublayers {
