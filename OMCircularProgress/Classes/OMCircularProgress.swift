@@ -22,9 +22,9 @@
 
 
 #if os(iOS)
-import UIKit
+    import UIKit
 #elseif os(OSX)
-import AppKit
+    import AppKit
 #endif
 
 /// Constants
@@ -210,12 +210,15 @@ open class Angle : CustomDebugStringConvertible {
     /// - parameter end: end angle  in radians
     ///
     /// - returns: return self
-    convenience init(start:Double, end:Double){
+    convenience init(start:Double, end:Double) {
         self.init()
         self.start = start
         self.end   = end;
         
         assert(valid())
+        if(!valid()) {
+            Log.w("(Angle): Angle overflow. \(self)")
+        }
     }
     
     ///  Contruct the angle
@@ -230,6 +233,9 @@ open class Angle : CustomDebugStringConvertible {
         self.end   = start+length;
         
         assert(valid())
+        if(!valid()) {
+            Log.w("(Angle): Angle overflow. \(self)")
+        }
     }
     
     ///  Contruct the angle in degree
@@ -242,6 +248,8 @@ open class Angle : CustomDebugStringConvertible {
         self.init()
         self.start = startDegree.degreesToRadians()
         self.end   = endDegree.degreesToRadians()
+        
+        assert(valid())
         if(!valid()) {
             Log.w("(Angle): Angle overflow. \(self)")
         }
@@ -262,6 +270,7 @@ open class Angle : CustomDebugStringConvertible {
         self.start =  start.degreesToRadians();
         self.end   =  end.degreesToRadians();
         
+        assert(valid())
         if(!valid()) {
             // TODO: control it.
             Log.w("(Angle): Angle overflow. \(self)")
@@ -338,8 +347,7 @@ open class Angle : CustomDebugStringConvertible {
     func norm() -> Double {
         return self.start / 𝜏
     }
-    
-    
+
     /// Aling angle to CPCAnglePosition
     ///
     /// - parameter position: position in angle
@@ -360,11 +368,10 @@ open class Angle : CustomDebugStringConvertible {
     ///
     /// - parameter angle: angle in radians
     ///
-    /// - returns: String formatted
+    /// - returns: String formatted as angle in degrees
     public class func format(_ angle:Double) -> String {
         return "\(round(angle.radiansToDegrees()))°"
     }
-    
     
     /// Rectangle of a angle
     ///
@@ -383,7 +390,8 @@ open class Angle : CustomDebugStringConvertible {
                       height:abs(p1.y - p2.y));
     }
     
-    ///  Point in a angle
+    ///   Given a radius length r and an angle in radians and a circle's center (x,y),
+    ///   calculate the coordinates of a point on the circumference
     ///
     /// - parameter angle:  angle
     /// - parameter center: center
@@ -391,9 +399,6 @@ open class Angle : CustomDebugStringConvertible {
     ///
     /// - returns: CGPoint
     public class func pointOfAngle(_ angle:Double, center:CGPoint, radius: CGFloat) -> CGPoint {
-        
-        // Given a radius length r and an angle in radians and a circle's center (x,y),
-        // calculate the coordinates of a point on the circumference
         
         let theta = CGFloat( angle )
         
@@ -820,13 +825,11 @@ open class CPStepData : CustomDebugStringConvertible {
         let numberLayer = number!
         
         // The percent is represented from 0.0 to 1.0
-        
         let numberToRepresent = NSNumber(value:Int32(1));
         
         let size = numberLayer.frameSizeLengthFromNumber(numberToRepresent)
         
         numberLayer.frame = bounds.size.center().centerRect(size)
-        
     }
     
     /// Update the progress.
@@ -945,37 +948,23 @@ open class CPStepData : CustomDebugStringConvertible {
         }
     }
     
-    ///
-    /// Get the total number of radians
-    ///
-    /// returns: number of radians
-    ///
-    
-    func numberOfRadians() -> Double {
-        return dataSteps.reduce(0){
-            $0 + ($1 as! CPStepData).angle.length()
-        }
-    }
+
     ///
     /// Get the total percent of radians done. (2 * M_PI)
     ///
     /// returns: percent of radian done
     ///
     
-    func percentDone() -> Double {
-        let radians =  numberOfRadians()
-        if radians > 0 {
-            return radians / (.pi * 2.0)
-        }
-        return 0;
-    }
-    
+//    func percentDone() -> Double {
+//        let radians =  numberOfRadians()
+//        if radians > 0 {
+//            return radians / (.pi * 2.0)
+//        }
+//        return 0;
+//    }
     
     /// Get the last angle used. If do not found any. Uses startAngle.
-    ///
-    /// - returns: return the last used angle end
-    
-    fileprivate func getLastAngle() -> Double {
+    var lastAngle: Double {
         var startAngle = self.startAngle;
         if (dataSteps.count > 0) {
             // The new startAngle is the last endAngle
@@ -1059,6 +1048,7 @@ open class CPStepData : CustomDebugStringConvertible {
     /// - parameter end:   end angle of the step
     ///
     /// - note: This function has a start/end angle for future development
+    ///
     fileprivate func setUpProgressLayer(_ step:CPStepData, start:Double, end:Double) {
         
         let shapeLayer = step.shapeLayer
@@ -1074,17 +1064,13 @@ open class CPStepData : CustomDebugStringConvertible {
                "The start angle and the end angle cannot be the same. angle: \(Angle.format(start))")
         assert(start < end, "Unexpected start/end angle. \(Angle.format(start))/\(Angle.format(end))");
         
-
-        
         // TODO: the head can be rounded?
         let canRoundedHead = true
         let roundedHeadArcAngleStart:Double = 0
         let roundedHeadArcAngleEnd:Double   = 0
         // angle
-        let theAngle = Angle(start: start + roundedHeadArcAngleStart,
-                               end  : end   - roundedHeadArcAngleEnd)
-        
-
+        let theAngle = Angle(start: start + roundedHeadArcAngleStart, end: end - roundedHeadArcAngleEnd)
+    
         Log.v("\(layer.name ?? "")(\(name)) angle:\(theAngle) Rounded head angle start / end : \(Angle.format(roundedHeadArcAngleStart)) / \(Angle.format(roundedHeadArcAngleEnd))")
         
         let bezier = UIBezierPath( arcCenter:bounds.size.center(),
@@ -1172,7 +1158,7 @@ open class CPStepData : CustomDebugStringConvertible {
             mask.mask = shapeLayer
             containerLayer!.addSublayer(mask)
             #if DEBUG_MASK
-            containerLayer.addSublayer(shapeLayer)
+                containerLayer.addSublayer(shapeLayer)
             #endif
         } else if let border = step.shapeLayerBorder {
             border.addSublayer(shapeLayer)
@@ -1489,10 +1475,22 @@ extension OMCircularProgress {
     
     /// Remove all steps.
     func removeAllSteps() {
-        self.dataSteps.removeAllObjects()
-        assert(self.dataSteps.count == 0)
+        dataSteps.removeAllObjects()
+        assert(dataSteps.count == 0)
         removeSublayers()
         layoutSubviews()
+    }
+    
+    ///
+    /// Get the total number of radians
+    ///
+    /// returns: number of radians
+    ///
+    
+    func numberOfRadians() -> Double {
+        return dataSteps.reduce(0){
+            $0 + ($1 as! CPStepData).angle.length()
+        }
     }
     
     /// Check if the lenght will overflow the angle.
@@ -1520,7 +1518,7 @@ extension OMCircularProgress {
     ///
     /// - returns: return a OMCPStepData object.
     func addStep(_ angle:Double, color:UIColor!) -> CPStepData? {
-        let lastAngle = getLastAngle()
+        let lastAngle = self.lastAngle
         return  addStep( lastAngle, end:lastAngle + angle, color:color );
     }
     /// Create a new step progress.
@@ -1558,18 +1556,14 @@ extension OMCircularProgress {
     ///
     /// - returns: optional new step data
     func addStepWithPercent(_ percent:Double, color:UIColor!) -> CPStepData? {
-        return addStepWithPercent(getLastAngle(), percent: percent, color: color);
+        return addStepWithPercent(self.lastAngle, percent: percent, color: color);
     }
 }
 
 // MARK: OMCircularProgress debug extension
 
-extension OMCircularProgress
-{
-    // MARK: Debug functions
-    
+extension OMCircularProgress {
     /// Debug print all steps
-    
     func dumpAllSteps() {
         for (index, step) in dataSteps.enumerated() {
             Log.v("\(layer.name ?? "")): \(index): \(step as! CPStepData)")
