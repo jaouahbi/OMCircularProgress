@@ -48,7 +48,8 @@ func ShadingFunctionCreate(_ colors : [UIColor],
 {
     return { inData, outData in
         
-        let alpha = CGFloat(slopeFunction(Double(inData[0])))
+        let interp = Double(inData[0])
+        let alpha  = CGFloat(slopeFunction(interp))
         
         var positionIndex = 0;
         let colorCount    = colors.count
@@ -111,7 +112,6 @@ func ShadingFunctionCreate(_ colors : [UIColor],
         } else {
             
             // otherwise interpolate between the two
-            
             let newPosition = (alpha - stop1Position) / (stop2Position - stop1Position);
             
             let newColor : UIColor = interpolationFunction(stop1Color, stop2Color, newPosition)
@@ -121,28 +121,26 @@ func ShadingFunctionCreate(_ colors : [UIColor],
             for componentIndex in 0 ..< 3 {
                 outData[componentIndex] = (newColor.components[componentIndex])
             }
-            
-            //Premultiply the color by the alpha.?
-            
             // The alpha component is always 1, the shading is always opaque.
-            // outData[3] = 1.0
+            outData[3] = 1.0
         }
     }
 }
 
 
-func ShadingCallback(_ infoPointer:UnsafeMutableRawPointer?,
+func ShadingCallback(_ infoPointer: UnsafeMutableRawPointer?,
                      inData: UnsafePointer<CGFloat>,
                      outData: UnsafeMutablePointer<CGFloat>) -> Swift.Void {
     // Load the UnsafeMutableRawPointer, and call the shadingFunction
     var shadingPtr = infoPointer?.load(as: OMShadingGradient.self)
+   // print(shadingPtr!)
     shadingPtr?.shadingFunction(inData, outData)
 }
 
 
 public struct OMShadingGradient {
-    fileprivate var monotonicLocations:[CGFloat] = []
-    var locations : [CGFloat]?
+    var monotonicLocations: [CGFloat] = []
+    var locations: [CGFloat]?
     
     let colors : [UIColor]
     let startPoint : CGPoint
@@ -263,7 +261,7 @@ public struct OMShadingGradient {
         
         if (monotonicLocations.count == 0) {
             self.monotonicLocations = monotonic(colors.count)
-            self.locations          = self.monotonicLocations;
+            self.locations          = self.monotonicLocations
         }
         
         Log.v("(OMShadingGradient): \(monotonicLocations.count) monotonic locations")
@@ -271,8 +269,9 @@ public struct OMShadingGradient {
     }
     
     lazy var shadingFunction : (UnsafePointer<CGFloat>, UnsafeMutablePointer<CGFloat>) -> Void = {
+        
         // @default: linear interpolation
-        var interpolationFunction:GradientInterpolationFunction =  UIColor.lerp
+        var interpolationFunction: GradientInterpolationFunction =  UIColor.lerp
         switch(self.functionType){
         case .linear :
             interpolationFunction =  UIColor.lerp
@@ -284,15 +283,20 @@ public struct OMShadingGradient {
             interpolationFunction =  UIColor.coserp
             break
         }
-        return ShadingFunctionCreate(self.colors,
-                                     locations: self.monotonicLocations,
+        let colors = self.colors
+        let locations =  self.locations
+        return ShadingFunctionCreate(colors,
+                                     locations: locations!,
                                      slopeFunction: self.slopeFunction,
                                      interpolationFunction: interpolationFunction )
     }()
     
     lazy var handleFunction : CGFunction! = {
         var callbacks = CGFunctionCallbacks(version: 0, evaluate: ShadingCallback, releaseInfo: nil)
-        return CGFunction(info: &self,                   // info
+        let infoPointer = UnsafeMutableRawPointer.allocate(byteCount: MemoryLayout<OMShadingGradient>.size, alignment: MemoryLayout<OMShadingGradient>.alignment)
+         infoPointer.storeBytes(of: self, as: OMShadingGradient.self)
+        
+        return CGFunction(info: infoPointer,             // info
             domainDimension: 1,                          // domainDimension
             domain: [0, 1],                              // domain
             rangeDimension: 4,                           // rangeDimension
@@ -300,26 +304,29 @@ public struct OMShadingGradient {
             callbacks: &callbacks)                       // callbacks
     }()
     
-    lazy var shadingHandle : CGShading! = {
-
+    lazy var shadingHandle: CGShading? = {
         var callbacks = CGFunctionCallbacks(version: 0, evaluate: ShadingCallback, releaseInfo: nil)
-        if(self.gradientType == .axial) {
-           return CGShading(axialSpace: self.colorSpace,
-                                        start: self.startPoint,
-                                        end: self.endPoint,
-                                        function: self.handleFunction!,
-                                        extendStart: self.extendsPastStart,
-                                        extendEnd: self.extendsPastEnd)
-        } else {
-            assert(self.gradientType == .radial)
-            return CGShading(radialSpace: self.colorSpace,
-                                         start: self.startPoint,
-                                         startRadius: self.startRadius,
-                                         end: self.endPoint,
-                                         endRadius: self.endRadius,
-                                         function: self.handleFunction!,
-                                         extendStart: self.extendsPastStart,
-                                         extendEnd: self.extendsPastEnd)
+        if let handleFunction = self.handleFunction {
+            if (self.gradientType == .axial) {
+                return CGShading(axialSpace: self.colorSpace,
+                                 start: self.startPoint,
+                                 end: self.endPoint,
+                                 function: handleFunction,
+                                 extendStart: self.extendsPastStart,
+                                 extendEnd: self.extendsPastEnd)
+            } else {
+                assert(self.gradientType == .radial)
+                return CGShading(radialSpace: self.colorSpace,
+                                 start: self.startPoint,
+                                 startRadius: self.startRadius,
+                                 end: self.endPoint,
+                                 endRadius: self.endRadius,
+                                 function: handleFunction,
+                                 extendStart: self.extendsPastStart,
+                                 extendEnd: self.extendsPastEnd)
+            }
         }
+        
+        return nil
     }()
 }

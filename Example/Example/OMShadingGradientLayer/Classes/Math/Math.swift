@@ -23,12 +23,13 @@
 
 import UIKit
 
-// Clamp a number between lowerValue and upperValue.
-public func clamp<T>(_ value: T, lowerValue: T, upperValue: T) -> T where T : Comparable {
-    return min(max(value, lowerValue), upperValue)
+
+// clamp a number between lower and upper.
+public func clamp<T: Comparable>(_ value: T, lower: T, upper: T) -> T {
+    return min(max(value, lower), upper)
 }
 
-// Check if the number is between lower and upper.
+// is the number between lower and upper.
 public func between<T: Comparable>(_ value: T, lower: T, upper: T , include: Bool = true) -> Bool {
     let left = min(lower, upper)
     let right = max(lower, upper)
@@ -64,25 +65,16 @@ public func slope( x:Float, A:Float) -> Float {
     return p/(p + powf(1.0-x, A));
 }
 
-//TODO: use Generics
-
-public func map(input:CGFloat,input_start:CGFloat,input_end:CGFloat,output_start:CGFloat,output_end:CGFloat)-> CGFloat {
-    let slope = 1.0 * (output_end - output_start) / (input_end - input_start)
-    return output_start + round(slope * (input - input_start))
-}
-
 public func linlin( val:Double,  inMin:Double,  inMax:Double,  outMin:Double,  outMax:Double) -> Double {
     return ((val - inMin) / (inMax - inMin) * (outMax - outMin)) + outMin;
 }
 
 public func  linexp( val:Double,  inMin:Double,  inMax:Double,  outMin:Double,  outMax:Double) -> Double {
-    //TODO: use clamp
     //clipping
     let valclamp = max(min(val, inMax), inMin);
     return pow((outMax / outMin), (valclamp - inMin) / (inMax - inMin)) * outMin;
 }
 public func explin(val:Double,  inMin:Double,  inMax:Double,  outMin:Double,  outMax:Double) -> Double {
-    //TODO: use clamp
     //clipping
     let valclamp = max(min(val, inMax), inMin);
     return (log(valclamp/inMin) / log(inMax/inMin) * (outMax - outMin)) + outMin;

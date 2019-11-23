@@ -1,4 +1,3 @@
-
 //
 //    Copyright 2015 - Jorge Ouahbi
 //
@@ -15,32 +14,41 @@
 //   limitations under the License.
 //
 
-
 //
-//  CAShapeLayer+HitTest.swift
-//  Created by Jorge Ouahbi on 24/11/15.
+//  CGSizeExtension.swift
+//
+//  Created by Jorge Ouahbi on 25/11/15.
 //  Copyright © 2015 Jorge Ouahbi. All rights reserved.
 //
 
 import UIKit
-import CoreGraphics
 
-extension CAShapeLayer {
-    override open func contains(_ p:CGPoint) -> Bool {
-        let eoFill:Bool = (convertFromCAShapeLayerFillRule(self.fillRule) == "even-odd")
-        guard let path = self.path
-        else { return false }
-        return path.contains(p, using: eoFill ? .evenOdd : .winding)
+/**
+*  @brief  CGSize Extension
+*/
+extension CGSize
+{
+    func min() -> CGFloat {
+        return Swift.min(height,width);
     }
     
-    func pathBoundingBox() -> CGRect {
-        guard let path = self.path
-        else { return CGRect.zero }
-        return path.boundingBox
+    func max() -> CGFloat {
+        return Swift.max(height,width);
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromCAShapeLayerFillRule(_ input: CAShapeLayerFillRule) -> String {
-	return input.rawValue
+    
+    func max(_ other : CGSize) -> CGSize {
+        return self.max() >= other.max()  ? self : other;
+    }
+    
+    func hypot() -> CGFloat {
+        return CoreGraphics.hypot(height,width)
+    }
+    
+    func center() -> CGPoint {
+        return CGPoint(x:width * 0.5,y:height * 0.5)
+    }
+    
+    func integral() -> CGSize {
+        return CGSize(width:round(width),height:round(height))
+    }
 }

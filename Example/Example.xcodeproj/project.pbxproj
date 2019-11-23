@@ -48,6 +48,7 @@
 		355ABC511DEF5023008A4B9F /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC4D1DEF5023008A4B9F /* CGPoint+Extension.swift */; };
 		355ABC521DEF5023008A4B9F /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC4E1DEF5023008A4B9F /* CGFloat+Extensions.swift */; };
 		355ABC531DEF5023008A4B9F /* CGAffineTransform+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355ABC4F1DEF5023008A4B9F /* CGAffineTransform+Extensions.swift */; };
+		7D1028BA2389B593003FFD00 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D1028B92389B593003FFD00 /* Default-568h@2x.png */; };
 		C974821A219A385000B31CF9 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9748219219A385000B31CF9 /* Log.swift */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +95,7 @@
 		355ABC4D1DEF5023008A4B9F /* CGPoint+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
 		355ABC4E1DEF5023008A4B9F /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 		355ABC4F1DEF5023008A4B9F /* CGAffineTransform+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Extensions.swift"; sourceTree = "<group>"; };
+		7D1028B92389B593003FFD00 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		C9748219219A385000B31CF9 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,6 +113,7 @@
 		352CB73C1A6D1FBB00863568 = {
 			isa = PBXGroup;
 			children = (
+				7D1028B92389B593003FFD00 /* Default-568h@2x.png */,
 				355ABBBD1DEF4CD8008A4B9F /* Example */,
 				352CB7461A6D1FBB00863568 /* Products */,
 			);
@@ -282,18 +285,18 @@
 			attributes = {
 				LastSwiftMigration = 0720;
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = none;
 				TargetAttributes = {
 					352CB7441A6D1FBB00863568 = {
 						CreatedOnToolsVersion = 6.2;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1100;
 					};
 				};
 			};
 			buildConfigurationList = 352CB7401A6D1FBB00863568 /* Build configuration list for PBXProject "Example" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -316,6 +319,7 @@
 			files = (
 				355ABBD21DEF4CD8008A4B9F /* Main.storyboard in Resources */,
 				355ABBD31DEF4CD8008A4B9F /* Images.xcassets in Resources */,
+				7D1028BA2389B593003FFD00 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,6 +391,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -444,6 +449,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -503,7 +509,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -519,7 +525,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

@@ -1,4 +1,3 @@
-
 //
 //    Copyright 2015 - Jorge Ouahbi
 //
@@ -14,33 +13,30 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 //
-
-
 //
-//  CAShapeLayer+HitTest.swift
-//  Created by Jorge Ouahbi on 24/11/15.
+
+//  Float+Math.swift
+//
+//  Created by Jorge Ouahbi on 25/11/15.
 //  Copyright © 2015 Jorge Ouahbi. All rights reserved.
 //
 
 import UIKit
-import CoreGraphics
 
-extension CAShapeLayer {
-    override open func contains(_ p:CGPoint) -> Bool {
-        let eoFill:Bool = (convertFromCAShapeLayerFillRule(self.fillRule) == "even-odd")
-        guard let path = self.path
-        else { return false }
-        return path.contains(p, using: eoFill ? .evenOdd : .winding)
+/**
+ *  Float Extension for conversion from/to degrees/radians and clamp
+ */
+
+public extension Float {
+    
+    func degreesToRadians () -> Float {
+        return self * 0.01745329252
+    }
+    func radiansToDegrees () -> Float {
+        return self * 57.29577951
     }
     
-    func pathBoundingBox() -> CGRect {
-        guard let path = self.path
-        else { return CGRect.zero }
-        return path.boundingBox
+    mutating func clamp(toLowerValue lowerValue: Float, upperValue: Float){
+        self = min(max(self, lowerValue), upperValue)
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromCAShapeLayerFillRule(_ input: CAShapeLayerFillRule) -> String {
-	return input.rawValue
 }

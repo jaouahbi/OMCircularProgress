@@ -15,7 +15,7 @@
 //
 
 //
-//  OMLog.swift
+//  Log.swift
 //
 //  Created by Jorge Ouahbi on 25/9/16.
 //  Copyright © 2016 Jorge Ouahbi. All rights reserved.

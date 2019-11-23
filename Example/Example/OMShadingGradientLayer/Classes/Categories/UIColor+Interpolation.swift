@@ -77,10 +77,10 @@ extension UIColor
         let srgba = start.components
         let ergba = end.components
         
-        let r = clamp(Interpolation.eerp(srgba[0],y1: ergba[0],t: t), lower: 0,upper: 1)
-        let g = clamp(Interpolation.eerp(srgba[1],y1: ergba[1],t: t),lower: 0, upper: 1)
-        let b = clamp(Interpolation.eerp(srgba[2],y1: ergba[2],t: t), lower: 0, upper: 1)
-        let a = clamp(Interpolation.eerp(srgba[3],y1: ergba[3],t: t), lower: 0,upper: 1)
+        let r = clamp(Interpolation.eerp(srgba[0],y1: ergba[0],t: t), lowerValue: 0,upperValue: 1)
+        let g = clamp(Interpolation.eerp(srgba[1],y1: ergba[1],t: t),lowerValue: 0, upperValue: 1)
+        let b = clamp(Interpolation.eerp(srgba[2],y1: ergba[2],t: t), lowerValue: 0, upperValue: 1)
+        let a = clamp(Interpolation.eerp(srgba[3],y1: ergba[3],t: t), lowerValue: 0,upperValue: 1)
         
         assert(r <= 1.0 && g <= 1.0 && b <= 1.0 && a <= 1.0);
         

@@ -57,6 +57,8 @@ extension CGPathElement {
         case .addCurveToPoint:
             path.addCurve(to: self.points[0],controlPoint1:self.points[1], controlPoint2:self.points[2]);
             break;
+        @unknown default:
+            fatalError()
         }
     }
 }
@@ -86,6 +88,8 @@ extension UIBezierPath {
                     results.add(current);
                 }
                 current = nil;
+            @unknown default:
+                fatalError()
             }
         }
         

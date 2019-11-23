@@ -24,14 +24,13 @@
 // v1.0
 
 import UIKit
-
 public extension CALayer {
     
     // MARK: - CALayer Animation Helpers
     
     func animationActionForKey(_ event:String!) -> CABasicAnimation! {
         let animation = CABasicAnimation(keyPath: event)
-        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
+        //animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunction.linear)
         animation.fromValue = self.presentation()!.value(forKey: event);
         return animation
     }
@@ -62,7 +61,7 @@ public extension CALayer {
             animation.beginTime = beginTime
         }
         
-        animation.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.linear)
+        //animation.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.linear)
         animation.setValue(self,forKey:keyPath)
         self.add(animation, forKey:keyPath)
         self.setValue(toValue,forKey:keyPath)

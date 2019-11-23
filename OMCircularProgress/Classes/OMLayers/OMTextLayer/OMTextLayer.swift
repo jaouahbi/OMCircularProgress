@@ -70,7 +70,7 @@ import CoreFoundation
     }
     var radiusRatio : CGFloat = 0.0 {
         didSet {
-            radiusRatio = clamp(radiusRatio, lowerValue: 0, upperValue: 1.0)
+            radiusRatio = clamp(radiusRatio, lower: 0, upper: 1.0)
             setNeedsDisplay()
         }
     }

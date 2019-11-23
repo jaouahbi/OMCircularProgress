@@ -849,7 +849,7 @@ open class CPStepData : CustomDebugStringConvertible {
         
         assert(progress <= Double(numberOfSteps),"Unexpected progress \(progress) max \(numberOfSteps) ")
         
-        let cprogress = clamp(progress, lowerValue: 0.0,upperValue: Double(numberOfSteps))
+        let cprogress = clamp(progress, lower: 0.0,upper: Double(numberOfSteps))
         let stepsDone = Int(cprogress)
         let curStep   = (cprogress - floor(cprogress))
         
@@ -865,7 +865,7 @@ open class CPStepData : CustomDebugStringConvertible {
         }
         
         let duration = (animationDuration / Double(numberOfSteps)) * cprogress
-        let toValue  = clamp((progress / Double(numberOfSteps)),lowerValue: 0.0,upperValue: 1.0)
+        let toValue  = clamp((progress / Double(numberOfSteps)),lower: 0.0,upper: 1.0)
         
         weak var delegate = self
         
@@ -1085,9 +1085,9 @@ open class CPStepData : CustomDebugStringConvertible {
         shapeLayer.strokeColor     = ( step.maskLayer != nil ) ? UIColor.black.cgColor : step.color.cgColor
         
         if self.options.contains(.roundedHead) && canRoundedHead {
-            shapeLayer.lineCap   = kCALineCapRound;
+            shapeLayer.lineCap   = CAShapeLayerLineCap.round;
         } else {
-            shapeLayer.lineCap   = kCALineCapButt;
+            shapeLayer.lineCap   = CAShapeLayerLineCap.butt;
         }
         shapeLayer.strokeStart     = 0.0
         shapeLayer.strokeEnd       = 0.0
@@ -1538,7 +1538,7 @@ extension OMCircularProgress {
         }
         // clap the percent.
         let step = CPStepData(start:start,
-                                percent:Double(clamp(CGFloat(percent), lowerValue: 0.0,upperValue: 1.0)),
+                              percent:Double(clamp(CGFloat(percent), lower: 0.0,upper: 1.0)),
                                 color:color)
         Log.v("\(layer.name ?? "")): Adding new step#\(numberOfSteps) with the angle: \(step.angle!)")
         let overflow = overflowBy(lenght: step.angle.length());
@@ -1642,7 +1642,7 @@ extension OMCircularProgress : CAAnimationDelegate
         
         strokeAnimation.isRemovedOnCompletion = false
         strokeAnimation.isAdditive = true
-        strokeAnimation.fillMode = kCAFillModeForwards
+        strokeAnimation.fillMode = CAMediaTimingFillMode.forwards
         strokeAnimation.delegate = self
         
         if (style == .sequential) {

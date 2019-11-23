@@ -32,7 +32,7 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     
     // MARK: - OMColorsAndLocationsProtocol
     
-    open var colors: [UIColor] = [] {
+    @objc open var colors: [UIColor] = [] {
         didSet {
             // if only exist one color, duplicate it.
             if (colors.count == 1) {
@@ -52,7 +52,7 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
             self.setNeedsDisplay()
         }
     }
-    open var locations : [CGFloat]? = nil {
+    @objc open var locations : [CGFloat]? = nil {
         didSet {
             if locations != nil{
                 locations!.sort { $0 < $1 }
@@ -76,12 +76,12 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
         }
     }
     
-    open var startPoint: CGPoint  = CGPoint(x: 0.0, y: 0.5) {
+    @objc open var startPoint: CGPoint  = CGPoint(x: 0.0, y: 0.5) {
         didSet {
             self.setNeedsDisplay();
         }
     }
-    open var endPoint: CGPoint = CGPoint(x: 1.0, y: 0.5) {
+    @objc open var endPoint: CGPoint = CGPoint(x: 1.0, y: 0.5) {
         didSet{
             self.setNeedsDisplay();
         }
@@ -99,15 +99,15 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     }
     
     // MARK: - OMRadialGradientLayerProtocol
-    open var startRadius: CGFloat = 0 {
+    @objc open var startRadius: CGFloat = 0 {
         didSet {
-            startRadius = clamp(startRadius, lowerValue: 0, upperValue: 1.0)
+            startRadius = clamp(startRadius, lower: 0, upper: 1.0)
             self.setNeedsDisplay();
         }
     }
-    open var endRadius: CGFloat = 0 {
+    @objc open var endRadius: CGFloat = 0 {
         didSet {
-            endRadius = clamp(endRadius, lowerValue: 0, upperValue: 1.0)
+            endRadius = clamp(endRadius, lower: 0, upper: 1.0)
             self.setNeedsDisplay();
         }
     }
@@ -123,7 +123,7 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
             self.setNeedsDisplay()
         }
     }
-    open var path : CGPath? {
+    open var path: CGPath? {
         didSet {
             self.setNeedsDisplay()
         }
@@ -132,7 +132,7 @@ open class OMGradientLayer : CALayer, OMGradientLayerProtocol {
     /// Transform the radial gradient
     /// example: oval gradient = CGAffineTransform(scaleX: 2, y: 1.0);
     
-    open var radialTransform : CGAffineTransform = CGAffineTransform.identity {
+    open var radialTransform: CGAffineTransform = CGAffineTransform.identity {
         didSet {
             self.setNeedsDisplay()
         }
