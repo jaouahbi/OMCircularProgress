@@ -30,8 +30,8 @@ Later I realized that the representation of the progress was very simple and lim
 
 ## Requirements
 
-- iOS 8.0+
-- Xcode 8
+- iOS 10+
+- Swift 5
 
 ## Communication
 
@@ -48,7 +48,7 @@ Open a issue.
 pod `OMCircularProgress`
 and run pod install in your terminal.
 
-## Carthage Installation
+## Swift package manager Installation
 
 > TODO
 
