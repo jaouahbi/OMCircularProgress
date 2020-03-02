@@ -37,6 +37,8 @@ extension CGColorSpaceModel {
         case .indexed:return "Indexed"
         case .pattern:return "Pattern"
         case .XYZ:return "XYZ"
+        @unknown default:
+            fatalError()
         }
     }
 }
