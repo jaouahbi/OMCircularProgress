@@ -102,6 +102,8 @@ extension UIImage
             transform = transform.translatedBy(x: 0, y: newSize.height);
             transform = transform.rotated(by: CGFloat(-.pi / 2.0));
             break;
+        @unknown default:
+            fatalError()
         }
         
         switch (self.imageOrientation) {
@@ -117,6 +119,8 @@ extension UIImage
             
         case .down, .up ,.right, .left:
             break;
+        @unknown default:
+            fatalError()
         }
         
         return transform;
