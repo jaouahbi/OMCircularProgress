@@ -163,8 +163,16 @@ private struct OMProgressImageLayerProperties {
         var newImage:UIImage? = nil
         var newProgress:Double = self.progress
         
-        if let presentationLayer = self.presentation(){
+        if let presentationLayer = self.presentation() {
             newProgress = presentationLayer.progress
+            if newProgress == self.progress || (self.progress == 1.0 && newProgress == 0) {
+                return self.image
+            } //else{
+              //  print("diferent \(newProgress) != \(self.progress)")
+            //}
+        } else {
+            print("No presentation")
+            return self.image
         }
         
         if newProgress > 0 {
@@ -176,7 +184,7 @@ private struct OMProgressImageLayerProperties {
                 let center = image!.size.center()
                 
                 let path = UIBezierPath(arcCenter: center,
-                    radius: radius ,
+                    radius: radius,
                     startAngle: 0,
                     endAngle: CGFloat.pi * 2.0,
                     clockwise: true)
@@ -223,12 +231,16 @@ private struct OMProgressImageLayerProperties {
                 break;
             }
         } else {
-            newImage = self.image?.grayScaleWithAlphaImage()
+            if grayScaleWithAlphaImageCached == nil {
+                grayScaleWithAlphaImageCached = self.image?.grayScaleWithAlphaImage()
+            }
+            newImage = grayScaleWithAlphaImageCached
         }
         
         return newImage
     }
     
+    var grayScaleWithAlphaImageCached: UIImage? = nil
     // MARK: overrides
     
     override func draw(in context: CGContext) {
@@ -249,7 +261,7 @@ private struct OMProgressImageLayerProperties {
             if  grayScale {
                 // original image grayscaled + original image blend
                 if let image = self.image {
-                   if let grayImage = image.grayScaleWithAlphaImage() {
+                    if let grayImage = image.grayScaleWithAlphaImage()  {
                         if let imageBlended = grayImage.blendImage(newImage) {
                             context.draw(imageBlended.cgImage!, in: rect)
                         }
